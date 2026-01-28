@@ -1,6 +1,7 @@
 "use client";
 
-import { use, useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -65,8 +66,9 @@ int main() {
 }
 `;
 
-export default function ProblemPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default function ProblemPage() {
+  const params = useParams();
+  const id = params.id as string;
   const { toast } = useToast();
   const [problem, setProblem] = useState<Problem | null>(null);
   const [code, setCode] = useState(DEFAULT_CODE);
@@ -75,11 +77,7 @@ export default function ProblemPage({ params }: { params: Promise<{ id: string }
   const [judgeResult, setJudgeResult] = useState<JudgeResult | null>(null);
   const [activeTab, setActiveTab] = useState("description");
 
-  useEffect(() => {
-    fetchProblem();
-  }, [id]);
-
-  const fetchProblem = async () => {
+  const fetchProblem = useCallback(async () => {
     try {
       const response = await fetch(`/api/problems/${id}`);
       const data = await response.json();
@@ -101,7 +99,11 @@ export default function ProblemPage({ params }: { params: Promise<{ id: string }
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, toast]);
+
+  useEffect(() => {
+    fetchProblem();
+  }, [fetchProblem]);
 
   const handleSubmit = async () => {
     if (!code.trim()) {

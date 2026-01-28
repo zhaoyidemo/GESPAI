@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChatInterface } from "@/components/chat/chat-interface";
@@ -41,8 +41,9 @@ const knowledgePointsData: Record<string, { title: string; description: string; 
   },
 };
 
-export default function LearnTopicPage({ params }: { params: Promise<{ topic: string }> }) {
-  const { topic } = use(params);
+export default function LearnTopicPage() {
+  const params = useParams();
+  const topic = params.topic as string;
   const knowledgePoint = knowledgePointsData[topic] || {
     title: topic,
     description: "正在加载知识点信息...",
