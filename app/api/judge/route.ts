@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       data: {
         status: result.status,
         score: result.score,
-        testResults: result.testResults,
+        testResults: JSON.parse(JSON.stringify(result.testResults)),
         compileOutput: result.compileOutput,
       },
     });
