@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
 // GESP 官方真题数据 - 来源：CCF-GESP 官方 + 洛谷
+// 难度标签采用洛谷评级：easy(普及-), medium(普及/提高-), hard(提高+/省选-)
 // 支持 GET 和 POST 请求
 async function seedData() {
   try {
@@ -22,7 +23,7 @@ async function seedData() {
           sourceUrl: "https://www.luogu.com.cn/problem/P10720",
           level: 5,
           knowledgePoints: ["质因数分解", "数论", "筛法"],
-          difficulty: "medium",
+          difficulty: "easy", // 洛谷难度2
           description: `小杨认为他的幸运数字应该恰好有两种不同的质因子。
 
 例如，12 = 2×2×3 的质因子有 2, 3，恰好为两种不同的质因子，因此 12 是幸运数字。
@@ -58,7 +59,7 @@ async function seedData() {
           sourceUrl: "https://www.luogu.com.cn/problem/B4050",
           level: 5,
           knowledgePoints: ["贪心", "质数判断", "位运算"],
-          difficulty: "medium",
+          difficulty: "medium", // 洛谷难度3
           description: `小杨正在和一个怪物战斗，怪物的血量为 h。只有当怪物的血量恰好为 0 时，小杨才能成功击败怪物。
 
 小杨有两种攻击怪物的方式：
@@ -98,7 +99,7 @@ async function seedData() {
           sourceUrl: "https://www.luogu.com.cn/problem/B3929",
           level: 5,
           knowledgePoints: ["完全平方数", "数论", "倍数"],
-          difficulty: "medium",
+          difficulty: "medium", // 洛谷难度3
           description: `小杨认为，所有大于等于 a 的完全平方数都是他的"超级幸运数"。
 
 而超级幸运数的所有正整数倍都是"幸运数"。
@@ -140,7 +141,7 @@ async function seedData() {
           sourceUrl: "https://www.luogu.com.cn/problem/B3968",
           level: 5,
           knowledgePoints: ["排序", "结构体", "多关键字排序"],
-          difficulty: "medium",
+          difficulty: "easy", // 洛谷难度2
           description: `有 n 名同学，每名同学有语文、数学、英语三科成绩。
 
 需要按照如下规则对所有同学的成绩从高到低排序，输出每名同学的排名：
@@ -180,7 +181,7 @@ async function seedData() {
           sourceUrl: "https://www.luogu.com.cn/problem/B3969",
           level: 5,
           knowledgePoints: ["筛法", "质因数", "埃氏筛"],
-          difficulty: "medium",
+          difficulty: "easy", // 洛谷难度2
           description: `一个正整数是 B-smooth 数，当且仅当其最大质因子不超过 B。
 
 特别地，1 没有质因子，我们认为 1 是 B-smooth 数。
@@ -225,7 +226,7 @@ async function seedData() {
           sourceUrl: "https://www.luogu.com.cn/problem/B3872",
           level: 5,
           knowledgePoints: ["贪心", "排序", "任务调度"],
-          difficulty: "medium",
+          difficulty: "medium", // 洛谷难度3
           description: `小明参加了一个巧夺大奖的游戏节目。主持人宣布了游戏规则：
 
 1. 游戏分为 n 个时间段，参加者每个时间段可以选择完成一个小游戏。

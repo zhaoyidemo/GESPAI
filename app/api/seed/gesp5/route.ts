@@ -3,6 +3,14 @@ import prisma from "@/lib/db";
 
 // GESP 5级完整题库 - 来源：洛谷 CCF GESP C++ 五级上机题
 // 共22道题目
+// 难度标签采用洛谷评级：
+// - "entry" = 入门 (洛谷1)
+// - "easy" = 普及- (洛谷2)
+// - "medium" = 普及/提高- (洛谷3)
+// - "medium-hard" = 普及+/提高 (洛谷4)
+// - "hard" = 提高+/省选- (洛谷5)
+// - "expert" = 省选/NOI- (洛谷6)
+
 const gesp5Problems = [
   // ========== 2023年6月 ==========
   {
@@ -12,7 +20,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3941",
     level: 5,
     knowledgePoints: ["最小公倍数", "最大公约数", "数论"],
-    difficulty: "medium",
+    difficulty: "easy", // 洛谷难度2
     description: `小杨每天都要进行锻炼。他有 n 种不同的锻炼项目，第 i 种锻炼项目每隔 aᵢ 天进行一次。
 
 小杨想知道，他最少需要多少天才能把所有的锻炼项目都完成一遍？
@@ -46,7 +54,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3951",
     level: 5,
     knowledgePoints: ["逆序对", "排序", "冒泡排序"],
-    difficulty: "medium",
+    difficulty: "easy", // 洛谷难度2
     description: `小杨的班级里共有 N 名同学，学号从 0 至 N-1。某节课上，老师要求同学们进行列队。
 
 老师会依次点名 M 名同学加入队伍。每名新入队的同学需要先站到队伍末尾，随后整个队伍中的所有同学需要按身高从低到高重新排序。
@@ -83,7 +91,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3871",
     level: 5,
     knowledgePoints: ["质因数分解", "数论"],
-    difficulty: "medium",
+    difficulty: "easy", // 洛谷难度2
     description: `每个正整数都可以分解成素数的乘积，例如：6 = 2×3，20 = 2²×5。
 
 现在给定一个正整数 N，请按要求输出它的因数分解式。
@@ -119,7 +127,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3930",
     level: 5,
     knowledgePoints: ["位运算", "按位与", "枚举"],
-    difficulty: "medium",
+    difficulty: "medium", // 洛谷难度3
     description: `有 N 种食材，编号从 0 至 N-1，其中第 i 种食材的美味度为 aᵢ。
 
 不同食材之间的组合可能产生奇妙的化学反应。具体来说，如果两种食材的美味度分别为 x 和 y，那么它们的契合度为 x AND y（按位与运算）。
@@ -158,7 +166,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10719",
     level: 5,
     knowledgePoints: ["二维前缀和", "枚举", "子矩阵"],
-    difficulty: "medium",
+    difficulty: "medium", // 洛谷难度3
     description: `小杨有一个 n 行 m 列的网格图，每个格子是白色或黑色。
 
 小杨想要找出一个最小的子矩形，使得这个子矩形至少包含 k 个黑色格子。
@@ -192,7 +200,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4051",
     level: 5,
     knowledgePoints: ["贪心", "排序", "前缀和"],
-    difficulty: "medium",
+    difficulty: "easy", // 洛谷难度2
     description: `小杨有 n 种不同的武器，他对第 i 种武器的初始熟练度为 cᵢ。
 
 小杨会依次参加 m 场战斗，每场战斗小杨只能且必须选择一种武器使用。假设小杨使用了第 i 种武器参加了第 j 场战斗，战斗前该武器的熟练度为 c'ᵢ，则战斗后小杨对该武器的熟练度会变为 c'ᵢ + aⱼ。
@@ -230,7 +238,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4070",
     level: 5,
     knowledgePoints: ["质因数分解", "数论", "贪心"],
-    difficulty: "medium",
+    difficulty: "medium", // 洛谷难度3
     description: `小杨认为一个数字 x 是奇妙数字当且仅当 x = pᵃ，其中 p 为任意质数且 a 为正整数。
 
 例如：
@@ -268,7 +276,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4071",
     level: 5,
     knowledgePoints: ["贪心", "排序", "模拟"],
-    difficulty: "medium",
+    difficulty: "medium", // 洛谷难度3
     description: `小杨有 n 种武器和 m 种强化材料。第 i 种强化材料会适配第 pᵢ 种武器。
 
 小杨可以花费 cᵢ 金币将第 i 种材料的适配武器修改为任意武器。
@@ -305,7 +313,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P11960",
     level: 5,
     knowledgePoints: ["贪心", "排序", "差值"],
-    difficulty: "medium",
+    difficulty: "medium", // 洛谷难度3
     description: `小 A 有 2n 件物品，小 B 和小 C 想从小 A 手上买走这些物品。
 
 对于第 i 件物品，小 B 会以 bᵢ 的价格购买，而小 C 会以 cᵢ 的价格购买。
@@ -342,7 +350,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P11961",
     level: 5,
     knowledgePoints: ["数论", "快速幂", "费马小定理"],
-    difficulty: "hard",
+    difficulty: "hard", // 洛谷难度5 (提高+/省选-)
     description: `对于质数 p，如果一个正整数 g 满足：对于任意 1 ≤ i < p-1 均有 gⁱ mod p ≠ 1，则称 g 是 p 的原根。
 
 换句话说，g 的 1 次方、2 次方、...、(p-2) 次方对 p 取模的结果都不等于 1，只有 (p-1) 次方对 p 取模才等于 1。
@@ -376,7 +384,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P13013",
     level: 5,
     knowledgePoints: ["二分查找", "贪心", "数学"],
-    difficulty: "medium",
+    difficulty: "medium", // 洛谷难度3
     description: `小杨有 n 张课堂券和 m 张作业券，他想用这些券兑换奖品。
 
 兑换一份奖品有两种方式：
@@ -409,7 +417,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P13014",
     level: 5,
     knowledgePoints: ["最大公约数", "辗转相除法", "数论"],
-    difficulty: "medium",
+    difficulty: "easy", // 洛谷难度2
     description: `对于两个正整数 a 和 b，它们的最大公因数记为 gcd(a, b)。
 
 对于 k (k > 2) 个正整数 c₁, c₂, ..., cₖ，它们的最大公因数定义为：
@@ -447,7 +455,7 @@ gcd(c₁, c₂, ..., cₖ) = gcd(gcd(c₁, c₂, ..., cₖ₋₁), cₖ)
     sourceUrl: "https://www.luogu.com.cn/problem/P14073",
     level: 5,
     knowledgePoints: ["互质", "质数", "贪心"],
-    difficulty: "medium",
+    difficulty: "easy", // 洛谷难度2
     description: `给定 1, 2, 3, ..., n 一共 n 个正整数，从这些数中选取一些数字，使得选取的整数中任意两个不同的整数均互质。
 
 两个整数互质是指它们的最大公约数为 1。
@@ -477,7 +485,7 @@ gcd(c₁, c₂, ..., cₖ) = gcd(gcd(c₁, c₂, ..., cₖ₋₁), cₖ)
     sourceUrl: "https://www.luogu.com.cn/problem/P14074",
     level: 5,
     knowledgePoints: ["位运算", "二进制", "数学"],
-    difficulty: "hard",
+    difficulty: "medium", // 洛谷难度3
     description: `小杨认为一个正整数是"有趣的"，当且仅当它的二进制表示中 1 的个数是奇数。
 
 例如：
@@ -509,7 +517,7 @@ gcd(c₁, c₂, ..., cₖ) = gcd(gcd(c₁, c₂, ..., cₖ₋₁), cₖ)
     sourceUrl: "https://www.luogu.com.cn/problem/P14917",
     level: 5,
     knowledgePoints: ["数学", "规律", "模拟"],
-    difficulty: "medium",
+    difficulty: "medium", // 洛谷难度3
     description: `（题目详情请访问洛谷官网查看）
 
 这是 GESP 2025年9月五级的编程题。`,
@@ -532,7 +540,7 @@ gcd(c₁, c₂, ..., cₖ) = gcd(gcd(c₁, c₂, ..., cₖ₋₁), cₖ)
     sourceUrl: "https://www.luogu.com.cn/problem/P14918",
     level: 5,
     knowledgePoints: ["序列", "贪心", "模拟"],
-    difficulty: "medium",
+    difficulty: "medium", // 洛谷难度3
     description: `（题目详情请访问洛谷官网查看）
 
 这是 GESP 2025年9月五级的编程题。`,
