@@ -7,27 +7,27 @@ interface ParticleFieldProps {
   className?: string;
 }
 
-// 宇宙星空配色 - 恒星色谱
+// 真实恒星色谱 - 基于黑体辐射温度
 const STAR_COLORS = {
-  // 蓝白色恒星（O/B型，最热）
-  blueWhite: new THREE.Color(0xcad7ff),
-  // 白色恒星（A型）
-  white: new THREE.Color(0xf8f7ff),
-  // 黄白色恒星（F型）
-  yellowWhite: new THREE.Color(0xfff4ea),
-  // 黄色恒星（G型，如太阳）
-  yellow: new THREE.Color(0xffd2a1),
-  // 橙色恒星（K型）
-  orange: new THREE.Color(0xffcc6f),
-  // 红色恒星（M型，最冷）
-  red: new THREE.Color(0xffb56c),
-  // 蓝色星云
-  nebula: new THREE.Color(0x4a6cf0),
+  // O型 (30000K+) - 蓝色
+  blue: new THREE.Color(0x9bb0ff),
+  // B型 (10000-30000K) - 蓝白色
+  blueWhite: new THREE.Color(0xaabfff),
+  // A型 (7500-10000K) - 白色
+  white: new THREE.Color(0xcad7ff),
+  // F型 (6000-7500K) - 黄白色
+  yellowWhite: new THREE.Color(0xf8f7ff),
+  // G型 (5200-6000K) - 黄色（太阳）
+  yellow: new THREE.Color(0xfff4ea),
+  // K型 (3700-5200K) - 橙色
+  orange: new THREE.Color(0xffd2a1),
+  // M型 (<3700K) - 红色
+  red: new THREE.Color(0xffcc6f),
 };
 
 const STAR_COLOR_ARRAY = Object.values(STAR_COLORS);
 
-// 顶点着色器 - 星空波动 + 鼠标交互
+// 顶点着色器
 const vertexShader = `
   uniform float uTime;
   uniform vec2 uMouse;
@@ -38,6 +38,7 @@ const vertexShader = `
   attribute vec3 aColor;
   attribute float aPhase;
   attribute float aBrightness;
+  attribute float aLayer;
 
   varying vec3 vColor;
   varying float vAlpha;
@@ -46,65 +47,78 @@ const vertexShader = `
   void main() {
     vec3 pos = position;
 
-    // 缓慢的宇宙漂移
-    float drift = sin(pos.x * 0.1 + uTime * 0.1 + aPhase) * 0.05;
-    drift += cos(pos.y * 0.08 + uTime * 0.08 + aPhase * 0.7) * 0.03;
+    // 不同层次的星星有不同的运动速度
+    float layerSpeed = 0.02 + aLayer * 0.01;
+
+    // 极其缓慢的宇宙漂移
+    float drift = sin(pos.x * 0.05 + uTime * layerSpeed + aPhase) * 0.02;
+    drift += cos(pos.y * 0.04 + uTime * layerSpeed * 0.8 + aPhase * 0.7) * 0.015;
     pos.z += drift;
 
-    // 计算与鼠标的距离
+    // 计算与鼠标的距离（只影响近处的星星）
     vec2 mouseDir = pos.xy - uMouse;
     float mouseDist = length(mouseDir);
 
-    // 斥力效果 - 星星被推开
-    float repulsion = smoothstep(uMouseRadius, 0.0, mouseDist);
+    // 斥力效果 - 近处星星被推开更多
+    float repulsion = smoothstep(uMouseRadius, 0.0, mouseDist) * (1.0 - aLayer * 0.5);
     vec2 repulsionDir = normalize(mouseDir + 0.001);
-    pos.xy += repulsionDir * repulsion * 1.5;
+    pos.xy += repulsionDir * repulsion * 1.2;
 
-    // 星星闪烁
-    float twinkle = sin(uTime * 2.0 + aPhase * 10.0) * 0.3 + 0.7;
-
-    // 粒子大小
-    float sizeMultiplier = 1.0 + repulsion * 0.3;
+    // 星星闪烁 - 不同相位
+    float twinkleSpeed = 1.5 + aPhase * 0.5;
+    float twinkle = sin(uTime * twinkleSpeed + aPhase * 6.28) * 0.15 + 0.85;
+    twinkle *= sin(uTime * 0.7 + aPhase * 3.14) * 0.1 + 0.9;
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
     gl_Position = projectionMatrix * mvPosition;
 
-    // 基于距离的大小衰减
-    gl_PointSize = aSize * sizeMultiplier * twinkle * uPixelRatio * (250.0 / -mvPosition.z);
-    gl_PointSize = clamp(gl_PointSize, 0.5, 30.0);
+    // 粒子大小 - 考虑距离衰减和闪烁
+    float sizeMultiplier = 1.0 + repulsion * 0.2;
+    gl_PointSize = aSize * sizeMultiplier * twinkle * uPixelRatio * (200.0 / -mvPosition.z);
+    gl_PointSize = clamp(gl_PointSize, 0.5, 25.0);
 
     vColor = aColor;
     vBrightness = aBrightness * twinkle;
-    vAlpha = 0.4 + repulsion * 0.4 + aBrightness * 0.3;
+    vAlpha = (0.3 + aBrightness * 0.5) * (1.0 - aLayer * 0.3);
   }
 `;
 
-// 片段着色器 - 星星发光效果
+// 片段着色器 - 修复方块感，使用圆形衰减
 const fragmentShader = `
   varying vec3 vColor;
   varying float vAlpha;
   varying float vBrightness;
 
   void main() {
-    vec2 center = gl_PointCoord - 0.5;
-    float dist = length(center);
+    // 计算到中心的距离
+    vec2 cxy = 2.0 * gl_PointCoord - 1.0;
+    float r = dot(cxy, cxy);
 
-    // 星星核心
-    float core = 1.0 - smoothstep(0.0, 0.15, dist);
+    // 圆形裁剪 - 超出圆形范围直接丢弃
+    if (r > 1.0) {
+      discard;
+    }
 
-    // 柔和的光晕
-    float halo = exp(-dist * 4.0) * 0.6;
+    // 平滑的径向衰减 - 中心亮，边缘暗
+    float falloff = 1.0 - sqrt(r);
 
-    // 微弱的外层光芒
-    float glow = exp(-dist * 2.0) * 0.2;
+    // 星星核心（更亮的中心点）
+    float core = exp(-r * 8.0);
 
-    float alpha = (core + halo + glow) * vAlpha;
+    // 柔和光晕
+    float halo = exp(-r * 3.0) * 0.4;
 
-    // 核心更亮，边缘带颜色
-    vec3 coreColor = vec3(1.0, 1.0, 1.0);
-    vec3 finalColor = mix(vColor, coreColor, core * 0.5) * vBrightness;
+    // 组合亮度
+    float brightness = (core + halo + falloff * 0.2) * vBrightness;
 
-    gl_FragColor = vec4(finalColor, alpha);
+    // 核心偏白，边缘保持星星本色
+    vec3 coreColor = vec3(1.0);
+    vec3 finalColor = mix(vColor, coreColor, core * 0.6);
+
+    // 最终透明度 - 边缘完全透明
+    float alpha = brightness * vAlpha * falloff;
+
+    gl_FragColor = vec4(finalColor * brightness, alpha);
   }
 `;
 
@@ -143,7 +157,7 @@ const kawaseBlurFragmentShader = `
   }
 `;
 
-// 后处理组合着色器 - 宇宙色调
+// 后处理组合着色器
 const compositeFragmentShader = `
   uniform sampler2D tDiffuse;
   uniform sampler2D tBlur;
@@ -154,21 +168,9 @@ const compositeFragmentShader = `
 
   varying vec2 vUv;
 
-  // 宇宙色彩分级
-  vec3 colorGrade(vec3 color) {
-    float luminance = dot(color, vec3(0.299, 0.587, 0.114));
-
-    // 暗部偏深蓝/紫色（宇宙深空）
-    vec3 shadows = vec3(0.02, 0.02, 0.08);
-    // 中间调偏蓝
-    vec3 midtones = vec3(0.05, 0.08, 0.15);
-    // 高光保持星星本色
-    vec3 highlights = vec3(0.1, 0.15, 0.2);
-
-    vec3 graded = mix(shadows, midtones, smoothstep(0.0, 0.3, luminance));
-    graded = mix(graded, highlights, smoothstep(0.3, 0.8, luminance));
-
-    return color + graded * 0.3;
+  // 简单的噪声函数
+  float hash(vec2 p) {
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
   }
 
   void main() {
@@ -176,30 +178,27 @@ const compositeFragmentShader = `
     float dist = length(center);
 
     // 轻微色差
-    float aberration = uChromaticAberration * dist;
+    float aberration = uChromaticAberration * dist * dist;
     vec2 offset = center * aberration;
 
     float r = texture2D(tDiffuse, vUv + offset).r;
     float g = texture2D(tDiffuse, vUv).g;
-    float b = texture2D(tDiffuse, vUv - offset).b;
+    float b = texture2D(tDiffuse, vUv - offset * 0.5).b;
 
     vec3 color = vec3(r, g, b);
 
-    // 混合模糊层（星光发散效果）
+    // 混合模糊层（星光散射）
     vec3 blur = texture2D(tBlur, vUv).rgb;
-    color += blur * 0.4;
+    color += blur * 0.3;
 
-    // 宇宙色彩分级
-    color = colorGrade(color);
-
-    // 暗角 - 宇宙边缘
-    float vignette = 1.0 - dist * uVignetteIntensity;
-    vignette = smoothstep(0.0, 1.0, vignette);
+    // 暗角
+    float vignette = 1.0 - dist * dist * uVignetteIntensity;
+    vignette = clamp(vignette, 0.0, 1.0);
     color *= vignette;
 
-    // 轻微胶片噪点
-    float noise = fract(sin(dot(vUv * uTime, vec2(12.9898, 78.233))) * 43758.5453);
-    color += (noise - 0.5) * 0.015;
+    // 极轻微的噪点（模拟传感器噪声）
+    float noise = hash(vUv + uTime * 0.01) * 0.02 - 0.01;
+    color += noise;
 
     gl_FragColor = vec4(color, 1.0);
   }
@@ -216,7 +215,7 @@ export function ParticleField({ className }: ParticleFieldProps) {
   const frameIdRef = useRef<number>(0);
   const clockRef = useRef(new THREE.Clock());
 
-  // 后处理相关
+  // 后处理
   const composerSceneRef = useRef<THREE.Scene | null>(null);
   const composerCameraRef = useRef<THREE.OrthographicCamera | null>(null);
   const renderTargetRef = useRef<THREE.WebGLRenderTarget | null>(null);
@@ -230,9 +229,9 @@ export function ParticleField({ className }: ParticleFieldProps) {
   const getParticleCount = useCallback(() => {
     if (typeof window === "undefined") return 3000;
     const width = window.innerWidth;
-    if (width < 640) return 1500;
-    if (width < 1024) return 3000;
-    return 5000; // 桌面端 5000 颗星星
+    if (width < 640) return 2000;
+    if (width < 1024) return 4000;
+    return 6000;
   }, []);
 
   const createParticles = useCallback((scene: THREE.Scene, count: number) => {
@@ -241,41 +240,77 @@ export function ParticleField({ className }: ParticleFieldProps) {
     const sizes = new Float32Array(count);
     const phases = new Float32Array(count);
     const brightness = new Float32Array(count);
+    const layers = new Float32Array(count);
 
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
 
-      // 球形分布 - 更像宇宙空间
-      const radius = 5 + Math.random() * 15;
+      // 三层分布：近景、中景、远景
+      const layer = Math.random();
+      layers[i] = layer;
+
+      let radius: number;
+      let baseSize: number;
+
+      if (layer < 0.2) {
+        // 20% 近景星星 - 更大更亮
+        radius = 3 + Math.random() * 5;
+        baseSize = 0.3 + Math.random() * 0.4;
+      } else if (layer < 0.6) {
+        // 40% 中景星星
+        radius = 6 + Math.random() * 8;
+        baseSize = 0.15 + Math.random() * 0.25;
+      } else {
+        // 40% 远景星星 - 密集的小星星
+        radius = 10 + Math.random() * 15;
+        baseSize = 0.05 + Math.random() * 0.15;
+      }
+
+      // 球形分布
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
 
       positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.6; // 压扁一点
-      positions[i3 + 2] = radius * Math.cos(phi) - 8;
+      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.5; // 压扁成椭球
+      positions[i3 + 2] = radius * Math.cos(phi) - 10;
 
-      // 星星颜色 - 基于恒星色谱
-      const colorIndex = Math.floor(Math.random() * STAR_COLOR_ARRAY.length);
-      const color = STAR_COLOR_ARRAY[colorIndex];
+      // 恒星颜色分布（符合真实比例）
+      const colorRand = Math.random();
+      let color: THREE.Color;
+      if (colorRand < 0.02) {
+        color = STAR_COLORS.blue; // 2% O型蓝星（稀有）
+      } else if (colorRand < 0.05) {
+        color = STAR_COLORS.blueWhite; // 3% B型
+      } else if (colorRand < 0.1) {
+        color = STAR_COLORS.white; // 5% A型
+      } else if (colorRand < 0.2) {
+        color = STAR_COLORS.yellowWhite; // 10% F型
+      } else if (colorRand < 0.35) {
+        color = STAR_COLORS.yellow; // 15% G型（太阳型）
+      } else if (colorRand < 0.55) {
+        color = STAR_COLORS.orange; // 20% K型
+      } else {
+        color = STAR_COLORS.red; // 45% M型（最常见）
+      }
+
       colors[i3] = color.r;
       colors[i3 + 1] = color.g;
       colors[i3 + 2] = color.b;
 
-      // 星星大小分布 - 大部分是小星星，少数亮星
+      // 大小 - 少数亮星
       const sizeRand = Math.random();
-      if (sizeRand > 0.98) {
-        sizes[i] = 0.8 + Math.random() * 0.4; // 2% 亮星
+      if (sizeRand > 0.995) {
+        sizes[i] = baseSize * 3; // 0.5% 特亮星
+      } else if (sizeRand > 0.98) {
+        sizes[i] = baseSize * 2; // 1.5% 亮星
       } else if (sizeRand > 0.9) {
-        sizes[i] = 0.4 + Math.random() * 0.3; // 8% 中等星
+        sizes[i] = baseSize * 1.3; // 8% 中亮星
       } else {
-        sizes[i] = 0.1 + Math.random() * 0.25; // 90% 小星星
+        sizes[i] = baseSize; // 90% 普通星
       }
 
-      // 随机相位（用于闪烁）
       phases[i] = Math.random() * Math.PI * 2;
-
-      // 亮度
-      brightness[i] = 0.5 + Math.random() * 0.5;
+      brightness[i] = 0.4 + Math.random() * 0.6;
     }
 
     const geometry = new THREE.BufferGeometry();
@@ -284,6 +319,7 @@ export function ParticleField({ className }: ParticleFieldProps) {
     geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
     geometry.setAttribute("aPhase", new THREE.BufferAttribute(phases, 1));
     geometry.setAttribute("aBrightness", new THREE.BufferAttribute(brightness, 1));
+    geometry.setAttribute("aLayer", new THREE.BufferAttribute(layers, 1));
 
     const material = new THREE.ShaderMaterial({
       vertexShader,
@@ -291,12 +327,13 @@ export function ParticleField({ className }: ParticleFieldProps) {
       uniforms: {
         uTime: { value: 0 },
         uMouse: { value: new THREE.Vector2(0, 0) },
-        uMouseRadius: { value: 2.5 },
+        uMouseRadius: { value: 2.0 },
         uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) },
       },
       transparent: true,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
+      depthTest: false,
     });
 
     materialRef.current = material;
@@ -342,7 +379,7 @@ export function ParticleField({ className }: ParticleFieldProps) {
       uniforms: {
         tDiffuse: { value: null },
         uResolution: { value: new THREE.Vector2(width / 2, height / 2) },
-        uOffset: { value: 1.5 },
+        uOffset: { value: 1.0 },
         uDirection: { value: 0 },
       },
     });
@@ -354,7 +391,7 @@ export function ParticleField({ className }: ParticleFieldProps) {
       uniforms: {
         tDiffuse: { value: null },
         uResolution: { value: new THREE.Vector2(width / 2, height / 2) },
-        uOffset: { value: 1.5 },
+        uOffset: { value: 1.0 },
         uDirection: { value: 1 },
       },
     });
@@ -368,8 +405,8 @@ export function ParticleField({ className }: ParticleFieldProps) {
         tBlur: { value: null },
         uResolution: { value: new THREE.Vector2(width, height) },
         uTime: { value: 0 },
-        uVignetteIntensity: { value: 1.0 },
-        uChromaticAberration: { value: 0.002 },
+        uVignetteIntensity: { value: 0.8 },
+        uChromaticAberration: { value: 0.001 },
       },
     });
     compositeMaterialRef.current = compositeMaterial;
@@ -410,28 +447,14 @@ export function ParticleField({ className }: ParticleFieldProps) {
 
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
-
     renderer.setSize(width, height);
 
-    if (renderTargetRef.current) {
-      renderTargetRef.current.setSize(width, height);
-    }
-    if (blurTargetHRef.current) {
-      blurTargetHRef.current.setSize(width / 2, height / 2);
-    }
-    if (blurTargetVRef.current) {
-      blurTargetVRef.current.setSize(width / 2, height / 2);
-    }
-
-    if (blurMaterialHRef.current) {
-      blurMaterialHRef.current.uniforms.uResolution.value.set(width / 2, height / 2);
-    }
-    if (blurMaterialVRef.current) {
-      blurMaterialVRef.current.uniforms.uResolution.value.set(width / 2, height / 2);
-    }
-    if (compositeMaterialRef.current) {
-      compositeMaterialRef.current.uniforms.uResolution.value.set(width, height);
-    }
+    if (renderTargetRef.current) renderTargetRef.current.setSize(width, height);
+    if (blurTargetHRef.current) blurTargetHRef.current.setSize(width / 2, height / 2);
+    if (blurTargetVRef.current) blurTargetVRef.current.setSize(width / 2, height / 2);
+    if (blurMaterialHRef.current) blurMaterialHRef.current.uniforms.uResolution.value.set(width / 2, height / 2);
+    if (blurMaterialVRef.current) blurMaterialVRef.current.uniforms.uResolution.value.set(width / 2, height / 2);
+    if (compositeMaterialRef.current) compositeMaterialRef.current.uniforms.uResolution.value.set(width, height);
   }, []);
 
   useEffect(() => {
@@ -441,13 +464,13 @@ export function ParticleField({ className }: ParticleFieldProps) {
     const width = container.clientWidth;
     const height = container.clientHeight;
 
-    // 场景 - 深邃宇宙背景
+    // 场景 - 纯黑背景
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x020208); // 极深的蓝黑色
+    scene.background = new THREE.Color(0x000000);
     sceneRef.current = scene;
 
     // 相机
-    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
+    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
     camera.position.z = 5;
     cameraRef.current = camera;
 
@@ -466,10 +489,10 @@ export function ParticleField({ className }: ParticleFieldProps) {
     const particleCount = getParticleCount();
     createParticles(scene, particleCount);
 
-    // 设置后处理
+    // 后处理
     setupPostProcessing(renderer, width, height);
 
-    // 动画循环
+    // 动画
     const animate = () => {
       frameIdRef.current = requestAnimationFrame(animate);
 
@@ -479,28 +502,26 @@ export function ParticleField({ className }: ParticleFieldProps) {
       mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.05;
       mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.05;
 
-      // 更新着色器
       if (materialRef.current) {
         materialRef.current.uniforms.uTime.value = elapsed;
         materialRef.current.uniforms.uMouse.value.set(
-          mouseRef.current.x * 8,
-          mouseRef.current.y * 6
+          mouseRef.current.x * 6,
+          mouseRef.current.y * 4
         );
       }
 
-      // 缓慢旋转星空
+      // 极缓慢旋转
       if (particlesRef.current) {
-        particlesRef.current.rotation.y = elapsed * 0.02;
-        particlesRef.current.rotation.x = Math.sin(elapsed * 0.01) * 0.05;
+        particlesRef.current.rotation.y = elapsed * 0.008;
+        particlesRef.current.rotation.x = Math.sin(elapsed * 0.005) * 0.02;
       }
 
-      // 渲染到纹理
+      // 渲染管线
       if (renderTargetRef.current) {
         renderer.setRenderTarget(renderTargetRef.current);
         renderer.render(scene, camera);
       }
 
-      // 水平模糊
       if (blurMaterialHRef.current && blurTargetHRef.current && quadRef.current && renderTargetRef.current) {
         blurMaterialHRef.current.uniforms.tDiffuse.value = renderTargetRef.current.texture;
         quadRef.current.material = blurMaterialHRef.current;
@@ -508,7 +529,6 @@ export function ParticleField({ className }: ParticleFieldProps) {
         renderer.render(composerSceneRef.current!, composerCameraRef.current!);
       }
 
-      // 垂直模糊
       if (blurMaterialVRef.current && blurTargetVRef.current && quadRef.current && blurTargetHRef.current) {
         blurMaterialVRef.current.uniforms.tDiffuse.value = blurTargetHRef.current.texture;
         quadRef.current.material = blurMaterialVRef.current;
@@ -516,7 +536,6 @@ export function ParticleField({ className }: ParticleFieldProps) {
         renderer.render(composerSceneRef.current!, composerCameraRef.current!);
       }
 
-      // 最终组合
       if (compositeMaterialRef.current && quadRef.current && renderTargetRef.current && blurTargetVRef.current) {
         compositeMaterialRef.current.uniforms.tDiffuse.value = renderTargetRef.current.texture;
         compositeMaterialRef.current.uniforms.tBlur.value = blurTargetVRef.current.texture;
