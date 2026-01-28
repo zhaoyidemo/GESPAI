@@ -1,0 +1,206 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String?   @unique
+  username      String    @unique
+  passwordHash  String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // 学习目标
+  targetLevel   Int       @default(5)
+  examDate      DateTime?
+  weeklySchedule Json?
+
+  // 统计数据
+  streakDays    Int       @default(0)
+  lastActiveDate DateTime?
+  totalXp       Int       @default(0)
+  badges        String[]  @default([])
+
+  // 关联关系
+  studyPlans      StudyPlan[]
+  submissions     Submission[]
+  learningRecords LearningRecord[]
+  chatHistories   ChatHistory[]
+  dailyTasks      DailyTask[]
+
+  @@map("users")
+}
+
+model Problem {
+  id            String   @id @default(uuid())
+  title         String
+  source        String   // 'gesp_official' | 'luogu' | 'custom'
+  sourceId      String?
+  sourceUrl     String?
+
+  level         Int      // GESP级别 1-8
+  knowledgePoints String[]
+  difficulty    String   // 'easy' | 'medium' | 'hard'
+
+  description   String   @db.Text
+  inputFormat   String?  @db.Text
+  outputFormat  String?  @db.Text
+  samples       Json     // [{input: string, output: string, explanation?: string}]
+  testCases     Json     // [{input: string, output: string}]
+  timeLimit     Int      @default(1000)  // 毫秒
+  memoryLimit   Int      @default(256)   // MB
+
+  hint          String?  @db.Text
+  solution      String?  @db.Text
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  submissions   Submission[]
+
+  @@map("problems")
+}
+
+model Submission {
+  id            String   @id @default(uuid())
+  userId        String
+  problemId     String
+
+  code          String   @db.Text
+  language      String   @default("cpp")
+
+  status        String   // 'pending' | 'running' | 'accepted' | 'wrong_answer' | 'time_limit' | 'memory_limit' | 'runtime_error' | 'compile_error'
+  score         Int      @default(0)
+
+  compileOutput String?  @db.Text
+  runOutput     String?  @db.Text
+  errorMessage  String?  @db.Text
+
+  timeUsed      Int?     // 毫秒
+  memoryUsed    Int?     // KB
+
+  testResults   Json?    // [{passed: boolean, input: string, expectedOutput: string, actualOutput: string, time: number, memory: number}]
+
+  createdAt     DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem       Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@map("submissions")
+}
+
+model KnowledgePoint {
+  id            String   @id @default(uuid())
+  name          String
+  level         Int      // GESP级别
+  category      String   // 分类：'基础语法' | '数据结构' | '算法' | '数学'
+  description   String?  @db.Text
+
+  parentId      String?
+  parent        KnowledgePoint?  @relation("KnowledgePointHierarchy", fields: [parentId], references: [id])
+  children      KnowledgePoint[] @relation("KnowledgePointHierarchy")
+
+  prerequisites String[] @default([])  // 前置知识点ID
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  learningRecords LearningRecord[]
+
+  @@map("knowledge_points")
+}
+
+model LearningRecord {
+  id               String   @id @default(uuid())
+  userId           String
+  knowledgePointId String
+
+  status           String   @default("not_started") // 'not_started' | 'in_progress' | 'completed' | 'mastered'
+  progress         Int      @default(0)  // 0-100
+
+  startedAt        DateTime?
+  completedAt      DateTime?
+  lastStudiedAt    DateTime?
+
+  studyTime        Int      @default(0)  // 累计学习时间（分钟）
+  practiceCount    Int      @default(0)  // 练习题目数
+  correctCount     Int      @default(0)  // 正确题目数
+
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  knowledgePoint   KnowledgePoint @relation(fields: [knowledgePointId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, knowledgePointId])
+  @@map("learning_records")
+}
+
+model StudyPlan {
+  id            String   @id @default(uuid())
+  userId        String
+
+  startDate     DateTime
+  endDate       DateTime
+  targetLevel   Int
+
+  weeklyPlan    Json     // 每周计划详情
+  isActive      Boolean  @default(true)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("study_plans")
+}
+
+model DailyTask {
+  id            String   @id @default(uuid())
+  userId        String
+  date          DateTime @db.Date
+
+  tasks         Json     // [{type: 'learn' | 'practice', targetId: string, title: string, completed: boolean, xpReward: number}]
+
+  totalXp       Int      @default(0)
+  completedXp   Int      @default(0)
+  isCompleted   Boolean  @default(false)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@map("daily_tasks")
+}
+
+model ChatHistory {
+  id            String   @id @default(uuid())
+  userId        String
+
+  context       String   // 上下文类型：'learn_知识点ID' | 'problem_题目ID' | 'general'
+  messages      Json     // [{role: 'user' | 'assistant', content: string, timestamp: string}]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("chat_histories")
+}
+
+model Badge {
+  id            String   @id @default(uuid())
+  code          String   @unique
+  name          String
+  description   String
+  icon          String   // emoji or icon name
+  condition     Json     // 获取条件
+
+  createdAt     DateTime @default(now())
+
+  @@map("badges")
+}
