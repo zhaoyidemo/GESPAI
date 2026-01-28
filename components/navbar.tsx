@@ -13,7 +13,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Home, Map, BookOpen, Code, User, LogOut, Settings, Flame, Star } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
+import {
+  Home,
+  Map,
+  BookOpen,
+  Code,
+  User,
+  LogOut,
+  Settings,
+  Flame,
+  Star,
+  Sparkles,
+} from "lucide-react";
 
 const navItems = [
   { href: "/", label: "今日任务", icon: Home },
@@ -27,71 +39,98 @@ export function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full glass-navbar">
       <div className="container-responsive flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-lg font-bold text-white">G</span>
+        <Link href="/" className="flex items-center space-x-3 group">
+          <div className="relative">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary via-accent to-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/25 group-hover:shadow-primary/40 transition-shadow">
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <div className="absolute -inset-1 bg-gradient-to-br from-primary via-accent to-primary rounded-xl opacity-30 blur group-hover:opacity-50 transition-opacity -z-10" />
           </div>
-          <span className="font-bold text-xl hidden sm:block">GESP AI</span>
+          <div className="hidden sm:flex flex-col">
+            <span className="font-bold text-lg leading-none gradient-text">
+              GESP AI
+            </span>
+            <span className="text-[10px] text-muted-foreground leading-tight">
+              智能备考助手
+            </span>
+          </div>
         </Link>
 
         {/* Navigation */}
-        <nav className="flex items-center space-x-1 sm:space-x-2">
+        <nav className="flex items-center space-x-1">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+            const isActive =
+              pathname === item.href ||
+              (item.href !== "/" && pathname.startsWith(item.href));
 
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  "flex items-center space-x-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-gray-100 hover:text-foreground"
+                    ? "bg-primary/10 text-primary shadow-sm"
+                    : "text-muted-foreground hover:bg-secondary/80 hover:text-foreground"
                 )}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className={cn("h-4 w-4", isActive && "text-primary")} />
                 <span className="hidden md:block">{item.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        {/* User Menu */}
-        <div className="flex items-center space-x-4">
+        {/* Right Section */}
+        <div className="flex items-center space-x-3">
           {/* Stats */}
-          <div className="hidden sm:flex items-center space-x-3 text-sm">
-            <div className="flex items-center space-x-1 text-orange-500">
-              <Flame className="h-4 w-4" />
-              <span className="font-medium">0</span>
+          <div className="hidden sm:flex items-center space-x-4">
+            <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-orange-500/10">
+              <Flame className="h-4 w-4 text-orange-500" />
+              <span className="text-sm font-semibold text-orange-600 dark:text-orange-400 stat-number">
+                0
+              </span>
             </div>
-            <div className="flex items-center space-x-1 text-yellow-500">
-              <Star className="h-4 w-4" />
-              <span className="font-medium">0 XP</span>
+            <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-amber-500/10">
+              <Star className="h-4 w-4 text-amber-500" />
+              <span className="text-sm font-semibold text-amber-600 dark:text-amber-400 stat-number">
+                0
+              </span>
             </div>
           </div>
+
+          {/* Theme Toggle */}
+          <ThemeToggle />
 
           {/* User Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                <Avatar className="h-9 w-9">
-                  <AvatarFallback className="bg-primary text-white">
+              <Button
+                variant="ghost"
+                className="relative h-10 w-10 rounded-full p-0 hover:bg-secondary/80"
+              >
+                <Avatar className="h-10 w-10 ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
+                  <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white font-semibold">
                     {session?.user?.username?.[0]?.toUpperCase() || "U"}
                   </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end">
-              <div className="flex items-center justify-start gap-2 p-2">
-                <div className="flex flex-col space-y-1 leading-none">
-                  <p className="font-medium">{session?.user?.username}</p>
+            <DropdownMenuContent className="w-56 glass-card" align="end" sideOffset={8}>
+              <div className="flex items-center gap-3 p-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white font-semibold">
+                    {session?.user?.username?.[0]?.toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col space-y-0.5">
+                  <p className="font-semibold text-sm">{session?.user?.username}</p>
                   {session?.user?.email && (
-                    <p className="w-[200px] truncate text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground truncate max-w-[160px]">
                       {session.user.email}
                     </p>
                   )}
@@ -112,7 +151,7 @@ export function Navbar() {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                className="cursor-pointer text-red-600"
+                className="cursor-pointer text-destructive focus:text-destructive"
                 onClick={() => signOut({ callbackUrl: "/login" })}
               >
                 <LogOut className="mr-2 h-4 w-4" />

@@ -2,58 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   GESP AI - 高品质前端设计系统
+   设计理念：科技未来感 + 知性学习氛围
+   ============================================ */
+
+/* 导入高品质字体 */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* 精心调配的配色系统 - 浅色主题 */
+    --background: 220 20% 98%;
+    --foreground: 224 71% 4%;
+
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 224 71% 4%;
+
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
+    --popover-foreground: 224 71% 4%;
+
+    /* 主色调：科技蓝 -> 灵动紫的渐变 */
+    --primary: 238 84% 67%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 9% 46%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 263 70% 58%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
-    --success: 142.1 76.2% 36.3%;
-    --success-foreground: 355.7 100% 97.3%;
-    --warning: 45.4 93.4% 47.5%;
-    --warning-foreground: 26 83.3% 14.1%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+
+    --success: 142 76% 36%;
+    --success-foreground: 355 100% 97%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 26 83% 14%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 238 84% 67%;
+
+    --radius: 0.75rem;
+
+    /* 渐变色 */
+    --gradient-start: 238 84% 67%;
+    --gradient-mid: 263 70% 58%;
+    --gradient-end: 280 65% 60%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    /* 深色主题 - 深邃宇宙感 */
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --card: 224 50% 8%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 224 50% 8%;
+    --popover-foreground: 213 31% 91%;
+
+    --primary: 238 84% 67%;
+    --primary-foreground: 224 71% 4%;
+
+    --secondary: 224 50% 12%;
+    --secondary-foreground: 213 31% 91%;
+
+    --muted: 224 50% 12%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 263 70% 58%;
     --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
+
+    --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
-    --success: 142.1 70.6% 45.3%;
-    --success-foreground: 144.9 80.4% 10%;
-    --warning: 48 96.5% 53.1%;
-    --warning-foreground: 26 83.3% 14.1%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 144 80% 10%;
+
+    --warning: 48 97% 53%;
+    --warning-foreground: 26 83% 14%;
+
+    --border: 224 50% 15%;
+    --input: 224 50% 15%;
+    --ring: 238 84% 67%;
   }
 }
 
@@ -61,43 +99,279 @@
   * {
     @apply border-border;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* 代码字体 */
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  }
+
+  /* 选中文本样式 */
+  ::selection {
+    @apply bg-primary/20 text-foreground;
   }
 }
 
-/* 自定义滚动条 */
+/* ============================================
+   玻璃拟态卡片 (Glassmorphism)
+   ============================================ */
+@layer components {
+  .glass-card {
+    @apply bg-white/70 dark:bg-slate-900/70;
+    @apply backdrop-blur-xl;
+    @apply border border-white/20 dark:border-slate-700/50;
+    @apply shadow-lg shadow-black/5 dark:shadow-black/20;
+  }
+
+  .glass-card-hover {
+    @apply glass-card;
+    @apply transition-all duration-300 ease-out;
+    @apply hover:bg-white/80 dark:hover:bg-slate-900/80;
+    @apply hover:shadow-xl hover:shadow-primary/5;
+    @apply hover:-translate-y-0.5;
+  }
+
+  .glass-navbar {
+    @apply bg-white/80 dark:bg-slate-950/80;
+    @apply backdrop-blur-xl backdrop-saturate-150;
+    @apply border-b border-white/20 dark:border-slate-800/50;
+  }
+
+  /* 渐变边框 */
+  .gradient-border {
+    @apply relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-[inherit] p-[1px];
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    @apply opacity-50;
+  }
+
+  /* 渐变文字 */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* 发光效果 */
+  .glow {
+    @apply relative;
+  }
+
+  .glow::after {
+    content: '';
+    @apply absolute inset-0 blur-xl opacity-50;
+    background: inherit;
+    z-index: -1;
+  }
+
+  /* 按钮增强 */
+  .btn-glow {
+    @apply relative overflow-hidden;
+    @apply transition-all duration-300;
+  }
+
+  .btn-glow::before {
+    content: '';
+    @apply absolute inset-0 opacity-0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    transition: opacity 0.3s;
+  }
+
+  .btn-glow:hover::before {
+    @apply opacity-100;
+    animation: shine 0.75s;
+  }
+}
+
+/* ============================================
+   动画系统
+   ============================================ */
+@layer utilities {
+  /* 流体光斑动画 */
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  /* 微交互动画 */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  /* 交错动画 */
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+}
+
+/* 关键帧定义 */
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(20px, -30px) scale(1.1);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  75% {
+    transform: translate(30px, 10px) scale(1.05);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes shine {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* ============================================
+   自定义滚动条
+   ============================================ */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-  border-radius: 4px;
+  @apply bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
-  border-radius: 4px;
+  @apply bg-primary/20 rounded-full;
+  @apply hover:bg-primary/30;
+  @apply transition-colors;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+::-webkit-scrollbar-corner {
+  @apply bg-transparent;
 }
+
+/* ============================================
+   背景纹理
+   ============================================ */
+.bg-grid-pattern {
+  background-image:
+    linear-gradient(to right, hsl(var(--foreground) / 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--foreground) / 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(circle, hsl(var(--foreground) / 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ============================================
+   组件样式增强
+   ============================================ */
 
 /* Monaco Editor 容器 */
 .monaco-editor-container {
-  height: 100%;
-  width: 100%;
+  @apply h-full w-full rounded-lg overflow-hidden;
+  @apply border border-border;
 }
 
 /* 打字机效果 */
-@keyframes typing {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
 .typing-cursor {
   display: inline-block;
   width: 2px;
@@ -114,18 +388,7 @@
 
 /* AI 消息气泡动画 */
 .message-bubble {
-  animation: fadeInUp 0.3s ease-out;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  animation: slideUp 0.3s ease-out;
 }
 
 /* 徽章获得动画 */
@@ -152,19 +415,73 @@
 
 /* 知识点地图节点 */
 .knowledge-node {
-  transition: all 0.2s ease;
+  @apply transition-all duration-200 ease-out;
 }
 
 .knowledge-node:hover {
-  transform: scale(1.05);
+  @apply scale-105;
 }
 
 /* 代码高亮增强 */
 .code-block {
   @apply rounded-lg overflow-hidden;
+  @apply border border-border;
 }
 
 /* 响应式容器 */
 .container-responsive {
   @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* ============================================
+   任务卡片状态样式
+   ============================================ */
+.task-card {
+  @apply glass-card-hover rounded-xl p-4;
+  @apply border-l-4 border-l-transparent;
+}
+
+.task-card-pending {
+  @apply border-l-primary/50;
+}
+
+.task-card-completed {
+  @apply border-l-success;
+  @apply bg-success/5 dark:bg-success/10;
+}
+
+/* ============================================
+   统计数字动画
+   ============================================ */
+.stat-number {
+  @apply tabular-nums;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================
+   辅助悬停效果
+   ============================================ */
+.hover-lift {
+  @apply transition-transform duration-200;
+  @apply hover:-translate-y-1;
+}
+
+.hover-glow {
+  @apply transition-shadow duration-200;
+  @apply hover:shadow-lg hover:shadow-primary/10;
+}
+
+/* ============================================
+   响应式隐藏/显示
+   ============================================ */
+@media (max-width: 640px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 641px) {
+  .show-mobile-only {
+    display: none !important;
+  }
 }
