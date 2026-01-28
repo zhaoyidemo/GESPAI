@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
 // 初始化示例数据 - 仅用于开发测试
-export async function POST() {
+// 支持 GET 和 POST 请求
+async function seedData() {
   try {
     // 检查是否已有题目
     const existingProblems = await prisma.problem.count();
@@ -161,4 +162,14 @@ export async function POST() {
     console.error("Seed error:", error);
     return NextResponse.json({ error: "创建示例数据失败" }, { status: 500 });
   }
+}
+
+// 支持 GET 请求 - 直接在浏览器访问 /api/seed 即可初始化数据
+export async function GET() {
+  return seedData();
+}
+
+// 支持 POST 请求
+export async function POST() {
+  return seedData();
 }
