@@ -51,24 +51,31 @@ export default function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/plan");
-        const data = await response.json();
+        // 并行获取计划和用户统计
+        const [planResponse, statsResponse] = await Promise.all([
+          fetch("/api/plan"),
+          fetch("/api/user/stats"),
+        ]);
 
-        if (data.plan) {
-          setDailyTask(data.dailyTask);
+        const planData = await planResponse.json();
+        const statsData = await statsResponse.json();
+
+        if (planData.plan) {
+          setDailyTask(planData.dailyTask);
           setHasSetup(true);
         } else {
           setHasSetup(false);
         }
 
-        // 模拟用户统计数据
-        setUserStats({
-          streakDays: 0,
-          totalXp: 0,
-          targetLevel: 5,
-          examDate: "2026-03-14",
-          badges: [],
-        });
+        if (statsResponse.ok) {
+          setUserStats({
+            streakDays: statsData.streakDays || 0,
+            totalXp: statsData.totalXp || 0,
+            targetLevel: statsData.targetLevel || 5,
+            examDate: statsData.examDate,
+            badges: statsData.badges || [],
+          });
+        }
       } catch (error) {
         console.error("Fetch error:", error);
       } finally {
