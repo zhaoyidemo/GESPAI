@@ -98,9 +98,9 @@ export default function ProblemListPage() {
             </div>
 
             <Select
-              value={filters.level}
+              value={filters.level || "all"}
               onValueChange={(value) =>
-                setFilters({ ...filters, level: value })
+                setFilters({ ...filters, level: value === "all" ? "" : value })
               }
             >
               <SelectTrigger className="w-[150px]">
@@ -108,7 +108,7 @@ export default function ProblemListPage() {
                 <SelectValue placeholder="级别" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">全部级别</SelectItem>
+                <SelectItem value="all">全部级别</SelectItem>
                 <SelectItem value="3">3 级</SelectItem>
                 <SelectItem value="4">4 级</SelectItem>
                 <SelectItem value="5">5 级</SelectItem>
@@ -117,16 +117,16 @@ export default function ProblemListPage() {
             </Select>
 
             <Select
-              value={filters.difficulty}
+              value={filters.difficulty || "all"}
               onValueChange={(value) =>
-                setFilters({ ...filters, difficulty: value })
+                setFilters({ ...filters, difficulty: value === "all" ? "" : value })
               }
             >
               <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="难度" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">全部难度</SelectItem>
+                <SelectItem value="all">全部难度</SelectItem>
                 <SelectItem value="easy">简单</SelectItem>
                 <SelectItem value="medium">中等</SelectItem>
                 <SelectItem value="hard">困难</SelectItem>
