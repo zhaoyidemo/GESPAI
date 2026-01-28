@@ -4,7 +4,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Navbar } from "@/components/navbar";
-import { FluidBackground } from "@/components/ui/animated-background";
+import { AnimatedBackground } from "@/components/ui/animated-background";
+import { Sparkles } from "lucide-react";
 
 export default function MainLayout({
   children,
@@ -20,14 +21,23 @@ export default function MainLayout({
     }
   }, [status, router]);
 
+  // 默认使用深色主题
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (!savedTheme) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    }
+  }, []);
+
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-slate-950">
         <div className="relative">
           {/* 加载动画 */}
-          <div className="w-16 h-16 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+          <div className="w-20 h-20 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-xl font-bold gradient-text">G</span>
+            <Sparkles className="w-8 h-8 text-primary animate-pulse" />
           </div>
         </div>
       </div>
@@ -40,8 +50,8 @@ export default function MainLayout({
 
   return (
     <div className="min-h-screen relative">
-      {/* 流体动态背景 */}
-      <FluidBackground />
+      {/* Three.js 粒子背景 */}
+      <AnimatedBackground variant="particles" />
 
       {/* 导航栏 */}
       <Navbar />
