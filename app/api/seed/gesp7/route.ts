@@ -17,7 +17,7 @@ const gesp7Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10265",
     level: 7,
     knowledgePoints: ["图论", "邻接矩阵", "有向图", "遍历"],
-    difficulty: "easy", // 普及级
+    difficulty: "普及+/提高", // 普及级
     description: `在有向图中，存在 n 个迷宫（节点），编号 1 到 n。玩家从 m 号迷宫出发，需要统计：有多少迷宫能直接到达 m，m 能直接到达多少迷宫，以及这两个数的和。
 
 注意每个迷宫都能直接到达自身。`,
@@ -57,7 +57,7 @@ const gesp7Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10287",
     level: 7,
     knowledgePoints: ["动态规划", "DP", "最长不下降子序列", "LIS", "DAG", "拓扑排序", "图上DP"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `小杨有一个有向无环图（DAG），共有 n 个节点和 m 条边。每个节点 i 有一个权值 A_i。
 
 对于图中的任意一条路径，经过的节点权值依次组成一个序列。
@@ -108,7 +108,7 @@ const gesp7Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10110",
     level: 7,
     knowledgePoints: ["图论", "最短路", "Dijkstra", "SPFA", "带权图"],
-    difficulty: "medium", // 普及+/提高
+    difficulty: "提高+/省选-", // 普及+/提高
     description: `你拥有商品 a，想要通过交换获得商品 b。共有 N 种商品（编号 0 到 N-1），每种商品有价值 v_0 到 v_{N-1}。
 
 有 M 个商人提供交易服务。对于第 j 个商人，他可以将商品 x_j 换成商品 y_j：
@@ -160,7 +160,7 @@ const gesp7Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10111",
     level: 7,
     knowledgePoints: ["动态规划", "DP", "博弈", "状态转移", "贪心"],
-    difficulty: "medium", // 普及+/提高
+    difficulty: "提高+/省选-", // 普及+/提高
     description: `两名玩家进行 N 轮游戏。每人各有卡牌 0、1、2（各一张，可重复使用）。
 
 规则：
@@ -211,7 +211,7 @@ const gesp7Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10378",
     level: 7,
     knowledgePoints: ["图论", "二分图", "染色", "BFS", "DFS", "连通分量"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `A、B 两所学校的学生聚在一起交流。共有 n 名学生（编号 1 到 n）。
 
 他们进行了 m 次交流，每次交流学生 u_i 和 v_i 讨论问题并成为朋友。只有不同学校的学生才会交流，同校学生不交流。
@@ -252,7 +252,7 @@ const gesp7Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10379",
     level: 7,
     knowledgePoints: ["图论", "连通分量", "BFS", "DFS", "哈希", "形状判断", "平移不变性"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `小杨用不同种类的俄罗斯方块填满了一个 n×m 的网格。需要计算网格中俄罗斯方块的种类数。
 
 规则：
@@ -295,7 +295,7 @@ const gesp7Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10723",
     level: 7,
     knowledgePoints: ["树", "树形DP", "动态规划", "连通性", "DFS"],
-    difficulty: "medium", // 普及+/提高
+    difficulty: "提高+/省选-", // 普及+/提高
     description: `小杨有一棵 n 个节点的树，每个节点染成黑色或白色。
 
 定义一棵树是「美丽的」：移除所有白色节点后，剩余的黑色节点仍然形成一棵连通的树。
@@ -330,7 +330,7 @@ const gesp7Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10724",
     level: 7,
     knowledgePoints: ["数论", "质因数分解", "前缀和", "位运算", "哈希", "完全平方数"],
-    difficulty: "medium", // 普及+/提高
+    difficulty: "提高+/省选-", // 普及+/提高
     description: `给定一个长度为 n 的正整数序列 A，求满足以下条件的数对 ⟨l, r⟩ 的个数（1 ≤ l ≤ r ≤ n）：
 
 a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
@@ -364,7 +364,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P11248",
     level: 7,
     knowledgePoints: ["动态规划", "DP", "矩阵", "路径DP", "贪心"],
-    difficulty: "easy", // 普及-级
+    difficulty: "普及+/提高", // 普及-级
     description: `小杨在一个 n×m 的矩阵中，从左上角 (1,1) 移动到右下角 (n,m)，只能向下或向右移动。
 
 矩阵中包含 '0'、'1'、'?' 三种字符：
@@ -404,7 +404,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P11249",
     level: 7,
     knowledgePoints: ["树", "DFS", "树的遍历", "贪心", "叶子节点"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `小杨有一棵 n 个节点的树，其中一些节点有宝藏。
 
 小杨从任意节点出发，可以遍历树但每条边最多只能走一次（走过的边会消失）。小杨会收集经过节点的宝藏。
@@ -447,7 +447,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P11377",
     level: 7,
     knowledgePoints: ["动态规划", "DP", "01背包", "背包问题", "双重约束"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `商店有 n 件武器，第 i 件武器的战力为 p_i，花费为 c_i。
 
 小杨想购买若干武器，使得：
@@ -489,7 +489,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P11378",
     level: 7,
     knowledgePoints: ["树", "DFS", "排序", "贪心", "树的遍历"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `小杨有一棵 n 个节点的树（编号 1 到 n），每个节点 i 有权值 a_i。
 
 点燃一个初始节点后，火会蔓延到相邻且权值严格更小的节点，直到无法继续蔓延。
@@ -528,7 +528,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P11964",
     level: 7,
     knowledgePoints: ["图论", "BFS", "可达性", "邻接表", "距离"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `给定一个无向图，有 n 个节点和 m 条边。
 
 对于每个节点作为起点，求恰好走 1, 2, ..., k 步时，分别能到达多少个不同的节点。`,
@@ -560,7 +560,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P11965",
     level: 7,
     knowledgePoints: ["字符串", "动态规划", "DP", "区间DP", "子串", "消除"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `定义字符串可被「等价消除」：通过反复删除其中任意两个相同字符，最终变为空串。
 
 给定一个字符串，统计有多少个子串（连续）可被等价消除。`,
@@ -601,7 +601,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P13017",
     level: 7,
     knowledgePoints: ["图论", "线图", "图的变换", "度数", "组合数学"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `给定简单无向图 G（n 个节点，m 条边），构造其线图 L(G)：
 - L(G) 的每个节点对应 G 的一条边
 - 当 G 中两条边共享至少一个端点时，L(G) 中对应的两个节点之间连一条边
@@ -645,7 +645,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P13018",
     level: 7,
     knowledgePoints: ["动态规划", "DP", "背包问题", "平衡条件", "差值DP"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `从 n 种食材中选择若干种，使得选中食材的酸度之和等于甜度之和（平衡条件）。
 
 在满足平衡条件的前提下，最大化酸度与甜度之和的总值。`,
@@ -687,7 +687,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P14077",
     level: 7,
     knowledgePoints: ["图论", "连通分量", "并查集", "DFS", "BFS"],
-    difficulty: "easy", // 普及-级
+    difficulty: "普及+/提高", // 普及-级
     description: `给定一个无向图，有 n 个节点和 m 条边。
 
 求最少需要添加多少条边，才能使所有节点连通（即形成一个连通图）。`,
@@ -728,7 +728,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P14078",
     level: 7,
     knowledgePoints: ["动态规划", "DP", "贪心", "排序", "LIS变体"],
-    difficulty: "medium", // 普及+/提高
+    difficulty: "提高+/省选-", // 普及+/提高
     description: `玩家从数轴位置 0、时刻 0 出发。玩家只能向右移动（每个时间单位移动 1 格）或原地等待，不能向左移动。
 
 有 n 枚金币，第 i 枚金币在时刻 t_i 出现在位置 x_i。玩家必须恰好在该时刻、该位置才能收集金币。
@@ -772,7 +772,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P14921",
     level: 7,
     knowledgePoints: ["图论", "BFS", "最短路", "图的中心", "偏心率"],
-    difficulty: "medium", // 普及/提高-
+    difficulty: "提高+/省选-", // 普及/提高-
     description: `给定一个连通图，有 n 个城市通过 m 条双向道路相连。
 
 需要找到「中心」城市——即到其他所有城市的最大距离最小的城市。
@@ -813,7 +813,7 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
     sourceUrl: "https://www.luogu.com.cn/problem/P14922",
     level: 7,
     knowledgePoints: ["动态规划", "DP", "分组", "区间DP", "排序"],
-    difficulty: "medium", // 普及+/提高
+    difficulty: "提高+/省选-", // 普及+/提高
     description: `需要将班级的 n 名学生分成若干学习小组，最大化总讨论强度。
 
 每个学生 i 有发言积极度 c_i。如果一个小组有 k 名学生（下标为 p_1, p_2, ..., p_k），其讨论强度计算为：

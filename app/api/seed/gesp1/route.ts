@@ -17,7 +17,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3846",
     level: 1,
     knowledgePoints: ["循环语句", "条件判断", "闰年判断", "累加求和"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小明想计算两个年份之间（不含起始和终止年份）的所有闰年年份数字之和。
 
 闰年的判断规则：
@@ -45,7 +45,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3847",
     level: 1,
     knowledgePoints: ["时间计算", "条件判断", "12小时制转换"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小明刚刚学习了小时、分和秒的换算关系。他想知道一个给定的时刻是这一天的第几秒。
 
 时间采用12小时制，用字符'A'表示上午，'P'表示下午。`,
@@ -73,7 +73,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3834",
     level: 1,
     knowledgePoints: ["循环语句", "因数", "枚举"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小明学习了长方形面积计算。给定长方形面积 A，需要求有多少种可能的长方形，使得长和宽都为正整数。
 
 相同长宽的两个长方形视为同一种，且要求长 >= 宽。`,
@@ -102,7 +102,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3835",
     level: 1,
     knowledgePoints: ["条件判断", "闰年判断", "分支语句"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `给定一个年份和月份，编程判断该月有多少天。
 
 需要考虑平年与闰年的区别：
@@ -136,7 +136,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3838",
     level: 1,
     knowledgePoints: ["时间计算", "顺序结构", "变量运算"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小明在为自己规划学习时间。现在他想知道两个时刻之间有多少分钟。
 
 输入保证两个时刻在同一天，且开始时刻在结束时刻之前。时刻采用24小时制。`,
@@ -167,7 +167,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3839",
     level: 1,
     knowledgePoints: ["循环语句", "累加求和", "嵌套循环"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `计算形如 1+(1+2)+(1+2+3)+...+(1+2+...+n) 的累计求和结果。
 
 例如当 n=3 时，计算 1+(1+2)+(1+2+3) = 1+3+6 = 10。`,
@@ -198,7 +198,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3863",
     level: 1,
     knowledgePoints: ["顺序结构", "条件判断", "四则运算"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小明购买三种文具：
 - 签字笔：2元/支
 - 记事本：5元/本
@@ -234,7 +234,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3864",
     level: 1,
     knowledgePoints: ["循环语句", "条件判断", "取模运算", "累加求和"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `一个数字被称为"k幸运数"，当且仅当它满足以下任一条件：
 - 个位数为 k
 - 是 k 的倍数
@@ -269,7 +269,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3921",
     level: 1,
     knowledgePoints: ["取模运算", "日期计算", "顺序结构"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `今天是星期 X，小杨还有 N 天就要考试了，请推算出小杨考试那天是星期几。
 
 本题中使用 7 表示星期日。`,
@@ -298,7 +298,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3922",
     level: 1,
     knowledgePoints: ["循环语句", "条件判断", "取模运算"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小杨需从1到N报数，但需要跳过M的所有倍数。
 
 例如 N=5、M=2 时，报出 1、3、5。`,
@@ -327,7 +327,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3952",
     level: 1,
     knowledgePoints: ["整数除法", "取模运算", "顺序结构"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `学生有一定零用钱 m 元，需要购买单价为 13 元的书籍。编写程序计算能购买的本数及剩余金额。`,
     inputFormat: `输入一个正整数 m，表示零用钱数额。
 
@@ -356,7 +356,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3953",
     level: 1,
     knowledgePoints: ["循环语句", "因数", "取模运算"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `如果正整数 b 能整除正整数 a（即 a % b == 0），则 b 是 a 的因数。
 
 编写程序输出正整数 a 的所有因数，从小到大排序。`,
@@ -387,7 +387,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4000",
     level: 1,
     knowledgePoints: ["时间计算", "进位处理", "顺序结构"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小杨在某个时刻开始学习，并在学习 k 秒后开始休息。需要计算休息开始的具体时刻。`,
     inputFormat: `输入4行：
 - 第1行：小杨开始学习时刻的小时 h（1 <= h <= 12）
@@ -414,7 +414,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4001",
     level: 1,
     knowledgePoints: ["循环语句", "数学运算", "立方"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小杨需要判断一个正整数 n 是否为立方数。
 
 一个正整数 n 是立方数当且仅当存在一个正整数 x 满足 x^3 = n。`,
@@ -446,7 +446,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4034",
     level: 1,
     knowledgePoints: ["整数除法", "顺序结构", "数学运算"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小杨有 n 元钱，要购买相同数量的商品A（单价 a 元）和商品B（单价 b 元）。
 
 求最多能购买多少个（每种商品购买相同数量）。`,
@@ -478,7 +478,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4035",
     level: 1,
     knowledgePoints: ["循环语句", "条件判断", "取模运算"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `统计 n 个正整数中满足以下条件的"美丽数字"的个数：是9的倍数但不是8的倍数。`,
     inputFormat: `输入两行：
 - 第一行：整数 n（正整数个数）
@@ -507,7 +507,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4062",
     level: 1,
     knowledgePoints: ["浮点运算", "条件判断", "格式化输出"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `利用转换公式将开尔文温度 K 转换为摄氏温度 C 和华氏温度 F。
 
 转换公式：
@@ -539,7 +539,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4063",
     level: 1,
     knowledgePoints: ["循环语句", "条件判断", "奇偶判断", "计数"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小杨有 n 个正整数，需要统计其中奇数和偶数的个数。`,
     inputFormat: `第一行输入一个正整数 n（代表数字个数），随后 n 行各输入一个正整数。
 
@@ -566,7 +566,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4257",
     level: 1,
     knowledgePoints: ["整数除法", "顺序结构", "数学运算"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `图书馆有 n 本书，混入了一只老鼠。老鼠每 x 小时能完全啃掉一本书，且在啃完一本前不会啃另一本。
 
 求 y 小时后还剩多少本完整的书。`,
@@ -598,7 +598,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4258",
     level: 1,
     knowledgePoints: ["循环语句", "四舍五入", "数学运算"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `四舍五入是一种常见的近似计算方法。现在，给定 n 个整数，你需要将每个整数四舍五入到最接近的整十数。
 
 例如，43→40，58→60，25→30。`,
@@ -628,7 +628,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4354",
     level: 1,
     knowledgePoints: ["顺序结构", "条件判断", "最小值"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `一个学生拥有一本 n 页的书籍，每天最多可阅读 k 页，假期共 t 天。需计算假期内最多能阅读多少页。`,
     inputFormat: `输入三行：
 - 第一行：书的总页数 n
@@ -658,7 +658,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4355",
     level: 1,
     knowledgePoints: ["最小公倍数", "数学运算", "辗转相除法"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `小杨每 m 天值日一次，小红每 n 天值日一次。两人今天同时值日，求至少多少天后他们会再次在同一天值日。`,
     inputFormat: `输入两行：
 - 第一行：正整数 m（小杨的值日周期）
@@ -687,7 +687,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4409",
     level: 1,
     knowledgePoints: ["条件判断", "浮点运算", "最小值", "格式化输出"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `商店提供两种折扣方案：
 - 方案一：购物满 x 元减 y 元（只能使用一次）
 - 方案二：直接打 n 折（价格变为原价的 n/10）
@@ -721,7 +721,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4410",
     level: 1,
     knowledgePoints: ["循环语句", "累加求和", "平方运算"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `金字塔由 n 层石块垒成。从塔底向上，每层依次需要 n*n, (n-1)*(n-1), ..., 2*2, 1*1 块石块。
 
 请问搭建金字塔总共需要多少块石块？即求 1^2 + 2^2 + ... + n^2。`,
@@ -752,7 +752,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4445",
     level: 1,
     knowledgePoints: ["条件判断", "浮点运算", "最小值", "格式化输出"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `快递公司为公益行动制定特殊运费规则。给定快递体积V和重量G，需要计算最低运费：
 
 - 按体积计算：运费 = 0.5 * V 元
@@ -787,7 +787,7 @@ const gesp1Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4446",
     level: 1,
     knowledgePoints: ["循环语句", "条件判断", "多分支结构"],
-    difficulty: "easy",
+    difficulty: "入门",
     description: `手机根据电量百分比 P 显示不同的提示信息：
 - P <= 10：显示 "R"（红色警告）
 - 10 < P <= 20：显示 "L"（低电量）

@@ -17,7 +17,7 @@ const gesp8Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10288",
     level: 8,
     knowledgePoints: ["区间查询", "二分查找", "离散化", "数据结构"],
-    difficulty: "medium", // 洛谷难度4 普及+/提高
+    difficulty: "省选/NOI-", // 洛谷难度4 普及+/提高
     description: `给定一个正整数序列，需要处理多次区间查询。对于每次查询，统计指定区间内某个目标值出现的次数。
 
 具体地，给定一个长度为 n 的正整数序列 A，以及 q 次查询，每次查询给出三个整数 l, r, x，求 A[l] 到 A[r] 中有多少个数等于 x。`,
@@ -61,7 +61,7 @@ const gesp8Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10289",
     level: 8,
     knowledgePoints: ["树", "LCA", "最近公共祖先", "图论", "传送门"],
-    difficulty: "medium", // 洛谷难度4 提高
+    difficulty: "省选/NOI-", // 洛谷难度4 提高
     description: `小杨在B国旅游。B国有 n 座城市，由 n-1 条双向道路连接成树形结构。其中 k 座城市设有传送门，可以在任意两个有传送门的城市之间瞬间传送。
 
 小杨需要回答 q 次查询，每次查询给出两座城市，求它们之间的最短时间。
@@ -112,7 +112,7 @@ const gesp8Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10112",
     level: 8,
     knowledgePoints: ["组合数学", "排列组合", "模运算", "多重集排列"],
-    difficulty: "medium", // 洛谷难度3
+    difficulty: "省选/NOI-", // 洛谷难度3
     description: `有 N 名学生（编号 0 到 N-1）和 M 种奖品。第 i 种奖品有 a_i 个。每名学生恰好获得一个奖品，且最多剩余一个奖品，即：
 N ≤ a_0 + a_1 + ... + a_{M-1} ≤ N+1
 
@@ -151,7 +151,7 @@ N ≤ a_0 + a_1 + ... + a_{M-1} ≤ N+1
     sourceUrl: "https://www.luogu.com.cn/problem/P10113",
     level: 8,
     knowledgePoints: ["树", "LCA", "最近公共祖先", "树上路径"],
-    difficulty: "medium", // 洛谷难度3 提高-
+    difficulty: "省选/NOI-", // 洛谷难度3 提高-
     description: `一家公司有 N 名员工（编号 0 到 N-1）。员工 0 是老板。每个其他员工有且仅有一个直接上级。
 
 定义"管理关系"：员工 x 可以管理员工 y，当且仅当：
@@ -200,7 +200,7 @@ N ≤ a_0 + a_1 + ... + a_{M-1} ≤ N+1
     sourceUrl: "https://www.luogu.com.cn/problem/P10263",
     level: 8,
     knowledgePoints: ["数论", "因子", "公倍数", "枚举因子"],
-    difficulty: "medium", // 洛谷难度3 普及
+    difficulty: "省选/NOI-", // 洛谷难度3 普及
     description: `给定一个 N×M 的矩阵，其中位置 (i,j) 的元素 A[i,j] 是 i 和 j 的公倍数。
 
 对于每个 k（1 ≤ k ≤ K），统计矩阵中有多少个位置可能存放值 k。
@@ -242,7 +242,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P10264",
     level: 8,
     knowledgePoints: ["栈", "模拟", "区间DP", "记忆化搜索"],
-    difficulty: "medium", // 洛谷难度4 提高
+    difficulty: "省选/NOI-", // 洛谷难度4 提高
     description: `这是一个纸牌游戏。玩家依次将卡牌加入队列末尾。当新加入的卡牌与队列中某张卡牌值相同时，这两张卡牌及其之间的所有卡牌都会被移除。
 
 给定一个长度为 n 的卡牌序列和 q 次查询，每次查询给出区间 [l, r]，求用这个区间的卡牌玩游戏后剩余的卡牌数。`,
@@ -284,7 +284,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P10725",
     level: 8,
     knowledgePoints: ["树", "树的直径", "DFS", "BFS", "换根DP"],
-    difficulty: "hard", // 洛谷难度5 提高+
+    difficulty: "省选/NOI-", // 洛谷难度5 提高+
     description: `给定一棵 n 个节点的树，每个节点被染成白色（0）或黑色（1）。
 
 求树上颜色不同的两个节点之间的最大距离。`,
@@ -324,7 +324,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P10726",
     level: 8,
     knowledgePoints: ["图论", "最短路", "Dijkstra", "建图"],
-    difficulty: "medium", // 洛谷难度4 提高
+    difficulty: "省选/NOI-", // 洛谷难度4 提高
     description: `小杨可以在 n 个水平平台上移动。每个平台有左端点、右端点和高度。
 
 小杨从平台 s 的左端点出发，目标是到达平台 t。移动规则：
@@ -370,7 +370,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P11250",
     level: 8,
     knowledgePoints: ["组合数学", "排列组合", "容斥原理", "逆元"],
-    difficulty: "hard", // 洛谷难度5 提高+
+    difficulty: "省选/NOI-", // 洛谷难度5 提高+
     description: `小杨有 n 双不同的手套，每双手套由一只左手套和一只右手套组成。
 
 她想从这 2n 只手套中选择 m 只，使得恰好有 k 双是配对的（即同时选中了同一双手套的左右两只）。
@@ -414,7 +414,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P11251",
     level: 8,
     knowledgePoints: ["树", "DFS", "树形DP", "路径"],
-    difficulty: "medium", // 洛谷难度3 普及+
+    difficulty: "省选/NOI-", // 洛谷难度3 普及+
     description: `给定一棵 n 个节点的树，每个节点被染成白色（0）或黑色（1）。
 
 定义"美丽路径"：路径上相邻的两个节点颜色不同。
@@ -461,7 +461,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P11379",
     level: 8,
     knowledgePoints: ["树", "树形DP", "DFS", "滑动窗口"],
-    difficulty: "hard", // 洛谷难度5 提高+/省选-
+    difficulty: "省选/NOI-", // 洛谷难度5 提高+/省选-
     description: `给定一棵 n 个节点的树，每个节点被染成白色（0）或黑色（1）。
 
 小杨可以选择任意两个节点 s 和 t，然后从 s 沿树上路径走到 t（不能重复经过节点）。
@@ -502,7 +502,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P11380",
     level: 8,
     knowledgePoints: ["组合数学", "排列组合", "图论", "连通分量"],
-    difficulty: "medium", // 洛谷难度3 提高-
+    difficulty: "省选/NOI-", // 洛谷难度3 提高-
     description: `班级有 n 名学生（编号 1 到 n）需要排成一队。有 m 对关系要求：学生 a_i 必须紧挨在学生 b_i 的前面。
 
 求满足所有约束的排队方案数，答案对 10^9+7 取模。`,
@@ -554,7 +554,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P11966",
     level: 8,
     knowledgePoints: ["图论", "最短路", "Dijkstra", "BFS"],
-    difficulty: "easy", // 洛谷难度2 普及
+    difficulty: "提高+/省选-", // 洛谷难度2 普及
     description: `C城是一个包含 n 个节点和 m 条边的无向图。学校位于节点 s。有 q 位同学分别住在不同的节点，每位同学每秒可以行走 1 米。
 
 计算每位同学从家到学校的最短时间。`,
@@ -591,7 +591,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P11967",
     level: 8,
     knowledgePoints: ["树", "LCA", "树上路径", "树链"],
-    difficulty: "medium", // 洛谷难度4 提高
+    difficulty: "省选/NOI-", // 洛谷难度4 提高
     description: `小杨有一棵 n 个节点的树（节点编号 1 到 n）。
 
 定义：
@@ -644,7 +644,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P13019",
     level: 8,
     knowledgePoints: ["树", "DFS", "倍增", "树上操作"],
-    difficulty: "medium", // 洛谷难度4 提高
+    difficulty: "省选/NOI-", // 洛谷难度4 提高
     description: `给定一棵以节点 1 为根的有根树，包含 n 个节点。小 A 在树上进行 q 次旅行。
 
 每次旅行从节点 s 出发，执行一系列移动操作：
@@ -691,7 +691,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P13020",
     level: 8,
     knowledgePoints: ["树", "DFS", "组合数学", "阶乘"],
-    difficulty: "medium", // 洛谷难度4
+    difficulty: "省选/NOI-", // 洛谷难度4
     description: `给定一棵 n 个节点的无根树。
 
 对这棵树进行深度优先遍历（DFS），起点可以任选，访问相邻节点的顺序也可以任选。
@@ -739,7 +739,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P14079",
     level: 8,
     knowledgePoints: ["数论", "GCD", "最短路", "数学"],
-    difficulty: "hard", // 洛谷难度5 提高+
+    difficulty: "省选/NOI-", // 洛谷难度5 提高+
     description: `构造一个完全无向图，有 N = 10^18 个节点（编号 1 到 N）。
 
 对于任意两个节点 u < v，它们之间有一条边，边权为：
@@ -791,7 +791,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P14080",
     level: 8,
     knowledgePoints: ["图论", "最小生成树", "Kruskal", "Prim", "并查集"],
-    difficulty: "hard", // 洛谷难度5 提高+
+    difficulty: "省选/NOI-", // 洛谷难度5 提高+
     description: `给定一个 n 个节点 m 条边的连通无向图。
 
 对于每条边，求删除这条边后，剩余图的最小生成树的边权和。如果删除后图不连通，输出 -1。`,
@@ -834,7 +834,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P14923",
     level: 8,
     knowledgePoints: ["图论", "最短路", "Dijkstra", "博弈"],
-    difficulty: "medium", // 洛谷难度4 提高
+    difficulty: "省选/NOI-", // 洛谷难度4 提高
     description: `一张连通图中，猫在节点 a，老鼠在节点 b（老鼠洞）。每个节点有价值为 c_i 的奶酪。
 
 老鼠想收集奶酪然后回到老鼠洞。一个节点是"安全的"，当且仅当老鼠能规划一条从该节点返回老鼠洞的路径，使得路径上的任意节点 x，猫到达 x 的最短时间严格大于老鼠沿路径到达 x 的时间。
@@ -884,7 +884,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     sourceUrl: "https://www.luogu.com.cn/problem/P14924",
     level: 8,
     knowledgePoints: ["环形问题", "双指针", "滑动窗口", "贪心"],
-    difficulty: "medium", // 洛谷难度3 提高-
+    difficulty: "省选/NOI-", // 洛谷难度3 提高-
     description: `小 A 有一条包含 n 枚宝石的项链（首尾相连成环），宝石共有 m 种类型。
 
 需要将项链划分为若干连续段，要求每段都包含全部 m 种宝石。

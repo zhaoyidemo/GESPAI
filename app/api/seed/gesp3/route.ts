@@ -17,7 +17,7 @@ const gesp3Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3848",
     level: 3,
     knowledgePoints: ["数组", "循环", "条件判断", "模拟"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `小明拥有一定数额的零花钱，他在商场里按顺序依次看到了 N 种物品。他的购物原则是：如果看到的物品是他想买的，并且他现有的零花钱足够买这件物品，他就会立即购买；否则他就跳过这件物品继续向前逛。
 
 请你帮小明计算一下，他一天下来一共买了多少件物品。`,
@@ -51,7 +51,7 @@ const gesp3Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3849",
     level: 3,
     knowledgePoints: ["进制转换", "数学", "字符串", "函数"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `我们日常生活中最常使用的是十进制整数，而在计算机科学与技术中，经常用到二进制、八进制、十六进制等。
 
 在十六进制中，使用字母 A-F 分别表示数字 10-15。以此类推，我们可以用更多的字母来表示更大的数字，从而支持更高进制的表示。具体地，使用 A-Z 分别表示数字 10-35，这样我们最多可以支持 36 进制的表示。
@@ -86,7 +86,7 @@ const gesp3Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3842",
     level: 3,
     knowledgePoints: ["数组", "标记数组", "循环", "模拟"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `老师带领同学们春游。班上有 N 位同学，编号从 0 到 N-1。到了集合时间，同学们开始报自己的编号。
 
 到达的同学会报出自己的编号，有的同学可能会多次报出自己的编号。
@@ -121,7 +121,7 @@ const gesp3Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3843",
     level: 3,
     knowledgePoints: ["字符串", "条件判断", "字符分类", "函数"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `编写程序检查密码的有效性。合规的密码需要满足以下所有条件：
 1. 仅由小写字母(a-z)、大写字母(A-Z)、数字(0-9)和特殊字符(!@#$)组成
 2. 长度为6-12个字符
@@ -150,7 +150,7 @@ const gesp3Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3867",
     level: 3,
     knowledgePoints: ["数组", "累加", "循环", "模拟"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `小杨有 N 个储蓄罐，编号从 0 到 N-1。
 
 小杨计划进行 D 天的储蓄。第 i 天，小杨会存入 i 元钱到指定的储蓄罐 a_i 中。
@@ -186,7 +186,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B3868",
     level: 3,
     knowledgePoints: ["进制", "字符串", "条件判断", "函数"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `给定 N 个字符串，判断每个字符串是否可以表示一个有效的二进制、八进制、十进制或十六进制数。
 
 例如，"15A6F" 只能作为十六进制数，而 "1011" 可以作为任意一种进制的数。
@@ -221,7 +221,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B3925",
     level: 3,
     knowledgePoints: ["数学", "模拟", "递推", "枚举"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `海滩上有一堆鱼，N 只小猫依次来分鱼。
 
 每只小猫来到后，会将剩余的鱼平均分成 N 份，如果多出 i 条鱼（i 是这只小猫的编号，从 1 开始），就将多出的鱼扔入海中，然后自己拿走其中的一份离开。
@@ -256,7 +256,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B3926",
     level: 3,
     knowledgePoints: ["字符串", "条件判断", "数学", "模拟"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `小杨需要编程完成单位转换作业。支持以下单位转换：
 - 长度单位：1 km = 1000 m = 1000000 mm
 - 重量单位：1 kg = 1000 g = 1000000 mg
@@ -289,7 +289,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B3956",
     level: 3,
     knowledgePoints: ["字符串", "ASCII码", "循环", "条件判断"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `一个密码系统将字母转换为数字：
 - 小写字母代表其在字母表中的位置（a=1, b=2, ..., z=26）
 - 大写字母代表其 ASCII 码的负值（A=-65, B=-66, ..., Z=-90）
@@ -322,7 +322,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B3957",
     level: 3,
     knowledgePoints: ["数学", "完全平方数", "枚举", "双重循环"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `给定一个包含 n 个非负整数的序列，找出有多少对下标组合 <i, j>（1 ≤ i < j ≤ n），使得两个元素之和为完全平方数。
 
 完全平方数是指存在非负整数 y 使得 y² = x 的数。例如 0, 1, 4, 9, 16 等都是完全平方数。`,
@@ -354,7 +354,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4003",
     level: 3,
     knowledgePoints: ["字符串", "取模运算", "循环", "凯撒密码"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `实现一个移位加密算法。所有大写字母按固定数目向后偏移，字母表视作首尾相接的环。
 
 例如，偏移量为 3 时，字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 会变成 DEFGHIJKLMNOPQRSTUVWXYZABC。
@@ -385,7 +385,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4004",
     level: 3,
     knowledgePoints: ["数学", "整除", "枚举", "条件判断"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `判断是否存在序列中的某个元素，它是该序列所有其他元素的倍数。
 
 换句话说，找是否存在一个数 x，使得序列中的每个数都能整除 x。`,
@@ -420,7 +420,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4038",
     level: 3,
     knowledgePoints: ["数组", "前缀和", "循环", "枚举"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `给定包含 n 个正整数的序列 a，判断是否存在位置 i（1 ≤ i < n），使得第 1 到第 i 个数之和等于第 i+1 到第 n 个数之和。
 
 如果存在这样的位置，称这个序列为"平衡序列"。`,
@@ -453,7 +453,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4039",
     level: 3,
     knowledgePoints: ["字符串", "回文", "枚举", "函数"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `判断每个字符串是否由两个长度至少为 2 的回文串前后拼接而成。
 
 回文串定义为从前往后读和从后往前读相同的字符串。例如 "aa"、"aba"、"abba" 都是回文串。`,
@@ -484,7 +484,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4066",
     level: 3,
     knowledgePoints: ["数组", "最大值最小值", "条件判断", "循环"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `给定一个包含 n 个数字的序列 A，需要将大于 k 的数字替换为序列的最大值，小于 k 的数字替换为序列的最小值，等于 k 的数字保持不变。`,
     inputFormat: `第一行包含两个整数 n 和 k。
 
@@ -513,7 +513,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4067",
     level: 3,
     knowledgePoints: ["字符串", "二维数组", "模拟", "数字图形"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `小杨为数字 0、1、2、3 设计了 5×5 网格的表示形式，使用 '*' 和 '.' 组成特定图案。
 
 需要将给定的数字 n 转换为对应的图形表示形式。多个数字并排显示，数字之间用一列 '.' 分隔。`,
@@ -543,7 +543,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4261",
     level: 3,
     knowledgePoints: ["位运算", "按位与", "按位或", "数学"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `小A有一个整数 x，需要找到最小的正整数 y，使得 (x & y) + (x | y) = 2025 成立。
 
 其中 & 表示按位与运算，| 表示按位或运算。
@@ -574,7 +574,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4262",
     level: 3,
     knowledgePoints: ["字符串", "哈希表", "统计", "大小写转换"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `统计 n 个单词中出现频率最高的单词。
 
 注意：忽略单词中字母的大小写，即不同大小写形式的同一单词应视为相同。
@@ -609,7 +609,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4358",
     level: 3,
     knowledgePoints: ["位运算", "二进制", "统计", "循环"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `计算多个非负整数在二进制表示下所有 1 的总数量，以及根据这个总数量的奇偶性输出校验码。
 
 数据在传输过程中可能出错，因此接收方收到数据后通常会校验传输的数据是否正确。奇偶校验是一种常见的方法。`,
@@ -644,7 +644,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4359",
     level: 3,
     knowledgePoints: ["贪心", "数组", "循环", "递推"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `n 位小朋友排队等待分糖果。第 i 位小朋友至少需要 a_i 颗糖果，且每位小朋友获得的糖果数必须严格多于前一位，否则他就会不开心。
 
 求满足所有条件的最少糖果总数。`,
@@ -676,7 +676,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4413",
     level: 3,
     knowledgePoints: ["数组", "模拟", "循环", "最值"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `对数组执行重复操作直至所有元素变为 0。
 
 每次操作：找到最大值所在位置（如果有多个，取下标最大的），记为位置 k；找到最小的非零值 a_j，将 a_k 减去 a_j。
@@ -711,7 +711,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4414",
     level: 3,
     knowledgePoints: ["日期计算", "格式输出", "循环", "条件判断"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `编写程序输出 2025 年指定月份的日历。
 
 第一行输出 "MON TUE WED THU FRI SAT SUN" 表示周一至周日，随后各行显示该月的日期。
@@ -741,7 +741,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4449",
     level: 3,
     knowledgePoints: ["字符串", "条件判断", "字符分类", "函数"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `设计一个密码强度检测器。安全的密码需满足以下三个条件：
 1. 密码至少包含 8 个字符
 2. 密码至少包含一个大写字母
@@ -773,7 +773,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceUrl: "https://www.luogu.com.cn/problem/B4450",
     level: 3,
     knowledgePoints: ["数组", "最小值", "分组统计", "循环"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `小杨需要购买 M 种文具。商店有 N 件文具，每件都有种类编号和价格。
 
 小杨的策略是：对于每种文具，他只买最便宜的那一件。

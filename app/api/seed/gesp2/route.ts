@@ -17,7 +17,7 @@ const gesp2Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3844",
     level: 2,
     knowledgePoints: ["循环嵌套", "字符输出", "ASCII码"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `用大写字母构成一个 n×n 的正方形矩阵。第 1 行从 A 开始，第 2 行从 B 开始，以此类推。每行内，每列依次是下一个字母。字母循环使用（Z 的下一个字母是 A）。
 
 例如 n=3 时：
@@ -48,7 +48,7 @@ CDE
     sourceUrl: "https://www.luogu.com.cn/problem/B3845",
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "数学"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `勾股数是指满足 a² + b² = c² 的三个正整数 (a, b, c)，其中 1 ≤ a ≤ b ≤ c。
 
 给定正整数 n，统计满足 c ≤ n 的勾股数组的个数。`,
@@ -77,7 +77,7 @@ CDE
     sourceUrl: "https://www.luogu.com.cn/problem/B3836",
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "数学"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `经典的"百鸡问题"：
 - 公鸡每只 x 元
 - 母鸡每只 y 元
@@ -108,7 +108,7 @@ CDE
     sourceUrl: "https://www.luogu.com.cn/problem/B3837",
     level: 2,
     knowledgePoints: ["循环嵌套", "字符输出", "三角形图案"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `用大写字母画一个三角形图案。第 1 行有 1 个字母，第 2 行有 2 个字母，以此类推。从上到下、从左到右依次填入 A-Z，Z 之后再从 A 开始循环。
 
 例如 n=3 时：
@@ -141,7 +141,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B3840",
     level: 2,
     knowledgePoints: ["循环", "素数判断", "枚举"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `素数是指大于1的正整数，除了1和它本身以外不能被其他正整数整除。
 
 给定区间 [A, B]，统计该区间内有多少个素数。`,
@@ -168,7 +168,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B3841",
     level: 2,
     knowledgePoints: ["循环", "数位分离", "幂运算"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `自幂数是指一个 N 位数，其各位数字的 N 次方之和等于它本身。
 
 例如：
@@ -202,7 +202,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B3865",
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "对角线"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `构造一个 N×N 的 X 字形矩阵（N 为奇数）。矩阵的两条对角线位置用 + 表示，其他位置用 - 表示。
 
 例如 N=5 时：
@@ -235,7 +235,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B3866",
     level: 2,
     knowledgePoints: ["循环", "数位操作", "排序"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `给定一个三位数（三个数字各不相同），重复以下操作：将数字重新排列得到最大数和最小数，然后相减。
 
 这个过程最终会收敛到 495（三位数的卡普雷卡常数）。
@@ -273,7 +273,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B3923",
     level: 2,
     knowledgePoints: ["循环", "斐波那契数列", "模拟"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `小杨每天都做题。第 1 天做 a 道，第 2 天做 b 道，从第 3 天起每天做的题数等于前两天之和（类似斐波那契数列）。
 
 但是，一旦某天做的题数达到或超过 m，小杨就停止做题。
@@ -306,7 +306,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B3924",
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "字符图案"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `构造一个 N×N 的 H 字形矩阵（N 为奇数）。
 - 第一列和最后一列为 |
 - 中间行（第 (N+1)/2 行）的第 2 到第 N-1 个字符为 -
@@ -344,7 +344,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B3954",
     level: 2,
     knowledgePoints: ["循环", "乘法", "大数判断"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `小 A 刚学会乘法。给定若干正整数，他需要把它们全部乘起来。如果乘积超过 10⁶，他就算不出来了。
 
 编写程序帮助小 A：如果乘积超过 10⁶，输出 ">1000000"；否则输出乘积。`,
@@ -376,7 +376,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B3955",
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "字符图案"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `构造一个 N×N 的"日"字形矩阵（N 为奇数）。
 - 第一列和最后一列为 |
 - 第一行、最后一行、中间行的第 2 到第 N-1 个字符为 -
@@ -414,7 +414,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4002",
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "数学"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `给定若干正整数，判断每个数是否能表示为两个正整数的平方和，即是否存在正整数 x 和 y 使得 x² + y² = a。`,
     inputFormat: `第一行包含正整数 n，表示数字个数。
 
@@ -441,7 +441,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4007",
     level: 2,
     knowledgePoints: ["循环", "数位分离", "计数"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `小杨认为 k（1 ≤ k ≤ 9）是他的幸运数字。他想知道从 1 到 n 的所有整数中，数字 k 一共出现了多少次。`,
     inputFormat: `第一行包含正整数 n。
 第二行包含正整数 k。
@@ -469,7 +469,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4036",
     level: 2,
     knowledgePoints: ["循环", "数位分离", "判断"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `一个正整数如果各位数字之和是 7 的倍数，则称它为"美丽数"。
 
 给定若干正整数，判断每个是否为美丽数。`,
@@ -498,7 +498,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4037",
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "对角线"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `构造一个 m×m 的 N 字形矩阵（m 为奇数）。
 - 第一列和最后一列为 +
 - 主对角线为 +
@@ -535,7 +535,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4064",
     level: 2,
     knowledgePoints: ["循环", "开方", "判断"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `给定正整数 a，判断是否存在正整数 b 使得 a = b⁴。
 
 如果存在，输出 b；否则输出 -1。`,
@@ -564,7 +564,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4065",
     level: 2,
     knowledgePoints: ["循环", "数位分离", "最大值"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `给定 n 个正整数，找出其中数位和最大的值。
 
 数位和是指一个数各位数字的总和。例如 12345 的数位和是 1+2+3+4+5=15。`,
@@ -595,7 +595,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4259",
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "乘法表"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `构造一个 n×m 的矩阵，使得每行和每列都构成等差数列。
 
 解法是在位置 (i, j) 放置 i × j 的值（i, j 从 1 开始）。`,
@@ -622,7 +622,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4260",
     level: 2,
     knowledgePoints: ["日期计算", "闰年", "模拟"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `给定一个日期和时间（年 y、月 m、日 d、小时 h）以及一个时间间隔 k 小时，计算经过 k 小时后的日期和时间。
 
 闰年规则：
@@ -659,7 +659,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4356",
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "数学"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `直角三角形的面积公式为 S = ab/2，其中 a 和 b 是两条直角边的长度。
 
 给定正整数 n，统计满足以下条件的直角三角形个数：
@@ -692,7 +692,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4357",
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "位运算"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `一个正整数如果能表示为两个 2 的幂次之和（即 n = 2^x + 2^y，其中 x, y 是非负整数），则称为"幂和数"。
 
 给定区间 [l, r]，统计其中有多少个幂和数。`,
@@ -723,7 +723,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4411",
     level: 2,
     knowledgePoints: ["循环", "数位判断", "计数"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `一个正整数如果所有数位上的数字都相同，则称为"优美的数字"。
 
 例如：6（单个数字）、99（都是9）是优美的；123（数字不同）不是优美的。
@@ -754,7 +754,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4412",
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "菱形图案"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `绘制一个 n×n 的菱形图案（n 为奇数）。
 - 菱形的四个顶点分别在第 1 行中央、第 1 列中央、第 n 行中央、第 n 列中央
 - 菱形边界用 # 表示
@@ -790,7 +790,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4447",
     level: 2,
     knowledgePoints: ["循环", "整除", "计数"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `小杨在环保游戏中行走，每走 1 公里获得 1 点能量。此外，每走 x 公里还会额外获得 1 点奖励能量。
 
 给定行走距离 n 和奖励间隔 x，计算总共获得多少点能量。`,
@@ -819,7 +819,7 @@ DEF
     sourceUrl: "https://www.luogu.com.cn/problem/B4448",
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "数学"],
-    difficulty: "easy",
+    difficulty: "普及-",
     description: `在一个 H 行 W 列的网格中，坐标为 (r, c) 的格子（r 为行号，c 为列号，从 1 开始）如果满足条件 sqrt(r² + c²) ≤ x + r - c，则称为"黄金格"。
 
 给定 H、W 和 x，统计黄金格的数量。`,

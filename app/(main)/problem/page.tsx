@@ -131,9 +131,13 @@ export default function ProblemListPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">全部难度</SelectItem>
-                <SelectItem value="easy">简单</SelectItem>
-                <SelectItem value="medium">中等</SelectItem>
-                <SelectItem value="hard">困难</SelectItem>
+                <SelectItem value="入门">入门</SelectItem>
+                <SelectItem value="普及-">普及-</SelectItem>
+                <SelectItem value="普及/提高-">普及/提高-</SelectItem>
+                <SelectItem value="普及+/提高">普及+/提高</SelectItem>
+                <SelectItem value="提高+/省选-">提高+/省选-</SelectItem>
+                <SelectItem value="省选/NOI-">省选/NOI-</SelectItem>
+                <SelectItem value="NOI/NOI+/CTSC">NOI/NOI+/CTSC</SelectItem>
               </SelectContent>
             </Select>
           </div>

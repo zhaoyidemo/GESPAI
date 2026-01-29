@@ -21,7 +21,7 @@ async function resetAndSeed() {
           sourceUrl: "https://www.luogu.com.cn/problem/P10720",
           level: 5,
           knowledgePoints: ["质因数分解", "数论", "筛法"],
-          difficulty: "easy", // 洛谷难度2
+          difficulty: "普及+/提高", // 洛谷难度2
           description: `小杨认为他的幸运数字应该恰好有两种不同的质因子。
 
 例如，12 = 2×2×3 的质因子有 2, 3，恰好为两种不同的质因子，因此 12 是幸运数字。
@@ -57,7 +57,7 @@ async function resetAndSeed() {
           sourceUrl: "https://www.luogu.com.cn/problem/B4050",
           level: 5,
           knowledgePoints: ["贪心", "质数判断", "位运算"],
-          difficulty: "medium", // 洛谷难度3
+          difficulty: "提高+/省选-", // 洛谷难度3
           description: `小杨正在和一个怪物战斗，怪物的血量为 h。只有当怪物的血量恰好为 0 时，小杨才能成功击败怪物。
 
 小杨有两种攻击怪物的方式：
@@ -97,7 +97,7 @@ async function resetAndSeed() {
           sourceUrl: "https://www.luogu.com.cn/problem/B3929",
           level: 5,
           knowledgePoints: ["完全平方数", "数论", "倍数"],
-          difficulty: "medium", // 洛谷难度3
+          difficulty: "提高+/省选-", // 洛谷难度3
           description: `小杨认为，所有大于等于 a 的完全平方数都是他的"超级幸运数"。
 
 而超级幸运数的所有正整数倍都是"幸运数"。
@@ -139,7 +139,7 @@ async function resetAndSeed() {
           sourceUrl: "https://www.luogu.com.cn/problem/B3968",
           level: 5,
           knowledgePoints: ["排序", "结构体", "多关键字排序"],
-          difficulty: "easy", // 洛谷难度2
+          difficulty: "普及+/提高", // 洛谷难度2
           description: `有 n 名同学，每名同学有语文、数学、英语三科成绩。
 
 需要按照如下规则对所有同学的成绩从高到低排序，输出每名同学的排名：
@@ -179,7 +179,7 @@ async function resetAndSeed() {
           sourceUrl: "https://www.luogu.com.cn/problem/B3969",
           level: 5,
           knowledgePoints: ["筛法", "质因数", "埃氏筛"],
-          difficulty: "easy", // 洛谷难度2
+          difficulty: "普及+/提高", // 洛谷难度2
           description: `一个正整数是 B-smooth 数，当且仅当其最大质因子不超过 B。
 
 特别地，1 没有质因子，我们认为 1 是 B-smooth 数。
@@ -224,7 +224,7 @@ async function resetAndSeed() {
           sourceUrl: "https://www.luogu.com.cn/problem/B3872",
           level: 5,
           knowledgePoints: ["贪心", "排序", "任务调度"],
-          difficulty: "medium", // 洛谷难度3
+          difficulty: "提高+/省选-", // 洛谷难度3
           description: `小明参加了一个巧夺大奖的游戏节目。主持人宣布了游戏规则：
 
 1. 游戏分为 n 个时间段，参加者每个时间段可以选择完成一个小游戏。
@@ -266,7 +266,7 @@ async function resetAndSeed() {
           source: "gesp_official",
           level: 1,
           knowledgePoints: ["输入输出", "基本运算"],
-          difficulty: "easy",
+          difficulty: "普及+/提高",
           description: "输入两个整数 a 和 b，输出它们的和。\n\n这是最基础的编程题，用于熟悉输入输出操作。",
           inputFormat: "输入一行，包含两个整数 a 和 b，用空格分隔。\n\n数据范围：-1000 ≤ a, b ≤ 1000",
           outputFormat: "输出一行，包含一个整数，表示 a + b 的值。",
@@ -290,7 +290,7 @@ async function resetAndSeed() {
           source: "gesp_official",
           level: 1,
           knowledgePoints: ["条件判断", "取模运算"],
-          difficulty: "easy",
+          difficulty: "普及+/提高",
           description: "输入一个整数 n，判断它是奇数还是偶数。",
           inputFormat: "输入一行，包含一个整数 n。\n\n数据范围：-10000 ≤ n ≤ 10000",
           outputFormat: '如果 n 是偶数，输出 "even"；如果 n 是奇数，输出 "odd"。',
@@ -315,7 +315,7 @@ async function resetAndSeed() {
           source: "gesp_official",
           level: 3,
           knowledgePoints: ["数组", "循环"],
-          difficulty: "easy",
+          difficulty: "普及+/提高",
           description: "给定 n 个整数，计算它们的和。",
           inputFormat: "第一行输入一个整数 n，表示整数的个数。\n第二行输入 n 个整数，用空格分隔。\n\n数据范围：1 ≤ n ≤ 1000，每个整数的绝对值不超过 10000。",
           outputFormat: "输出一行，包含一个整数，表示所有整数的和。",
@@ -339,7 +339,7 @@ async function resetAndSeed() {
           source: "gesp_official",
           level: 4,
           knowledgePoints: ["二分查找", "数组"],
-          difficulty: "easy", // 洛谷难度2
+          difficulty: "普及+/提高", // 洛谷难度2
           description: "给定一个升序排列的整数数组和一个目标值，使用二分查找确定目标值在数组中的位置。如果目标值不存在，返回 -1。",
           inputFormat: "第一行输入两个整数 n 和 target，分别表示数组长度和目标值。\n第二行输入 n 个升序排列的整数，用空格分隔。\n\n数据范围：1 ≤ n ≤ 100000，数组元素和目标值的绝对值不超过 10^9。",
           outputFormat: "输出目标值在数组中的下标（从 0 开始），如果不存在则输出 -1。",

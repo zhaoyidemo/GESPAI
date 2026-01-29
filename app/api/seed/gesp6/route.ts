@@ -17,7 +17,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10250",
     level: 6,
     knowledgePoints: ["动态规划", "递推", "记忆化搜索"],
-    difficulty: "medium", // 洛谷难度4 普及+/提高
+    difficulty: "提高+/省选-", // 洛谷难度4 普及+/提高
     description: `小朋友发现，下楼梯时每一步可以跨越 1、2 或 3 级台阶。
 
 给定共有 N 级台阶，求一共有多少种不同的下楼方法。`,
@@ -46,7 +46,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10262",
     level: 6,
     knowledgePoints: ["字符串", "数论", "前缀和", "取模"],
-    difficulty: "medium", // 洛谷难度4
+    difficulty: "提高+/省选-", // 洛谷难度4
     description: `给定一个由数字组成的字符串 S，长度为 L（只包含数字 0-9）。
 
 统计有多少个连续子串表示的数字能被给定的整数 p 整除。
@@ -79,7 +79,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3873",
     level: 6,
     knowledgePoints: ["动态规划", "背包问题", "01背包"],
-    difficulty: "medium", // 洛谷难度4 普及+/提高
+    difficulty: "提高+/省选-", // 洛谷难度4 普及+/提高
     description: `小杨想要从商店购买饮料。商店共有 N 种不同的饮料，编号从 0 到 N-1。第 i 种饮料的价格为 c_i 元，容量为 l_i 毫升。
 
 小杨需要购买至少 L 毫升的饮料，每种饮料最多只能购买一瓶。
@@ -115,7 +115,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3874",
     level: 6,
     knowledgePoints: ["归并排序", "逆序对", "分治"],
-    difficulty: "medium", // 洛谷难度3 普及/提高-
+    difficulty: "提高+/省选-", // 洛谷难度3 普及/提高-
     description: `班级共有 N 名学生，学号从 0 到 N-1。学生们按照指定的顺序依次进入教室。
 
 每当一名学生进入教室时，需要与已在教室内且学号比自己小的所有学生握手。
@@ -148,7 +148,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10108",
     level: 6,
     knowledgePoints: ["动态规划", "图论", "BFS"],
-    difficulty: "easy", // 洛谷难度2 普及-
+    difficulty: "普及+/提高", // 洛谷难度2 普及-
     description: `一个包含 N 关的游戏，每关有 M 个通道可供选择。
 
 选择通道 i 后，可以向前推进 a_i 关。离开第 s 关时，可以获得 b_s 分。
@@ -185,7 +185,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10109",
     level: 6,
     knowledgePoints: ["树", "LCA", "最近公共祖先", "树的遍历"],
-    difficulty: "easy", // 洛谷难度2 普及-
+    difficulty: "普及+/提高", // 洛谷难度2 普及-
     description: `一个公司有 N 名员工，编号从 0 到 N-1。员工 0 是老板，其他每个员工都有且仅有一个直接上司。
 
 员工 x 能够管理员工 y，当且仅当：x = y，或 x 是 y 的直接上司，或 x 能够管理 y 的直接上司。
@@ -221,7 +221,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10376",
     level: 6,
     knowledgePoints: ["动态规划", "递推", "计数"],
-    difficulty: "medium", // 洛谷难度4
+    difficulty: "提高+/省选-", // 洛谷难度4
     description: `给定整数 n，从 n 开始，每次操作可以选择减去 a 或减去 b。
 
 当 n ≤ c 时游戏结束。
@@ -255,7 +255,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10377",
     level: 6,
     knowledgePoints: ["贪心", "排序", "枚举", "全排列"],
-    difficulty: "easy", // 洛谷难度2 普及-
+    difficulty: "普及+/提高", // 洛谷难度2 普及-
     description: `有 10^9 个牛栏排成一排。你需要将 n 头牛放入牛栏中。
 
 第 i 头牛有攻击范围 (a_i, b_i)，表示如果在它左边 a_i 个位置内或右边 b_i 个位置内有其他牛，就会发生冲突。
@@ -291,7 +291,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10721",
     level: 6,
     knowledgePoints: ["动态规划", "字符串", "贪心"],
-    difficulty: "medium", // 洛谷难度4 普及+/提高
+    difficulty: "提高+/省选-", // 洛谷难度4 普及+/提高
     description: `给定一个长度为 m 的字符串和一个长度为 n 的得分序列 A。
 
 字符串中连续 k 个 "abc" 构成的子串可以获得 a_k 分。每个字符只能参与一次计分。
@@ -327,7 +327,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10722",
     level: 6,
     knowledgePoints: ["树", "二叉树", "DFS", "子树"],
-    difficulty: "medium", // 洛谷难度3 普及/提高-
+    difficulty: "提高+/省选-", // 洛谷难度3 普及/提高-
     description: `小杨有一棵 n 个节点的二叉树，根节点编号为 1。每个节点颜色为白色（0）或黑色（1）。
 
 小杨会进行 q 次操作，每次操作选择一个节点，将以该节点为根的子树中所有节点的颜色取反（白变黑，黑变白）。
@@ -364,7 +364,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P11246",
     level: 6,
     knowledgePoints: ["动态规划", "数论", "完全平方数"],
-    difficulty: "medium", // 洛谷难度4
+    difficulty: "提高+/省选-", // 洛谷难度4
     description: `给定一个正整数 n，求将其表示为若干个完全平方数之和的最少个数。
 
 例如：
@@ -393,7 +393,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P11247",
     level: 6,
     knowledgePoints: ["贪心", "动态规划", "排序"],
-    difficulty: "hard", // 洛谷难度5 提高+/省选-
+    difficulty: "提高+/省选-", // 洛谷难度5 提高+/省选-
     description: `小杨计划通过做 n 道练习题来掌握 m 种算法。每道题针对一种算法，完成后可以增加对应算法的熟练度。
 
 目标是让所有 m 种算法的熟练度都达到 k。
@@ -433,7 +433,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P11375",
     level: 6,
     knowledgePoints: ["树", "二叉树", "模拟", "位运算"],
-    difficulty: "hard", // 洛谷难度5 提高+/省选-
+    difficulty: "提高+/省选-", // 洛谷难度5 提高+/省选-
     description: `小杨在一棵无限完全二叉树上进行游走。节点 1 是根，对于节点 i，其左孩子是 2i，右孩子是 2i+1。
 
 从节点 s 开始，进行 n 次移动。每次移动使用以下操作之一：
@@ -470,7 +470,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P11376",
     level: 6,
     knowledgePoints: ["贪心", "排序", "图论", "最优化"],
-    difficulty: "hard", // 洛谷难度5
+    difficulty: "提高+/省选-", // 洛谷难度5
     description: `A 国有 n 座城市，城市 1 是首都。城市之间有 n-1 条双向道路连接，形成一棵树。
 
 需要将货物从首都运送到每座城市。共有 m 辆卡车，每辆卡车可以分配到一个运输站。
@@ -512,7 +512,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P11962",
     level: 6,
     knowledgePoints: ["树", "DFS", "BFS", "图的遍历", "奇偶性"],
-    difficulty: "medium", // 洛谷难度4
+    difficulty: "提高+/省选-", // 洛谷难度4
     description: `小 A 有一棵 n 个节点的树，节点编号从 1 到 n。
 
 从任意节点出发，可以移动到相邻节点。小 A 必须在偶数步后停止（包括 0 步）。
@@ -543,7 +543,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P11963",
     level: 6,
     knowledgePoints: ["前缀和", "最大子段和", "环形结构"],
-    difficulty: "medium", // 洛谷难度3 普及/提高-
+    difficulty: "提高+/省选-", // 洛谷难度3 普及/提高-
     description: `小 A 喜欢坐地铁。环形地铁线有 n 个站点，编号 1, 2, ..., n。站点 i（1 ≤ i < n）与站点 i+1 相邻，站点 n 与站点 1 相邻。
 
 小 A 从某站上车，在另一站下车（至少经过一个站点，每个站点最多经过一次）。经过站点 i 时获得 a_i 的快乐值。
@@ -577,7 +577,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P13015",
     level: 6,
     knowledgePoints: ["动态规划", "整数划分", "背包问题"],
-    difficulty: "medium", // 洛谷难度4 普及+/提高
+    difficulty: "提高+/省选-", // 洛谷难度4 普及+/提高
     description: `老师将 n 名学生分成若干学习小组。如果一个小组恰好有 k 名学生，该小组的"讨论热情"为 a_k。
 
 求所有可能的分组方案中，总"讨论热情"的最大值。`,
@@ -608,7 +608,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P13016",
     level: 6,
     knowledgePoints: ["树", "因数", "数论", "LCA"],
-    difficulty: "medium", // 洛谷难度3 普及/提高-
+    difficulty: "提高+/省选-", // 洛谷难度3 普及/提高-
     description: `定义一棵有 10^9 个节点的有根树，节点编号从 1 到 10^9，节点 1 是根。
 
 对于节点 k（k ≥ 2），其父节点是 k 除了 k 自身以外的最大因数。
@@ -642,7 +642,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P14075",
     level: 6,
     knowledgePoints: ["动态规划", "字符串", "贪心"],
-    difficulty: "medium", // 洛谷难度4
+    difficulty: "提高+/省选-", // 洛谷难度4
     description: `将一个长度为 n 的小写字母字符串划分成若干子串，要求每个子串中每个字母最多出现一次。
 
 划分一个长度为 k 的子串可以获得 a_k 分。
@@ -677,7 +677,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P14076",
     level: 6,
     knowledgePoints: ["树", "DFS", "树的遍历", "贪心"],
-    difficulty: "hard", // 洛谷难度5 提高+/省选-
+    difficulty: "提高+/省选-", // 洛谷难度5 提高+/省选-
     description: `A 国有 n 座城市（编号 1 到 n，城市 1 是首都），由 n-1 条双向道路连接成一棵树。
 
 一支货物车队需要从首都出发，将货物运送到每座城市。车队可以多次经过同一条道路，最后不需要返回首都。
@@ -711,7 +711,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P14919",
     level: 6,
     knowledgePoints: ["树", "DFS", "动态规划", "树形DP"],
-    difficulty: "medium", // 洛谷难度4
+    difficulty: "提高+/省选-", // 洛谷难度4
     description: `给定一棵 n 个节点的有根树，根是节点 1。需要将某些节点染成黑色，使得从每个叶子节点到根的路径上至少有一个黑色节点。
 
 每个节点 i 染色的代价是 c_i。
@@ -746,7 +746,7 @@ const gesp6Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P14920",
     level: 6,
     knowledgePoints: ["动态规划", "背包问题", "01背包"],
-    difficulty: "medium", // 洛谷难度4
+    difficulty: "提高+/省选-", // 洛谷难度4
     description: `道具商店提供 n 种道具。第 i 种道具可以增加 a_i 点攻击力，价格为 c_i 金币。
 
 你有 k 金币，每种道具最多购买一件。

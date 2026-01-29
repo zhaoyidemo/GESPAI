@@ -17,7 +17,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3939",
     level: 4,
     knowledgePoints: ["素数", "数学", "模拟"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `绝对素数是指一个两位数的素数，当交换其十位和个位数字后得到的数仍然是素数时，这个数就被称为绝对素数。例如，13是绝对素数，因为13和31都是素数。
 
 给定两个正整数 A 和 B，请找出所有满足 A ≤ 数字 ≤ B 的绝对素数。`,
@@ -42,7 +42,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3940",
     level: 4,
     knowledgePoints: ["模拟", "二维数组", "数学"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `将 1 到 N² 的整数填入一个 N×N 的网格中，使得每行、每列以及两条对角线上的数字之和都相等，这样的网格称为"幻方"。
 
 对于奇数 N，可以使用以下算法填充幻方：
@@ -75,7 +75,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3850",
     level: 4,
     knowledgePoints: ["模拟", "数位处理", "字符串"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `"幸运数"的定义是通过一个数位变换过程来判断的。对于一个正整数的每一位数字：
 - 偶数位置（第2、4、6...位）的数字保持不变
 - 奇数位置（第1、3、5...位）的数字：先乘以7，然后不断将各位数字相加，直到结果 ≤ 9
@@ -114,7 +114,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3851",
     level: 4,
     knowledgePoints: ["模拟", "排序", "哈希", "字符串处理"],
-    difficulty: "medium", // 洛谷难度3
+    difficulty: "普及/提高-", // 洛谷难度3
     description: `将一幅256级灰度图像压缩为16级灰度图像。每个像素的灰度值原本范围是 0-255（十六进制 00-FF），需要压缩到 0-15（十六进制 0-F）。
 
 压缩规则：
@@ -149,7 +149,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3869",
     level: 4,
     knowledgePoints: ["进制转换", "数学", "字符串"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `N进制是一种计数系统，每 N 个单位进一位。对于大于10的进制，使用字母 A-F 分别表示数值 10-15。
 
 给定多个不同进制的数，请将它们转换为十进制。
@@ -182,7 +182,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3870",
     level: 4,
     knowledgePoints: ["进制转换", "位运算", "编码"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `变长编码是一种将正整数编码为字节序列的方式：
 
 1. 将数字转换为二进制
@@ -218,7 +218,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3927",
     level: 4,
     knowledgePoints: ["字符串处理", "map", "STL容器", "模拟"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `一个翻译官需要根据提供的字典将A语言文章翻译成B语言。
 
 文章由标点符号和一些A语言单词构成，每个单词之间必定由至少一个标点符号分割。
@@ -252,7 +252,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3928",
     level: 4,
     knowledgePoints: ["贪心算法", "排序", "双指针"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `你与田忌进行赛马比赛。你们各有 N 匹马，进行 N 轮比赛。每轮比赛双方各派出一匹马参赛。
 
 你的马的速度为 u₁, u₂, ..., uₙ；田忌的马的速度为 v₁, v₂, ..., vₙ。
@@ -288,7 +288,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3958",
     level: 4,
     knowledgePoints: ["字符串", "编辑距离", "模拟"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `两个字符串 A 和 B 被认为是"相似的"，当且仅当 A 可以通过恰好一次操作变成 B。操作可以是：删除一个字符、插入一个字符、或修改一个字符。
 
 此外，完全相同的两个字符串也被认为是相似的。
@@ -320,7 +320,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3959",
     level: 4,
     knowledgePoints: ["贪心算法", "排序"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `一个学生计划每天做题，第 k 天需要做 k 道题。他有 n 本题集，每本题集包含一定数量的题目。
 
 规则：
@@ -354,7 +354,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4005",
     level: 4,
     knowledgePoints: ["二维数组", "枚举", "前缀和"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `小杨有一个 n×m 的网格，每个格子是白色（0）或黑色（1）。
 
 一个矩形子区域被称为"平衡的"，当且仅当它包含的黑色格子数量等于白色格子数量。
@@ -383,7 +383,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4006",
     level: 4,
     knowledgePoints: ["贪心算法", "排序", "滑动窗口"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `小杨发现了 n 个宝箱，第 i 个宝箱的价值是 aᵢ。他可以选择一些宝箱放入背包中带走。
 
 但是背包有一个限制：如果选中的宝箱中最大价值为 x，最小价值为 y，则必须满足 x - y ≤ k，否则背包会破裂。
@@ -414,7 +414,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4040",
     level: 4,
     knowledgePoints: ["二维数组", "模式匹配", "模拟"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `给定一个由0（白色）和1（黑色）组成的网格。需要检测网格中是否存在特定的 4×4 子矩形图案。
 
 要求的图案：
@@ -451,7 +451,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4041",
     level: 4,
     knowledgePoints: ["排序", "数组", "模拟"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `小杨有一个包含 n 个正整数的序列。他计划对指定的区间进行多次升序排序。
 
 每次操作选择一个区间 [l, r]，将该区间内的元素升序排序（基于前一次操作后的状态）。
@@ -485,7 +485,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4068",
     level: 4,
     knowledgePoints: ["递推", "集合", "STL容器"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `生成 Recaman 序列的前 n 项，规则如下：
 
 - 第一项：a₁ = 1
@@ -514,7 +514,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4069",
     level: 4,
     knowledgePoints: ["字符串", "排序", "贪心"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `给定 n 个仅包含小写字母的字符串，判断是否存在一种排列顺序，使得拼接后的字符串 t 是非递减的（每个字符都大于等于它前面的所有字符）。`,
     inputFormat: `第一行：整数 T（测试用例数）
 
@@ -542,7 +542,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4263",
     level: 4,
     knowledgePoints: ["二维数组", "枚举", "模拟"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `小杨有一块荒地，表示为 n×m 的网格。一块荒地可以被开垦当且仅当"它的四个相邻格子都没有障碍物"。
 
 某些位置有障碍物（#），其他位置是空地（.）。
@@ -570,7 +570,7 @@ const gesp4Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4264",
     level: 4,
     knowledgePoints: ["二维数组", "枚举", "数学"],
-    difficulty: "medium", // 洛谷难度4
+    difficulty: "普及/提高-", // 洛谷难度4
     description: `小A有一个 n×m 的矩阵。一个 2×2 的子矩阵 D 被称为"好的"，当且仅当满足条件：
 
 D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
@@ -602,7 +602,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     sourceUrl: "https://www.luogu.com.cn/problem/B4360",
     level: 4,
     knowledgePoints: ["二维数组", "字符串", "模拟"],
-    difficulty: "easy", // 洛谷难度1
+    difficulty: "普及-", // 洛谷难度1
     description: `小A在 h×w 的矩形画布上绘制了一幅画。需要通过指定行列范围来裁剪画布。
 
 保留从第 x₁ 行到第 x₂ 行、第 y₁ 列到第 y₂ 列构成的子矩阵。`,
@@ -631,7 +631,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     sourceUrl: "https://www.luogu.com.cn/problem/B4361",
     level: 4,
     knowledgePoints: ["排序", "逆序对", "冒泡排序"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `体育课上有 n 名同学排成一队，每位同学有身高和体重两个属性。
 
 老师要求按照以下规则重新排序：
@@ -666,7 +666,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     sourceUrl: "https://www.luogu.com.cn/problem/B4415",
     level: 4,
     knowledgePoints: ["二维数组", "枚举", "最大子矩形"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `作为将军，你需要在 n×m 的网格地图上布置部队。标记为1的格子适合部署，标记为0的格子不适合。
 
 你需要找到只包含1的最大矩形区域。`,
@@ -693,7 +693,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     sourceUrl: "https://www.luogu.com.cn/problem/B4416",
     level: 4,
     knowledgePoints: ["排序", "贪心", "连续序列"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `"连续段"是指数组中每个元素都等于前一个元素加1的子数组。
 
 给定一个包含 n 个整数的数组，你可以重新排列元素。请找出重排后任意连续子数组能形成的最长连续段的长度。`,
@@ -722,7 +722,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     sourceUrl: "https://www.luogu.com.cn/problem/B4451",
     level: 4,
     knowledgePoints: ["二维数组", "枚举", "滑动窗口"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `小A有一张 M 行 N 列的地形图，每个格子 (i,j) 有一个海拔值 aᵢⱼ。
 
 一个"降落台"是一个 3×3 的区域，要求"这9个点中最高和最低的海拔差不超过 H"。
@@ -749,7 +749,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     sourceUrl: "https://www.luogu.com.cn/problem/B4452",
     level: 4,
     knowledgePoints: ["排序", "贪心", "模拟", "STL容器"],
-    difficulty: "easy", // 洛谷难度2
+    difficulty: "普及-", // 洛谷难度2
     description: `小A有 M 元预算。商店有 N 件商品，每件商品有三个属性：名称 S、价格 P、优先级 V（正整数，V越小优先级越高）。
 
 购物策略：
