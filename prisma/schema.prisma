@@ -26,6 +26,9 @@ model User {
   totalXp       Int       @default(0)
   badges        String[]  @default([])
 
+  // AI配置
+  aiDebugPrompt String?   @db.Text  // 用户自定义的AI调试助手提示词
+
   // 关联关系
   studyPlans      StudyPlan[]
   submissions     Submission[]
@@ -85,6 +88,10 @@ model Submission {
   memoryUsed    Int?     // KB
 
   testResults   Json?    // [{passed: boolean, input: string, expectedOutput: string, actualOutput: string, time: number, memory: number}]
+
+  // AI调试助手
+  aiHelpCount   Int      @default(0)  // 该提交请求AI帮助的次数
+  aiConversations Json?  // AI调试对话历史 [{promptLevel: number, aiResponse: string, timestamp: string}]
 
   createdAt     DateTime @default(now())
 
