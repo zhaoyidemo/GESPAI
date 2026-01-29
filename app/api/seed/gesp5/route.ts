@@ -363,7 +363,7 @@ const gesp5Problems = [
 数据范围：
 - 1 ≤ T ≤ 100
 - 2 ≤ a < p ≤ 10⁹`,
-    outputFormat: `对于每组测试数据，如果 a 是 p 的原根，输出 "Yes"，否则输出 "No"。`,
+    outputFormat: `对于每组测试数据，如果 a 是 p 的原根，输出 \"Yes\"，否则输出 \"No\"。`,
     samples: [
       { input: "2\n2 5\n3 5", output: "Yes\nNo", explanation: "2是5的原根，3不是" },
     ],

@@ -421,7 +421,7 @@ DEF
 接下来 n 行，每行一个正整数 aᵢ。
 
 数据范围：1 ≤ n ≤ 10，1 ≤ aᵢ ≤ 10⁶`,
-    outputFormat: `对于每个数，如果能表示为两个正整数的平方和，输出 "Yes"；否则输出 "No"。`,
+    outputFormat: `对于每个数，如果能表示为两个正整数的平方和，输出 \"Yes\"；否则输出 \"No\"。`,
     samples: [
       { input: "2\n5\n4", output: "Yes\nNo", explanation: "5 = 1² + 2²，可以表示；4 = 2²，但 0 不是正整数，所以不行" },
     ],
@@ -478,7 +478,7 @@ DEF
 接下来 n 行，每行一个正整数 aᵢ。
 
 数据范围：1 ≤ n ≤ 10⁵，1 ≤ aᵢ ≤ 10⁵`,
-    outputFormat: `对于每个数，如果是美丽数输出 "Yes"；否则输出 "No"。`,
+    outputFormat: `对于每个数，如果是美丽数输出 \"Yes\"；否则输出 \"No\"。`,
     samples: [
       { input: "3\n7\n52\n103", output: "Yes\nYes\nNo", explanation: "7的数位和是7；52的数位和是5+2=7；103的数位和是1+0+3=4" },
     ],

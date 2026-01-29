@@ -93,7 +93,7 @@ const gesp4Problems = [
     inputFormat: `第一行：整数 N（1 ≤ N ≤ 20）
 
 接下来 N 行：每行一个正整数（每个数 < 10^12）`,
-    outputFormat: `N 行，每行输出 "T"（是幸运数）或 "F"（不是幸运数）
+    outputFormat: `N 行，每行输出 \"T\"（是幸运数）或 \"F\"（不是幸运数）
 
 提示：可以边读入边处理并输出。`,
     samples: [
@@ -187,11 +187,11 @@ const gesp4Problems = [
 
 1. 将数字转换为二进制
 2. 从低位到高位将二进制数分成7位一组，高位不足7位时补0
-3. 为每组添加一个前导位：如果后面还有更多组则添加"1"，如果是最后一组则添加"0"
+3. 为每组添加一个前导位：如果后面还有更多组则添加 \"1\"，如果是最后一组则添加 \"0\"
 
 例如：
-- N=0：二进制是0，一组"0000000"，添加前导0得到"00000000"，即十六进制 00
-- N=926：二进制是"1110011110"，分成"0011110"和"0000111"，添加前导位得到"10011110"和"00000111"，即十六进制 9E 07`,
+- N=0：二进制是0，一组 \"0000000\"，添加前导0得到 \"00000000\"，即十六进制 00
+- N=926：二进制是 \"1110011110\"，分成 \"0011110\" 和 \"0000111\"，添加前导位得到 \"10011110\" 和 \"00000111\"，即十六进制 9E 07`,
     inputFormat: `一个非负整数 N，其中 0 ≤ N ≤ 10^18。`,
     outputFormat: `编码结果的每个字节用2位十六进制数表示（使用大写字母A-F），字节之间用空格分隔。`,
     samples: [
@@ -301,7 +301,7 @@ const gesp4Problems = [
     inputFormat: `第一行：整数 T（测试用例数）
 
 接下来 T 行：每行包含两个空格分隔的字符串 A 和 B`,
-    outputFormat: `对于每对字符串，如果它们相似则输出"similar"，否则输出"not similar"。`,
+    outputFormat: `对于每对字符串，如果它们相似则输出 \"similar\"，否则输出 \"not similar\"。`,
     samples: [
       { input: "5\napple applee\napple appe\napple bpple\napplee bpple\napple apple", output: "similar\nsimilar\nsimilar\nnot similar\nsimilar", explanation: "前三对和第五对相似，第四对不相似" },
     ],
@@ -433,7 +433,7 @@ const gesp4Problems = [
 对于每个测试用例：
 - 第一行：整数 n, m（网格尺寸）
 - 接下来 n 行：长度为 m 的01字符串`,
-    outputFormat: `对于每个测试用例，如果图案存在则输出"Yes"，否则输出"No"。`,
+    outputFormat: `对于每个测试用例，如果图案存在则输出 \"Yes\"，否则输出 \"No\"。`,
     samples: [
       { input: "3\n1 4\n0110\n5 5\n00000\n01100\n01100\n00001\n01100\n5 5\n00000\n01100\n01110\n00001\n01100", output: "No\nYes\nNo", explanation: "第一个太小，第二个存在图案，第三个第三行不符合" },
     ],
@@ -521,7 +521,7 @@ const gesp4Problems = [
 对于每个测试用例：
 - 第一行：整数 n（字符串数量）
 - 接下来 n 行：每行一个字符串`,
-    outputFormat: `对于每个测试用例，如果存在有效排列则输出"1"，否则输出"0"。`,
+    outputFormat: `对于每个测试用例，如果存在有效排列则输出 \"1\"，否则输出 \"0\"。`,
     samples: [
       { input: "3\n3\naa\nac\nde\n2\naac\nbc\n1\ngesp", output: "1\n0\n0", explanation: "第一组可以排成aaacde；第二组aac中c在a后面，无法满足；第三组gesp中e<g，无法满足" },
     ],

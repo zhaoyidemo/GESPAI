@@ -421,7 +421,7 @@ const gesp1Problems = [
     inputFormat: `输入一行，包含一个正整数 n。
 
 数据范围：1 <= n <= 1000`,
-    outputFormat: `若 n 是立方数则输出 "Yes"，否则输出 "No"。`,
+    outputFormat: `若 n 是立方数则输出 \"Yes\"，否则输出 \"No\"。`,
     samples: [
       { input: "8", output: "Yes", explanation: "存在正整数2使得8=2^3，故8为立方数" },
       { input: "9", output: "No", explanation: "不存在满足条件的正整数，故9不是立方数" },

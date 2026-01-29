@@ -399,7 +399,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
 - 1 ≤ t ≤ 10
 - 1 ≤ n ≤ 10^5
 - 1 ≤ a_i ≤ 10^9`,
-    outputFormat: `每组测试用例输出一行：如果存在满足条件的元素，输出 "Yes"；否则输出 "No"。`,
+    outputFormat: `每组测试用例输出一行：如果存在满足条件的元素，输出 \"Yes\"；否则输出 \"No\"。`,
     samples: [
       { input: "2\n3\n1 2 4\n5\n1 2 3 4 5", output: "Yes\nNo", explanation: "第一组中4是1和2的倍数；第二组不存在这样的数" },
     ],
@@ -434,7 +434,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
 - 1 ≤ t ≤ 100
 - 1 ≤ n ≤ 10000
 - 1 ≤ a_i ≤ 10000`,
-    outputFormat: `每组测试用例输出一行，输出 "Yes" 或 "No"。`,
+    outputFormat: `每组测试用例输出一行，输出 \"Yes\" 或 \"No\"。`,
     samples: [
       { input: "3\n3\n1 2 3\n4\n2 3 1 4\n5\n1 2 3 4 5", output: "Yes\nYes\nNo", explanation: "第一组：1+2=3；第二组：2+3=1+4" },
     ],
@@ -464,7 +464,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
 数据范围：
 - 1 ≤ n ≤ 10
 - 每个字符串长度 ≤ 100`,
-    outputFormat: `对每个字符串输出一行：如果由两个长度至少为 2 的回文串拼接而成，输出 "Yes"；否则输出 "No"。`,
+    outputFormat: `对每个字符串输出一行：如果由两个长度至少为 2 的回文串拼接而成，输出 \"Yes\"；否则输出 \"No\"。`,
     samples: [
       { input: "4\nabcd\naabbb\naaac\nabcdd", output: "No\nYes\nNo\nNo", explanation: "aabbb可以分成aa和bbb两个回文串" },
     ],
@@ -754,7 +754,7 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
 - 1 ≤ T ≤ 100
 - 每组密码长度：1 至 100 字符
 - 密码仅由大小写字母和数字组成`,
-    outputFormat: `对每组密码，满足要求输出 "Y"，否则输出 "N"。`,
+    outputFormat: `对每组密码，满足要求输出 \"Y\"，否则输出 \"N\"。`,
     samples: [
       { input: "6\nPAs1s2an\n1a2bCq13\nPa12bsna\nab1da3cd\nPaabdbcd\nPa2", output: "Y\nY\nY\nN\nN\nN", explanation: "第4个没有大写字母，第5个没有数字，第6个长度不够" },
     ],
