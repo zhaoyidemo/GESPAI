@@ -67,6 +67,8 @@ export async function POST(request: NextRequest) {
     }
 
     // 运行判题
+    console.log(`📝 开始判题: 用户=${session.user.id}, 题目=${problem.title} (${problemId})`);
+
     const result = await judgeSubmission(
       code,
       language,
@@ -74,6 +76,8 @@ export async function POST(request: NextRequest) {
       problem.timeLimit,
       problem.memoryLimit
     );
+
+    console.log(`✅ 判题完成: 状态=${result.status}, 分数=${result.score}`);
 
     // 更新提交记录
     await prisma.submission.update({
@@ -110,9 +114,22 @@ export async function POST(request: NextRequest) {
       ...result,
     });
   } catch (error) {
-    console.error("Judge error:", error);
+    console.error("❌ 判题发生错误:", error);
+
+    // 提供更详细的错误信息
+    const errorMessage = error instanceof Error ? error.message : "未知错误";
+    console.error("错误详情:", errorMessage);
+
+    // 检查是否是 Judge0 API key 问题
+    if (errorMessage.includes("Judge0 API Key")) {
+      return NextResponse.json(
+        { error: "判题服务配置错误，请联系管理员" },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "判题失败，请稍后重试" },
+      { error: `判题失败: ${errorMessage}` },
       { status: 500 }
     );
   }
