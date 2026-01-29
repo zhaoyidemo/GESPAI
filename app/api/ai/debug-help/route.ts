@@ -74,38 +74,63 @@ export async function POST(req: NextRequest) {
 
     const systemPrompt = getDebugPrompt(user?.aiDebugPrompt);
 
-    // 解析测试结果，找出失败的测试点
+    // 解析测试结果
     const testResults = submission.testResults as any[];
+    const totalTests = testResults?.length || 0;
+    const passedTests = testResults?.filter((test: any) => test.passed).length || 0;
+
+    // 找出失败的测试点（保留原始索引）
     const failedTests = testResults
-      ?.filter((test: any) => !test.passed)
-      .map((test: any, index: number) => ({
-        testIndex: index + 1,
+      ?.map((test: any, originalIndex: number) => ({
+        test,
+        originalIndex,
+      }))
+      .filter(({ test }) => !test.passed)
+      .map(({ test, originalIndex }) => ({
+        testIndex: originalIndex + 1, // 使用原始测试点编号
         input: test.input || "",
         expectedOutput: test.expectedOutput || "",
-        actualOutput: test.actualOutput || test.error || "无输出",
+        actualOutput: test.actualOutput || test.error || "（无输出）",
       })) || [];
 
     // 获取之前的对话历史
     const previousConversations = (submission.aiConversations as any[]) || [];
     const helpCount = submission.aiHelpCount + 1;
 
+    // 解析题目的样例（如果有）
+    const samples = submission.problem.samples
+      ? (submission.problem.samples as any[]).map((s: any) => ({
+          input: s.input || "",
+          output: s.output || "",
+          explanation: s.explanation || undefined,
+        }))
+      : undefined;
+
     // 构建调试上下文
     const debugContext: DebugContext = {
       problemTitle: submission.problem.title,
       problemDescription: submission.problem.description,
+      inputFormat: submission.problem.inputFormat || undefined,
+      outputFormat: submission.problem.outputFormat || undefined,
+      samples,
+      hint: submission.problem.hint || undefined,
       studentCode: submission.code,
       verdict: submission.status,
       failedTests: failedTests.slice(0, 3), // 最多显示3个失败的测试点
+      totalTests,
+      passedTests,
       helpCount,
       previousConversations,
     };
 
     const userMessage = buildDebugMessage(debugContext);
 
+    console.log(`🤖 AI调试助手：用户=${session.user.id}, 题目=${submission.problem.title}, 第${helpCount}次请求`);
+
     // 调用Claude API
     const message = await anthropic.messages.create({
       model: "claude-opus-4-20250514", // Claude Opus 4.5
-      max_tokens: 1024,
+      max_tokens: 1500, // 增加token限制，允许更详细的回复
       system: systemPrompt,
       messages: [
         {
@@ -114,6 +139,8 @@ export async function POST(req: NextRequest) {
         },
       ],
     });
+
+    console.log(`✅ AI分析完成：帮助次数=${helpCount}, 提示级别=${helpCount <= 3 ? helpCount : 3}`);
 
     const aiResponse = message.content[0].type === "text"
       ? message.content[0].text
