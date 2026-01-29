@@ -184,9 +184,15 @@ export async function runTestCase(
 
     const actualOutput = (result.stdout || "").trim();
     const expected = expectedOutput.trim();
-    const passed = result.status === "accepted" || actualOutput === expected;
 
-    console.log(`${passed ? '✅' : '❌'} 测试用例${passed ? '通过' : '失败'}: 状态=${result.status}`);
+    // 只有在没有编译错误和运行时错误，且输出完全匹配时才算通过
+    const hasNoErrors = result.status !== "compile_error" &&
+                        result.status !== "runtime_error" &&
+                        result.status !== "time_limit";
+    const outputMatches = actualOutput === expected;
+    const passed = hasNoErrors && outputMatches;
+
+    console.log(`${passed ? '✅' : '❌'} 测试用例${passed ? '通过' : '失败'}: 状态=${result.status}, 输出匹配=${outputMatches}`);
 
     return {
       passed,
