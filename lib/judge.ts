@@ -192,7 +192,22 @@ export async function runTestCase(
     const outputMatches = actualOutput === expected;
     const passed = hasNoErrors && outputMatches;
 
-    console.log(`${passed ? '✅' : '❌'} 测试用例${passed ? '通过' : '失败'}: 状态=${result.status}, 输出匹配=${outputMatches}`);
+    // 确定测试用例状态
+    let testStatus: string;
+    if (passed) {
+      testStatus = "accepted";
+    } else if (result.status === "compile_error") {
+      testStatus = "compile_error";
+    } else if (result.status === "runtime_error") {
+      testStatus = "runtime_error";
+    } else if (result.status === "time_limit") {
+      testStatus = "time_limit";
+    } else {
+      // 代码能运行但输出不匹配
+      testStatus = "wrong_answer";
+    }
+
+    console.log(`${passed ? '✅' : '❌'} 测试用例${passed ? '通过' : '失败'}: 最终状态=${testStatus}, Judge0状态=${result.status}, 输出匹配=${outputMatches}`);
 
     return {
       passed,
@@ -201,7 +216,7 @@ export async function runTestCase(
       actualOutput,
       time: result.time ? parseFloat(result.time) * 1000 : null, // 转换为毫秒
       memory: result.memory,
-      status: passed ? "accepted" : result.status,
+      status: testStatus,
     };
   } catch (error) {
     console.error(`❌ 运行测试用例时发生错误:`, error);
@@ -289,13 +304,26 @@ export async function judgeSubmission(
   const passedCount = results.filter(r => r.passed).length;
   const score = Math.round((passedCount / testCases.length) * 100);
 
-  // 确定最终状态
+  // 确定最终状态（按优先级）
   let finalStatus = "accepted";
   if (!allPassed) {
-    // 找出第一个失败的测试用例的状态
-    const failedResult = results.find(r => !r.passed);
-    finalStatus = failedResult?.status || "wrong_answer";
+    // 优先级：compile_error > runtime_error > time_limit > wrong_answer
+    const hasCompileError = results.some(r => r.status === "compile_error");
+    const hasRuntimeError = results.some(r => r.status === "runtime_error");
+    const hasTimeLimit = results.some(r => r.status === "time_limit");
+
+    if (hasCompileError) {
+      finalStatus = "compile_error";
+    } else if (hasRuntimeError) {
+      finalStatus = "runtime_error";
+    } else if (hasTimeLimit) {
+      finalStatus = "time_limit";
+    } else {
+      finalStatus = "wrong_answer";
+    }
   }
+
+  console.log(`📊 判题汇总: 总计=${testCases.length}, 通过=${passedCount}, 分数=${score}, 最终状态=${finalStatus}`);
 
   return {
     status: finalStatus,
