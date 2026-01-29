@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChatInterface } from "@/components/chat/chat-interface";
 import { CodeEditor } from "@/components/editor/code-editor";
 import { useToast } from "@/components/ui/use-toast";
+import { AIDebugDrawer, type AIConversation } from "@/components/ai-debug-drawer";
 import {
   ArrowLeft,
   Play,
@@ -19,6 +20,7 @@ import {
   Cpu,
   MessageSquare,
   FileText,
+  Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 import { getDifficultyLabel, getJudgeStatusLabel } from "@/lib/utils";
@@ -77,6 +79,12 @@ export default function ProblemPage() {
   const [judgeResult, setJudgeResult] = useState<JudgeResult | null>(null);
   const [activeTab, setActiveTab] = useState("description");
 
+  // AI调试助手状态
+  const [aiDrawerOpen, setAiDrawerOpen] = useState(false);
+  const [aiConversations, setAiConversations] = useState<AIConversation[]>([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiHelpCount, setAiHelpCount] = useState(0);
+
   const fetchProblem = useCallback(async () => {
     try {
       const response = await fetch(`/api/problems/${id}`);
@@ -105,6 +113,64 @@ export default function ProblemPage() {
     fetchProblem();
   }, [fetchProblem]);
 
+  const handleAIHelp = async () => {
+    if (!judgeResult?.id) {
+      toast({
+        variant: "destructive",
+        title: "无法请求帮助",
+        description: "请先提交代码",
+      });
+      return;
+    }
+
+    setAiLoading(true);
+    setAiDrawerOpen(true);
+
+    try {
+      const response = await fetch("/api/ai/debug-help", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          submissionId: judgeResult.id,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const newConversation: AIConversation = {
+          promptLevel: data.promptLevel,
+          aiResponse: data.aiResponse,
+          timestamp: new Date().toISOString(),
+        };
+
+        setAiConversations((prev) => [...prev, newConversation]);
+        setAiHelpCount(data.helpCount);
+
+        toast({
+          title: "AI分析完成",
+          description: `第${data.helpCount}次提示`,
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "AI分析失败",
+          description: data.error || "请稍后重试",
+        });
+        setAiDrawerOpen(false);
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "AI分析失败",
+        description: error instanceof Error ? error.message : "网络错误",
+      });
+      setAiDrawerOpen(false);
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!code.trim()) {
       toast({
@@ -117,6 +183,10 @@ export default function ProblemPage() {
 
     setSubmitting(true);
     setJudgeResult(null);
+    // 重置AI助手状态（新的提交）
+    setAiConversations([]);
+    setAiHelpCount(0);
+    setAiDrawerOpen(false);
 
     try {
       const response = await fetch("/api/judge", {
@@ -352,6 +422,28 @@ export default function ProblemPage() {
                     </div>
                   </div>
 
+                  {/* AI帮助按钮 - 仅在错误时显示 */}
+                  {judgeResult.status !== "accepted" && (
+                    <Button
+                      onClick={handleAIHelp}
+                      disabled={aiLoading}
+                      className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+                    >
+                      {aiLoading ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          AI分析中...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="mr-2 h-4 w-4" />
+                          💡 AI帮我看看
+                          {aiHelpCount > 0 && ` (已帮助${aiHelpCount}次)`}
+                        </>
+                      )}
+                    </Button>
+                  )}
+
                   {/* 测试点详情 */}
                   <h4 className="font-medium">测试点详情</h4>
                   <div className="space-y-2">
@@ -424,6 +516,17 @@ export default function ProblemPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* AI调试助手侧边栏 */}
+      <AIDebugDrawer
+        isOpen={aiDrawerOpen}
+        onClose={() => setAiDrawerOpen(false)}
+        submissionId={judgeResult?.id || ""}
+        conversations={aiConversations}
+        isLoading={aiLoading}
+        onRequestHelp={handleAIHelp}
+        helpCount={aiHelpCount}
+      />
     </div>
   );
 }
