@@ -8,82 +8,413 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Map, BookOpen, CheckCircle, Circle, Clock, Lock } from "lucide-react";
 
-// GESP 5级知识点数据
-const knowledgePoints = {
-  level5: [
+// GESP 1-8级知识点数据（基于官方标准和现有题库）
+const knowledgePointsByLevel: Record<string, Array<{
+  id: string;
+  name: string;
+  category: string;
+  status: string;
+  progress: number;
+  description: string;
+}>> = {
+  "1": [
     {
-      id: "recursion",
-      name: "递归",
-      category: "算法基础",
-      status: "in_progress",
-      progress: 30,
-      description: "函数调用自身的编程技巧",
-    },
-    {
-      id: "dfs",
-      name: "深度优先搜索（DFS）",
-      category: "搜索算法",
+      id: "loop-basic",
+      name: "循环语句",
+      category: "C++基础",
       status: "not_started",
       progress: 0,
-      description: "沿着分支深度遍历图或树",
+      description: "for和while循环的基本使用",
     },
     {
-      id: "bfs",
-      name: "广度优先搜索（BFS）",
-      category: "搜索算法",
+      id: "condition",
+      name: "条件判断",
+      category: "C++基础",
       status: "not_started",
       progress: 0,
-      description: "逐层遍历图或树",
+      description: "if-else分支结构",
     },
     {
-      id: "memoization",
-      name: "记忆化搜索",
-      category: "优化技术",
+      id: "modulo",
+      name: "取模运算",
+      category: "数学基础",
       status: "not_started",
       progress: 0,
-      description: "缓存计算结果避免重复计算",
+      description: "取余运算和整除判断",
     },
     {
-      id: "backtracking",
-      name: "回溯算法",
-      category: "算法基础",
+      id: "time-calc",
+      name: "时间计算",
+      category: "数学应用",
       status: "not_started",
       progress: 0,
-      description: "通过试错寻找所有解",
+      description: "时分秒转换和计算",
     },
     {
-      id: "divide-conquer",
-      name: "分治算法",
-      category: "算法基础",
+      id: "sum",
+      name: "累加求和",
+      category: "数学基础",
       status: "not_started",
       progress: 0,
-      description: "将大问题分解为小问题",
+      description: "循环累加和求和公式",
+    },
+    {
+      id: "divisor",
+      name: "因数与倍数",
+      category: "数学基础",
+      status: "not_started",
+      progress: 0,
+      description: "判断因数和倍数关系",
     },
   ],
-  level4: [
+  "2": [
+    {
+      id: "nested-loop",
+      name: "循环嵌套",
+      category: "C++基础",
+      status: "not_started",
+      progress: 0,
+      description: "二重循环和多重循环",
+    },
+    {
+      id: "char-output",
+      name: "字符输出",
+      category: "C++基础",
+      status: "not_started",
+      progress: 0,
+      description: "字符和ASCII码输出",
+    },
+    {
+      id: "matrix-output",
+      name: "矩阵输出",
+      category: "算法基础",
+      status: "not_started",
+      progress: 0,
+      description: "二维图案和矩阵打印",
+    },
+    {
+      id: "prime",
+      name: "素数判断",
+      category: "数学基础",
+      status: "not_started",
+      progress: 0,
+      description: "判断质数的基本方法",
+    },
+    {
+      id: "digit",
+      name: "数位分离",
+      category: "数学基础",
+      status: "not_started",
+      progress: 0,
+      description: "分离数字的各个位",
+    },
+    {
+      id: "fibonacci",
+      name: "斐波那契数列",
+      category: "数学应用",
+      status: "not_started",
+      progress: 0,
+      description: "递推求斐波那契数",
+    },
+  ],
+  "3": [
+    {
+      id: "array",
+      name: "一维数组",
+      category: "数据结构",
+      status: "not_started",
+      progress: 0,
+      description: "数组的定义和使用",
+    },
+    {
+      id: "string",
+      name: "字符串基础",
+      category: "数据结构",
+      status: "not_started",
+      progress: 0,
+      description: "字符串处理和操作",
+    },
+    {
+      id: "function",
+      name: "函数",
+      category: "C++基础",
+      status: "not_started",
+      progress: 0,
+      description: "函数定义和调用",
+    },
+    {
+      id: "base-conversion",
+      name: "进制转换",
+      category: "数学基础",
+      status: "not_started",
+      progress: 0,
+      description: "二进制、八进制、十六进制",
+    },
+    {
+      id: "bit-operation",
+      name: "位运算基础",
+      category: "算法基础",
+      status: "not_started",
+      progress: 0,
+      description: "按位与、或、异或运算",
+    },
+    {
+      id: "prefix-sum",
+      name: "前缀和",
+      category: "算法基础",
+      status: "not_started",
+      progress: 0,
+      description: "一维前缀和的计算",
+    },
+  ],
+  "4": [
     {
       id: "sorting",
       name: "排序算法",
       category: "算法基础",
-      status: "completed",
-      progress: 100,
-      description: "冒泡、选择、插入等排序",
+      status: "not_started",
+      progress: 0,
+      description: "冒泡、选择、插入排序",
+    },
+    {
+      id: "2d-array",
+      name: "二维数组",
+      category: "数据结构",
+      status: "not_started",
+      progress: 0,
+      description: "矩阵和二维数组操作",
+    },
+    {
+      id: "greedy",
+      name: "贪心算法入门",
+      category: "算法基础",
+      status: "not_started",
+      progress: 0,
+      description: "简单贪心策略",
+    },
+    {
+      id: "two-pointers",
+      name: "双指针",
+      category: "算法基础",
+      status: "not_started",
+      progress: 0,
+      description: "双指针技巧",
+    },
+    {
+      id: "string-adv",
+      name: "字符串进阶",
+      category: "算法基础",
+      status: "not_started",
+      progress: 0,
+      description: "字符串匹配和处理",
+    },
+    {
+      id: "stl-basic",
+      name: "STL容器基础",
+      category: "C++基础",
+      status: "not_started",
+      progress: 0,
+      description: "vector、set等基本容器",
+    },
+  ],
+  "5": [
+    {
+      id: "gcd-lcm",
+      name: "最大公约数与最小公倍数",
+      category: "数论",
+      status: "not_started",
+      progress: 0,
+      description: "辗转相除法",
+    },
+    {
+      id: "prime-factor",
+      name: "质因数分解",
+      category: "数论",
+      status: "not_started",
+      progress: 0,
+      description: "分解质因数",
     },
     {
       id: "binary-search",
       name: "二分查找",
       category: "搜索算法",
-      status: "completed",
-      progress: 100,
+      status: "not_started",
+      progress: 0,
       description: "在有序数组中高效查找",
     },
     {
-      id: "stack-queue",
-      name: "栈和队列",
+      id: "bit-adv",
+      name: "位运算进阶",
+      category: "算法基础",
+      status: "not_started",
+      progress: 0,
+      description: "位运算技巧和应用",
+    },
+    {
+      id: "prefix-2d",
+      name: "二维前缀和",
+      category: "算法基础",
+      status: "not_started",
+      progress: 0,
+      description: "矩阵前缀和",
+    },
+    {
+      id: "fast-power",
+      name: "快速幂",
+      category: "数论",
+      status: "not_started",
+      progress: 0,
+      description: "快速幂算法",
+    },
+  ],
+  "6": [
+    {
+      id: "dp-basic",
+      name: "动态规划入门",
+      category: "动态规划",
+      status: "not_started",
+      progress: 0,
+      description: "简单DP和递推",
+    },
+    {
+      id: "knapsack",
+      name: "背包问题",
+      category: "动态规划",
+      status: "not_started",
+      progress: 0,
+      description: "01背包和完全背包",
+    },
+    {
+      id: "merge-sort",
+      name: "归并排序",
+      category: "算法基础",
+      status: "not_started",
+      progress: 0,
+      description: "分治思想和归并排序",
+    },
+    {
+      id: "tree-basic",
+      name: "树的基础",
       category: "数据结构",
-      status: "completed",
-      progress: 100,
-      description: "基本的线性数据结构",
+      status: "not_started",
+      progress: 0,
+      description: "树的表示和遍历",
+    },
+    {
+      id: "lca",
+      name: "最近公共祖先（LCA）",
+      category: "数据结构",
+      status: "not_started",
+      progress: 0,
+      description: "树上LCA问题",
+    },
+    {
+      id: "dfs-tree",
+      name: "树的DFS",
+      category: "搜索算法",
+      status: "not_started",
+      progress: 0,
+      description: "深度优先搜索树",
+    },
+  ],
+  "7": [
+    {
+      id: "graph-basic",
+      name: "图论基础",
+      category: "图论",
+      status: "not_started",
+      progress: 0,
+      description: "图的表示和遍历",
+    },
+    {
+      id: "shortest-path",
+      name: "最短路算法",
+      category: "图论",
+      status: "not_started",
+      progress: 0,
+      description: "Dijkstra和SPFA",
+    },
+    {
+      id: "dp-adv",
+      name: "动态规划进阶",
+      category: "动态规划",
+      status: "not_started",
+      progress: 0,
+      description: "LIS、LCS等经典DP",
+    },
+    {
+      id: "dag",
+      name: "拓扑排序",
+      category: "图论",
+      status: "not_started",
+      progress: 0,
+      description: "DAG上的拓扑排序",
+    },
+    {
+      id: "bipartite",
+      name: "二分图",
+      category: "图论",
+      status: "not_started",
+      progress: 0,
+      description: "二分图判定和染色",
+    },
+    {
+      id: "interval-dp",
+      name: "区间DP",
+      category: "动态规划",
+      status: "not_started",
+      progress: 0,
+      description: "区间动态规划",
+    },
+  ],
+  "8": [
+    {
+      id: "data-structure-adv",
+      name: "高级数据结构",
+      category: "数据结构",
+      status: "not_started",
+      progress: 0,
+      description: "线段树、树状数组等",
+    },
+    {
+      id: "graph-adv",
+      name: "图论进阶",
+      category: "图论",
+      status: "not_started",
+      progress: 0,
+      description: "最小生成树、网络流",
+    },
+    {
+      id: "combinatorics",
+      name: "组合数学",
+      category: "数论",
+      status: "not_started",
+      progress: 0,
+      description: "排列组合和容斥原理",
+    },
+    {
+      id: "tree-diameter",
+      name: "树的直径",
+      category: "图论",
+      status: "not_started",
+      progress: 0,
+      description: "求树的直径",
+    },
+    {
+      id: "sliding-window",
+      name: "滑动窗口",
+      category: "算法基础",
+      status: "not_started",
+      progress: 0,
+      description: "双指针和滑动窗口",
+    },
+    {
+      id: "discretization",
+      name: "离散化",
+      category: "算法技巧",
+      status: "not_started",
+      progress: 0,
+      description: "坐标压缩和离散化",
     },
   ],
 };
@@ -117,11 +448,11 @@ const getStatusBadge = (status: string) => {
 export default function KnowledgeMapPage() {
   const [selectedLevel, setSelectedLevel] = useState("5");
 
-  const currentPoints = selectedLevel === "5" ? knowledgePoints.level5 : knowledgePoints.level4;
+  const currentPoints = knowledgePointsByLevel[selectedLevel] || [];
 
   const completedCount = currentPoints.filter(p => p.status === "completed").length;
   const totalCount = currentPoints.length;
-  const overallProgress = Math.round((completedCount / totalCount) * 100);
+  const overallProgress = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   return (
     <div className="space-y-6">
@@ -131,7 +462,7 @@ export default function KnowledgeMapPage() {
           <Map className="h-6 w-6" />
           <span>知识点地图</span>
         </h1>
-        <p className="text-muted-foreground">系统化学习 GESP 考试知识点</p>
+        <p className="text-muted-foreground">系统化学习 GESP C++ 考试知识点（1-8级）</p>
       </div>
 
       {/* 进度概览 */}
@@ -154,9 +485,15 @@ export default function KnowledgeMapPage() {
 
       {/* 级别切换 */}
       <Tabs value={selectedLevel} onValueChange={setSelectedLevel}>
-        <TabsList>
-          <TabsTrigger value="4">GESP 4 级</TabsTrigger>
-          <TabsTrigger value="5">GESP 5 级</TabsTrigger>
+        <TabsList className="grid grid-cols-8 w-full">
+          <TabsTrigger value="1">1级</TabsTrigger>
+          <TabsTrigger value="2">2级</TabsTrigger>
+          <TabsTrigger value="3">3级</TabsTrigger>
+          <TabsTrigger value="4">4级</TabsTrigger>
+          <TabsTrigger value="5">5级</TabsTrigger>
+          <TabsTrigger value="6">6级</TabsTrigger>
+          <TabsTrigger value="7">7级</TabsTrigger>
+          <TabsTrigger value="8">8级</TabsTrigger>
         </TabsList>
 
         <TabsContent value={selectedLevel} className="mt-4">
@@ -198,6 +535,44 @@ export default function KnowledgeMapPage() {
               </Link>
             ))}
           </div>
+
+          {/* 级别说明 */}
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle className="text-base flex items-center space-x-2">
+                <BookOpen className="h-4 w-4" />
+                <span>GESP {selectedLevel} 级说明</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                {selectedLevel === "1" && (
+                  <p>1级主要考查C++基础语法和简单数学运算，包括循环、条件判断、时间计算等基础知识点。</p>
+                )}
+                {selectedLevel === "2" && (
+                  <p>2级在1级基础上增加了循环嵌套、字符处理、矩阵输出等知识点，开始接触简单的算法思想。</p>
+                )}
+                {selectedLevel === "3" && (
+                  <p>3级引入数组、字符串、函数等数据结构，以及进制转换、位运算、前缀和等算法基础。</p>
+                )}
+                {selectedLevel === "4" && (
+                  <p>4级开始学习排序算法、二维数组、贪心算法、双指针等重要算法技巧，并接触STL容器。</p>
+                )}
+                {selectedLevel === "5" && (
+                  <p>5级深入数论（GCD/LCM、质因数分解）、二分查找、高级位运算和快速幂等算法。</p>
+                )}
+                {selectedLevel === "6" && (
+                  <p>6级引入动态规划、背包问题、归并排序、树的基础知识等重要算法和数据结构。</p>
+                )}
+                {selectedLevel === "7" && (
+                  <p>7级主要学习图论（最短路、拓扑排序、二分图）和高级动态规划（LIS、区间DP）。</p>
+                )}
+                {selectedLevel === "8" && (
+                  <p>8级涉及高级数据结构（线段树、树状数组）、图论进阶、组合数学等竞赛级别的知识点。</p>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
 
@@ -216,9 +591,9 @@ export default function KnowledgeMapPage() {
                 1
               </div>
               <div>
-                <p className="font-medium">先掌握递归</p>
+                <p className="font-medium">循序渐进</p>
                 <p className="text-sm text-muted-foreground">
-                  递归是 DFS、回溯等算法的基础，务必先理解透彻
+                  建议从低级别开始学习，扎实掌握基础知识后再进阶
                 </p>
               </div>
             </div>
