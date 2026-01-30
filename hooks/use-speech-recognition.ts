@@ -22,7 +22,7 @@ interface UseSpeechRecognitionReturn {
 export function useSpeechRecognition(
   options: UseSpeechRecognitionOptions = {}
 ): UseSpeechRecognitionReturn {
-  const { lang = "zh-CN", continuous = false, onResult, onError } = options;
+  const { lang = "zh-CN", continuous = true, onResult, onError } = options;
 
   const [isListening, setIsListening] = useState(false);
   const [isSupported, setIsSupported] = useState(false);

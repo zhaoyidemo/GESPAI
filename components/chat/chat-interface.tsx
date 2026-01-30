@@ -33,7 +33,11 @@ export function ChatInterface({
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [voiceErrorDisplay, setVoiceErrorDisplay] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  // 保存开始录音时输入框已有的文字，用于追加模式
+  const inputBeforeVoiceRef = useRef("");
 
   // 语音识别
   const {
@@ -48,22 +52,71 @@ export function ChatInterface({
     lang: "zh-CN",
   });
 
-  // 当语音识别文本更新时，实时同步到输入框
+  // 当语音识别文本更新时，追加到已有文字后面
   useEffect(() => {
     if (isListening && transcript) {
-      setInput(transcript);
+      const prefix = inputBeforeVoiceRef.current;
+      setInput(prefix ? `${prefix} ${transcript}` : transcript);
     }
   }, [transcript, isListening]);
+
+  // 错误提示 3 秒后自动消失
+  useEffect(() => {
+    if (voiceError) {
+      setVoiceErrorDisplay(voiceError);
+      const timer = setTimeout(() => {
+        setVoiceErrorDisplay(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [voiceError]);
 
   // 切换语音录制状态
   const toggleVoiceInput = () => {
     if (isListening) {
       stopListening();
     } else {
+      // 保存当前输入框的文字
+      inputBeforeVoiceRef.current = input.trim();
       resetTranscript();
       startListening();
     }
   };
+
+  // 空格键快捷键：按住录音，松开停止（仅在输入框未聚焦时生效）
+  useEffect(() => {
+    if (!enableVoiceInput || !isVoiceSupported) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // 如果输入框聚焦或正在输入，不触发快捷键
+      if (document.activeElement === inputRef.current) return;
+      // 如果正在加载，不允许操作
+      if (loading) return;
+      // 空格键按下开始录音
+      if (e.code === "Space" && !e.repeat && !isListening) {
+        e.preventDefault();
+        inputBeforeVoiceRef.current = input.trim();
+        resetTranscript();
+        startListening();
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      // 空格键松开停止录音
+      if (e.code === "Space" && isListening) {
+        e.preventDefault();
+        stopListening();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [enableVoiceInput, isVoiceSupported, isListening, loading, input, resetTranscript, startListening, stopListening]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -218,17 +271,18 @@ export function ChatInterface({
         {enableVoiceInput && isVoiceSupported && isListening && (
           <div className="flex items-center justify-center mb-2 text-sm text-red-500">
             <span className="inline-block w-2 h-2 bg-red-500 rounded-full animate-pulse mr-2" />
-            正在录音，请说话...
+            正在录音，点击麦克风或松开空格键停止...
           </div>
         )}
-        {enableVoiceInput && voiceError && (
-          <div className="mb-2 text-sm text-red-500 text-center">
-            {voiceError}
+        {enableVoiceInput && voiceErrorDisplay && (
+          <div className="mb-2 text-sm text-red-500 text-center animate-pulse">
+            {voiceErrorDisplay}
           </div>
         )}
 
         <div className="flex space-x-2">
           <Input
+            ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={isListening ? "正在识别语音..." : placeholder}
