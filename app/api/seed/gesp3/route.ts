@@ -572,37 +572,53 @@ const gesp3Problems = [
   },
 ];
 
+async function seedGesp3() {
+  let created = 0;
+  let updated = 0;
+
+  for (const problem of gesp3Problems) {
+    const existing = await prisma.problem.findFirst({
+      where: { sourceId: problem.sourceId },
+    });
+
+    if (existing) {
+      await prisma.problem.update({
+        where: { id: existing.id },
+        data: problem,
+      });
+      updated++;
+    } else {
+      await prisma.problem.create({
+        data: problem,
+      });
+      created++;
+    }
+  }
+
+  return NextResponse.json({
+    success: true,
+    message: `成功导入 ${gesp3Problems.length} 道 GESP 3级题目`,
+    total: gesp3Problems.length,
+    created,
+    updated,
+  });
+}
+
 export async function GET() {
   try {
-    let created = 0;
-    let updated = 0;
+    return await seedGesp3();
+  } catch (error) {
+    console.error("Seed GESP3 error:", error);
+    return NextResponse.json(
+      { success: false, error: String(error) },
+      { status: 500 }
+    );
+  }
+}
 
-    for (const problem of gesp3Problems) {
-      const existing = await prisma.problem.findFirst({
-        where: { sourceId: problem.sourceId },
-      });
-
-      if (existing) {
-        await prisma.problem.update({
-          where: { id: existing.id },
-          data: problem,
-        });
-        updated++;
-      } else {
-        await prisma.problem.create({
-          data: problem,
-        });
-        created++;
-      }
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: `GESP 3级题库同步完成`,
-      total: gesp3Problems.length,
-      created,
-      updated,
-    });
+export async function POST() {
+  try {
+    return await seedGesp3();
   } catch (error) {
     console.error("Seed GESP3 error:", error);
     return NextResponse.json(
