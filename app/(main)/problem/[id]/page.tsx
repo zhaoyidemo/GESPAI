@@ -21,6 +21,7 @@ import {
   MessageSquare,
   FileText,
   Sparkles,
+  ClipboardCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { getDifficultyLabel, getJudgeStatusLabel } from "@/lib/utils";
@@ -318,6 +319,10 @@ export default function ProblemPage() {
                 <MessageSquare className="h-4 w-4 mr-2" />
                 AI 帮助
               </TabsTrigger>
+              <TabsTrigger value="checklist">
+                <ClipboardCheck className="h-4 w-4 mr-2" />
+                检查清单
+              </TabsTrigger>
               {judgeResult && (
                 <TabsTrigger value="result">
                   {judgeResult.status === "accepted" ? (
@@ -389,6 +394,48 @@ export default function ProblemPage() {
                 problemId={id}
                 placeholder="问我关于这道题的问题..."
               />
+            </TabsContent>
+
+            <TabsContent value="checklist" className="flex-1 overflow-auto p-4">
+              <div className="prose prose-sm max-w-none">
+                <h3 className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-orange-500" />
+                  提交前 60 秒检查清单
+                </h3>
+                <p className="text-muted-foreground text-sm mb-4">
+                  每道编程题提交前过一遍，避免低级错误
+                </p>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-2">
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">1</span>
+                    <span><strong>输出格式</strong>：空格/换行/小数位是否正确？</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">2</span>
+                    <span><strong>变量初始化</strong>：是否所有变量都已正确初始化？</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">3</span>
+                    <span><strong>越界检查</strong>：数组、字符串、vector 下标是否可能越界？</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">4</span>
+                    <span><strong>除零错误</strong>：是否可能出现除以 0 或取模 0 的情况？</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">5</span>
+                    <span><strong>整数溢出</strong>：int 是否会溢出？是否需要用 long long？</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">6</span>
+                    <span><strong>复杂度匹配</strong>：算法复杂度是否与数据范围匹配？</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">7</span>
+                    <span><strong>边界测试</strong>：最小值/最大值/空值/重复值这四类边界是否已在脑中过了一遍？</span>
+                  </li>
+                </ul>
+              </div>
             </TabsContent>
 
             {judgeResult && (
