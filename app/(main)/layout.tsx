@@ -49,7 +49,7 @@ export default function MainLayout({
   }
 
   return (
-    <div className="min-h-screen relative">
+    <>
       {/* Three.js 粒子背景 */}
       <AnimatedBackground variant="particles" />
 
@@ -57,9 +57,9 @@ export default function MainLayout({
       <Navbar />
 
       {/* 主内容区 */}
-      <main className="container-responsive py-6 relative z-10">
+      <main className="container-responsive py-6 pb-20 relative z-10">
         {children}
       </main>
-    </div>
+    </>
   );
 }
