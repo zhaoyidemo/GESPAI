@@ -153,6 +153,7 @@ export default function LearnTopicPage() {
                 },
               ]}
               placeholder="问我任何关于这个知识点的问题..."
+              enableVoiceInput
             />
           </CardContent>
         </Card>

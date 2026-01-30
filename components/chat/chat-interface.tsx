@@ -4,8 +4,9 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Send, Bot, User, Loader2 } from "lucide-react";
+import { Send, Bot, User, Loader2, Mic, MicOff } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
 
 interface Message {
   role: "user" | "assistant";
@@ -18,6 +19,7 @@ interface ChatInterfaceProps {
   problemId?: string;
   initialMessages?: Message[];
   placeholder?: string;
+  enableVoiceInput?: boolean;
 }
 
 export function ChatInterface({
@@ -26,11 +28,45 @@ export function ChatInterface({
   problemId,
   initialMessages = [],
   placeholder = "输入你的问题...",
+  enableVoiceInput = false,
 }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // 语音识别
+  const {
+    isListening,
+    isSupported: isVoiceSupported,
+    transcript,
+    error: voiceError,
+    startListening,
+    stopListening,
+    resetTranscript,
+  } = useSpeechRecognition({
+    lang: "zh-CN",
+    onResult: (text) => {
+      setInput(text);
+    },
+  });
+
+  // 当语音识别文本更新时，同步到输入框
+  useEffect(() => {
+    if (transcript) {
+      setInput(transcript);
+    }
+  }, [transcript]);
+
+  // 切换语音录制状态
+  const toggleVoiceInput = () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      resetTranscript();
+      startListening();
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -181,14 +217,45 @@ export function ChatInterface({
 
       {/* 输入框 */}
       <form onSubmit={handleSubmit} className="p-4 border-t bg-white">
+        {/* 语音识别状态提示 */}
+        {enableVoiceInput && isVoiceSupported && isListening && (
+          <div className="flex items-center justify-center mb-2 text-sm text-red-500">
+            <span className="inline-block w-2 h-2 bg-red-500 rounded-full animate-pulse mr-2" />
+            正在录音，请说话...
+          </div>
+        )}
+        {enableVoiceInput && voiceError && (
+          <div className="mb-2 text-sm text-red-500 text-center">
+            {voiceError}
+          </div>
+        )}
+
         <div className="flex space-x-2">
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={placeholder}
+            placeholder={isListening ? "正在识别语音..." : placeholder}
             disabled={loading}
             className="flex-1"
           />
+
+          {/* 语音输入按钮 */}
+          {enableVoiceInput && isVoiceSupported && (
+            <Button
+              type="button"
+              variant={isListening ? "destructive" : "outline"}
+              onClick={toggleVoiceInput}
+              disabled={loading}
+              title={isListening ? "停止录音" : "语音输入"}
+            >
+              {isListening ? (
+                <MicOff className="h-4 w-4" />
+              ) : (
+                <Mic className="h-4 w-4" />
+              )}
+            </Button>
+          )}
+
           <Button type="submit" disabled={loading || !input.trim()}>
             <Send className="h-4 w-4" />
           </Button>
