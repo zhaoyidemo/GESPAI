@@ -1,10 +1,11 @@
 # GESP AI 产品需求文档 (PRD)
 
-**版本**：MVP v1.0  
-**日期**：2026年1月28日  
-**目标上线**：1周内（2026年2月4日前）  
-**域名**：GESP.AI  
-**部署平台**：Railway  
+**版本**：MVP v1.1
+**更新日期**：2026年1月30日
+**原始日期**：2026年1月28日
+**目标上线**：1周内（2026年2月4日前）
+**域名**：GESP.AI
+**部署平台**：Railway
 
 ---
 
@@ -76,54 +77,65 @@ AI在教学过程中必须遵循以下原则：
 
 | 模块 | 功能 | 优先级 | 状态 |
 |------|------|--------|------|
-| **用户系统** | 注册/登录（邮箱或用户名+密码） | P0 | MVP |
-| **学习规划** | 输入目标+时间 → AI生成计划 | P0 | MVP |
-| **今日任务** | 首页显示AI决定的今日任务 | P0 | MVP |
-| **AI教学对话** | 先教后引的知识点讲解 | P0 | MVP |
-| **代码编辑器** | 内嵌Monaco编辑器 | P0 | MVP |
-| **OJ判题** | 代码提交、编译、运行、判题 | P0 | MVP |
-| **题库模块** | 从洛谷+GESP官网自动搜集 | P0 | MVP |
-| **数据导入** | 洛谷用户名抓取+代码粘贴+对话采集 | P0 | MVP |
-| **知识点地图** | 5级知识点进度可视化 | P0 | MVP |
-| **连胜系统** | 每日完成任务保持连胜 | P0 | MVP |
-| **XP经验值** | AC得分，累计经验 | P0 | MVP |
-| **简单徽章** | 首次AC、7天连胜等里程碑徽章 | P1 | MVP |
-| **费曼验证** | AC后偶尔让用户讲解思路（简单版） | P1 | MVP |
-| **AI调试助手** | 代码错误时渐进式智能提示 | P0 | MVP |
+| **用户系统** | 注册/登录（邮箱或用户名+密码） | P0 | ✅ 已完成 |
+| **学习规划** | 输入目标+时间 → AI生成计划 | P0 | ✅ 已完成 |
+| **今日任务** | 首页显示AI决定的今日任务 | P0 | ✅ 已完成 |
+| **AI私教** | 先教后引的知识点讲解 | P0 | ✅ 已完成 |
+| **费曼学习** | 用户向AI讲解知识点，获取学习评估 | P0 | ✅ 已完成 |
+| **代码编辑器** | 内嵌Monaco编辑器 | P0 | ✅ 已完成 |
+| **OJ判题** | 代码提交、编译、运行、判题 | P0 | ✅ 已完成 |
+| **题库模块** | 从洛谷+GESP官网自动搜集 | P0 | ✅ 已完成 |
+| **数据导入** | 洛谷用户名抓取+代码粘贴+对话采集 | P0 | 🚧 框架完成 |
+| **知识点地图** | 1-8级知识点完整展示 | P0 | ✅ 已完成 |
+| **连胜系统** | 每日完成任务保持连胜 | P0 | ✅ 已完成 |
+| **XP经验值** | AC得分，累计经验 | P0 | ✅ 已完成 |
+| **简单徽章** | 首次AC、7天连胜等里程碑徽章 | P1 | ✅ 已完成 |
+| **AI调试助手** | 代码错误时渐进式智能提示 | P0 | ✅ 已完成 |
+| **AI配置中心** | 四种场景的提示词自定义 | P1 | ✅ 已完成 |
+| **语音输入** | 支持中英文语音输入 | P2 | ✅ 已完成 |
 
 ### 3.2 用户系统
 
 **功能描述**：
 - 用户可以通过邮箱或用户名+密码注册和登录
 - 登录后数据持久化保存
+- JWT会话管理（30天过期）
 
 **数据模型**：
 ```
 User {
-  id: string
-  email: string (optional)
-  username: string
-  password: string (hashed)
-  created_at: datetime
-  
+  id: string (UUID)
+  email: string (optional, unique)
+  username: string (unique)
+  passwordHash: string
+  createdAt: datetime
+  updatedAt: datetime
+
   // 学习目标
-  target_level: number (5)
-  exam_date: date (2026-03-14)
-  weekly_schedule: json // 每周可用时间
-  
+  targetLevel: number (1-8, 默认5)
+  examDate: date
+  weeklySchedule: json // 每周可用时间
+
   // 统计数据
-  streak_days: number
-  total_xp: number
+  streakDays: number
+  lastActiveDate: date
+  totalXp: number
   badges: string[]
+
+  // AI配置 - 各场景的自定义提示词
+  aiTutorPrompt: string   // AI私教提示词
+  aiProblemPrompt: string // 题目辅导提示词
+  aiDebugPrompt: string   // 调试助手提示词
+  aiFeynmanPrompt: string // 费曼学习提示词
 }
 ```
 
 ### 3.3 学习规划
 
 **用户输入**：
-1. 目标级别：GESP 5级
-2. 考试日期：2026年3月14日
-3. 当前水平：刚过4级（或通过数据导入自动诊断）
+1. 目标级别：GESP 1-8级
+2. 考试日期：如2026年3月14日
+3. 当前水平：刚过上一级（或通过数据导入自动诊断）
 4. 每周可用时间：如"周六2小时、周日2小时、周三晚1小时"
 
 **AI输出**：
@@ -136,28 +148,20 @@ User {
 - AI根据实际表现调整后续计划
 - 临近考试时给出冲刺建议
 
-**GESP 5级知识点范围**：
-```
-5级知识点
-├── 初等数论
-│   ├── GCD最大公约数（辗转相除法）
-│   ├── LCM最小公倍数
-│   └── 素数筛法（埃氏筛）
-├── 数据结构
-│   └── 链表基础
-├── 算法
-│   ├── 二分查找
-│   ├── 分治算法
-│   ├── 贪心算法
-│   └── 递归深化
-├── 搜索
-│   ├── DFS深度优先搜索
-│   └── BFS广度优先搜索
-├── 动态规划
-│   └── 一维DP入门
-└── 高精度
-    └── 高精度加减乘
-```
+**GESP知识点范围**：
+
+系统内置完整的GESP 1-8级知识点库，基于CCF官方考纲整理：
+
+| 级别 | 主要内容 |
+|------|---------|
+| 1级 | C++程序框架、数据输入输出、基本数据类型、常量与变量 |
+| 2级 | 算术/关系/逻辑运算符、分支与循环结构、一维数组、函数基础 |
+| 3级 | 二维数组、字符与字符串、递归函数、排序基础 |
+| 4级 | 结构体、链表基础、文件读写、STL入门 |
+| 5级 | 初等数论、二分查找、DFS/BFS、一维DP、高精度 |
+| 6级 | 二维DP、图论基础、高级数据结构 |
+| 7级 | 高级图论算法、复杂DP |
+| 8级 | 竞赛级算法与数据结构 |
 
 ### 3.4 今日任务（首页）
 
@@ -199,63 +203,178 @@ User {
 3. 优先安排：新知识点学习 > 练习巩固 > 错题复习
 4. 如果昨天有未完成任务，优先补上
 
-### 3.5 AI教学对话
+### 3.5 知识点学习（双模式）
+
+**路由结构**：
+```
+/learn/[topic]         → 学习模式选择页
+/learn/[topic]/tutor   → AI私教模式
+/learn/[topic]/feynman → 费曼学习模式
+```
+
+#### 3.5.1 AI私教模式
 
 **触发场景**：
-1. 用户点击"开始学习"某个知识点
-2. 用户做题时点击"求助"
-3. 用户代码出错时的讲解
-4. AC后的费曼验证（偶尔触发）
+- 用户在学习模式选择页点击"AI私教"
 
-**对话界面**：
-- 左侧：对话区域
-- 右侧：代码编辑器（做题时）
+**页面布局**：
+```
+┌────────────────────────────────────────────────────────────────┐
+│  ← 返回  AI私教 - DFS深度优先搜索                              │
+│          GESP 5级 · 搜索算法                                   │
+├──────────────────────┬─────────────────────────────────────────┤
+│  知识点介绍          │  AI 私教                                │
+│  ───────────         │  ─────────                              │
+│  [知识点描述]        │  AI：今天我们来学习DFS！               │
+│                      │                                         │
+│  学习要点            │  想象你在走一个迷宫🌀...               │
+│  • 递归实现          │                                         │
+│  • 回溯思想          │  [用户输入框]                          │
+│  • 边界条件          │                                         │
+│                      │  支持语音输入 🎤                        │
+│  学习建议            │                                         │
+│  • 先理解基本概念    │                                         │
+│  • 多看代码示例      │                                         │
+│  • 完成相关练习题    │                                         │
+└──────────────────────┴─────────────────────────────────────────┘
+```
 
 **先教后引示例**（学习DFS）：
 ```
 AI：知行，今天我们来学习DFS——深度优先搜索！
 
     想象你在走一个迷宫🌀。你会怎么走？
-    
+
     DFS的策略是：选一条路，一直走到底，走不通了再退回来换条路。
-    
+
     就像这样：
     [显示迷宫动画]
-    
+
     在代码里，我们用"递归"来实现这个"一直走，走不通就退回来"的过程。
-    
+
     基本模板是这样的：
     ```cpp
     void dfs(int x, int y) {
         if (到达终点) return;
         if (不能走) return;
-        
+
         标记当前位置已访问;
-        
+
         dfs(x+1, y);  // 尝试往下走
         dfs(x-1, y);  // 尝试往上走
         dfs(x, y+1);  // 尝试往右走
         dfs(x, y-1);  // 尝试往左走
-        
+
         取消标记（回溯）;
     }
     ```
-    
+
     你觉得，为什么要"取消标记"呢？🤔
 
 用户：呃...我不太确定
 
 AI：没关系！我来给你一个提示：
-    
+
     如果我们在找"所有可能的路径"，走过A点后，退回来走另一条路时，
     可能还需要再经过A点。
-    
+
     如果不取消标记，A点就被"锁死"了，另一条路就走不通了。
-    
+
     但如果只是找"有没有路能到终点"，其实可以不取消标记。
-    
+
     现在来试试这道入门题吧！👇
     [显示题目：迷宫问题]
+```
+
+#### 3.5.2 费曼学习模式
+
+**设计理念**：
+费曼学习法的核心是"如果你能把一个概念讲给别人听，并让对方理解，说明你真正掌握了它"。
+
+**角色定位**：
+- **用户**：作为老师，向AI讲解知识点
+- **AI**：作为好奇的学生，提出追问，帮助用户发现理解盲点
+
+**页面布局**：
+```
+┌────────────────────────────────────────────────────────────────┐
+│  ← 返回  费曼学习 - DFS深度优先搜索                            │
+│          GESP 5级 · 搜索算法                                   │
+├──────────────────────┬─────────────────────────────────────────┤
+│  费曼学习法          │  向 AI 讲解               [结束讲解]   │
+│  ───────────         │  ─────────                              │
+│  什么是费曼学习法？  │  AI：嗨！👋 我听说你学了DFS，          │
+│  [说明文字]          │      感觉好厉害！你能给我讲讲吗？      │
+│                      │                                         │
+│  你需要做什么？      │  用户：DFS就是深度优先搜索...          │
+│  1. 用自己的话解释   │                                         │
+│  2. 用简单的语言     │  AI：为什么要"深度优先"呢？            │
+│  3. 回答AI的追问     │      和广度优先有什么区别？            │
+│  4. 结束后获取评估   │                                         │
+│                      │  [用户输入框]                          │
+│  这个知识点包含：    │                                         │
+│  • 递归实现          │  支持语音输入 🎤                        │
+│  • 回溯思想          │                                         │
+│  • 边界条件          │                                         │
+└──────────────────────┴─────────────────────────────────────────┘
+```
+
+**AI行为原则**：
+```
+你是一个正在学习编程的学生，对C++和算法有一些基础了解，但很多概念还不太清楚。
+
+## 你的角色
+- 你是一个好奇、爱追问的学生
+- 你希望对方能用简单的语言给你讲明白
+- 你会在不理解的地方追问"为什么"
+- 你会问"如果...会怎样"来测试对方的理解深度
+
+## 互动方式
+1. **开场**：表示你听说对方学了某个知识点，请他给你讲讲
+2. **倾听**：认真听对方的讲解
+3. **追问**：在关键概念处追问，比如：
+   - "为什么要这样做？"
+   - "如果不这样做会怎样？"
+   - "能举个例子吗？"
+   - "这个和XX有什么区别？"
+4. **引导**：如果对方卡住了，给一些引导性的问题帮助他继续
+5. **确认**：当你觉得理解了，说"我好像懂了"并复述一下
+
+## 注意事项
+- 使用中文交流
+- 语气要像真正的学生，不要太正式
+- 适度使用emoji表达情绪
+- 不要主动教对方，而是通过提问让对方思考
+- 如果对方讲错了，不要直接纠正，而是通过追问让他发现问题
+```
+
+**学习评估**：
+
+用户点击"结束讲解，获取评估"后，AI会根据对话内容给出详细评估：
+
+```
+📊 学习评估报告
+
+## 完整度评估 ⭐⭐⭐⭐☆
+你讲解了DFS的基本概念、递归实现方式，但对于回溯和剪枝优化提及较少。
+
+## 准确度评估 ⭐⭐⭐⭐⭐
+讲解内容准确，没有发现明显错误。特别是对"为什么要标记已访问节点"的解释很到位！
+
+## 清晰度评估 ⭐⭐⭐⭐☆
+整体表达清晰，迷宫的比喻很形象。建议在解释递归调用栈时可以更详细一些。
+
+## 薄弱点分析
+- 对DFS的时间复杂度分析不够深入
+- 可以补充更多实际应用场景的例子
+
+## 总结
+做得很棒！👏 你对DFS的核心思想理解得很透彻。建议接下来：
+1. 多练习几道DFS的变体题
+2. 尝试对比BFS，加深理解
+3. 研究一下剪枝优化技巧
+
+继续加油！🚀
 ```
 
 ### 3.6 代码编辑器 + OJ判题
@@ -265,6 +384,7 @@ AI：没关系！我来给你一个提示：
 - 支持C++语法高亮
 - 支持基本自动补全
 - 支持代码格式化
+- 代码自动保存和回显
 
 **判题流程**：
 ```
@@ -276,9 +396,9 @@ AI：没关系！我来给你一个提示：
     ↓
 运行测试用例（逐个）
     ↓
-返回结果：AC / WA / TLE / CE / RE
+返回结果：AC / WA / TLE / CE / RE / MLE
     ↓
-如果WA/CE/RE，AI分析错误原因并给出提示
+如果WA/RE/TLE/MLE，显示AI调试助手入口
 ```
 
 **判题结果展示**：
@@ -287,8 +407,8 @@ AI：没关系！我来给你一个提示：
 │  提交结果                                                        │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  ✅ 测试点1：通过（0.01s）                                       │
-│  ✅ 测试点2：通过（0.01s）                                       │
+│  ✅ 测试点1：通过（0.01s, 1024KB）                              │
+│  ✅ 测试点2：通过（0.01s, 1024KB）                              │
 │  ❌ 测试点3：答案错误                                            │
 │     输入：5 3                                                   │
 │     期望输出：2                                                  │
@@ -296,13 +416,7 @@ AI：没关系！我来给你一个提示：
 │  ○ 测试点4：未运行                                               │
 │  ○ 测试点5：未运行                                               │
 │                                                                 │
-│  ─────────────────────────────────────────────────────────────  │
-│                                                                 │
-│  🤖 AI分析：                                                     │
-│  看起来你的代码在边界情况下出了问题。当输入是5和3时，             │
-│  你觉得应该怎么处理呢？提示：想想5除以3的余数...                  │
-│                                                                 │
-│                                          [再试一次]  [求助AI]    │
+│                                          [再试一次]  [AI帮我看看] │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -315,43 +429,46 @@ AI：没关系！我来给你一个提示：
 **题目数据模型**：
 ```
 Problem {
-  id: string
+  id: string (UUID)
   title: string
-  source: 'gesp_official' | 'luogu'
-  source_id: string  // 如 'P1605'
-  source_url: string
-  
+  source: 'gesp_official' | 'luogu' | 'custom'
+  sourceId: string  // 如 'P1605'
+  sourceUrl: string
+
   level: number  // GESP级别 1-8
-  knowledge_points: string[]  // 关联知识点
-  difficulty: 'easy' | 'medium' | 'hard'
-  
-  description: string  // 题目描述
-  input_format: string
-  output_format: string
-  samples: [{input: string, output: string}]
-  
-  test_cases: [{input: string, output: string}]  // 评测用例
-  time_limit: number  // ms
-  memory_limit: number  // MB
+  knowledgePoints: string[]  // 关联知识点
+  difficulty: string  // 洛谷难度
+
+  description: string  // 题目描述（支持Markdown）
+  inputFormat: string
+  outputFormat: string
+  samples: [{input: string, output: string, explanation?: string}]
+
+  testCases: [{input: string, output: string}]  // 评测用例
+  timeLimit: number  // ms（默认1000）
+  memoryLimit: number  // MB（默认256）
+
+  hint: string  // 提示
+  solution: string  // 题解
 }
 ```
 
 **搜集规则**：
 - 只从指定平台搜集，不编造题目
 - 需要人工构造测试用例（洛谷测试用例不公开）
-- 优先搜集GESP 5级相关题目
+- 支持按级别和知识点筛选
 
 **MVP题目数量目标**：
-- GESP 5级真题：2-3套（约6-9道编程题）
-- 洛谷筛选题：20-30道（覆盖5级各知识点）
+- GESP 1-8级真题：每级2-3套
+- 洛谷筛选题：每级20-30道（覆盖各知识点）
 
 ### 3.8 数据导入
 
 **方式1：洛谷用户名抓取**
 ```
-用户输入洛谷用户名
+用户输入洛谷用户名或个人主页URL
     ↓
-抓取用户公开的提交记录页（luogu.com.cn/user/xxx#practice）
+抓取用户公开的提交记录页
     ↓
 解析：题目ID、提交时间、结果（AC/WA）、代码（如果公开）
     ↓
@@ -383,33 +500,61 @@ AI：好的，我记下了。DFS的边界条件确实是个常见坑点，
     还有其他题吗？
 ```
 
+**当前状态**：API框架已完成，数据解析逻辑开发中
+
 ### 3.9 知识点地图
 
-**展示形式**：列表形式展示进度（MVP不做复杂可视化）
+**路由**：`/map`
+
+**展示形式**：按级别标签页展示，列表形式展示各分类知识点
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  GESP 5级 知识点地图                                总进度：45%  │
+│  知识点                                                          │
+├─────────────────────────────────────────────────────────────────┤
+│  [1级] [2级] [3级] [4级] [5级✓] [6级] [7级] [8级]               │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  📗 初等数论                                              80%   │
-│  ├── ✅ GCD最大公约数        掌握度：95%   已练习：5题          │
-│  ├── ✅ LCM最小公倍数        掌握度：90%   已练习：3题          │
-│  └── ✅ 素数筛法             掌握度：85%   已练习：4题          │
+│  GESP C++ 5级                                                   │
+│  考试时间：90分钟 | 选择题15题 + 编程题2题                       │
 │                                                                 │
-│  📘 搜索算法                                              40%   │
-│  ├── ⏳ DFS深度优先搜索      掌握度：60%   已练习：3题  [继续]  │
-│  └── ○ BFS广度优先搜索       掌握度：0%    未开始       [开始]  │
+│  ─────────────────────────────────────────────────────────────  │
 │                                                                 │
-│  📙 动态规划                                              0%    │
-│  └── ○ 一维DP入门           掌握度：0%    未开始       [锁定]  │
+│  📗 初等数论                                                    │
+│  ├── GCD最大公约数        [开始学习]                            │
+│  │   辗转相除法求最大公约数                                     │
+│  ├── LCM最小公倍数        [开始学习]                            │
+│  │   利用GCD计算最小公倍数                                      │
+│  └── 素数筛法             [开始学习]                            │
+│      埃拉托斯特尼筛法                                           │
 │                                                                 │
-│  📕 高精度                                                0%    │
-│  └── ○ 高精度加减乘         掌握度：0%    未开始       [锁定]  │
+│  📘 搜索算法                                                    │
+│  ├── DFS深度优先搜索      [开始学习]                            │
+│  │   递归实现、回溯思想                                         │
+│  └── BFS广度优先搜索      [开始学习]                            │
+│      队列实现、层次遍历                                         │
 │                                                                 │
-│  图例：✅已掌握  ⏳学习中  ○未开始  🔒锁定                      │
+│  📙 动态规划                                                    │
+│  └── 一维DP入门           [开始学习]                            │
+│      状态定义与转移方程                                         │
+│                                                                 │
+│  📕 高精度                                                      │
+│  └── 高精度加减乘         [开始学习]                            │
+│      大整数运算实现                                             │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
+```
+
+**知识点数据结构**：
+```typescript
+interface KnowledgePoint {
+  id: string;           // 唯一标识
+  name: string;         // 知识点名称
+  level: number;        // GESP级别 1-8
+  category: string;     // 分类（基础语法/数据结构/算法/数学）
+  description: string;  // 简短描述
+  details: string[];    // 学习要点列表
+}
 ```
 
 ### 3.10 游戏化：连胜 + XP + 徽章
@@ -417,18 +562,18 @@ AI：好的，我记下了。DFS的边界条件确实是个常见坑点，
 **连胜系统**：
 - 每天完成至少1道题或1个知识点学习，连胜+1
 - 连胜天数显示在首页顶部
-- 断签后连胜归零，重新开始
+- 超过1天未活跃，连胜归零，重新开始
 - MVP不做补签卡功能
 
 **XP经验值**：
 - AC一道简单题：+10 XP
 - AC一道中等题：+20 XP
-- AC一道困难题：+50 XP
+- AC一道困难题：+30 XP
 - 完成知识点学习：+30 XP
 - 完成每日任务：+50 XP（额外奖励）
 - 连续AC（不WA）：额外+10 XP
 
-**简单徽章**（MVP只做这几个）：
+**简单徽章**（MVP实现的7个）：
 | 徽章 | 获得条件 |
 |------|---------|
 | 🎯 初次AC | 第一次AC任意题目 |
@@ -439,31 +584,7 @@ AI：好的，我记下了。DFS的边界条件确实是个常见坑点，
 | 📗 数论入门 | 完成初等数论模块 |
 | 📘 搜索入门 | 完成DFS+BFS模块 |
 
-### 3.11 费曼验证（简单版）
-
-**触发时机**：
-- 用户AC一道题后，约20%概率触发
-- 优先在新知识点的第一道AC题后触发
-
-**对话示例**：
-```
-AI：太棒了，AC了！🎉
-    
-    我有个小请求：你能用自己的话给我讲讲，这道题你是怎么想的吗？
-    就当我是一个刚学编程的小朋友～
-
-用户：就是用DFS，从起点开始，每次尝试四个方向，走过的标记一下
-
-AI：嗯嗯，那为什么要"标记走过的"呢？
-
-用户：不然会一直在同一个地方转圈
-
-AI：完全正确！👏 你已经理解了DFS的核心思想。
-
-    [记录：用户对DFS基本原理理解正确]
-```
-
-### 3.12 AI调试助手
+### 3.11 AI调试助手
 
 **设计理念**：
 当学生代码提交错误时，不是简单显示"Wrong Answer"，而是通过AI智能分析，给出渐进式的引导提示，帮助学生自己发现和修复问题。
@@ -480,34 +601,6 @@ AI：完全正确！👏 你已经理解了DFS的核心思想。
 - ❌ TLE (Time Limit Exceeded) - 超时
 - ❌ MLE (Memory Limit Exceeded) - 内存超限
 - ✅ CE (Compile Error) - 编译错误直接显示编译器信息，不用AI
-
-**AI获取信息**：
-```json
-{
-  "problem": {
-    "title": "数组求和",
-    "description": "完整题目描述...",
-    "samples": [...],
-    "constraints": "0 ≤ n ≤ 1000"
-  },
-  "studentCode": "用户提交的C++代码",
-  "result": {
-    "verdict": "WA",
-    "passedTests": 2,
-    "totalTests": 5,
-    "failedTests": [
-      {
-        "testIndex": 3,
-        "input": "0",
-        "expectedOutput": "0",
-        "actualOutput": "未定义行为"
-      }
-    ]
-  },
-  "conversationHistory": [...],  // 之前的对话
-  "studentLevel": 5
-}
-```
 
 **渐进式提示策略**：
 
@@ -561,23 +654,6 @@ AI：完全正确！👏 你已经理解了DFS的核心思想。
 │ - 可能包含代码片段                                       │
 │ - 但不给完整的正确代码                                   │
 └──────────────────────────────────────────────────────────┘
-
-┌──────────────────────────────────────────────────────────┐
-│ 第4次及以后（保持详细级别）                              │
-├──────────────────────────────────────────────────────────┤
-│ AI能看到学生的代码修改历史和对话历史                    │
-│                                                          │
-│ 示例：                                                   │
-│ "你这次改进了初始化，做得好！                           │
-│  但现在测试点4还是错误。                                 │
-│  我看到你的循环边界是 i <= n，                          │
-│  考虑一下数组下标是从0还是1开始的？"                     │
-│                                                          │
-│ 特点：                                                   │
-│ - 持续对话，记住上下文                                   │
-│ - 肯定进步，继续引导                                     │
-│ - 可以深入讨论更细节的问题                               │
-└──────────────────────────────────────────────────────────┘
 ```
 
 **使用限制**：
@@ -585,128 +661,122 @@ AI：完全正确！👏 你已经理解了DFS的核心思想。
 - ✅ 记住完整对话历史
 - ✅ 可以追踪学生的代码修改
 
-**UI展示**：
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  [题目描述区]          │  [代码编辑器]                │ [AI助手] │
-│                        │                              │         │
-│  题目内容...           │  #include <iostream>         │  🤖     │
-│                        │  ...                         │         │
-│                        │                              │  AI     │
-│                        │──────────────────────────    │  学习   │
-│                        │ ❌ WA (2/5)                 │  助手   │
-│                        │ 测试点3：答案错误            │         │
-│                        │                              │  [关闭] │
-│                        │ 输入：0                      │  ──────  │
-│                        │ 预期：0                      │         │
-│                        │ 你的：未定义                 │  第1次  │
-│                        │                              │  ┌────┐ │
-│                        │ [💡 AI帮我看看 (第1次)]    │  │AI: │ │
-│                        │                              │  │我注│ │
-│                        │                              │  │意到│ │
-│                        │                              │  │... │ │
-│                        │                              │  └────┘ │
-│                        │                              │         │
-│                        │                              │  [继续] │
-│                        │                              │  [分析] │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**AI助手侧边栏**（点击按钮后从右侧滑出）：
-- 宽度：400px
-- 位置：固定在右侧
-- 可收起/展开
+**AI调试抽屉组件**：
+- 从右侧滑出的抽屉式界面
 - 显示完整对话历史
-- 每次分析后自动添加到历史记录
+- 按提示级别分类
+- 时间戳记录
+- 继续分析按钮
 
-**语言风格**：
-- ✅ 清晰直接
-- ✅ 适当鼓励（"你改进了！""很接近了！"）
-- ❌ 不打比喻
-- ❌ 不刻意迎合小学生语气
-- ❌ 不用"小朋友""宝贝"等称呼
-
-**AI模型**：
-- 使用 Claude Opus 4.5
-- 确保分析质量和教学效果
-
-**Prompt设计要点**：
-```
-你是一位编程老师，正在辅导小学5年级的学生备考GESP C++考试。
-
-学生信息：
-- 年级：小学5年级
-- 目标：GESP C++ 5级考试
-- 当前水平：刚通过4级
-
-你的角色：
-1. 永远不要直接给出完整的正确代码
-2. 通过提问和提示引导学生自己思考
-3. 使用清晰直接的语言，不要打比喻
-4. 适当给予正向反馈和鼓励
-5. 根据提示次数调整帮助程度：
-   - 第1次：轻提示（引导思考）
-   - 第2次：中等提示（指出位置和原因）
-   - 第3次及以后：详细提示（给修改建议但不给完整代码）
-
-当前情况：
-[题目、代码、错误信息、对话历史...]
-
-请给出适合当前提示级别的帮助（不超过150字）。
+**数据持久化**：
+```typescript
+// Submission 表字段
+{
+  aiHelpCount: number,        // 该提交请求AI帮助的次数
+  aiConversations: [          // AI调试对话历史
+    {
+      promptLevel: number,    // 提示级别 1/2/3
+      aiResponse: string,     // AI回复内容
+      timestamp: string       // 时间戳
+    }
+  ]
+}
 ```
 
-**对话历史存储**：
-- 每次AI分析作为一条对话记录
-- 关联到具体的提交记录
-- 用户下次提交时，AI能看到之前的对话
-- 记录提示次数，控制渐进策略
+### 3.12 AI提示词配置中心
 
-**用户自定义提示词**：
+**路由**：`/profile/ai-config`
 
-用户可以在个人设置页面自定义AI调试助手的提示词，控制AI的教学风格。
+**设计理念**：
+用户可以自定义不同场景下AI的角色设定和行为方式，满足个性化需求。
 
-**配置界面**（`/profile` - AI助手配置标签页）：
+**支持的四种场景**：
+
+| 场景 | 标识 | 说明 |
+|------|------|------|
+| **AI私教** | tutor | 知识点学习时，AI作为老师的角色设定 |
+| **题目辅导** | problem | 做题时，AI作为教练引导解题的角色设定 |
+| **调试助手** | debug | 代码调试时，AI帮助分析错误的角色设定 |
+| **费曼学习** | feynman | 费曼学习法中，AI作为提问学生的角色设定 |
+
+**配置界面**：
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ 🤖 AI调试助手提示词配置                                │
+│ 🤖 提示词配置                                           │
+│ 自定义不同场景下 AI 的角色设定和行为方式                │
+├─────────────────────────────────────────────────────────┤
+│ [AI私教] [题目辅导] [调试助手] [费曼学习]              │
+├─────────────────────────────────────────────────────────┤
 │                                                         │
-│ 这个提示词决定了AI如何帮助你调试代码。                 │
-│ 你可以自定义AI的风格和教学方式。                        │
+│ 针对知识点学习时，AI 作为老师的角色设定                │
 │                                                         │
+│ 当前使用：自定义配置                    ● 有未保存的更改 │
+│                                                         │
+│ 系统提示词                                              │
 │ ┌─────────────────────────────────────────────────────┐ │
-│ │ 系统提示词：                    [可编辑大文本框]    │ │
-│ │ 你是一位编程老师...                                │ │
-│ │ ...                                                 │ │
+│ │ 你是GESP AI，一位亲切友好的编程老师...             │ │
+│ │                                                     │ │
+│ │ ## 你的教学风格                                    │ │
+│ │ - 语气亲切、鼓励性强                              │ │
+│ │ - 使用生动的比喻和生活化的例子...                  │ │
+│ │                                                     │ │
 │ └─────────────────────────────────────────────────────┘ │
+│ 字数：1,234 / 10,000                                    │
 │                                                         │
-│ [💾 保存配置]  [🔄 恢复默认]  [👁 预览效果]           │
+│ [💾 保存配置]  [🔄 恢复默认]                           │
+│                                                         │
+├─────────────────────────────────────────────────────────┤
+│ 💡 提示词说明                                           │
+│ • 提示词决定了 AI 的角色、教学风格和交互方式           │
+│ • 修改后立即生效，下次使用相应功能时采用新配置         │
+│ • 建议包含：角色定位、行为原则、回复要求               │
+│ • 可以随时恢复为系统默认配置                           │
 └─────────────────────────────────────────────────────────┘
 ```
 
-**配置逻辑**：
-- 用户未配置时，使用系统默认提示词
-- 用户可随时编辑、保存自己的提示词
-- 可一键恢复默认配置
-- 修改后立即生效，下次AI分析时使用
-
-**数据存储**：
-- 在 `users` 表中添加 `ai_debug_prompt` 字段（TEXT类型）
-- 为空时使用默认提示词，有值时使用用户自定义的
-
 **API接口**：
 ```
-GET  /api/user/ai-config        # 获取用户AI配置
-POST /api/user/ai-config        # 保存用户AI配置
-POST /api/user/ai-config/reset  # 恢复默认配置
+GET  /api/user/ai-config        # 获取用户所有AI配置
+POST /api/user/ai-config        # 保存指定类型的提示词
+POST /api/user/ai-config/reset  # 恢复指定类型的默认配置
 ```
 
-**默认提示词**：
-系统提供的默认提示词包含：
-- 角色定位（编程老师，辅导小学5年级学生）
-- 教学原则（不直接给答案、引导思考、清晰直接）
-- 渐进策略（第1-3次提示的不同程度）
-- 回复要求（字数限制、风格要求）
+**数据存储**：
+```sql
+-- users 表中的AI配置字段
+aiTutorPrompt TEXT,   -- AI私教提示词（为空则使用默认）
+aiProblemPrompt TEXT, -- 题目辅导提示词
+aiDebugPrompt TEXT,   -- 调试助手提示词
+aiFeynmanPrompt TEXT  -- 费曼学习提示词
+```
+
+### 3.13 语音输入功能
+
+**设计理念**：
+为小学生用户提供更便捷的输入方式，降低打字负担。
+
+**功能特性**：
+- 支持中英文双语识别（Web Speech API）
+- 一键切换语言按钮
+- 实时语音转文字
+- 音量可视化指示器（3个跳动的点）
+- 快捷键支持：空格键按住录音，松开停止
+- 中文自动标点（基于停顿和语气词）
+
+**界面元素**：
+```
+┌─────────────────────────────────────────────────────────────┐
+│  [输入框]              [中/EN] [🎤] [发送]                   │
+│                                                             │
+│  ● ● ●  正在录音，点击麦克风或松开空格键停止...            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**实现细节**：
+- 使用 `useSpeechRecognition` 自定义 Hook
+- 支持连续识别模式
+- 语言偏好保存到 localStorage
+- 错误提示3秒后自动消失
 
 ---
 
@@ -716,12 +786,13 @@ POST /api/user/ai-config/reset  # 恢复默认配置
 
 | 层级 | 技术选型 |
 |------|---------|
-| **前端** | Next.js + React + TypeScript |
-| **UI组件** | Tailwind CSS + shadcn/ui |
+| **前端** | Next.js 14 + React 18 + TypeScript |
+| **UI组件** | Tailwind CSS + shadcn/ui + Radix UI |
 | **代码编辑器** | Monaco Editor |
 | **后端** | Next.js API Routes |
-| **数据库** | Supabase (PostgreSQL) |
-| **AI** | Claude API |
+| **数据库** | PostgreSQL + Prisma ORM |
+| **认证** | NextAuth.js (JWT策略) |
+| **AI** | Claude API (Anthropic) |
 | **判题** | Judge0 API |
 | **部署** | Railway |
 | **域名** | GESP.AI |
@@ -748,7 +819,7 @@ POST /api/user/ai-config/reset  # 恢复默认配置
           │                    │                    │
           ▼                    ▼                    ▼
    ┌────────────┐      ┌────────────┐      ┌────────────┐
-   │  Supabase  │      │ Claude API │      │ Judge0 API │
+   │ PostgreSQL │      │ Claude API │      │ Judge0 API │
    │  (数据库)   │      │  (AI对话)  │      │  (判题)    │
    └────────────┘      └────────────┘      └────────────┘
 ```
@@ -763,20 +834,24 @@ CREATE TABLE users (
   username VARCHAR(50) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT NOW(),
-  
+  updated_at TIMESTAMP DEFAULT NOW(),
+
   -- 学习目标
   target_level INTEGER DEFAULT 5,
   exam_date DATE,
   weekly_schedule JSONB,
-  
+
   -- 统计
   streak_days INTEGER DEFAULT 0,
   last_active_date DATE,
   total_xp INTEGER DEFAULT 0,
   badges TEXT[] DEFAULT '{}',
 
-  -- AI配置
-  ai_debug_prompt TEXT  -- 用户自定义的AI调试助手提示词，为空则使用默认
+  -- AI配置 - 各场景的自定义提示词
+  ai_tutor_prompt TEXT,
+  ai_problem_prompt TEXT,
+  ai_debug_prompt TEXT,
+  ai_feynman_prompt TEXT
 );
 
 -- 学习计划表
@@ -784,31 +859,57 @@ CREATE TABLE study_plans (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id),
   created_at TIMESTAMP DEFAULT NOW(),
-  
-  plan_data JSONB,  -- AI生成的完整计划
-  current_week INTEGER DEFAULT 1,
-  status VARCHAR(20) DEFAULT 'active'  -- active, completed, paused
+  updated_at TIMESTAMP DEFAULT NOW(),
+
+  start_date DATE,
+  end_date DATE,
+  target_level INTEGER,
+  weekly_plan JSONB,  -- AI生成的完整计划
+  is_active BOOLEAN DEFAULT TRUE
+);
+
+-- 每日任务表
+CREATE TABLE daily_tasks (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id),
+  date DATE,
+
+  tasks JSONB,  -- [{type, targetId, title, completed, xpReward}]
+  total_xp INTEGER DEFAULT 0,
+  completed_xp INTEGER DEFAULT 0,
+  is_completed BOOLEAN DEFAULT FALSE,
+
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+
+  UNIQUE(user_id, date)
 );
 
 -- 题目表
 CREATE TABLE problems (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   title VARCHAR(255) NOT NULL,
-  source VARCHAR(50) NOT NULL,  -- 'gesp_official', 'luogu'
+  source VARCHAR(50) NOT NULL,
   source_id VARCHAR(50),
   source_url TEXT,
-  
+
   level INTEGER,
   knowledge_points TEXT[],
-  difficulty VARCHAR(20),
-  
+  difficulty VARCHAR(50),
+
   description TEXT,
   input_format TEXT,
   output_format TEXT,
   samples JSONB,
   test_cases JSONB,
   time_limit INTEGER DEFAULT 1000,
-  memory_limit INTEGER DEFAULT 256
+  memory_limit INTEGER DEFAULT 256,
+
+  hint TEXT,
+  solution TEXT,
+
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 -- 提交记录表
@@ -820,41 +921,78 @@ CREATE TABLE submissions (
 
   code TEXT,
   language VARCHAR(20) DEFAULT 'cpp',
-  status VARCHAR(20),  -- 'AC', 'WA', 'TLE', 'CE', 'RE'
+  status VARCHAR(20),
+  score INTEGER DEFAULT 0,
 
-  test_results JSONB,  -- 每个测试点的结果
-  xp_earned INTEGER DEFAULT 0,
+  compile_output TEXT,
+  run_output TEXT,
+  error_message TEXT,
+  time_used INTEGER,
+  memory_used INTEGER,
+
+  test_results JSONB,
 
   -- AI调试助手相关
-  ai_help_count INTEGER DEFAULT 0,  -- 该提交请求AI帮助的次数
-  ai_conversations JSONB  -- AI调试对话历史 [{prompt_level: 1, ai_response: '...', timestamp: '...'}]
+  ai_help_count INTEGER DEFAULT 0,
+  ai_conversations JSONB
+);
+
+-- 知识点表
+CREATE TABLE knowledge_points (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name VARCHAR(255) NOT NULL,
+  level INTEGER,
+  category VARCHAR(100),
+  description TEXT,
+
+  parent_id UUID REFERENCES knowledge_points(id),
+  prerequisites TEXT[] DEFAULT '{}',
+
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 -- 学习记录表
 CREATE TABLE learning_records (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id),
-  created_at TIMESTAMP DEFAULT NOW(),
-  
-  type VARCHAR(50),  -- 'knowledge_point', 'problem', 'review'
-  knowledge_point VARCHAR(100),
-  problem_id UUID REFERENCES problems(id),
-  
-  duration_minutes INTEGER,
-  xp_earned INTEGER DEFAULT 0,
-  notes TEXT
+  knowledge_point_id UUID REFERENCES knowledge_points(id),
+
+  status VARCHAR(20) DEFAULT 'not_started',
+  progress INTEGER DEFAULT 0,
+
+  started_at TIMESTAMP,
+  completed_at TIMESTAMP,
+  last_studied_at TIMESTAMP,
+
+  study_time INTEGER DEFAULT 0,
+  practice_count INTEGER DEFAULT 0,
+  correct_count INTEGER DEFAULT 0,
+
+  UNIQUE(user_id, knowledge_point_id)
 );
 
 -- 对话历史表
-CREATE TABLE chat_history (
+CREATE TABLE chat_histories (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES users(id),
   created_at TIMESTAMP DEFAULT NOW(),
-  
-  context VARCHAR(100),  -- 'learning', 'problem_help', 'feynman'
-  problem_id UUID REFERENCES problems(id),
-  
-  messages JSONB  -- [{role: 'user'|'assistant', content: '...'}]
+  updated_at TIMESTAMP DEFAULT NOW(),
+
+  context VARCHAR(100),  -- 'learn_xxx' | 'feynman_xxx' | 'problem_xxx' | 'general'
+  messages JSONB
+);
+
+-- 徽章表
+CREATE TABLE badges (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  code VARCHAR(50) UNIQUE,
+  name VARCHAR(100),
+  description TEXT,
+  icon VARCHAR(50),
+  condition JSONB,
+
+  created_at TIMESTAMP DEFAULT NOW()
 );
 ```
 
@@ -864,16 +1002,21 @@ CREATE TABLE chat_history (
 
 ### 5.1 页面清单
 
-| 页面 | 路由 | 描述 |
-|------|------|------|
-| 登录/注册 | `/auth` | 用户认证 |
-| 首页（今日任务） | `/` | AI决定的今日任务、进度概览 |
-| 学习规划设置 | `/setup` | 首次使用时设置目标和时间 |
-| 知识点学习 | `/learn/[topic]` | AI教学对话 |
-| 做题页面 | `/problem/[id]` | 代码编辑器+AI辅助 |
-| 知识点地图 | `/map` | 完整知识点进度 |
-| 数据导入 | `/import` | 导入洛谷数据 |
-| 个人中心 | `/profile` | 统计、徽章、设置、AI助手配置 |
+| 页面 | 路由 | 描述 | 状态 |
+|------|------|------|------|
+| 登录 | `/login` | 用户登录 | ✅ |
+| 注册 | `/register` | 用户注册 | ✅ |
+| 首页（今日任务） | `/` | AI决定的今日任务、进度概览 | ✅ |
+| 学习规划设置 | `/setup` | 首次使用时设置目标和时间 | ✅ |
+| 学习模式选择 | `/learn/[topic]` | 选择AI私教或费曼学习 | ✅ |
+| AI私教 | `/learn/[topic]/tutor` | AI教学对话 | ✅ |
+| 费曼学习 | `/learn/[topic]/feynman` | 用户讲解，AI评估 | ✅ |
+| 题目列表 | `/problem` | 题库浏览和筛选 | ✅ |
+| 做题页面 | `/problem/[id]` | 代码编辑器+判题+AI辅助 | ✅ |
+| 知识点地图 | `/map` | 1-8级完整知识点展示 | ✅ |
+| 数据导入 | `/import` | 导入洛谷数据 | 🚧 |
+| 个人中心 | `/profile` | 统计、徽章、设置 | ✅ |
+| AI配置 | `/profile/ai-config` | 四种场景提示词配置 | ✅ |
 
 ### 5.2 页面流程
 
@@ -884,13 +1027,68 @@ CREATE TABLE chat_history (
 日常使用：
 登录 → 首页（看今日任务）→ 点击任务 → 学习/做题 → 返回首页
 
+学习流程：
+知识点 → 选择学习模式（AI私教/费曼学习）→ 学习 → 完成
+
 做题流程：
-选择题目 → 阅读题目 → 写代码 → 提交 → 查看结果 → (求助AI) → AC → (费曼验证)
+选择题目 → 阅读题目 → 写代码 → 提交 → 查看结果 → (AI调试) → AC
 ```
 
 ---
 
-## 六、后续版本规划
+## 六、API端点清单
+
+### 6.1 认证相关
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| POST | `/api/auth/register` | 用户注册 |
+| POST | `/api/auth/[...nextauth]` | NextAuth认证处理 |
+
+### 6.2 学习计划
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/plan` | 获取当前计划和今日任务 |
+| POST | `/api/plan` | 生成AI学习计划 |
+
+### 6.3 题目与判题
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/problems` | 题目列表（支持筛选、分页） |
+| POST | `/api/problems` | 创建题目 |
+| GET | `/api/problems/[id]` | 题目详情 |
+| POST | `/api/judge` | 提交代码判题 |
+| GET | `/api/judge` | 获取提交历史 |
+
+### 6.4 AI对话
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| POST | `/api/chat` | 统一AI对话（learn/feynman/problem/general） |
+| POST | `/api/ai/debug-help` | AI调试助手 |
+
+### 6.5 用户相关
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/user/stats` | 获取用户统计数据 |
+| GET | `/api/user/ai-config` | 获取AI配置 |
+| POST | `/api/user/ai-config` | 保存AI提示词 |
+| POST | `/api/user/ai-config/reset` | 重置AI配置 |
+
+### 6.6 数据导入
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| POST | `/api/import/luogu` | 洛谷数据导入 |
+| POST | `/api/import/code` | 代码分析导入 |
+
+### 6.7 数据初始化
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| POST | `/api/seed` | 统一初始化 |
+| POST | `/api/seed/gesp[1-8]` | 各级别题目初始化 |
+| POST | `/api/seed/reset` | 重置数据 |
+
+---
+
+## 七、后续版本规划
 
 ### V1.1（MVP后2周）
 
@@ -909,7 +1107,7 @@ CREATE TABLE chat_history (
 | **家长端** | 查看孩子学习进度报告 |
 | **智能推送** | 在用户常用学习时间推送提醒 |
 | **更多知识点可视化** | 技能树/地图形式展示 |
-| **模拟考试** | 完整模拟GESP 5级考试 |
+| **模拟考试** | 完整模拟GESP考试 |
 
 ### V1.3（MVP后2个月）
 
@@ -918,7 +1116,6 @@ CREATE TABLE chat_history (
 | **排行榜/联赛** | 同级别学生每周竞争 |
 | **好友系统** | 加好友、组队学习 |
 | **小G吉祥物** | 动态表情、情感互动 |
-| **更多级别支持** | 扩展到GESP 1-8级 |
 
 ### V2.0（长期）
 
@@ -931,29 +1128,33 @@ CREATE TABLE chat_history (
 
 ---
 
-## 七、验收标准
+## 八、验收标准
 
 ### MVP验收清单
 
-- [ ] 用户可以注册、登录
-- [ ] 用户可以设置学习目标（级别、考试日期、每周时间）
-- [ ] AI可以根据目标生成学习计划
-- [ ] 首页显示AI决定的今日任务
-- [ ] 用户可以进行知识点学习（AI对话）
-- [ ] 用户可以在内嵌编辑器中写代码
-- [ ] 代码可以提交并得到判题结果
-- [ ] 题库中有至少20道GESP 5级相关题目
-- [ ] 用户可以通过洛谷用户名导入数据
-- [ ] 用户可以通过粘贴代码导入数据
-- [ ] 知识点地图显示学习进度
-- [ ] 连胜系统正常工作
-- [ ] XP经验值正常累计
-- [ ] 可以获得基础徽章
-- [ ] 部署到GESP.AI并可访问
-- [ ] 赵知行可以正常使用并开始备考
+- [x] 用户可以注册、登录
+- [x] 用户可以设置学习目标（级别、考试日期、每周时间）
+- [x] AI可以根据目标生成学习计划
+- [x] 首页显示AI决定的今日任务
+- [x] 用户可以选择AI私教或费曼学习模式
+- [x] 用户可以进行知识点学习（AI对话）
+- [x] 用户可以通过费曼学习获取评估
+- [x] 用户可以在内嵌编辑器中写代码
+- [x] 代码可以提交并得到判题结果
+- [x] AI调试助手提供渐进式帮助
+- [x] 题库中有GESP相关题目
+- [x] 知识点地图显示1-8级完整知识点
+- [x] 连胜系统正常工作
+- [x] XP经验值正常累计
+- [x] 可以获得基础徽章
+- [x] 用户可以自定义四种场景的AI提示词
+- [x] 支持语音输入（中英文）
+- [x] 部署到GESP.AI并可访问
+- [ ] 洛谷数据导入功能完善
+- [ ] 赵知行完成完整的使用测试
 
 ---
 
-*文档版本：v1.0*  
-*创建日期：2026年1月28日*  
+*文档版本：v1.1*
+*更新日期：2026年1月30日*
 *目标用户：赵知行（小学5年级，GESP 4级→5级，2026年3月14日考试）*
