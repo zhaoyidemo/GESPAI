@@ -38,8 +38,7 @@ const gesp8Problems = [
     samples: [
       {
         input: "2\n5\n7 4 6 1 1\n2\n1 2 3\n1 5 1\n5\n1 2 3 4 5\n2\n5 5 3\n1 4 3",
-        output: "0\n2\n0\n1",
-        explanation: "第一组：区间[1,2]中没有3，区间[1,5]中有2个1；第二组：区间[5,5]中没有3，区间[1,4]中有1个3"
+        output: "0\n2\n0\n1"
       },
     ],
     testCases: [
@@ -83,13 +82,11 @@ const gesp8Problems = [
     samples: [
       {
         input: "7 2 1\n5 7\n3 6\n2 3\n1 5\n5 4\n1 2\n7 4\n3 7",
-        output: "4",
-        explanation: "城市7和4都有传送门，从3走到7用传送门，再走到4"
+        output: "4"
       },
       {
         input: "5 0 3\n2 3\n5 1\n5 2\n1 4\n4 5\n1 4\n4 3",
-        output: "2\n1\n4",
-        explanation: "没有传送门，直接走树上路径"
+        output: "2\n1\n4"
       }
     ],
     testCases: [
@@ -130,8 +127,7 @@ N ≤ a_0 + a_1 + ... + a_{M-1} ≤ N+1
     samples: [
       {
         input: "3\n3 2 1 2\n3 2 1 3\n5 3 1 3 1",
-        output: "3\n4\n20",
-        explanation: "第一组：3个学生，1个A类奖品和2个B类奖品，方案数为C(3,1)=3"
+        output: "3\n4\n20"
       },
     ],
     testCases: [
@@ -178,8 +174,7 @@ N ≤ a_0 + a_1 + ... + a_{M-1} ≤ N+1
     samples: [
       {
         input: "5\n0 0 2 2\n3\n2 3 4\n3 2 3 4\n2 1 4",
-        output: "2\n2\n0",
-        explanation: "员工2可以管理3和4；员工0管理所有人"
+        output: "2\n2\n0"
       },
     ],
     testCases: [
@@ -215,8 +210,7 @@ N ≤ a_0 + a_1 + ... + a_{M-1} ≤ N+1
     samples: [
       {
         input: "2 5 2",
-        output: "9",
-        explanation: "k=1时，只有(1,1)位置可以是1的公倍数，ans_1=1；k=2时，(1,2),(2,1),(2,2),(1,4)等位置可以，ans_2=4。总和=1×1+2×4=9"
+        output: "9"
       },
       {
         input: "100 100 100",
@@ -261,8 +255,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "1\n6\n1 2 2 3 1 3\n4\n1 3\n1 6\n1 5\n5 6",
-        output: "1\n1\n0\n2",
-        explanation: "[1,3]: 1,2,2 -> 2,2被移除 -> 剩1张\n[1,6]: 最终只剩1张\n[1,5]: 全部被移除\n[5,6]: 1,3无法配对，剩2张"
+        output: "1\n1\n0\n2"
       },
     ],
     testCases: [
@@ -301,8 +294,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "5\n0 1 0 1 0\n1 2\n1 3\n3 4\n3 5",
-        output: "3",
-        explanation: "节点2（黑）和节点5（白）的距离为3，是最远的异色点对"
+        output: "3"
       },
     ],
     testCases: [
@@ -346,8 +338,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "3\n3 1\n5 6 3\n3 5 6\n1 4 100000",
-        output: "100001",
-        explanation: "从平台3的左端点出发，需要计算到达平台1的最短路径"
+        output: "100001"
       },
     ],
     testCases: [
@@ -389,8 +380,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "2\n5 6 2\n5 1 5",
-        output: "120\n0",
-        explanation: "第一组：5双手套选6只，恰好2对配对；第二组：只选1只不可能有5对配对"
+        output: "120\n0"
       },
     ],
     testCases: [
@@ -432,13 +422,11 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "5\n1 0 0 1 0\n1 2\n3 5\n4 3\n1 3",
-        output: "4",
-        explanation: "路径 2-1-3-4 是美丽的（颜色为 0-1-0-1），长度为4"
+        output: "4"
       },
       {
         input: "5\n0 0 0 0 0\n1 2\n2 3\n3 4\n4 5",
-        output: "1",
-        explanation: "所有节点同色，任何包含两个以上节点的路径都不美丽"
+        output: "1"
       }
     ],
     testCases: [
@@ -480,8 +468,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "5 1\n0 0 1 1 1\n1 2\n2 3\n2 5\n1 4",
-        output: "3",
-        explanation: "路径 2-1-4 或 5-2-1 经过1个黑色节点，包含3个节点"
+        output: "3"
       },
     ],
     testCases: [
@@ -517,18 +504,15 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "4 2\n1 3\n2 4",
-        output: "2",
-        explanation: "约束：1在3前面且相邻，2在4前面且相邻。方案：1324, 2413"
+        output: "2"
       },
       {
         input: "3 0",
-        output: "6",
-        explanation: "无约束，3!=6"
+        output: "6"
       },
       {
         input: "3 2\n1 2\n2 1",
-        output: "0",
-        explanation: "矛盾约束，无解"
+        output: "0"
       }
     ],
     testCases: [
@@ -571,8 +555,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "5 5 3 3\n1 2 3\n2 3 2\n3 4 1\n4 5 3\n1 4 5\n5\n1\n4",
-        output: "4\n3\n1",
-        explanation: "学校在节点3，分别求节点5、1、4到节点3的最短距离"
+        output: "4\n3\n1"
       },
     ],
     testCases: [
@@ -618,8 +601,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "6 2\n1 3\n1 5\n3 6\n3 2\n5 4\n5 3\n2 6\n4 6",
-        output: "2",
-        explanation: "删除节点1或3后，好点对仍连通，坏点对4和6不连通"
+        output: "2"
       },
     ],
     testCases: [
@@ -668,8 +650,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "5 4\n1 1 2 2\n3 3\n1 -1 -1\n2 5\n2 1 -2 1 -5\n1 1\n-5\n1 2\n100 -100",
-        output: "4\n1\n4\n2",
-        explanation: "每次旅行按操作执行后的最终位置"
+        output: "4\n1\n4\n2"
       },
     ],
     testCases: [
@@ -707,8 +688,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "4\n1 2\n2 3\n3 4",
-        output: "6",
-        explanation: "链状树，可以从两端开始，每个方向3种序列"
+        output: "6"
       },
       {
         input: "8\n1 2\n1 3\n1 4\n2 5\n2 6\n3 7\n3 8",
@@ -759,13 +739,11 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "4 4 3\n1 2\n2 3\n4 2\n3 5",
-        output: "4\n4\n3\n4",
-        explanation: "1和2互质，直接走边权p=4；4和2不互质(gcd=2)，直接走边权q=3"
+        output: "4\n4\n3\n4"
       },
       {
         input: "5 2 6\n1 2\n2 3\n4 2\n3 5\n6 6",
-        output: "2\n2\n4\n2\n0",
-        explanation: "当p<q时，可能绕路更短"
+        output: "2\n2\n4\n2\n0"
       }
     ],
     testCases: [
@@ -807,8 +785,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "5 5\n1 2 3\n2 3 4\n3 4 5\n4 5 6\n1 5 1",
-        output: "14\n15\n-1\n-1\n10",
-        explanation: "删除第5条边(1-5,权1)后，MST权和为3+4+5+6=18？需要重新计算"
+        output: "14\n15\n-1\n-1\n10"
       },
     ],
     testCases: [
@@ -855,8 +832,7 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "5 5\n1 2\n1 2 4 8 16\n1 2 1\n2 3 1\n3 4 1\n4 5 1\n1 5 3",
-        output: "22",
-        explanation: "老鼠从节点2出发，可以安全访问某些节点收集奶酪"
+        output: "22"
       },
       {
         input: "6 10\n3 4\n1 1 1 1 1 1\n1 2 1\n1 3 1\n1 4 1\n2 3 1\n2 4 1\n2 5 1\n3 5 1\n3 6 1\n4 6 1\n5 6 1",
@@ -903,13 +879,11 @@ ans_k = (k在[1,N]内的因子数) × (k在[1,M]内的因子数)
     samples: [
       {
         input: "6 2\n1 2 1 2 1 2",
-        output: "3",
-        explanation: "可以分成 [1,2], [1,2], [1,2] 三段，每段都包含两种宝石"
+        output: "3"
       },
       {
         input: "7 3\n3 1 3 1 2 1 2",
-        output: "2",
-        explanation: "最多分成2段，每段包含全部3种宝石"
+        output: "2"
       }
     ],
     testCases: [

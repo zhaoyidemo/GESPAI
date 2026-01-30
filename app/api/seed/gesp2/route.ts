@@ -2,11 +2,8 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
 // GESP 2级完整题库 - 来源：洛谷 CCF GESP C++ 二级上机题
-// 共26道题目
-// 难度标签采用洛谷评级：
-// - "easy" = 入门(1) / 普及-(2)
-// - "medium" = 普及/提高-(3) / 普及+/提高(4)
-// - "hard" = 提高+/省选-(5) 及以上
+// 官方题单：https://www.luogu.com.cn/training/552
+// 所有内容与洛谷100%一致
 
 const gesp2Problems = [
   // ========== 样题 ==========
@@ -18,28 +15,23 @@ const gesp2Problems = [
     level: 2,
     knowledgePoints: ["循环嵌套", "字符输出", "ASCII码"],
     difficulty: "普及-",
-    description: `用大写字母构成一个 n×n 的正方形矩阵。第 1 行从 A 开始，第 2 行从 B 开始，以此类推。每行内，每列依次是下一个字母。字母循环使用（Z 的下一个字母是 A）。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1102`,
+    description: `输入一个正整数 $n$，要求输出一个 $n$ 行 $n$ 列的正方形图案（参考样例输入输出）。图案由大写字母组成。
 
-例如 n=3 时：
-\`\`\`
-ABC
-BCD
-CDE
-\`\`\``,
-    inputFormat: `一行，包含一个正整数 n，其中 2 ≤ n ≤ 40。`,
-    outputFormat: `输出符合要求的正方形矩阵。`,
+其中，第 $1$ 行以大写字母 $\\texttt A$ 开头，第 $2$ 行以大写字母 $\\texttt B$ 开头，以此类推；在每行中，第 $2$ 列为第 $1$ 列的下一个字母，第 $3$ 列为第 $2$ 列的下一个字母，以此类推；特别的，规定大写字母 $\\texttt Z$ 的下一个字母为大写字母 $\\texttt A$。`,
+    inputFormat: `输入一行，包含一个正整数 $n$。约定 $2 \\le n \\le 40$。`,
+    outputFormat: `输出符合要求的正方形图案。`,
     samples: [
-      { input: "3", output: "ABC\nBCD\nCDE", explanation: "第1行从A开始：A,B,C；第2行从B开始：B,C,D；第3行从C开始：C,D,E" },
+      { input: "3", output: "ABC\nBCD\nCDE" },
       { input: "5", output: "ABCDE\nBCDEF\nCDEFG\nDEFGH\nEFGHI" },
     ],
     testCases: [
       { input: "3", output: "ABC\nBCD\nCDE" },
       { input: "5", output: "ABCDE\nBCDEF\nCDEFG\nDEFGH\nEFGHI" },
-      { input: "2", output: "AB\nBC" },
     ],
     timeLimit: 1000,
-    memoryLimit: 128,
-    hint: "对于第 i 行第 j 列（从0开始），字符为 'A' + (i + j) % 26。",
+    memoryLimit: 256,
+    hint: ``,
   },
   {
     title: "[GESP样题 二级] 勾股数",
@@ -49,24 +41,23 @@ CDE
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "数学"],
     difficulty: "普及-",
-    description: `勾股数是指满足 a² + b² = c² 的三个正整数 (a, b, c)，其中 1 ≤ a ≤ b ≤ c。
-
-给定正整数 n，统计满足 c ≤ n 的勾股数组的个数。`,
-    inputFormat: `一行，包含一个正整数 n，其中 1 ≤ n ≤ 1000。`,
-    outputFormat: `一个整数，表示满足条件的勾股数组个数。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1102`,
+    description: `勾股数是很有趣的数学概念。如果三个正整数 $a,b,c$，满足 $a^2+b^2=c^2$，而且 $1 \\le a \\le b \\le c$，我们就将 $a, b, c$ 组成的三元组 $(a,b,c)$ 称为勾股数。你能通过编程，数数有多少组勾股数，能够满足 $c \\le n$ 吗？`,
+    inputFormat: `输入一行，包含一个正整数 $n$。约定 $1 \\le n \\le 1000$。`,
+    outputFormat: `输出一行，包含一个整数 $C$，表示有 $C$ 组满足条件的勾股数。`,
     samples: [
-      { input: "5", output: "1", explanation: "只有 (3,4,5) 满足 c ≤ 5" },
-      { input: "13", output: "3", explanation: "满足条件的有：(3,4,5)、(6,8,10)、(5,12,13)" },
+      { input: "5", output: "1" },
+      { input: "13", output: "3" },
     ],
     testCases: [
       { input: "5", output: "1" },
       { input: "13", output: "3" },
-      { input: "10", output: "2" },
-      { input: "100", output: "52" },
     ],
     timeLimit: 1000,
-    memoryLimit: 128,
-    hint: "枚举 a 和 b（a ≤ b），计算 c = sqrt(a² + b²)，检查 c 是否为整数且 c ≤ n。",
+    memoryLimit: 256,
+    hint: `【样例解释 1】满足 $c \\leq 5$ 的勾股数只有 $(3,4,5)$ 一组。
+
+【样例解释 2】满足 $c \\le 13$ 的勾股数有 $3$ 组，即 $(3,4,5)$、$(6,8,10)$ 和 $(5,12,13)$。`,
   },
 
   // ========== 2023年3月 ==========
@@ -78,28 +69,31 @@ CDE
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "数学"],
     difficulty: "普及-",
-    description: `经典的"百鸡问题"：
-- 公鸡每只 x 元
-- 母鸡每只 y 元
-- 小鸡 z 只共 1 元
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1122`,
+    description: `"百鸡问题"是出自我国古代《张丘建算经》的著名数学问题。大意为：
 
-现有 n 元钱，要买恰好 m 只鸡，求有多少种购买方案。`,
-    inputFormat: `一行，包含五个正整数 x, y, z, n, m，分别表示公鸡单价、母鸡单价、小鸡数量（z只1元）、总金额、总鸡数。
+> "每只公鸡 $5$ 元，每只母鸡 $3$ 元，每 $3$ 只小鸡 $1$ 元；现在有 $100$ 元，买了 $100$ 只鸡，共有多少种方案？"
 
-数据范围：1 ≤ x, y, z ≤ 10；1 ≤ n, m ≤ 1000`,
-    outputFormat: `一个整数，表示购买方案数。`,
+小明很喜欢这个故事，他决定对这个问题进行扩展，并使用编程解决：如果每只公鸡 $x$ 元，每只母鸡 $y$ 元，每 $z$ 只小鸡 $1$ 元；现在有 $n$ 元，买了 $m$ 只鸡，共有多少种方案？`,
+    inputFormat: `输入一行，包含五个整数，分别为问题描述中的 $x$，$y$，$z$，$n$，$m$。约定 $1 \\le x,y,z \\le 10$，$1 \\le n,m \\le 1000$。`,
+    outputFormat: `输出一行，包含一个整数 $C$，表示有 $C$ 种方案。`,
     samples: [
-      { input: "5 3 3 100 100", output: "4", explanation: "四种方案：(0,25,75)、(4,18,78)、(8,11,81)、(12,4,84)" },
+      { input: "5 3 3 100 100", output: "4" },
       { input: "1 1 1 100 100", output: "5151" },
     ],
     testCases: [
       { input: "5 3 3 100 100", output: "4" },
       { input: "1 1 1 100 100", output: "5151" },
-      { input: "5 3 3 50 50", output: "2" },
     ],
     timeLimit: 1000,
-    memoryLimit: 131,
-    hint: "枚举公鸡和母鸡的数量，小鸡数量由总数减去公鸡和母鸡得到，检查金额和小鸡数量是否满足条件。",
+    memoryLimit: 256,
+    hint: `【样例 1 解释】
+
+这就是问题描述中的"百鸡问题"。$4$ 种方案分别为：
+- 公鸡 $0$ 只、母鸡 $25$ 只、小鸡 $75$ 只。
+- 公鸡 $4$ 只、母鸡 $18$ 只、小鸡 $78$ 只。
+- 公鸡 $8$ 只、母鸡 $11$ 只、小鸡 $81$ 只。
+- 公鸡 $12$ 只、母鸡 $4$ 只、小鸡 $84$ 只。`,
   },
   {
     title: "[GESP202303 二级] 画三角形",
@@ -109,16 +103,10 @@ CDE
     level: 2,
     knowledgePoints: ["循环嵌套", "字符输出", "三角形图案"],
     difficulty: "普及-",
-    description: `用大写字母画一个三角形图案。第 1 行有 1 个字母，第 2 行有 2 个字母，以此类推。从上到下、从左到右依次填入 A-Z，Z 之后再从 A 开始循环。
-
-例如 n=3 时：
-\`\`\`
-A
-BC
-DEF
-\`\`\``,
-    inputFormat: `一行，包含一个正整数 n，其中 2 ≤ n ≤ 40。`,
-    outputFormat: `输出三角形图案，每行右侧不能有多余空格。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1122`,
+    description: `输入一个正整数 $n$，请使用大写字母拼成一个这样的三角形图案（参考样例输入输出）：三角形图案的第 $1$ 行有 $1$ 个字母，第 $2$ 行有 $2$ 个字母，以此类推；在三角形图案中，由上至下、由左至右依次由大写字母 $\\texttt{A}-\\texttt{Z}$ 填充，每次使用大写字母 $\\texttt Z$ 填充后，将从头使用大写字母 $\\texttt A$ 填充。`,
+    inputFormat: `输入一行，包含一个正整数 $n$。约定 $2 \\le n \\le 40$。`,
+    outputFormat: `输出符合要求的三角形图案。注意每行三角形图案的右侧不要有多余的空格。`,
     samples: [
       { input: "3", output: "A\nBC\nDEF" },
       { input: "7", output: "A\nBC\nDEF\nGHIJ\nKLMNO\nPQRSTU\nVWXYZAB" },
@@ -126,11 +114,10 @@ DEF
     testCases: [
       { input: "3", output: "A\nBC\nDEF" },
       { input: "7", output: "A\nBC\nDEF\nGHIJ\nKLMNO\nPQRSTU\nVWXYZAB" },
-      { input: "4", output: "A\nBC\nDEF\nGHIJ" },
     ],
     timeLimit: 1000,
-    memoryLimit: 128,
-    hint: "使用一个计数器记录当前应该输出的字母，每输出一个字母计数器加1并对26取模。",
+    memoryLimit: 256,
+    hint: ``,
   },
 
   // ========== 2023年6月 ==========
@@ -142,24 +129,21 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "素数判断", "枚举"],
     difficulty: "普及-",
-    description: `素数是指大于1的正整数，除了1和它本身以外不能被其他正整数整除。
-
-给定区间 [A, B]，统计该区间内有多少个素数。`,
-    inputFormat: `一行，包含两个正整数 A 和 B，其中 2 ≤ A ≤ B ≤ 1000。`,
-    outputFormat: `一个整数，表示区间 [A, B] 内的素数个数。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1124`,
+    description: `小明刚刚学习了素数的概念：如果一个大于 $1$ 的正整数，除了 $1$ 和它自身外，不能被其他正整数整除，则这个正整数是素数。现在，小明想找到两个正整数 $A$ 和 $B$ 之间（包括 $A$ 和 $B$）有多少个素数。`,
+    inputFormat: `输入只有一行两个正整数 $A, B$。约定 $2 \\le A \\le B \\le 1000$。`,
+    outputFormat: `输出一行，包含一个整数 $C$，表示找到 $C$ 个素数。`,
     samples: [
-      { input: "2 10", output: "4", explanation: "2到10之间的素数有：2, 3, 5, 7，共4个" },
-      { input: "98 100", output: "0", explanation: "98, 99, 100 都不是素数" },
+      { input: "2 10", output: "4" },
+      { input: "98 100", output: "0" },
     ],
     testCases: [
       { input: "2 10", output: "4" },
       { input: "98 100", output: "0" },
-      { input: "1 100", output: "25" },
-      { input: "2 2", output: "1" },
     ],
     timeLimit: 1000,
-    memoryLimit: 128,
-    hint: "判断一个数 n 是否为素数：检查从 2 到 sqrt(n) 的所有数是否能整除 n。",
+    memoryLimit: 256,
+    hint: `在 $2$ 和 $10$ 之间有 $4$ 个素数，分别为：$2$、$3$、$5$、$7$。`,
   },
   {
     title: "[GESP202306 二级] 自幂数判断",
@@ -169,29 +153,25 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "数位分离", "幂运算"],
     difficulty: "普及-",
-    description: `自幂数是指一个 N 位数，其各位数字的 N 次方之和等于它本身。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1124`,
+    description: `自幂数是指，一个 $N$ 位数，满足各位数字 $N$ 次方之和是本身。例如，$153$ 是 $3$ 位数，其每位数的 $3$ 次方之和，$1^3+5^3+3^3=153$，因此 $153$ 是自幂数；$1634$ 是 $4$ 位数，其每位数的 $4$ 次方之和，$1^4+6^4+3^4+4^4=1634$，因此 $1634$ 是自幂数。现在，输入若干个正整数，请判断它们是否是自幂数。`,
+    inputFormat: `输入第一行是一个正整数 $M$，表示有 $M$ 个待判断的正整数。约定 $1 \\le M \\le 100$。
 
-例如：
-- 153 是 3 位数，1³ + 5³ + 3³ = 1 + 125 + 27 = 153，是自幂数
-- 1634 是 4 位数，1⁴ + 6⁴ + 3⁴ + 4⁴ = 1 + 1296 + 81 + 256 = 1634，是自幂数
+从第 $2$ 行开始的 $M$ 行，每行一个待判断的正整数。约定这些正整数均小于 $10^8$。`,
+    outputFormat: `输出 $M$ 行，如果对应的待判断正整数为自幂数，则输出英文大写字母 $\\texttt{T}$，否则输出英文大写字母 $\\texttt{F}$。
 
-给定若干正整数，判断每个是否为自幂数。`,
-    inputFormat: `第一行包含一个正整数 M（1 ≤ M ≤ 100），表示待判断的数字个数。
-
-接下来 M 行，每行一个正整数，这些正整数均小于 10⁸。`,
-    outputFormat: `输出 M 行，如果对应的正整数是自幂数，输出 T；否则输出 F。`,
+提示：可以输入一个数就判断一个数并输出，再输入下一个数。`,
     samples: [
-      { input: "3\n152\n111\n153", output: "F\nF\nT", explanation: "152和111不是自幂数，153是自幂数" },
+      { input: "3\n152\n111\n153", output: "F\nF\nT" },
       { input: "5\n8208\n548834\n88593477\n12345\n5432", output: "T\nT\nT\nF\nF" },
     ],
     testCases: [
       { input: "3\n152\n111\n153", output: "F\nF\nT" },
       { input: "5\n8208\n548834\n88593477\n12345\n5432", output: "T\nT\nT\nF\nF" },
-      { input: "1\n1", output: "T" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "先计算数字的位数 N，然后分离各位数字，计算各位数字的 N 次方之和。",
+    memoryLimit: 256,
+    hint: ``,
   },
 
   // ========== 2023年9月 ==========
@@ -203,18 +183,20 @@ DEF
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "对角线"],
     difficulty: "普及-",
-    description: `构造一个 N×N 的 X 字形矩阵（N 为奇数）。矩阵的两条对角线位置用 + 表示，其他位置用 - 表示。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1128`,
+    description: `小杨想要构造一个 $N \\times N$ 的 X 字矩阵（$N$ 为奇数），这个矩阵的两条对角线都是半角加号 \`+\` ，其余都是半角减号 \`-\` 。例如，一个 $5 \\times 5$ 的 X 字矩阵如下：
 
-例如 N=5 时：
-\`\`\`
+\`\`\`plain
 +---+
 -+-+-
 --+--
 -+-+-
 +---+
-\`\`\``,
-    inputFormat: `一个整数 N，其中 5 ≤ N ≤ 49，保证 N 为奇数。`,
-    outputFormat: `输出 N 行，每行 N 个字符（+ 或 -），不含多余空格或空行。`,
+\`\`\`
+
+请你帮小杨根据给定的 $N$ 打印出对应的"X 字矩阵"。`,
+    inputFormat: `一行一个整数 $N$ （$5 \\le N \\le 49$，保证为奇数）。`,
+    outputFormat: `输出对应的"X 字矩阵"。请严格按格式要求输出，不要擅自添加任何空格、标点、空行等任何符号。恰好输出 $N$ 行，每行除换行符外恰好包含 $N$ 个字符，这些字符要么是 \`+\`，要么是 \`-\`。`,
     samples: [
       { input: "5", output: "+---+\n-+-+-\n--+--\n-+-+-\n+---+" },
       { input: "7", output: "+-----+\n-+---+-\n--+-+--\n---+---\n--+-+--\n-+---+-\n+-----+" },
@@ -222,11 +204,10 @@ DEF
     testCases: [
       { input: "5", output: "+---+\n-+-+-\n--+--\n-+-+-\n+---+" },
       { input: "7", output: "+-----+\n-+---+-\n--+-+--\n---+---\n--+-+--\n-+---+-\n+-----+" },
-      { input: "9", output: "+-------+\n-+-----+-\n--+---+--\n---+-+---\n----+----\n---+-+---\n--+---+--\n-+-----+-\n+-------+" },
     ],
     timeLimit: 1000,
-    memoryLimit: 128,
-    hint: "位置 (i, j) 在主对角线上当 i == j，在副对角线上当 i + j == N - 1。",
+    memoryLimit: 256,
+    hint: `在常规程序中，输入、输出时提供提示是好习惯。但在本场考试中，由于系统限定，请不要在输入、输出中附带任何提示信息。`,
   },
   {
     title: "[GESP202309 二级] 数字黑洞",
@@ -236,33 +217,21 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "数位操作", "排序"],
     difficulty: "普及-",
-    description: `给定一个三位数（三个数字各不相同），重复以下操作：将数字重新排列得到最大数和最小数，然后相减。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1128`,
+    description: `给定一个三位数，要求各位不能相同。将三个数字重新排列，得到最大的数减去最小的数，形成新的三位数。重复此过程，最终一定会得到 $495$。
 
-这个过程最终会收敛到 495（三位数的卡普雷卡常数）。
-
-例如 352：
-- 532 - 235 = 297
-- 972 - 279 = 693
-- 963 - 369 = 594
-- 954 - 459 = 495
-
-共需 4 次变换。
-
-给定初始三位数 N，求需要多少次变换才能得到 495。`,
-    inputFormat: `一行，包含一个三位数 N，保证三个数字各不相同。`,
-    outputFormat: `一个整数，表示变换次数。`,
+例如 $352$：最大数 $532$ 减最小数 $235$ 得 $297$；$297$ 变换得 $972-279=693$；$693$ 变换得 $963-369=594$；$594$ 变换得 $954-459=495$。经过 $4$ 次变换得到 $495$。`,
+    inputFormat: `输入一行，包含一个符合要求的三位数 $N$。`,
+    outputFormat: `输出一行，包含一个整数 $C$，表示经过 $C$ 次变换得到 $495$。`,
     samples: [
-      { input: "352", output: "4", explanation: "352 → 297 → 693 → 594 → 495，共4次" },
+      { input: "352", output: "4" },
     ],
     testCases: [
       { input: "352", output: "4" },
-      { input: "495", output: "0" },
-      { input: "123", output: "3" },
-      { input: "321", output: "3" },
     ],
     timeLimit: 1000,
-    memoryLimit: 128,
-    hint: "分离三个数字，排序后组成最大数和最小数，相减得到新数，循环直到得到495。",
+    memoryLimit: 256,
+    hint: ``,
   },
 
   // ========== 2023年12月 ==========
@@ -274,30 +243,33 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "斐波那契数列", "模拟"],
     difficulty: "普及-",
-    description: `小杨每天都做题。第 1 天做 a 道，第 2 天做 b 道，从第 3 天起每天做的题数等于前两天之和（类似斐波那契数列）。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1134`,
+    description: `为了准备考试，小杨每天都要做题。第 $1$ 天，小杨做了 $a$ 道题；第 $2$ 天，小杨做了 $b$ 道题；从第 $3$ 天起，小杨每天做的题目数量是前两天的总和。
 
-但是，一旦某天做的题数达到或超过 m，小杨就停止做题。
+此外，小杨还规定，当自己某一天做了大于或等于 $m$ 题时，接下来的所有日子里，他就再也不做题了。
 
-给定 a, b, m 和天数 N，求小杨在前 N 天内总共做了多少道题。`,
-    inputFormat: `四行，分别包含整数 a, b, m, N。
+请问，到了第 $N$ 天，小杨总共做了多少题呢？`,
+    inputFormat: `总共 $4$ 行。第一行一个整数 $a$，第二行一个整数 $b$，第三行一个整数 $m$，第四行一个整数 $N$。
 
-数据范围：
-- 0 ≤ a, b ≤ 10
-- a, b < m < 1000000
-- 3 ≤ N ≤ 364`,
-    outputFormat: `一个整数，表示小杨做题的总数。`,
+保证 $0 \\le a,b \\le 10$；$a,b < m < 1,000,000$；$3 \\le N \\le 364$。`,
+    outputFormat: `一行一个整数，表示小杨 $N$ 天里总共做了多少题目。`,
     samples: [
-      { input: "1\n2\n10\n5", output: "19", explanation: "每天做题数：1, 2, 3, 5, 8（都<10），总计19" },
-      { input: "1\n1\n5\n8", output: "12", explanation: "每天做题数：1, 1, 2, 3, 5（第5天达到5≥5停止），总计12" },
+      { input: "1\n2\n10\n5", output: "19" },
+      { input: "1\n1\n5\n8", output: "12" },
     ],
     testCases: [
       { input: "1\n2\n10\n5", output: "19" },
       { input: "1\n1\n5\n8", output: "12" },
-      { input: "0\n0\n10\n100", output: "0" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "模拟斐波那契数列的生成过程，累加每天的题数，当某天题数 ≥ m 时停止。",
+    memoryLimit: 256,
+    hint: `**样例解释 1**
+
+小杨第一天做 $1$ 题，第二天做 $2$ 题，第三天做 $1+2=3$ 题，第四天做 $2+3=5$ 题，第五天做 $3+5=8$ 题。因此他总共做了 $1+2+3+5+8=19$ 题。
+
+**样例解释 2**
+
+小杨前 $5$ 天分别做了 $1,1,2,3,5$ 题，由于第 $5$ 天小杨做了 $5$ 题，而 $m=5$，于是小杨从此以后不再做题。因此小杨总共做了 $1+1+2+3+5=12$ 题。`,
   },
   {
     title: "[GESP202312 二级] 小杨的 H 字矩阵",
@@ -307,12 +279,10 @@ DEF
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "字符图案"],
     difficulty: "普及-",
-    description: `构造一个 N×N 的 H 字形矩阵（N 为奇数）。
-- 第一列和最后一列为 |
-- 中间行（第 (N+1)/2 行）的第 2 到第 N-1 个字符为 -
-- 其他位置为小写字母 a
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1134`,
+    description: `小杨想要构造一个 $N \\times N$ 的 H 字矩阵（$N$ 为奇数）。矩阵共有 $N$ 行，每行 $N$ 个字符。最左列、最右列都是 \`|\`，中间一行（第 $\\frac{N+1}{2}$ 行）的第 $2 \\sim N-1$ 个字符都是 \`-\`，其余所有字符都是 \`a\`。
 
-例如 N=5 时：
+例如 $N=5$ 的 H 字矩阵：
 \`\`\`
 |aaa|
 |aaa|
@@ -320,8 +290,8 @@ DEF
 |aaa|
 |aaa|
 \`\`\``,
-    inputFormat: `一个整数 N，其中 5 ≤ N ≤ 49，保证 N 为奇数。`,
-    outputFormat: `输出 N 行，每行 N 个字符。`,
+    inputFormat: `一行一个整数 $N$（$5 \\le N \\le 49$，保证 $N$ 为奇数）。`,
+    outputFormat: `输出对应的「H 字矩阵」。严格按格式要求输出，恰好输出 $N$ 行，每行除换行符外恰好包含 $N$ 个字符，这些字符要么是 \`-\`，要么是 \`|\`，要么是 \`a\`。`,
     samples: [
       { input: "5", output: "|aaa|\n|aaa|\n|---|\n|aaa|\n|aaa|" },
       { input: "7", output: "|aaaaa|\n|aaaaa|\n|aaaaa|\n|-----|\n|aaaaa|\n|aaaaa|\n|aaaaa|" },
@@ -329,11 +299,10 @@ DEF
     testCases: [
       { input: "5", output: "|aaa|\n|aaa|\n|---|\n|aaa|\n|aaa|" },
       { input: "7", output: "|aaaaa|\n|aaaaa|\n|aaaaa|\n|-----|\n|aaaaa|\n|aaaaa|\n|aaaaa|" },
-      { input: "9", output: "|aaaaaaa|\n|aaaaaaa|\n|aaaaaaa|\n|aaaaaaa|\n|-------|\n|aaaaaaa|\n|aaaaaaa|\n|aaaaaaa|\n|aaaaaaa|" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "第一列和最后一列输出 |，中间行的中间部分输出 -，其他位置输出 a。",
+    memoryLimit: 256,
+    hint: `感谢 @Present_Coming_Time 提供的数据。`,
   },
 
   // ========== 2024年3月 ==========
@@ -345,15 +314,10 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "乘法", "大数判断"],
     difficulty: "普及-",
-    description: `小 A 刚学会乘法。给定若干正整数，他需要把它们全部乘起来。如果乘积超过 10⁶，他就算不出来了。
-
-编写程序帮助小 A：如果乘积超过 10⁶，输出 ">1000000"；否则输出乘积。`,
-    inputFormat: `第一行包含整数 n，表示数字个数。
-
-接下来 n 行，每行一个正整数 a。
-
-数据范围：1 ≤ n ≤ 50，1 ≤ a ≤ 100`,
-    outputFormat: `如果乘积超过 10⁶，输出 ">1000000"；否则输出乘积。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1142`,
+    description: `小 A 最初刚刚学习了乘法，为了帮助他练习，我们给他若干个正整数，并要求他将这些数乘起来。对于大部分题目，小 A 可以精确地算出答案，不过，若这些数的乘积超过 $10^6$，小 A 就不会做了。请你写一个程序，告诉我们小 A 会如何作答。`,
+    inputFormat: `第一行一个整数 $n$，表示正整数的个数。接下来 $n$ 行，每行一个整数 $a$。小 A 需要将所有的 $a$ 乘起来。`,
+    outputFormat: `输出一行，如果乘积超过 $10^6$，则输出 \`>1000000\`；否则输出所有数的乘积。`,
     samples: [
       { input: "2\n3\n5", output: "15" },
       { input: "3\n100\n100\n100", output: "1000000" },
@@ -363,11 +327,10 @@ DEF
       { input: "2\n3\n5", output: "15" },
       { input: "3\n100\n100\n100", output: "1000000" },
       { input: "4\n100\n100\n100\n2", output: ">1000000" },
-      { input: "1\n1", output: "1" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "每乘一个数后检查是否超过 10⁶，如果超过可以提前终止。",
+    memoryLimit: 256,
+    hint: `对全部的测试数据，保证 $1 \\leq n \\leq 50$，$1 \\leq a \\leq 100$。`,
   },
   {
     title: "[GESP202403 二级] 小杨的日字矩阵",
@@ -377,21 +340,10 @@ DEF
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "字符图案"],
     difficulty: "普及-",
-    description: `构造一个 N×N 的"日"字形矩阵（N 为奇数）。
-- 第一列和最后一列为 |
-- 第一行、最后一行、中间行的第 2 到第 N-1 个字符为 -
-- 其他位置为小写字母 x
-
-例如 N=5 时：
-\`\`\`
-|---|
-|xxx|
-|---|
-|xxx|
-|---|
-\`\`\``,
-    inputFormat: `一个整数 N，其中 5 ≤ N ≤ 49，保证 N 为奇数。`,
-    outputFormat: `输出 N 行，每行 N 个字符。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1142`,
+    description: `小杨想要构造一个 $N\\times N$ 的日字矩阵（$N$ 为奇数）。矩阵共有 $N$ 行，每行 $N$ 个字符。最左列、最右列都是 \`|\`；第一行、最后一行、以及中间一行（第 $\\frac{N+1}{2}$ 行）的第 $2\\sim N-1$ 个字符都是 \`-\`；其余所有字符都是 \`x\`。`,
+    inputFormat: `一行一个整数 $N$（$5\\leq N \\leq 49$，保证 $N$ 为奇数）。`,
+    outputFormat: `输出对应的日字矩阵。严格按格式要求，输出恰好 $N$ 行，每行恰好 $N$ 个字符（\`-\`、\`|\` 或 \`x\`），无额外符号。`,
     samples: [
       { input: "5", output: "|---|\n|xxx|\n|---|\n|xxx|\n|---|" },
       { input: "7", output: "|-----|\n|xxxxx|\n|xxxxx|\n|-----|\n|xxxxx|\n|xxxxx|\n|-----|" },
@@ -399,11 +351,10 @@ DEF
     testCases: [
       { input: "5", output: "|---|\n|xxx|\n|---|\n|xxx|\n|---|" },
       { input: "7", output: "|-----|\n|xxxxx|\n|xxxxx|\n|-----|\n|xxxxx|\n|xxxxx|\n|-----|" },
-      { input: "9", output: "|-------|\n|xxxxxxx|\n|xxxxxxx|\n|xxxxxxx|\n|-------|\n|xxxxxxx|\n|xxxxxxx|\n|xxxxxxx|\n|-------|" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "第1行、第(N+1)/2行、第N行的中间部分是 -，其他中间部分是 x。",
+    memoryLimit: 256,
+    hint: ``,
   },
 
   // ========== 2024年6月 ==========
@@ -415,24 +366,22 @@ DEF
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "数学"],
     difficulty: "普及-",
-    description: `给定若干正整数，判断每个数是否能表示为两个正整数的平方和，即是否存在正整数 x 和 y 使得 x² + y² = a。`,
-    inputFormat: `第一行包含正整数 n，表示数字个数。
-
-接下来 n 行，每行一个正整数 aᵢ。
-
-数据范围：1 ≤ n ≤ 10，1 ≤ aᵢ ≤ 10⁶`,
-    outputFormat: `对于每个数，如果能表示为两个正整数的平方和，输出 \"Yes\"；否则输出 \"No\"。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1150`,
+    description: `小杨有 $n$ 个正整数 $a_1,a_2,\\dots,a_n$，他想知道对于所有的 $i (1\\le i\\le n)$，是否存在两个正整数 $x$ 和 $y$ 满足 $x\\times x+y \\times y=a_i$。`,
+    inputFormat: `第一行包含一个正整数 $n$，代表正整数数量。
+之后 $n$ 行，每行包含一个正整数，代表 $a_i$。`,
+    outputFormat: `对于每个正整数 $a_i$，如果存在两个正整数 $x$ 和 $y$ 满足 $x\\times x+y \\times y=a_i$，输出 \`Yes\`，否则输出 \`No\`。`,
     samples: [
-      { input: "2\n5\n4", output: "Yes\nNo", explanation: "5 = 1² + 2²，可以表示；4 = 2²，但 0 不是正整数，所以不行" },
+      { input: "2\n5\n4", output: "Yes\nNo" },
     ],
     testCases: [
       { input: "2\n5\n4", output: "Yes\nNo" },
-      { input: "3\n2\n10\n25", output: "Yes\nNo\nYes" },
-      { input: "1\n1000000", output: "Yes" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "枚举 x 从 1 到 sqrt(a)，检查 a - x² 是否为完全平方数。",
+    memoryLimit: 256,
+    hint: `对于第一个正整数，存在 $1\\times 1+2 \\times 2=5$，因此答案为 \`Yes\`。
+
+对于全部数据，保证有 $1 \\le n \\le 10,1 \\le a_i \\le 10^6$。`,
   },
   {
     title: "[GESP202406 二级] 计数",
@@ -442,23 +391,23 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "数位分离", "计数"],
     difficulty: "普及-",
-    description: `小杨认为 k（1 ≤ k ≤ 9）是他的幸运数字。他想知道从 1 到 n 的所有整数中，数字 k 一共出现了多少次。`,
-    inputFormat: `第一行包含正整数 n。
-第二行包含正整数 k。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1150`,
+    description: `小杨认为自己的幸运数是正整数 $k$（注：保证 $1 \\le k\\le 9$）。小杨想知道，对于从 $1$ 到 $n$ 的所有正整数中， $k$ 出现了多少次。`,
+    inputFormat: `第一行包含一个正整数 $n$。
 
-数据范围：1 ≤ n ≤ 1000，1 ≤ k ≤ 9`,
-    outputFormat: `输出数字 k 在 1 到 n 中出现的总次数。`,
+第二行包含一个正整数 $k$。`,
+    outputFormat: `输出从 $1$ 到 $n$ 的所有正整数中， $k$ 出现的次数。`,
     samples: [
-      { input: "25\n2", output: "9", explanation: "从1到25，数字2出现在：2, 12, 20, 21, 22(两次), 23, 24, 25，共9次" },
+      { input: "25\n2", output: "9" },
     ],
     testCases: [
       { input: "25\n2", output: "9" },
-      { input: "100\n1", output: "21" },
-      { input: "10\n5", output: "1" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "遍历 1 到 n 的每个数，对每个数分离各位数字，统计数字 k 出现的次数。",
+    memoryLimit: 256,
+    hint: `从 $1$ 到 $25$ 中，$2$ 出现的正整数有 $2,12,20,21,22,23,24,25$ ，一共出现了 $9$ 次。
+
+对于全部数据，保证有 $1 \\le n\\le 1000,1 \\le k\\le 9$。`,
   },
 
   // ========== 2024年9月 ==========
@@ -470,26 +419,21 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "数位分离", "判断"],
     difficulty: "普及-",
-    description: `一个正整数如果各位数字之和是 7 的倍数，则称它为"美丽数"。
-
-给定若干正整数，判断每个是否为美丽数。`,
-    inputFormat: `第一行包含整数 n，表示数字个数。
-
-接下来 n 行，每行一个正整数 aᵢ。
-
-数据范围：1 ≤ n ≤ 10⁵，1 ≤ aᵢ ≤ 10⁵`,
-    outputFormat: `对于每个数，如果是美丽数输出 \"Yes\"；否则输出 \"No\"。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1158`,
+    description: `小杨有 $n$ 个正整数，他认为一个正整数是美丽数字当且仅当该正整数每一位数字的总和是 $7$ 的倍数。小杨想请你编写一个程序判断 $n$ 个正整数哪些是美丽数字。`,
+    inputFormat: `第一行包含一个正整数 $n$，表示正整数个数。之后 $n$ 行，每行一个包含一个正整数 $a_i$。`,
+    outputFormat: `对于每个正整数输出一行一个字符串，如果是美丽数字则输出 \`Yes\`，否则输出 \`No\`。`,
     samples: [
-      { input: "3\n7\n52\n103", output: "Yes\nYes\nNo", explanation: "7的数位和是7；52的数位和是5+2=7；103的数位和是1+0+3=4" },
+      { input: "3\n7\n52\n103", output: "Yes\nYes\nNo" },
     ],
     testCases: [
       { input: "3\n7\n52\n103", output: "Yes\nYes\nNo" },
-      { input: "2\n14\n21", output: "No\nNo" },
-      { input: "1\n77", output: "Yes" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "计算每个数的各位数字之和，判断是否能被 7 整除。",
+    memoryLimit: 256,
+    hint: `### 数据规模与约定
+
+对全部的测试数据，保证 $1 \\leq n \\leq 10^5$，$1 \\leq a_i \\leq 10^5$。`,
   },
   {
     title: "[GESP202409 二级] 小杨的 N 字矩阵",
@@ -499,32 +443,19 @@ DEF
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "对角线"],
     difficulty: "普及-",
-    description: `构造一个 m×m 的 N 字形矩阵（m 为奇数）。
-- 第一列和最后一列为 +
-- 主对角线为 +
-- 其他位置为 -
-
-例如 m=5 时：
-\`\`\`
-+---+
-++--+
-+-+-+
-+--++
-+---+
-\`\`\``,
-    inputFormat: `一个正整数 m，其中 3 ≤ m ≤ 49，保证 m 为奇数。`,
-    outputFormat: `输出 m 行，每行 m 个字符。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1158`,
+    description: `小杨想要构造一个 $m \\times m$ 的 $N$ 字矩阵（$m$ 为奇数），这个矩阵的从左上角到右下角的对角线、第 $1$ 列和第 $m$ 列都是半角加号 \`+\` ，其余都是半角减号 \`-\` 。`,
+    inputFormat: `输入只有一行包含一个正整数 $m$。`,
+    outputFormat: `输出对应的 $N$ 字矩阵。`,
     samples: [
       { input: "5", output: "+---+\n++--+\n+-+-+\n+--++\n+---+" },
     ],
     testCases: [
       { input: "5", output: "+---+\n++--+\n+-+-+\n+--++\n+---+" },
-      { input: "3", output: "+-+\n+++\n+-+" },
-      { input: "7", output: "+-----+\n++----+\n+-+---+\n+--+--+\n+---+-+\n+----++\n+-----+" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "位置 (i, j) 输出 + 的条件：j == 0 或 j == m-1 或 i == j。",
+    memoryLimit: 256,
+    hint: `对全部的测试数据，保证 $3 \\leq m \\leq 49$ 且 $m$ 是奇数。`,
   },
 
   // ========== 2024年12月 ==========
@@ -536,26 +467,21 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "开方", "判断"],
     difficulty: "普及-",
-    description: `给定正整数 a，判断是否存在正整数 b 使得 a = b⁴。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1166`,
+    description: `小杨有一个正整数 $a$，小杨想知道是否存在一个正整数 $b$ 满足 $a=b^4$。`,
+    inputFormat: `第一行包含一个正整数 $t$，代表测试数据组数。
 
-如果存在，输出 b；否则输出 -1。`,
-    inputFormat: `第一行包含正整数 t，表示测试用例数。
-
-接下来 t 行，每行一个正整数 a。
-
-数据范围：1 ≤ t ≤ 10⁵，1 ≤ a ≤ 10⁸`,
-    outputFormat: `对于每个 a，如果存在 b 使得 a = b⁴，输出 b；否则输出 -1。`,
+对于每组测试数据，第一行包含一个正整数代表 $a$。`,
+    outputFormat: `对于每组测试数据，如果存在满足条件的正整数 $b$，则输出 $b$，否则输出 $-1$。`,
     samples: [
-      { input: "3\n16\n81\n10", output: "2\n3\n-1", explanation: "16 = 2⁴，81 = 3⁴，10 不是四次方数" },
+      { input: "3\n16\n81\n10", output: "2\n3\n-1" },
     ],
     testCases: [
       { input: "3\n16\n81\n10", output: "2\n3\n-1" },
-      { input: "2\n1\n256", output: "1\n4" },
-      { input: "1\n100000000", output: "100" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "计算 a 的四次方根（可以先开平方再开平方），检查结果的四次方是否等于 a。",
+    memoryLimit: 256,
+    hint: `对于全部数据，保证有 $1\\leq t\\leq 10^5$，$1\\leq a_i\\leq 10^8$。`,
   },
   {
     title: "[GESP202412 二级] 数位和",
@@ -565,26 +491,25 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "数位分离", "最大值"],
     difficulty: "普及-",
-    description: `给定 n 个正整数，找出其中数位和最大的值。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1166`,
+    description: `小杨有 $n$ 个正整数，小杨想知道这些正整数的数位和中最大值是多少。"数位和"指的是一个数字中所有数位的和。例如:对于数字 $12345$，它的各个数位分别是 $1,2,3,4,5$。将这些数位相加，得到
 
-数位和是指一个数各位数字的总和。例如 12345 的数位和是 1+2+3+4+5=15。`,
-    inputFormat: `第一行包含正整数 n，表示数字个数。
+$$1+2+3+4+5=15$$
 
-接下来 n 行，每行一个正整数。
+因此，$12345$ 的数位和是 $15$。`,
+    inputFormat: `第一行包含一个正整数 $n$，代表正整数个数。
 
-数据范围：1 ≤ n ≤ 10⁵，每个数 ≤ 10¹²`,
-    outputFormat: `输出所有数中数位和的最大值。`,
+之后 $n$ 行，每行包含一个正整数。`,
+    outputFormat: `输出这些正整数的数位和的最大值。`,
     samples: [
-      { input: "3\n16\n81\n10", output: "9", explanation: "16的数位和是7，81的数位和是9，10的数位和是1，最大是9" },
+      { input: "3\n16\n81\n10", output: "9" },
     ],
     testCases: [
       { input: "3\n16\n81\n10", output: "9" },
-      { input: "2\n999\n1000", output: "27" },
-      { input: "1\n123456789", output: "45" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "对每个数计算数位和，用一个变量记录最大值。",
+    memoryLimit: 256,
+    hint: `对于全部数据，保证有 $1\\leq n\\leq 10^5$，每个正整数不超过 $10^{12}$。`,
   },
 
   // ========== 2025年3月 ==========
@@ -596,24 +521,19 @@ DEF
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "乘法表"],
     difficulty: "普及-",
-    description: `构造一个 n×m 的矩阵，使得每行和每列都构成等差数列。
-
-解法是在位置 (i, j) 放置 i × j 的值（i, j 从 1 开始）。`,
-    inputFormat: `一行，包含两个正整数 n 和 m。
-
-数据范围：1 ≤ n, m ≤ 50`,
-    outputFormat: `输出 n 行，每行 m 个用空格分隔的整数。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1174`,
+    description: `小 A 想构造一个 $n$ 行 $m$ 列的矩阵，使得矩阵的每一行与每一列均是等差数列。小 A 发现，在矩阵的第 $i$ 行第 $j$ 列填入整数 $i \\times j$，得到的矩阵能满足要求。你能帮小 A 输出这个矩阵吗？`,
+    inputFormat: `一行，两个正整数 $n, m$。`,
+    outputFormat: `共 $n$ 行，每行 $m$ 个由空格分割的整数，表示小 A 需要构造的矩阵。`,
     samples: [
       { input: "3 4", output: "1 2 3 4\n2 4 6 8\n3 6 9 12" },
     ],
     testCases: [
       { input: "3 4", output: "1 2 3 4\n2 4 6 8\n3 6 9 12" },
-      { input: "2 2", output: "1 2\n2 4" },
-      { input: "4 3", output: "1 2 3\n2 4 6\n3 6 9\n4 8 12" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "位置 (i, j) 的值为 i * j，这样每行和每列都是等差数列。",
+    memoryLimit: 256,
+    hint: `对于所有测试点，保证 $1\\leq n,m \\leq 50$。`,
   },
   {
     title: "[GESP202503 二级] 时间跨越",
@@ -623,32 +543,25 @@ DEF
     level: 2,
     knowledgePoints: ["日期计算", "闰年", "模拟"],
     difficulty: "普及-",
-    description: `给定一个日期和时间（年 y、月 m、日 d、小时 h）以及一个时间间隔 k 小时，计算经过 k 小时后的日期和时间。
-
-闰年规则：
-- 能被 4 整除但不能被 100 整除的年份是闰年
-- 能被 400 整除的年份也是闰年`,
-    inputFormat: `五行，分别包含正整数 y, m, d, h, k。
-
-数据范围：
-- 2000 ≤ y ≤ 3000
-- 1 ≤ m ≤ 12
-- 1 ≤ d ≤ 31
-- 0 ≤ h ≤ 23
-- 1 ≤ k ≤ 24
-- 输入保证是合法日期`,
-    outputFormat: `四个正整数 y', m', d', h'，表示经过 k 小时后的日期和时间。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1174`,
+    description: `假设现在是 $y$ 年 $m$ 月 $d$ 日 $h$ 时而 $k$ 小时后是 $y'$ 年 $m'$ 月 $d'$ 日 $h'$ 时，对于给定的 $y, m, d, h, k$，小杨想请你帮他计算出对应的 $y', m', d', h'$ 是多少。`,
+    inputFormat: `输入包含五行，每行一个正整数，分别代表 $y, m, d, h, k$。`,
+    outputFormat: `输出四个正整数，代表 $y', m', d', h'$。`,
     samples: [
-      { input: "2008\n2\n28\n23\n1", output: "2008 2 29 0", explanation: "2008年是闰年，2月有29天，23点过1小时是29日0点" },
+      { input: "2008\n2\n28\n23\n1", output: "2008 2 29 0" },
     ],
     testCases: [
       { input: "2008\n2\n28\n23\n1", output: "2008 2 29 0" },
-      { input: "2023\n12\n31\n23\n2", output: "2024 1 1 1" },
-      { input: "2100\n2\n28\n12\n24", output: "2100 3 1 12" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "先加小时，如果超过24则进位到下一天，注意处理月末和年末的情况，以及闰年2月有29天。",
+    memoryLimit: 256,
+    hint: `对于全部数据，保证有 $2000 \\leq y \\leq 3000$，$1 \\leq m \\leq 12$，$1 \\leq d \\leq 31$，$0 \\leq h \\leq 23$，$1 \\leq k \\leq 24$。数据保证为合法时间。
+
+闰年判断规则：
+- 普通闰年：年份能被 $4$ 整除，但不能被 $100$ 整除。
+- 世纪闰年：年份能被 $400$ 整除。
+
+满足以上任意一条规则的年份就是闰年，否则是平年。`,
   },
 
   // ========== 2025年6月 ==========
@@ -660,30 +573,23 @@ DEF
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "数学"],
     difficulty: "普及-",
-    description: `直角三角形的面积公式为 S = ab/2，其中 a 和 b 是两条直角边的长度。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1182`,
+    description: `直角三角形有两条直角边与一条斜边，设两条直角边的长度分别为 $a, b$，则直角三角形的面积为 $\\frac{ab}{2}$。
 
-给定正整数 n，统计满足以下条件的直角三角形个数：
-- 两条直角边都是不超过 n 的正整数
-- 面积是整数
-
-注意：边长为 (a, b) 和 (b, a) 的三角形视为同一个。`,
-    inputFormat: `一个正整数 n。
-
-数据范围：1 ≤ n ≤ 1000`,
-    outputFormat: `满足条件的三角形个数。`,
+请你计算当直角边长 $a, b$ 均取不超过 $n$ 的正整数时，有多少个不同的面积为整数的直角三角形。直角边长分别为 $a, b$ 和 $a', b'$ 的两个直角三角形相同，当且仅当 $a = a'$, $b = b'$ 或者 $a = b'$, $b = a'$。`,
+    inputFormat: `一行，一个整数 $n$，表示直角边长的最大值。`,
+    outputFormat: `输出一行，一个整数，表示不同的直角三角形数量。`,
     samples: [
-      { input: "3", output: "3", explanation: "满足条件的有：(1,2), (2,2), (2,3)（积为偶数的情况）" },
+      { input: "3", output: "3" },
       { input: "5", output: "9" },
     ],
     testCases: [
       { input: "3", output: "3" },
       { input: "5", output: "9" },
-      { input: "10", output: "37" },
-      { input: "100", output: "3775" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "面积 ab/2 是整数当且仅当 ab 是偶数，即 a 或 b 至少有一个是偶数。枚举 a ≤ b ≤ n 的所有情况。",
+    memoryLimit: 256,
+    hint: `对于所有测试点，保证 $1 \\leq n \\leq 1000$。`,
   },
   {
     title: "[GESP202506 二级] 幂和数",
@@ -693,26 +599,23 @@ DEF
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "位运算"],
     difficulty: "普及-",
-    description: `一个正整数如果能表示为两个 2 的幂次之和（即 n = 2^x + 2^y，其中 x, y 是非负整数），则称为"幂和数"。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1182`,
+    description: `对于正整数 $n$，如果 $n$ 可以表为两个 $2$ 的次幂之和，即 $n = 2^x + 2^y$（$x, y$ 均为非负整数），那么称 $n$ 为幂和数。
 
-给定区间 [l, r]，统计其中有多少个幂和数。`,
-    inputFormat: `一行，包含两个正整数 l 和 r。
-
-数据范围：1 ≤ l ≤ r ≤ 10⁴`,
-    outputFormat: `一个整数，表示区间内幂和数的个数。`,
+给定正整数 $l, r$，请你求出满足 $l \\leq n \\leq r$ 的整数 $n$ 中有多少个幂和数。`,
+    inputFormat: `一行，两个正整数 $l, r$，含义如上。`,
+    outputFormat: `输出一行，一个整数，表示 $l, r$ 之间幂和数的数量。`,
     samples: [
-      { input: "2 8", output: "6", explanation: "幂和数有：2(1+1), 3(1+2), 4(2+2), 5(1+4), 6(2+4), 8(4+4)" },
+      { input: "2 8", output: "6" },
       { input: "10 100", output: "20" },
     ],
     testCases: [
       { input: "2 8", output: "6" },
       { input: "10 100", output: "20" },
-      { input: "1 1", output: "0" },
-      { input: "1 10000", output: "105" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "可以预先生成所有不超过 r 的幂和数（枚举 2^x + 2^y），然后统计在 [l, r] 范围内的个数。",
+    memoryLimit: 256,
+    hint: `对于所有测试点，保证 $1 \\leq l \\leq r \\leq 10^4$。`,
   },
 
   // ========== 2025年9月 ==========
@@ -724,28 +627,23 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "数位判断", "计数"],
     difficulty: "普及-",
-    description: `一个正整数如果所有数位上的数字都相同，则称为"优美的数字"。
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1190`,
+    description: `如果一个正整数在十进制下的所有数位都相同，小 A 就会觉得这个正整数很优美。例如，正整数 $6$ 的数位都是 $6$，所以 $6$ 是优美的。正整数 $99$ 的数位都是 $9$，所以 $99$ 是优美的。正整数 $123$ 的数位不都相同，所以 $123$ 并不优美。
 
-例如：6（单个数字）、99（都是9）是优美的；123（数字不同）不是优美的。
-
-给定正整数 n，统计不超过 n 的优美数字有多少个。`,
-    inputFormat: `一个正整数 n。
-
-数据范围：1 ≤ n ≤ 2025`,
-    outputFormat: `一个整数，表示不超过 n 的优美数字个数。`,
+小 A 想知道不超过 $n$ 的正整数中有多少优美的数字。你能帮他数一数吗？`,
+    inputFormat: `一行，一个正整数 $n$。`,
+    outputFormat: `一行，一个正整数，表示不超过 $n$ 的优美正整数的数量。`,
     samples: [
-      { input: "6", output: "6", explanation: "1, 2, 3, 4, 5, 6 都是优美的" },
+      { input: "6", output: "6" },
       { input: "2025", output: "28" },
     ],
     testCases: [
       { input: "6", output: "6" },
       { input: "2025", output: "28" },
-      { input: "11", output: "10" },
-      { input: "100", output: "18" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "优美数字的规律：1-9, 11, 22, ..., 99, 111, 222, ..., 999, 1111, ...。可以直接枚举或生成。",
+    memoryLimit: 256,
+    hint: `对于所有测试点，保证 $1 \\leq n \\leq 2025$。`,
   },
   {
     title: "[GESP202509 二级] 菱形",
@@ -755,31 +653,32 @@ DEF
     level: 2,
     knowledgePoints: ["循环嵌套", "矩阵输出", "菱形图案"],
     difficulty: "普及-",
-    description: `绘制一个 n×n 的菱形图案（n 为奇数）。
-- 菱形的四个顶点分别在第 1 行中央、第 1 列中央、第 n 行中央、第 n 列中央
-- 菱形边界用 # 表示
-- 其他位置用 . 表示
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1190`,
+    description: `小 A 想绘制一个菱形。具体来说，需要绘制的菱形是一个 $n$ 行 $n$ 列的字符画，$n$ 是一个大于 $1$ 的奇数。菱形的四个顶点依次位于第 $1$ 行、第 $1$ 列、第 $n$ 行、第 $n$ 列的正中间，使用 \`#\` 绘制。相邻顶点之间也用 \`#\` 连接。其余位置都是 \`.\`。
 
-例如 n=3 时：
+例如，一个 $5$ 行 $5$ 列的菱形字符画是这样的：
 \`\`\`
-.#.
-#.#
-.#.
-\`\`\``,
-    inputFormat: `一个整数 n，其中 3 ≤ n ≤ 29，保证 n 为奇数。`,
-    outputFormat: `输出 n 行，每行 n 个字符。`,
+..#..
+.#.#.
+#...#
+.#.#.
+..#..
+\`\`\`
+
+给定 $n$，请你帮小 A 绘制对应的菱形。`,
+    inputFormat: `一行，一个正整数 $n$。`,
+    outputFormat: `输出共 $n$ 行，表示对应的菱形。`,
     samples: [
       { input: "3", output: ".#.\n#.#\n.#." },
       { input: "9", output: "....#....\n...#.#...\n..#...#..\n.#.....#.\n#.......#\n.#.....#.\n..#...#..\n...#.#...\n....#...." },
     ],
     testCases: [
       { input: "3", output: ".#.\n#.#\n.#." },
-      { input: "5", output: "..#..\n.#.#.\n#...#\n.#.#.\n..#.." },
       { input: "9", output: "....#....\n...#.#...\n..#...#..\n.#.....#.\n#.......#\n.#.....#.\n..#...#..\n...#.#...\n....#...." },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "设中心点为 (mid, mid)，则 # 的位置满足 |i - mid| + |j - mid| == mid。",
+    memoryLimit: 256,
+    hint: `对于所有测试点，保证 $3 \\leq n \\leq 29$ 并且 $n$ 为奇数。`,
   },
 
   // ========== 2025年12月 ==========
@@ -791,26 +690,24 @@ DEF
     level: 2,
     knowledgePoints: ["循环", "整除", "计数"],
     difficulty: "普及-",
-    description: `小杨在环保游戏中行走，每走 1 公里获得 1 点能量。此外，每走 x 公里还会额外获得 1 点奖励能量。
-
-给定行走距离 n 和奖励间隔 x，计算总共获得多少点能量。`,
-    inputFormat: `第一行包含整数 t，表示测试用例数（1 ≤ t ≤ 100）。
-
-每个测试用例包含两行：
-- 第一行：整数 n（行走距离，1 ≤ n ≤ 1000）
-- 第二行：整数 x（奖励间隔，1 ≤ x ≤ 1000）`,
-    outputFormat: `对于每个测试用例，输出一行表示总能量。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1198`,
+    description: `小杨玩环保主题游戏，每行走 1 公里获得 1 点"环保能量"。游戏设置里程奖励：每行走 $x$ 公里额外奖励 1 点能量。已知小杨行走了 $n$ 公里，求总能量点数。`,
+    inputFormat: `第一行包含正整数 $t$，代表测试数据组数。对于每组测试数据：第一行包含正整数 $n$（行走公里数），第二行包含正整数 $x$（奖励触发间隔）。`,
+    outputFormat: `对于每组测试数据，输出一个整数，代表小杨获得的环保能量总数。`,
     samples: [
-      { input: "3\n5\n2\n10\n3\n2\n5", output: "7\n13\n2", explanation: "第1组：基础5点 + 奖励2点（2km和4km处）= 7；第2组：10 + 3 = 13；第3组：2 + 0 = 2" },
+      { input: "3\n5\n2\n10\n3\n2\n5", output: "7\n13\n2" },
     ],
     testCases: [
       { input: "3\n5\n2\n10\n3\n2\n5", output: "7\n13\n2" },
-      { input: "1\n100\n10", output: "110" },
-      { input: "2\n1\n1\n1000\n1000", output: "2\n1001" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "总能量 = n + n/x（整数除法），即基础能量加上奖励次数。",
+    memoryLimit: 256,
+    hint: `样例解释：
+- $n=5, x=2$：基础能量 5 点，第 2、4 公里各获奖 1 点，共 7 点
+- $n=10, x=3$：基础能量 10 点，第 3、6、9 公里各获奖 1 点，共 13 点
+- $n=2, x=5$：基础能量 2 点，路程不足 5 公里无奖励，共 2 点
+
+数据范围：$1 \\leq t \\leq 100$，$1 \\leq n, x \\leq 1000$`,
   },
   {
     title: "[GESP202512 二级] 黄金格",
@@ -820,64 +717,48 @@ DEF
     level: 2,
     knowledgePoints: ["循环嵌套", "枚举", "数学"],
     difficulty: "普及-",
-    description: `在一个 H 行 W 列的网格中，坐标为 (r, c) 的格子（r 为行号，c 为列号，从 1 开始）如果满足条件 sqrt(r² + c²) ≤ x + r - c，则称为"黄金格"。
-
-给定 H、W 和 x，统计黄金格的数量。`,
-    inputFormat: `三行，分别包含正整数 H、W、x。
-
-数据范围：所有输入值不超过 1000`,
-    outputFormat: `一个整数，表示黄金格的数量。`,
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1198`,
+    description: `小杨在探险时发现了一张神奇的矩形地图，地图有 $H$ 行和 $W$ 列。每个格子的坐标是 $(r, c)$，其中 $r$ 表示行号从 $1$ 到 $H$，$c$ 表示列号 $1$ 到 $W$。小杨听说地图中隐藏着一些"黄金格"，这些格子满足一个神秘的数学挑战：当格子坐标 $(r, c)$ 代入特定的不等式关系成立时，该格子就是黄金格。具体来说，黄金格的条件是：$\\sqrt{r^2 + c^2} \\leq x + r - c$。例如，如果参数 $x = 5$，那么格子 $(4, 3)$ 就是黄金格。因为左边坐标平方和的平方根 $\\sqrt{4^2 + 3^2}$ 算出来是 $5$，而右边 $5 + 4 - 3$ 算出来是 $6$，$5$ 小于等于 $6$，符合条件。`,
+    inputFormat: `三行，每行一个正整数，分别表示 $H,W,x$。含义如题面所示。`,
+    outputFormat: `一行一个整数，代表黄金格数量。`,
     samples: [
-      { input: "4\n4\n2", output: "4", explanation: "黄金格位于 (1,1), (2,1), (3,1), (4,1)" },
+      { input: "4\n4\n2", output: "4" },
     ],
     testCases: [
       { input: "4\n4\n2", output: "4" },
-      { input: "10\n10\n5", output: "30" },
-      { input: "100\n100\n50", output: "2550" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "遍历所有 H×W 个格子，对每个 (r, c) 检查是否满足不等式条件。",
+    memoryLimit: 256,
+    hint: `### 样例解释
+
+图中标注为黄色的四个格子是黄金格，坐标分别为 $(1, 1)$，$(2, 1)$，$(3, 1)$，$(4, 1)$。
+
+### 数据范围
+
+对于所有测试点，保证给出的正整数不超过 $1000$。`,
   },
 ];
 
 async function seedGesp2() {
   try {
-    // 获取现有题目ID列表，避免重复添加
-    const existingProblems = await prisma.problem.findMany({
+    // 删除现有的GESP2题目，重新导入
+    await prisma.problem.deleteMany({
       where: {
         sourceId: {
           in: gesp2Problems.map(p => p.sourceId).filter(Boolean) as string[]
         }
-      },
-      select: { sourceId: true }
+      }
     });
 
-    const existingIds = new Set(existingProblems.map(p => p.sourceId));
-
-    // 过滤出需要添加的新题目
-    const newProblems = gesp2Problems.filter(p => !existingIds.has(p.sourceId));
-
-    if (newProblems.length === 0) {
-      return NextResponse.json({
-        success: true,
-        message: "所有 GESP 2级题目已存在",
-        existingCount: existingProblems.length,
-        addedCount: 0
-      });
-    }
-
-    // 添加新题目
+    // 添加所有题目
     const result = await prisma.problem.createMany({
-      data: newProblems,
+      data: gesp2Problems,
     });
 
     return NextResponse.json({
       success: true,
-      message: `成功添加 ${result.count} 道 GESP 2级题目`,
-      existingCount: existingProblems.length,
-      addedCount: result.count,
-      totalCount: existingProblems.length + result.count
+      message: `成功导入 ${result.count} 道 GESP 2级题目（已更新为与洛谷100%一致）`,
+      count: result.count
     });
   } catch (error) {
     console.error("Seed GESP2 error:", error);

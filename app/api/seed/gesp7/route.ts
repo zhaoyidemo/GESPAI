@@ -35,7 +35,6 @@ const gesp7Problems = [
       {
         input: "6 4\n1 1 0 1 0 0\n0 1 1 0 0 0\n1 0 1 0 0 1\n0 0 1 1 0 1\n0 0 0 1 1 0\n1 0 0 0 1 1",
         output: "3 3 6",
-        explanation: "从迷宫4出发可以直接到达3个迷宫，有3个迷宫可以直接到达迷宫4",
       },
     ],
     testCases: [
@@ -77,7 +76,6 @@ const gesp7Problems = [
       {
         input: "5 4\n2 10 6 3 1\n5 2\n2 3\n3 1\n1 4",
         output: "3",
-        explanation: "路径 5→2→3→1→4 对应序列 [1,10,6,2,3]，最长不下降子序列为 [1,2,3] 长度为3",
       },
       {
         input: "6 11\n1 1 2 1 1 2\n1 2\n2 1\n2 3\n3 2\n3 4\n4 3\n4 5\n5 4\n5 6\n6 5\n1 6",
@@ -132,12 +130,10 @@ const gesp7Problems = [
       {
         input: "3 5 0 2\n1 2 4\n1 0\n2 0\n0 1\n2 1\n1 2",
         output: "5",
-        explanation: "从商品0出发，通过一系列交易到达商品2，最小花费为5",
       },
       {
         input: "3 3 0 2\n100 2 4\n0 1\n1 2\n0 2",
         output: "-95",
-        explanation: "可以盈利95元",
       },
       {
         input: "4 4 3 0\n1 2 3 4\n1 0\n0 1\n3 2\n2 3",
@@ -187,7 +183,6 @@ const gesp7Problems = [
       {
         input: "4\n1 2 10 100\n1 100 1\n1 1 2 0",
         output: "219",
-        explanation: "选择合适的出牌策略和切换时机",
       },
       {
         input: "6\n3 7 2 8 9 4\n1 3 9 27 81\n0 1 2 1 2 0",
@@ -230,7 +225,6 @@ const gesp7Problems = [
       {
         input: "4 3\n1 2\n2 3\n4 2",
         output: "1 3",
-        explanation: "可以让1个学生属于B校，也可以让3个学生属于B校",
       },
       {
         input: "7 5\n1 2\n2 3\n4 2\n5 6\n6 7",
@@ -273,7 +267,6 @@ const gesp7Problems = [
       {
         input: "5 6\n1 2 3 4 4 5\n1 2 3 3 4 5\n1 2 2 3 4 5\n1 6 6 7 7 8\n6 6 7 7 8 8",
         output: "7",
-        explanation: "网格中共有7种不同形状的方块",
       },
     ],
     testCases: [
@@ -315,7 +308,6 @@ const gesp7Problems = [
       {
         input: "5\n0 1 0 1 0\n1 2\n1 3\n3 4\n3 5",
         output: "2",
-        explanation: "将节点1和3改为黑色，使得黑色节点保持连通",
       },
     ],
     testCases: [{ input: "5\n0 1 0 1 0\n1 2\n1 3\n3 4\n3 5", output: "2" }],
@@ -347,7 +339,6 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "5\n3 2 4 3 2",
         output: "2",
-        explanation: "满足条件的区间有 ⟨1,5⟩ 和 ⟨3,3⟩",
       },
     ],
     testCases: [{ input: "5\n3 2 4 3 2", output: "2" }],
@@ -389,7 +380,6 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "2\n3 3 1\n000\n111\n01?\n3 3 1\n000\n?0?\n01?",
         output: "4\n2",
-        explanation: "第一组：最优路径可以得到4分；第二组：最优路径可以得到2分",
       },
     ],
     testCases: [{ input: "2\n3 3 1\n000\n111\n01?\n3 3 1\n000\n?0?\n01?", output: "4\n2" }],
@@ -425,7 +415,6 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "2\n5\n0 1 0 1 0\n1 2\n1 3\n3 4\n3 5\n5\n1 1 1 1 1\n1 2\n1 3\n3 4\n3 5",
         output: "Yes\nNo",
-        explanation: "第一组可以收集所有宝藏，第二组无法收集所有宝藏",
       },
     ],
     testCases: [
@@ -469,7 +458,6 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "3\n3 2 3\n1 2\n1 2\n2 3\n3 3 4\n1 2\n1 2\n2 3\n3 1000 1000\n1 2\n1 2\n2 3",
         output: "3\n-1\n-1",
-        explanation: "第一组：选择战力2花费3的武器即可；第二组和第三组无法满足条件",
       },
     ],
     testCases: [
@@ -511,7 +499,6 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "5\n6 2 3 4 5\n1 2\n2 3\n2 5\n1 4",
         output: "3",
-        explanation: "从节点1开始燃烧，可以燃烧到节点2、4、5中的部分",
       },
     ],
     testCases: [{ input: "5\n6 2 3 4 5\n1 2\n2 3\n2 5\n1 4", output: "3" }],
@@ -545,7 +532,6 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "4 4 3\n1 2\n1 3\n2 3\n3 4",
         output: "2 4 4\n2 4 4\n3 4 4\n1 3 4",
-        explanation: "从节点1出发，走1步能到2个节点，走2步能到4个节点，走3步能到4个节点",
       },
     ],
     testCases: [{ input: "4 4 3\n1 2\n1 3\n2 3\n3 4", output: "2 4 4\n2 4 4\n3 4 4\n1 3 4" }],
@@ -577,7 +563,6 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "7\naaaaabb",
         output: "9",
-        explanation: "满足条件的子串有9个",
       },
       {
         input: "9\nbabacabab",
@@ -619,12 +604,10 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "5 4\n1 2\n2 3\n3 1\n4 5",
         output: "3",
-        explanation: "边(1,2)、(2,3)、(3,1)两两有公共端点，形成3条线图边",
       },
       {
         input: "5 10\n1 2\n1 3\n1 4\n1 5\n2 3\n2 4\n2 5\n3 4\n3 5\n4 5",
         output: "30",
-        explanation: "完全图K5的线图边数为30",
       },
     ],
     testCases: [
@@ -662,12 +645,10 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "3\n1 2\n2 4\n3 2",
         output: "8",
-        explanation: "选择食材2和3，酸度和=2+3=5，甜度和=4+2=6？需要重新验证",
       },
       {
         input: "5\n1 1\n2 3\n6 1\n8 2\n5 7",
         output: "2",
-        explanation: "选择食材1，酸度=甜度=1，总和为2",
       },
     ],
     testCases: [
@@ -705,12 +686,10 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "4 4\n1 2\n2 3\n3 1\n1 4",
         output: "0",
-        explanation: "图已经连通",
       },
       {
         input: "6 4\n1 2\n2 3\n3 1\n6 5",
         output: "2",
-        explanation: "有3个连通分量，需要添加2条边",
       },
     ],
     testCases: [
@@ -747,12 +726,10 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "3\n1 6\n3 7\n2 4",
         output: "2",
-        explanation: "可以收集位置2时刻4的金币和位置3时刻7的金币",
       },
       {
         input: "4\n1 1\n2 2\n1 3\n2 4",
         output: "3",
-        explanation: "可以收集3枚金币",
       },
     ],
     testCases: [
@@ -790,12 +767,10 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "3 3\n1 2\n1 3\n2 3",
         output: "1",
-        explanation: "任意城市到其他城市的最大距离都是1，选编号最小的",
       },
       {
         input: "4 4\n1 2\n2 3\n3 4\n2 4",
         output: "2",
-        explanation: "从城市2出发，到最远城市的距离为2",
       },
     ],
     testCases: [
@@ -836,7 +811,6 @@ a_l × a_{l+1} × ... × a_r 是一个完全平方数。`,
       {
         input: "4\n2 1 3 2\n1 5 6 3",
         output: "12",
-        explanation: "最优分组方案使总讨论强度为12",
       },
       {
         input: "8\n1 3 2 4 3 5 4 6\n0 2 5 6 4 3 3 4",

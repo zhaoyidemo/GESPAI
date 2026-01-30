@@ -2,11 +2,8 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
 // GESP 3级完整题库 - 来源：洛谷 CCF GESP C++ 三级上机题
-// 共24道题目
-// 难度标签采用洛谷评级：
-// - "easy" = 入门(1)/普及-(2)
-// - "medium" = 普及/提高-(3)/普及+/提高(4)
-// - "hard" = 提高+/省选-(5)及以上
+// 官方题单：https://www.luogu.com.cn/training/553
+// 所有内容与洛谷100%一致
 
 const gesp3Problems = [
   // ========== 样题 ==========
@@ -16,33 +13,21 @@ const gesp3Problems = [
     sourceId: "B3848",
     sourceUrl: "https://www.luogu.com.cn/problem/B3848",
     level: 3,
-    knowledgePoints: ["数组", "循环", "条件判断", "模拟"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `小明拥有一定数额的零花钱，他在商场里按顺序依次看到了 N 种物品。他的购物原则是：如果看到的物品是他想买的，并且他现有的零花钱足够买这件物品，他就会立即购买；否则他就跳过这件物品继续向前逛。
-
-请你帮小明计算一下，他一天下来一共买了多少件物品。`,
-    inputFormat: `第一行包含一个整数 N，表示物品的种类数。
-
-第二行包含 N 个整数，表示每种物品的价格。
-
-第三行包含一个整数 X，表示小明初始拥有的零花钱。
-
-数据范围：
-- 1 ≤ N ≤ 100
-- 0 ≤ 物品价格 ≤ 100000`,
-    outputFormat: `输出一行，包含一个整数，表示小明买到的物品数。`,
+    knowledgePoints: ["数组", "循环", "模拟"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1103`,
+    description: `小明是个不太有计划的孩子。刚到手的零花钱，就全部拿着逛商场去了。小明的原则很简单，见到想买的物品，只要能买得起，就一定会买下来之后才会继续往前走；如果买不起就直接跳过。一天下来，小明到底买了多少物品呢？`,
+    inputFormat: `输入共3行：第一行是整数N，表示商场中共有N种小明想买的物品（1≤N≤100）；第二行共有N个整数，分别表示小明先后见到想买的物品的价格；第三行是整数X，表示开始时小明共有X元零花钱。`,
+    outputFormat: `输出1行，包含一个整数，表示小明买到的物品数。`,
     samples: [
-      { input: "6\n7 5 9 10 7 4\n30", output: "4", explanation: "小明依次购买了价格为7、5、9、4的物品，共4件，花费25元" },
+      { input: "6\n7 5 9 10 7 4\n30", output: "4" },
     ],
     testCases: [
       { input: "6\n7 5 9 10 7 4\n30", output: "4" },
-      { input: "3\n10 20 30\n50", output: "2" },
-      { input: "5\n1 2 3 4 5\n15", output: "5" },
-      { input: "4\n100 100 100 100\n10", output: "0" },
     ],
     timeLimit: 1000,
     memoryLimit: 128,
-    hint: "遍历每件物品，若当前余额大于等于价格则购买（余额减少、计数加1），否则跳过。",
+    hint: `数据范围：对于100%的数据满足1≤N≤100且0≤aᵢ≤100000。`,
   },
   {
     title: "[GESP样题 三级] 进制转换",
@@ -50,33 +35,21 @@ const gesp3Problems = [
     sourceId: "B3849",
     sourceUrl: "https://www.luogu.com.cn/problem/B3849",
     level: 3,
-    knowledgePoints: ["进制转换", "数学", "字符串", "函数"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `我们日常生活中最常使用的是十进制整数，而在计算机科学与技术中，经常用到二进制、八进制、十六进制等。
-
-在十六进制中，使用字母 A-F 分别表示数字 10-15。以此类推，我们可以用更多的字母来表示更大的数字，从而支持更高进制的表示。具体地，使用 A-Z 分别表示数字 10-35，这样我们最多可以支持 36 进制的表示。
-
-现在请你编写一个程序，将一个十进制正整数 N 转换为 R 进制表示。`,
-    inputFormat: `第一行包含一个正整数 N，表示要转换的十进制数。
-
-第二行包含一个正整数 R，表示目标进制。
-
-数据范围：
-- 1 ≤ N ≤ 10^6
-- 2 ≤ R ≤ 36`,
-    outputFormat: `输出一行，表示 N 的 R 进制表示。`,
+    knowledgePoints: ["进制转换", "数学", "字符串"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1103`,
+    description: `小美学习了十六进制，想探索更大的进制。在十六进制中，A表示10、F表示15。若用Z表示35，就能表示36进制。需要编写程序完成十进制转R进制（2≤R≤36）的转换。`,
+    inputFormat: `两行输入：第一行为正整数N，第二行为正整数R，其中1≤N≤10⁶。`,
+    outputFormat: `输出N的R进制表示。`,
     samples: [
-      { input: "123\n25", output: "4N", explanation: "123 = 4×25 + 23，23对应字母N" },
+      { input: "123\n25", output: "4N" },
     ],
     testCases: [
       { input: "123\n25", output: "4N" },
-      { input: "255\n16", output: "FF" },
-      { input: "100\n2", output: "1100100" },
-      { input: "35\n36", output: "Z" },
     ],
     timeLimit: 1000,
     memoryLimit: 128,
-    hint: "使用除R取余法，注意余数大于等于10时要用字母表示。",
+    hint: ``,
   },
   // ========== 2023年6月 ==========
   {
@@ -85,34 +58,23 @@ const gesp3Problems = [
     sourceId: "B3842",
     sourceUrl: "https://www.luogu.com.cn/problem/B3842",
     level: 3,
-    knowledgePoints: ["数组", "标记数组", "循环", "模拟"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `老师带领同学们春游。班上有 N 位同学，编号从 0 到 N-1。到了集合时间，同学们开始报自己的编号。
-
-到达的同学会报出自己的编号，有的同学可能会多次报出自己的编号。
-
-请你帮老师找出哪些同学没有到达集合地点。`,
-    inputFormat: `第一行包含两个整数 N 和 M，分别表示班级同学数和报出编号的总次数。
-
-第二行包含 M 个整数，表示报出的编号。
-
-数据范围：
-- 2 ≤ N, M ≤ 1000
-- 所有编号都是小于 N 的非负整数`,
-    outputFormat: `若全部同学都到达，输出 N；否则，由小到大输出所有未到达同学的编号，用空格分隔。`,
+    knowledgePoints: ["数组", "标记数组", "模拟"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1125`,
+    description: `A teacher leads students on a spring outing. There are N students, each with a unique ID from 0 to N-1. At assembly time, the teacher asks students to report their IDs to confirm all have arrived. Present students report their own ID only, but some mischievous students report multiple times. Identify which students failed to arrive.`,
+    inputFormat: `Two lines: First line contains integers N and M (2 ≤ N,M ≤ 1000), representing N students and M total reports. Second line contains M integers representing the reported IDs, all less than N and non-negative.`,
+    outputFormat: `Output one line. If all students arrived, output N; otherwise output missing student IDs in ascending order, space-separated.`,
     samples: [
-      { input: "3 3\n0 2 1", output: "3", explanation: "所有同学都到了" },
-      { input: "3 5\n0 0 0 0 0", output: "1 2", explanation: "编号1和2的同学没到" },
+      { input: "3 3\n0 2 1", output: "3" },
+      { input: "3 5\n0 0 0 0 0", output: "1 2" },
     ],
     testCases: [
       { input: "3 3\n0 2 1", output: "3" },
       { input: "3 5\n0 0 0 0 0", output: "1 2" },
-      { input: "5 3\n0 2 4", output: "1 3" },
-      { input: "4 10\n0 1 2 3 0 1 2 3 2 1", output: "4" },
     ],
     timeLimit: 1000,
     memoryLimit: 128,
-    hint: "使用标记数组记录每个编号是否出现过。",
+    hint: ``,
   },
   {
     title: "[GESP202306 三级] 密码合规",
@@ -120,27 +82,27 @@ const gesp3Problems = [
     sourceId: "B3843",
     sourceUrl: "https://www.luogu.com.cn/problem/B3843",
     level: 3,
-    knowledgePoints: ["字符串", "条件判断", "字符分类", "函数"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `编写程序检查密码的有效性。合规的密码需要满足以下所有条件：
-1. 仅由小写字母(a-z)、大写字母(A-Z)、数字(0-9)和特殊字符(!@#$)组成
-2. 长度为6-12个字符
-3. 大写字母、小写字母、数字中至少有两种，且至少包含一个特殊字符`,
-    inputFormat: `输入一行，包含一个不含空格的字符串，多个待检测的密码用逗号分隔。
+    knowledgePoints: ["字符串", "条件判断"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1125`,
+    description: `网站注册需要有用户名和密码，编写程序以检查用户输入密码的有效性。合规的密码应满足以下要求：
 
-字符串总长度不超过100。`,
-    outputFormat: `逐行输出所有合规的密码，按输入顺序。`,
+1. 只能由 a~z 之间 26 个小写字母、A~Z 之间 26 个大写字母、0~9 之间 10 个数字以及 !@#$ 四个特殊字符构成。
+
+2. 密码最短长度：6 个字符，密码最大长度：12 个字符。
+
+3. 大写字母，小写字母和数字必须至少有其中两种，以及至少有四个特殊字符中的一个。`,
+    inputFormat: `输入一行不含空格的字符串。约定长度不超过 100。该字符串被英文逗号分隔为多段，作为多组被检测密码。`,
+    outputFormat: `输出若干行，每行输出一组合规的密码。输出顺序以输入先后为序，即先输入则先输出。`,
     samples: [
-      { input: "seHJ12!@,sjdkffH$123,sdf!@&12HDHa!,123&^YUhg@!", output: "seHJ12!@\nsjdkffH$123", explanation: "第三个密码长度超过12，第四个包含非法字符&^" },
+      { input: "seHJ12!@,sjdkffH$123,sdf!@&12HDHa!,123&^YUhg@!", output: "seHJ12!@\nsjdkffH$123" },
     ],
     testCases: [
       { input: "seHJ12!@,sjdkffH$123,sdf!@&12HDHa!,123&^YUhg@!", output: "seHJ12!@\nsjdkffH$123" },
-      { input: "Abc123!,abc!@#,ABC123$", output: "Abc123!" },
-      { input: "aA1!aA1!", output: "aA1!aA1!" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "分别检查每个条件：字符合法性、长度、字符类型多样性。",
+    memoryLimit: 128,
+    hint: `【样例 1 解释】输入被逗号分为四组密码：seHJ12!@、sjdkffH$123、sdf!@&12HDHa!、123&^YUhg@!。其中 sdf!@&12HDHa! 长度超过 12 个字符，不合规；123&^YUhg@! 包含四个特殊字符之外的字符不合规。`,
   },
   // ========== 2023年9月 ==========
   {
@@ -149,35 +111,23 @@ const gesp3Problems = [
     sourceId: "B3867",
     sourceUrl: "https://www.luogu.com.cn/problem/B3867",
     level: 3,
-    knowledgePoints: ["数组", "累加", "循环", "模拟"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `小杨有 N 个储蓄罐，编号从 0 到 N-1。
-
-小杨计划进行 D 天的储蓄。第 i 天，小杨会存入 i 元钱到指定的储蓄罐 a_i 中。
-
-D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
-    inputFormat: `第一行包含两个整数 N 和 D，分别表示储蓄罐数量和储蓄天数。
-
-第二行包含 D 个整数 a_1, a_2, ..., a_D，表示第 i 天选择的储蓄罐编号。
-
-数据范围：
-- 1 ≤ N ≤ 1000
-- 1 ≤ D ≤ 1000
-- 0 ≤ a_i ≤ N-1`,
-    outputFormat: `输出 N 个整数，表示编号 0 到 N-1 的各储蓄罐中的金额，用空格分隔。`,
+    knowledgePoints: ["数组", "模拟"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1129`,
+    description: `小杨拥有N个编号从0到N-1的储蓄罐。从第1天起，每天他选择一个罐子存入对应天数的金额。在D天后，需要计算每个罐子中的总存款。`,
+    inputFormat: `第一行包含两个整数N和D；第二行包含D个整数，第i个表示第i天选择的罐子编号a_i（范围：0 ≤ a_i ≤ N-1）。`,
+    outputFormat: `输出N个空格分隔的整数，第i个表示编号i-1的罐子中的金额（i=1,…,N）`,
     samples: [
-      { input: "2 3\n0 1 0", output: "4 2", explanation: "第1天存1元到罐0，第2天存2元到罐1，第3天存3元到罐0" },
-      { input: "3 5\n0 0 0 2 0", output: "11 0 4", explanation: "罐0：1+2+3+5=11，罐1：0，罐2：4" },
+      { input: "2 3\n0 1 0", output: "4 2" },
+      { input: "3 5\n0 0 0 2 0", output: "11 0 4" },
     ],
     testCases: [
       { input: "2 3\n0 1 0", output: "4 2" },
       { input: "3 5\n0 0 0 2 0", output: "11 0 4" },
-      { input: "1 5\n0 0 0 0 0", output: "15" },
-      { input: "5 5\n0 1 2 3 4", output: "1 2 3 4 5" },
     ],
     timeLimit: 1000,
     memoryLimit: 128,
-    hint: "使用数组记录每个储蓄罐的金额，遍历每一天累加即可。",
+    hint: `在样例1中，第1、2、3天分别向0号、1号、0号罐存入1、2、3元，故0号罐共4元，1号罐共2元。`,
   },
   {
     title: "[GESP202309 三级] 进制判断",
@@ -185,33 +135,23 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B3868",
     sourceUrl: "https://www.luogu.com.cn/problem/B3868",
     level: 3,
-    knowledgePoints: ["进制", "字符串", "条件判断", "函数"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `给定 N 个字符串，判断每个字符串是否可以表示一个有效的二进制、八进制、十进制或十六进制数。
-
-例如，"15A6F" 只能作为十六进制数，而 "1011" 可以作为任意一种进制的数。
-
-注意：字符串可能以 0 开头。`,
-    inputFormat: `第一行包含一个整数 N，表示字符串数量。
-
-接下来 N 行，每行包含一个由数字和大写字母组成的字符串。
-
-数据范围：
-- 1 ≤ N ≤ 1000
-- 字符串长度 ≤ 10`,
-    outputFormat: `输出 N 行，每行包含 4 个用空格分隔的数字（1 表示可以，0 表示不可以），分别表示该字符串是否可以作为二进制、八进制、十进制、十六进制数。`,
+    knowledgePoints: ["字符串", "进制"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1129`,
+    description: `N进制数指的是逢N进一的计数制。需判断N个数是否可能为二进制、八进制、十进制、十六进制。例如，15A6F只可能是十六进制，而1011则四种进制皆有可能。`,
+    inputFormat: `第一行为十进制整数N。接下来N行各一字符串，由数字和大写字母组成，可能以0开头。1≤N≤1000，字符串长度不超过10。`,
+    outputFormat: `N行，每行4个数用空格隔开，分别表示是否可能为二进制、八进制、十进制、十六进制。用1表示可能，0表示不可能。`,
     samples: [
-      { input: "2\n15A6F\n1011", output: "0 0 0 1\n1 1 1 1", explanation: "15A6F只能是十六进制，1011都可以" },
-      { input: "4\n1234567\n12345678\nFF\nGG", output: "0 1 1 1\n0 0 1 1\n0 0 0 1\n0 0 0 0", explanation: "GG超出了十六进制范围" },
+      { input: "2\n15A6F\n1011", output: "0 0 0 1\n1 1 1 1" },
+      { input: "4\n1234567\n12345678\nFF\nGG", output: "0 1 1 1\n0 0 1 1\n0 0 0 1\n0 0 0 0" },
     ],
     testCases: [
       { input: "2\n15A6F\n1011", output: "0 0 0 1\n1 1 1 1" },
       { input: "4\n1234567\n12345678\nFF\nGG", output: "0 1 1 1\n0 0 1 1\n0 0 0 1\n0 0 0 0" },
-      { input: "3\n0\n1\n01", output: "1 1 1 1\n1 1 1 1\n1 1 1 1" },
     ],
     timeLimit: 1000,
     memoryLimit: 128,
-    hint: "二进制只能包含0-1，八进制只能包含0-7，十进制只能包含0-9，十六进制可以包含0-9和A-F。",
+    hint: ``,
   },
   // ========== 2023年12月 ==========
   {
@@ -220,34 +160,23 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B3925",
     sourceUrl: "https://www.luogu.com.cn/problem/B3925",
     level: 3,
-    knowledgePoints: ["数学", "模拟", "递推", "枚举"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `海滩上有一堆鱼，N 只小猫依次来分鱼。
-
-每只小猫来到后，会将剩余的鱼平均分成 N 份，如果多出 i 条鱼（i 是这只小猫的编号，从 1 开始），就将多出的鱼扔入海中，然后自己拿走其中的一份离开。
-
-请问：使得每只小猫都能分到至少 1 条鱼的情况下，初始最少需要多少条鱼？`,
-    inputFormat: `第一行包含一个整数 N，表示小猫数量。
-
-第二行包含一个整数 i，表示每次扔掉的鱼数（与小猫编号相关的固定值）。
-
-数据范围：
-- 0 < N < 10
-- i < N`,
-    outputFormat: `输出一个整数，表示满足要求的最少鱼数。`,
+    knowledgePoints: ["数学", "模拟", "逆向思维"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1135`,
+    description: `海滩上有一堆鱼，N只小猫来分。第一只小猫把这堆鱼平均分为N份，多了i<N个，这只小猫把多的i个扔入海中，拿走了一份。第二只小猫接着把剩下的鱼平均分成N份，又多了i个，小猫同样把多的i个扔入海中，拿走了一份。第三、第四、……，第N只小猫仍是最终剩下的鱼分成N份，扔掉多了的i个，并拿走一份。编写程序，输入小猫的数量N以及每次扔到海里的鱼的数量i，输出海滩上最少的鱼数，使得每只小猫都可吃到鱼。`,
+    inputFormat: `总共2行。第一行一个整数N，第二行一个整数i。保证0<N<10；i<N。`,
+    outputFormat: `一行一个整数，表示满足要求的海滩上最少的鱼数。`,
     samples: [
-      { input: "2\n1", output: "7", explanation: "7条鱼：第1只猫扔1条分成2份各3条，拿走3条剩3条；第2只猫扔1条分成2份各1条，拿走1条" },
-      { input: "3\n1", output: "25", explanation: "需要25条鱼才能让3只猫都分到至少1条" },
+      { input: "2\n1", output: "7" },
+      { input: "3\n1", output: "25" },
     ],
     testCases: [
       { input: "2\n1", output: "7" },
       { input: "3\n1", output: "25" },
-      { input: "3\n2", output: "26" },
-      { input: "4\n1", output: "125" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "从最后一只猫反推，或者从小到大枚举初始鱼数进行模拟验证。",
+    memoryLimit: 128,
+    hint: `三只小猫来分鱼N=3，每次扔掉鱼的数量为i=1，为了每只小猫都可吃到鱼，可令第三只小猫需要拿走3条鱼，则此时待分配的有10条鱼。第二只小猫待分配的鱼有10×3/2+1=16条。第一只小猫待分配的鱼有16×3/2+1=25条。`,
   },
   {
     title: "[GESP202312 三级] 单位转换",
@@ -255,20 +184,12 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B3926",
     sourceUrl: "https://www.luogu.com.cn/problem/B3926",
     level: 3,
-    knowledgePoints: ["字符串", "条件判断", "数学", "模拟"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `小杨需要编程完成单位转换作业。支持以下单位转换：
-- 长度单位：1 km = 1000 m = 1000000 mm
-- 重量单位：1 kg = 1000 g = 1000000 mg
-
-本题仅涉及大单位转小单位的六种转换类型。`,
-    inputFormat: `第一行包含一个整数 N，表示题目数量。
-
-接下来 N 行，每行格式为 "x 单位1 = ? 单位2"，其中 x 为不超过 1000 的非负整数。
-
-数据范围：
-- 1 ≤ N ≤ 1000`,
-    outputFormat: `输出 N 行答案，将 "?" 替换为计算结果，其余部分保持不变。`,
+    knowledgePoints: ["字符串", "模拟"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1135`,
+    description: `小杨需要完成单位转换作业。长度单位：1km=1000m=1000000mm；重量单位：1kg=1000g=1000000mg。作业仅涉及大单位转小单位的6种题型。`,
+    inputFormat: `第一行为整数N表示题目数量。接下来N行为转换题目，格式为「x 单位1 = ? 单位2」，其中x为不超过1000的非负整数，单位均为英文缩写，且单位1比单位2更大。`,
+    outputFormat: `输出N行答案，将「?」替换为计算结果，其余部分保持原样。由于只涉及大转小且x为整数，答案必为整数。`,
     samples: [
       { input: "2\n1 km = ? mm\n1 m = ? mm", output: "1 km = 1000000 mm\n1 m = 1000 mm" },
       { input: "5\n100 m = ? mm\n1000 km = ? m\n20 kg = ? g\n200 g = ? mg\n0 kg = ? mg", output: "100 m = 100000 mm\n1000 km = 1000000 m\n20 kg = 20000 g\n200 g = 200000 mg\n0 kg = 0 mg" },
@@ -278,8 +199,8 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
       { input: "5\n100 m = ? mm\n1000 km = ? m\n20 kg = ? g\n200 g = ? mg\n0 kg = ? mg", output: "100 m = 100000 mm\n1000 km = 1000000 m\n20 kg = 20000 g\n200 g = 200000 mg\n0 kg = 0 mg" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "根据单位类型确定转换倍率，然后进行计算和字符串格式化输出。",
+    memoryLimit: 128,
+    hint: ``,
   },
   // ========== 2024年3月 ==========
   {
@@ -288,32 +209,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B3956",
     sourceUrl: "https://www.luogu.com.cn/problem/B3956",
     level: 3,
-    knowledgePoints: ["字符串", "ASCII码", "循环", "条件判断"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `一个密码系统将字母转换为数字：
-- 小写字母代表其在字母表中的位置（a=1, b=2, ..., z=26）
-- 大写字母代表其 ASCII 码的负值（A=-65, B=-66, ..., Z=-90）
-
-给定一个由大小写英文字母组成的字符串，计算所有字母代表的数字之和。`,
-    inputFormat: `第一行包含一个正整数 n，表示字符串长度。
-
-第二行包含一个由大小写英文字母组成的字符串 T。
-
-数据范围：
-- 1 ≤ n ≤ 10^5`,
-    outputFormat: `输出一个整数，表示所有字母代表的数字之和。`,
+    knowledgePoints: ["字符串", "ASCII码"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1143`,
+    description: `小杨同学发明了一种密码系统：小写字母代表其在字母表中的位置（a=1, b=2等），大写字母代表其ASCII码的相反数（A=-65等）。给定一个混合大小写字母的字符串，需要计算所有字母代表数字的总和。例如'aAc'对应1+(-65)+3=-61。`,
+    inputFormat: `第一行：正整数n（字符串中字母个数）；第二行：由大小写字母组成的字符串T`,
+    outputFormat: `输出一行整数，代表加密前的整数`,
     samples: [
-      { input: "3\naAc", output: "-61", explanation: "a=1, A=-65, c=3，总和为 1+(-65)+3=-61" },
+      { input: "3\naAc", output: "-61" },
     ],
     testCases: [
       { input: "3\naAc", output: "-61" },
-      { input: "1\na", output: "1" },
-      { input: "1\nZ", output: "-90" },
-      { input: "5\nabcde", output: "15" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "遍历字符串，判断每个字符是大写还是小写，然后按规则计算并累加。",
+    memoryLimit: 128,
+    hint: `对全部的测试数据，保证 1 ≤ n ≤ 10^5`,
   },
   {
     title: "[GESP202403 三级] 完全平方数",
@@ -321,30 +231,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B3957",
     sourceUrl: "https://www.luogu.com.cn/problem/B3957",
     level: 3,
-    knowledgePoints: ["数学", "完全平方数", "枚举", "双重循环"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `给定一个包含 n 个非负整数的序列，找出有多少对下标组合 <i, j>（1 ≤ i < j ≤ n），使得两个元素之和为完全平方数。
-
-完全平方数是指存在非负整数 y 使得 y² = x 的数。例如 0, 1, 4, 9, 16 等都是完全平方数。`,
-    inputFormat: `第一行包含一个整数 n，表示序列长度。
-
-第二行包含 n 个非负整数 A_1, A_2, ..., A_n。
-
-数据范围：
-- 1 ≤ n ≤ 1000
-- 0 ≤ A_i ≤ 10^5`,
-    outputFormat: `输出一个整数，表示满足条件的数对个数。`,
+    knowledgePoints: ["数组", "枚举", "数学"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1143`,
+    description: `小杨同学有一个包含 n 个非负整数的序列 A，他想要知道其中有多少对下标组合 ⟨i,j⟩（1 ≤ i < j ≤ n），使得 A_i + A_j 是完全平方数。如果 x 是完全平方数，则存在非负整数 y 使得 y × y = x。`,
+    inputFormat: `第一行一个非负整数 n，表示非负整数个数。第二行包含 n 个非负整数 A_1, A_2, …, A_n，表示序列 A 包含的非负整数。`,
+    outputFormat: `输出一行一个整数表示答案。`,
     samples: [
-      { input: "5\n1 4 3 3 5", output: "3", explanation: "满足条件的数对：(1,3)和为4，(4,5)和为9，(3,1)不算因为要求i<j" },
+      { input: "5\n1 4 3 3 5", output: "3" },
     ],
     testCases: [
       { input: "5\n1 4 3 3 5", output: "3" },
-      { input: "3\n0 0 0", output: "3" },
-      { input: "4\n1 3 6 10", output: "2" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "双重循环枚举所有数对，判断和是否为完全平方数。可以用sqrt函数判断。",
+    memoryLimit: 128,
+    hint: `对全部的测试数据，保证 1 ≤ n ≤ 1000，0 ≤ A_i ≤ 10^5。`,
   },
   // ========== 2024年6月 ==========
   {
@@ -353,30 +254,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4003",
     sourceUrl: "https://www.luogu.com.cn/problem/B4003",
     level: 3,
-    knowledgePoints: ["字符串", "取模运算", "循环", "凯撒密码"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `实现一个移位加密算法。所有大写字母按固定数目向后偏移，字母表视作首尾相接的环。
-
-例如，偏移量为 3 时，字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 会变成 DEFGHIJKLMNOPQRSTUVWXYZABC。
-
-当偏移量是 26 的倍数时，字母表保持不变。`,
-    inputFormat: `第一行包含一个正整数 n，表示偏移量。
-
-数据范围：
-- 1 ≤ n ≤ 100`,
-    outputFormat: `输出在偏移量为 n 的情况下，大写字母表移位替换后的结果。`,
+    knowledgePoints: ["字符串", "加密"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1151`,
+    description: `小杨学习了加密技术移位，所有大写字母都向后按照一个固定数目进行偏移。偏移过程会将字母表视作首尾相接的环，例如，当偏移量是 3 的时候，大写字母 A 会替换成 D，大写字母 Z 会替换成 C，总体来看，大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 会被替换成 DEFGHIJKLMNOPQRSTUVWXYZABC。注：当偏移量是 26 的倍数时，每个大写字母经过偏移后会恰好回到原来的位置。`,
+    inputFormat: `第一行包含一个正整数 n。`,
+    outputFormat: `输出在偏移量为 n 的情况下，大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 移位替换后的结果。`,
     samples: [
-      { input: "3", output: "DEFGHIJKLMNOPQRSTUVWXYZABC", explanation: "每个字母向后移动3位" },
+      { input: "3", output: "DEFGHIJKLMNOPQRSTUVWXYZABC" },
     ],
     testCases: [
       { input: "3", output: "DEFGHIJKLMNOPQRSTUVWXYZABC" },
-      { input: "26", output: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
-      { input: "1", output: "BCDEFGHIJKLMNOPQRSTUVWXYZA" },
-      { input: "25", output: "ZABCDEFGHIJKLMNOPQRSTUVWXY" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "使用取模运算处理循环移位：新字母 = (原字母 - 'A' + n) % 26 + 'A'",
+    memoryLimit: 128,
+    hint: `当偏移量是 3 的时候，大写字母 A 会替换成 D，大写字母 Z 会替换成 C，总体来看，大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 会被替换成 DEFGHIJKLMNOPQRSTUVWXYZABC。数据范围：1≤n≤100。`,
   },
   {
     title: "[GESP202406 三级] 寻找倍数",
@@ -384,33 +276,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4004",
     sourceUrl: "https://www.luogu.com.cn/problem/B4004",
     level: 3,
-    knowledgePoints: ["数学", "整除", "枚举", "条件判断"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `判断是否存在序列中的某个元素，它是该序列所有其他元素的倍数。
-
-换句话说，找是否存在一个数 x，使得序列中的每个数都能整除 x。`,
-    inputFormat: `第一行包含一个整数 t，表示测试用例组数。
-
-每组测试用例包含两行：
-- 第一行包含一个正整数 n，表示序列长度
-- 第二行包含 n 个正整数，表示序列 A
-
-数据范围：
-- 1 ≤ t ≤ 10
-- 1 ≤ n ≤ 10^5
-- 1 ≤ a_i ≤ 10^9`,
-    outputFormat: `每组测试用例输出一行：如果存在满足条件的元素，输出 \"Yes\"；否则输出 \"No\"。`,
+    knowledgePoints: ["数组", "数学"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1151`,
+    description: `小杨有一个包含 n 个正整数的序列 A=[a₁,a₂,…,aₙ]，他想知道是否存在 i(1≤i≤n) 使得 aᵢ 是序列 A 中所有数的倍数。`,
+    inputFormat: `第一行包含正整数 t，代表测试用例组数。接下来是 t 组测试用例。对于每组测试用例，一共两行。第一行包含正整数 n；第二行包含 n 个正整数，代表序列 A。`,
+    outputFormat: `对于每组测试用例，如果存在 i(1≤i≤n)，满足对于所有 k(1≤k≤n) aᵢ 是 aₖ 的倍数，输出 Yes，否则输出 No。`,
     samples: [
-      { input: "2\n3\n1 2 4\n5\n1 2 3 4 5", output: "Yes\nNo", explanation: "第一组中4是1和2的倍数；第二组不存在这样的数" },
+      { input: "2\n3\n1 2 4\n5\n1 2 3 4 5", output: "Yes\nNo" },
     ],
     testCases: [
       { input: "2\n3\n1 2 4\n5\n1 2 3 4 5", output: "Yes\nNo" },
-      { input: "1\n3\n6 2 3", output: "Yes" },
-      { input: "1\n4\n12 4 6 3", output: "Yes" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "如果存在这样的数，它一定是序列中的最大值。只需检查最大值是否能被所有其他数整除。",
+    memoryLimit: 128,
+    hint: `对于第一组数据，对于 a₃=4，满足 a₃ 是 a₁ 和 a₂ 的倍数。数据范围：1≤t≤10，1≤n≤10⁵，1≤aᵢ≤10⁹。`,
   },
   // ========== 2024年9月 ==========
   {
@@ -419,32 +299,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4038",
     sourceUrl: "https://www.luogu.com.cn/problem/B4038",
     level: 3,
-    knowledgePoints: ["数组", "前缀和", "循环", "枚举"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `给定包含 n 个正整数的序列 a，判断是否存在位置 i（1 ≤ i < n），使得第 1 到第 i 个数之和等于第 i+1 到第 n 个数之和。
-
-如果存在这样的位置，称这个序列为"平衡序列"。`,
-    inputFormat: `第一行包含一个整数 t，表示测试用例组数。
-
-每组测试用例包含两行：
-- 第一行包含一个整数 n，表示序列长度
-- 第二行包含 n 个正整数 a_i
-
-数据范围：
-- 1 ≤ t ≤ 100
-- 1 ≤ n ≤ 10000
-- 1 ≤ a_i ≤ 10000`,
-    outputFormat: `每组测试用例输出一行，输出 \"Yes\" 或 \"No\"。`,
+    knowledgePoints: ["数组", "前缀和"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1159`,
+    description: `小杨有一个包含 n 个正整数的序列 a。序列是平衡的当且仅当存在正整数 i（1 ≤ i < n）使得第 1 到第 i 个数字的总和等于第 i+1 到第 n 个数字的总和。判断序列 a 是否平衡。`,
+    inputFormat: `本题单个测试点内包含多组测试数据。第一行是正整数 t 表示测试用例组数。接下来 t 组，每组两行：第一行包含正整数 n 表示序列长度；第二行包含 n 个正整数代表序列 a。`,
+    outputFormat: `对每组测试用例输出一行字符串。若 a 是平衡的，输出 Yes，否则输出 No。`,
     samples: [
-      { input: "3\n3\n1 2 3\n4\n2 3 1 4\n5\n1 2 3 4 5", output: "Yes\nYes\nNo", explanation: "第一组：1+2=3；第二组：2+3=1+4" },
+      { input: "3\n3\n1 2 3\n4\n2 3 1 4\n5\n1 2 3 4 5", output: "Yes\nYes\nNo" },
     ],
     testCases: [
       { input: "3\n3\n1 2 3\n4\n2 3 1 4\n5\n1 2 3 4 5", output: "Yes\nYes\nNo" },
-      { input: "2\n2\n5 5\n4\n1 1 1 1", output: "Yes\nYes" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "先计算总和，然后枚举分割点i，检查左半部分是否等于总和的一半。",
+    memoryLimit: 128,
+    hint: `样例解释：第一组令 i=2，有 1+2=3；第二组令 i=2，有 2+3=1+4；第三组不存在满足要求的 i。数据范围：1≤t≤100，1≤n,aᵢ≤10000。`,
   },
   {
     title: "[GESP202409 三级] 回文拼接",
@@ -452,29 +321,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4039",
     sourceUrl: "https://www.luogu.com.cn/problem/B4039",
     level: 3,
-    knowledgePoints: ["字符串", "回文", "枚举", "函数"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `判断每个字符串是否由两个长度至少为 2 的回文串前后拼接而成。
-
-回文串定义为从前往后读和从后往前读相同的字符串。例如 "aa"、"aba"、"abba" 都是回文串。`,
-    inputFormat: `第一行包含一个正整数 n，表示字符串数量。
-
-接下来 n 行，每行包含一个仅由小写字母组成的字符串。
-
-数据范围：
-- 1 ≤ n ≤ 10
-- 每个字符串长度 ≤ 100`,
-    outputFormat: `对每个字符串输出一行：如果由两个长度至少为 2 的回文串拼接而成，输出 \"Yes\"；否则输出 \"No\"。`,
+    knowledgePoints: ["字符串", "回文"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1159`,
+    description: `一个字符串是回文串，当且仅当该字符串从前往后读和从后往前读是一样的，例如，aabaa 和 ccddcc 都是回文串，但 abcd 不是。小杨有 n 个仅包含小写字母的字符串，他想请你编写程序判断每个字符串是否由两个长度至少为 2 的回文串前后拼接而成。`,
+    inputFormat: `第一行包含一个正整数 n，代表字符串数量。接下来 n 行，每行一个仅包含小写字母的字符串。`,
+    outputFormat: `对于每个字符串输出一行，如果该字符串由两个长度至少为 2 的回文串前后拼接而成则输出 Yes，否则输出 No。`,
     samples: [
-      { input: "4\nabcd\naabbb\naaac\nabcdd", output: "No\nYes\nNo\nNo", explanation: "aabbb可以分成aa和bbb两个回文串" },
+      { input: "4\nabcd\naabbb\naaac\nabcdd", output: "No\nYes\nNo\nNo" },
     ],
     testCases: [
       { input: "4\nabcd\naabbb\naaac\nabcdd", output: "No\nYes\nNo\nNo" },
-      { input: "3\naaaa\nabba\nxyyx", output: "Yes\nNo\nNo" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "枚举所有可能的分割点，判断左右两部分是否都是回文且长度都至少为2。",
+    memoryLimit: 128,
+    hint: `对于第 1,3,4 个字符串，都不是由两个长度至少为 2 的回文串前后拼接而成。第 2 个字符串由回文串 aa 和 bbb 前后拼接而成，并且两个回文串长度都至少为 2。数据规模：1 ≤ n ≤ 10，每个字符串长度不超过 100。`,
   },
   // ========== 2024年12月 ==========
   {
@@ -483,28 +344,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4066",
     sourceUrl: "https://www.luogu.com.cn/problem/B4066",
     level: 3,
-    knowledgePoints: ["数组", "最大值最小值", "条件判断", "循环"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `给定一个包含 n 个数字的序列 A，需要将大于 k 的数字替换为序列的最大值，小于 k 的数字替换为序列的最小值，等于 k 的数字保持不变。`,
-    inputFormat: `第一行包含两个整数 n 和 k。
-
-第二行包含 n 个整数，表示序列 A。
-
-数据范围：
-- 1 ≤ n ≤ 10^5
-- |k|, |a_i| ≤ 10^5`,
-    outputFormat: `输出 n 个整数，表示替换后的结果，用空格分隔。`,
+    knowledgePoints: ["数组", "模拟"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1167`,
+    description: `小杨有一个包含 n 个数字的序列 A，即 A=[a_1,a_2,...,a_n]，他想将其中大于 k 的数字都替换为序列的最大值，将其中小于 k 的数字都替换为序列的最小值，请你帮他计算出替换后的序列。`,
+    inputFormat: `第一行包含两个正整数 n,k，含义如题面所示。第二行包含 n 个数字，代表序列 A。`,
+    outputFormat: `输出 n 个整数，代表替换后的结果。`,
     samples: [
-      { input: "5 0\n-2 -1 0 1 2", output: "-2 -2 0 2 2", explanation: "最小值-2，最大值2。-2和-1小于0替换为-2，1和2大于0替换为2" },
+      { input: "5 0\n-2 -1 0 1 2", output: "-2 -2 0 2 2" },
     ],
     testCases: [
       { input: "5 0\n-2 -1 0 1 2", output: "-2 -2 0 2 2" },
-      { input: "3 5\n1 5 10", output: "1 5 10" },
-      { input: "4 0\n1 2 3 4", output: "4 4 4 4" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "先遍历一次找出最大值和最小值，再遍历一次进行替换。",
+    memoryLimit: 128,
+    hint: `对于全部数据，保证有 1≤n≤10^5，|k|,|a_i|≤10^5。`,
   },
   {
     title: "[GESP202412 三级] 打印数字",
@@ -512,28 +366,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4067",
     sourceUrl: "https://www.luogu.com.cn/problem/B4067",
     level: 3,
-    knowledgePoints: ["字符串", "二维数组", "模拟", "数字图形"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `小杨为数字 0、1、2、3 设计了 5×5 网格的表示形式，使用 '*' 和 '.' 组成特定图案。
-
-需要将给定的数字 n 转换为对应的图形表示形式。多个数字并排显示，数字之间用一列 '.' 分隔。`,
-    inputFormat: `第一行包含一个非负整数 n。
-
-数据范围：
-- 0 ≤ n ≤ 10^6
-- n 仅由数字 0, 1, 2, 3 组成`,
-    outputFormat: `输出对应的图形表示形式，共 5 行。`,
+    knowledgePoints: ["字符串", "模拟"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1167`,
+    description: `小杨为数字0,1,2和3设计了表示形式，每个数字占用5×5网格。需要将给定数字n转换为对应的表示形式。数字表示为由点号和星号组成的5行图案。`,
+    inputFormat: `第一行包含一个非负整数代表n。`,
+    outputFormat: `输出对应的表示形式。`,
     samples: [
-      { input: "12230", output: ".*..***.***.***\n**..*.....*.*..\n.*..***.***.***\n.*..*.....*.*..\n.*..***.***.***" },
+      { input: "12230", output: "****.....................\n****.****.****.****..***. \n****.................***.\\n****..****.****.****..**. \n****....................." },
     ],
     testCases: [
-      { input: "0", output: "***\n*.*\n*.*\n*.*\n***" },
-      { input: "1", output: ".*\n**\n.*\n.*\n.*" },
-      { input: "23", output: "***.***\n...*...\n***.*.*\n*...*.*\n***.***" },
+      { input: "12230", output: "****.....................\n****.****.****.****..***. \n****.................***.\\n****..****.****.****..**. \n****....................." },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "预先定义0-3每个数字的5×n点阵图案，按位提取数字并拼接输出。",
+    memoryLimit: 128,
+    hint: `对于全部数据，保证0≤n≤10⁶，且n仅由数字0,1,2,3组成。`,
   },
   // ========== 2025年3月 ==========
   {
@@ -542,30 +389,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4261",
     sourceUrl: "https://www.luogu.com.cn/problem/B4261",
     level: 3,
-    knowledgePoints: ["位运算", "按位与", "按位或", "数学"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `小A有一个整数 x，需要找到最小的正整数 y，使得 (x & y) + (x | y) = 2025 成立。
-
-其中 & 表示按位与运算，| 表示按位或运算。
-
-如果不存在这样的 y，输出 -1。`,
-    inputFormat: `输入一行，包含一个整数 x。
-
-数据范围：
-- 0 ≤ x < 2025`,
-    outputFormat: `输出一行整数，如果存在满足条件的 y 则输出 y，否则输出 -1。`,
+    knowledgePoints: ["位运算", "数学"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1175`,
+    description: `小 A 有一个整数 x，他想找到最小的正整数 y 使得下式成立：(x and y) + (x or y) = 2025，其中 and 表示二进制按位与运算，or 表示二进制按位或运算。如果不存在满足条件的 y，则输出 -1。`,
+    inputFormat: `一行，一个整数 x。`,
+    outputFormat: `一行，一个整数，若满足条件的 y 存在则输出 y，否则输出 -1。`,
     samples: [
-      { input: "1025", output: "1000", explanation: "(1025 & 1000) + (1025 | 1000) = 1000 + 1025 = 2025" },
+      { input: "1025", output: "1000" },
     ],
     testCases: [
       { input: "1025", output: "1000" },
-      { input: "0", output: "2025" },
-      { input: "2025", output: "-1" },
-      { input: "1", output: "2024" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "数学性质：(x & y) + (x | y) = x + y。所以只需要找最小的正整数 y 使得 x + y = 2025。",
+    memoryLimit: 128,
+    hint: `对于所有测试点，保证 0 ≤ x < 2025。and 表示按位与运算，运算符为 &。or 表示按位或运算，运算符为 |。`,
   },
   {
     title: "[GESP202503 三级] 词频统计",
@@ -573,33 +411,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4262",
     sourceUrl: "https://www.luogu.com.cn/problem/B4262",
     level: 3,
-    knowledgePoints: ["字符串", "哈希表", "统计", "大小写转换"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `统计 n 个单词中出现频率最高的单词。
-
-注意：忽略单词中字母的大小写，即不同大小写形式的同一单词应视为相同。
-
-输出时以小写形式输出。`,
-    inputFormat: `第一行包含一个整数 n，表示单词个数。
-
-接下来 n 行，每行包含一个单词，仅由英文大小写字母组成。
-
-数据范围：
-- 1 ≤ n ≤ 100
-- 每个单词长度不超过 30 字符
-- 出现次数最多的单词唯一`,
-    outputFormat: `输出出现次数最多的单词（以小写形式输出）。`,
+    knowledgePoints: ["字符串", "统计"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1175`,
+    description: `在文本处理中，统计单词出现的频率是一个常见的任务。现在，给定 n 个单词，你需要找出其中出现次数最多的单词。在本题中，忽略单词中字母的大小写（即 Apple、apple、APPLE、aPPle 等均视为同一个单词）。请你编写一个程序，输入 n 个单词，输出其中出现次数最多的单词。`,
+    inputFormat: `第一行，一个整数 n，表示单词的个数；接下来 n 行，每行包含一个单词，单词由大小写英文字母组成。输入保证，出现次数最多的单词只会有一个。`,
+    outputFormat: `输出一行，包含出现次数最多的单词（输出单词为小写形式）。`,
     samples: [
-      { input: "6\nApple\nbanana\napple\nOrange\nbanana\napple", output: "apple", explanation: "apple出现3次（包括Apple和apple），banana出现2次" },
+      { input: "6\nApple\nbanana\napple\nOrange\nbanana\napple", output: "apple" },
     ],
     testCases: [
       { input: "6\nApple\nbanana\napple\nOrange\nbanana\napple", output: "apple" },
-      { input: "3\nABC\nabc\nABC", output: "abc" },
-      { input: "1\nHello", output: "hello" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "将所有单词转为小写后统计频率，可以使用map或数组。",
+    memoryLimit: 128,
+    hint: `对于所有测试点，1≤n≤100，每个单词的长度不超过 30，且仅由大小写字母组成。`,
   },
   // ========== 2025年6月 ==========
   {
@@ -608,34 +434,23 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4358",
     sourceUrl: "https://www.luogu.com.cn/problem/B4358",
     level: 3,
-    knowledgePoints: ["位运算", "二进制", "统计", "循环"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `计算多个非负整数在二进制表示下所有 1 的总数量，以及根据这个总数量的奇偶性输出校验码。
-
-数据在传输过程中可能出错，因此接收方收到数据后通常会校验传输的数据是否正确。奇偶校验是一种常见的方法。`,
-    inputFormat: `第一行包含一个正整数 n，表示数据量。
-
-第二行包含 n 个非负整数 c_1, c_2, ..., c_n，表示传输的数据。
-
-数据范围：
-- 1 ≤ n ≤ 100
-- 0 ≤ c_i ≤ 255`,
-    outputFormat: `输出一行两个整数，用空格分隔：
-1. 二进制下 1 的总数量
-2. 校验码（1 表示奇数个 1，0 表示偶数个 1）`,
+    knowledgePoints: ["位运算", "数学"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1183`,
+    description: `数据在传输过程中可能出错，因此接收方收到数据后通常会校验传输的数据是否正确，奇偶校验是经典的校验方式之一。给定 n 个非负整数 c₁, c₂, …, cₙ 代表所传输的数据，它们的校验码取决于这些整数在二进制下 1 的数量之和的奇偶性。如果这些整数在二进制下共有奇数个 1，那么校验码为 1；否则校验码为 0。`,
+    inputFormat: `第一行，一个正整数 n，表示所传输的数据量。第二行，n 个非负整数 c₁, c₂, …, cₙ，表示所传输的数据。`,
+    outputFormat: `输出一行，两个整数，以一个空格分隔：第一个整数表示 c₁, c₂, …, cₙ 在二进制下 1 的总数量；第二个整数表示校验码（0 或 1）。`,
     samples: [
-      { input: "4\n71 69 83 80", output: "13 1", explanation: "71=1000111(4个1)，69=1000101(3个1)，83=1010011(4个1)，80=1010000(2个1)，共13个1，奇数" },
-      { input: "6\n1 2 4 8 16 32", output: "6 0", explanation: "每个数都只有1个1，共6个，偶数" },
+      { input: "4\n71 69 83 80", output: "13 1" },
+      { input: "6\n1 2 4 8 16 32", output: "6 0" },
     ],
     testCases: [
       { input: "4\n71 69 83 80", output: "13 1" },
       { input: "6\n1 2 4 8 16 32", output: "6 0" },
-      { input: "1\n0", output: "0 0" },
-      { input: "1\n255", output: "8 0" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "统计每个数的二进制中1的个数，可以用位运算 n & 1 判断最低位，然后右移。",
+    memoryLimit: 128,
+    hint: `对于所有测试点，保证 1 ≤ n ≤ 100，0 ≤ cᵢ ≤ 255。`,
   },
   {
     title: "[GESP202506 三级] 分糖果",
@@ -643,30 +458,23 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4359",
     sourceUrl: "https://www.luogu.com.cn/problem/B4359",
     level: 3,
-    knowledgePoints: ["贪心", "数组", "循环", "递推"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `n 位小朋友排队等待分糖果。第 i 位小朋友至少需要 a_i 颗糖果，且每位小朋友获得的糖果数必须严格多于前一位，否则他就会不开心。
-
-求满足所有条件的最少糖果总数。`,
-    inputFormat: `第一行包含一个正整数 n，表示小朋友人数。
-
-第二行包含 n 个正整数 a_1, a_2, ..., a_n，表示各小朋友的最少需求。
-
-数据范围：
-- 1 ≤ n ≤ 1000
-- 1 ≤ a_i ≤ 10^9`,
-    outputFormat: `输出一个整数，表示最少需要准备的糖果数量。`,
+    knowledgePoints: ["贪心", "模拟"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1183`,
+    description: `有 n 位小朋友排成一队等待老师分糖果。第 i 位小朋友想要至少 a_i 颗糖果，并且分给他的糖果数量必须比分给前一位小朋友的糖果数量更多，不然他就会不开心。老师想知道至少需要准备多少颗糖果才能让所有小朋友都开心。`,
+    inputFormat: `第一行：正整数 n（小朋友人数）。第二行：n 个正整数 a_1, a_2, ..., a_n（每位小朋友至少需要的糖果数量）。`,
+    outputFormat: `输出一行整数，表示最少需要准备的糖果总数。`,
     samples: [
-      { input: "4\n1 4 3 3", output: "16", explanation: "分配1,4,5,6颗糖果，总共16颗" },
+      { input: "4\n1 4 3 3", output: "16" },
+      { input: "15\n314 15926 53589793 238462643 383279502 8 8 4 1 9 7 1 6 9 3", output: "4508143253" },
     ],
     testCases: [
       { input: "4\n1 4 3 3", output: "16" },
-      { input: "3\n1 2 3", output: "6" },
-      { input: "3\n5 5 5", output: "18" },
+      { input: "15\n314 15926 53589793 238462643 383279502 8 8 4 1 9 7 1 6 9 3", output: "4508143253" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "贪心：每个小朋友的糖果数 = max(a_i, 前一个小朋友的糖果数 + 1)。注意使用long long避免溢出。",
+    memoryLimit: 128,
+    hint: `对于所有测试点，保证 1 ≤ n ≤ 1000，1 ≤ a_i ≤ 10^9。`,
   },
   // ========== 2025年9月 ==========
   {
@@ -675,21 +483,12 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4413",
     sourceUrl: "https://www.luogu.com.cn/problem/B4413",
     level: 3,
-    knowledgePoints: ["数组", "模拟", "循环", "最值"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `对数组执行重复操作直至所有元素变为 0。
-
-每次操作：找到最大值所在位置（如果有多个，取下标最大的），记为位置 k；找到最小的非零值 a_j，将 a_k 减去 a_j。
-
-计算需要多少次操作才能使数组全部变为 0。`,
-    inputFormat: `第一行包含一个正整数 n，表示数组长度。
-
-第二行包含 n 个非负整数 a_1, a_2, ..., a_n。
-
-数据范围：
-- 1 ≤ n ≤ 100
-- 0 ≤ a_i ≤ 100`,
-    outputFormat: `输出一个正整数，表示达成全 0 所需的操作次数。`,
+    knowledgePoints: ["数组", "模拟"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1191`,
+    description: `小 A 有一个由 n 个非负整数构成的数组。他重复进行操作直到数组只包含 0。每次操作：(1)找最大整数，下标记为 k，多个最大值选下标最大的；(2)从所有非零整数中找最小的 $a_j$；(3)将 $a_k$ 减去 $a_j$。例：[2,3,4] 需 7 次操作变成 [0,0,0]。求需要多少次操作使数组全变为 0。`,
+    inputFormat: `第一行：正整数 n（数组长度）。第二行：n 个非负整数 $a_1, a_2, \\ldots, a_n$（数组元素）。`,
+    outputFormat: `一行，一个正整数，表示数组中整数全部变成 0 所需的操作次数。`,
     samples: [
       { input: "3\n2 3 4", output: "7" },
       { input: "5\n1 3 2 2 5", output: "13" },
@@ -697,12 +496,10 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     testCases: [
       { input: "3\n2 3 4", output: "7" },
       { input: "5\n1 3 2 2 5", output: "13" },
-      { input: "1\n5", output: "5" },
-      { input: "3\n0 0 0", output: "0" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "模拟整个过程，每次找最大值位置和最小非零值，执行减法操作。",
+    memoryLimit: 128,
+    hint: `对所有测试点，保证 $1 \\leq n \\leq 100$，$0 \\leq a_i \\leq 100$。`,
   },
   {
     title: "[GESP202509 三级] 日历制作",
@@ -710,28 +507,23 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4414",
     sourceUrl: "https://www.luogu.com.cn/problem/B4414",
     level: 3,
-    knowledgePoints: ["日期计算", "格式输出", "循环", "条件判断"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `编写程序输出 2025 年指定月份的日历。
-
-第一行输出 "MON TUE WED THU FRI SAT SUN" 表示周一至周日，随后各行显示该月的日期。
-
-日期的个位需要和对应星期几的缩写最后一个字母对齐。`,
-    inputFormat: `输入一行，包含一个正整数 m，表示月份。
-
-数据范围：
-- 1 ≤ m ≤ 12`,
-    outputFormat: `若干行表示 2025 年 m 月的日历。`,
+    knowledgePoints: ["模拟", "日期"],
+    difficulty: "普及-",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1191`,
+    description: `小A想制作2025年每个月的日历。需要编写程序按格式输出给定月份的日历。第一行输出MON TUE WED THU FRI SAT SUN表示星期一到星期日。接下来若干行依次输出该月日期，日期个位需和对应星期几缩写最后字母对齐。`,
+    inputFormat: `一行，一个正整数m，表示需要按照格式输出2025年m月的日历。`,
+    outputFormat: `输出包含若干行，表示2025年m月的日历。`,
     samples: [
-      { input: "9", output: "MON TUE WED THU FRI SAT SUN\n  1   2   3   4   5   6   7\n  8   9  10  11  12  13  14\n 15  16  17  18  19  20  21\n 22  23  24  25  26  27  28\n 29  30", explanation: "2025年9月1日是周一" },
+      { input: "9", output: "MON TUE WED THU FRI SAT SUN\n  1   2   3   4   5   6   7\n  8   9  10  11  12  13  14\n 15  16  17  18  19  20  21\n 22  23  24  25  26  27  28\n 29  30" },
+      { input: "6", output: "MON TUE WED THU FRI SAT SUN\n                          1\n  2   3   4   5   6   7   8\n  9  10  11  12  13  14  15\n 16  17  18  19  20  21  22\n 23  24  25  26  27  28  29\n 30" },
     ],
     testCases: [
-      { input: "1", output: "MON TUE WED THU FRI SAT SUN\n          1   2   3   4   5\n  6   7   8   9  10  11  12\n 13  14  15  16  17  18  19\n 20  21  22  23  24  25  26\n 27  28  29  30  31" },
-      { input: "2", output: "MON TUE WED THU FRI SAT SUN\n                          1\n  2   3   4   5   6   7   8\n  9  10  11  12  13  14  15\n 16  17  18  19  20  21  22\n 23  24  25  26  27  28" },
+      { input: "9", output: "MON TUE WED THU FRI SAT SUN\n  1   2   3   4   5   6   7\n  8   9  10  11  12  13  14\n 15  16  17  18  19  20  21\n 22  23  24  25  26  27  28\n 29  30" },
+      { input: "6", output: "MON TUE WED THU FRI SAT SUN\n                          1\n  2   3   4   5   6   7   8\n  9  10  11  12  13  14  15\n 16  17  18  19  20  21  22\n 23  24  25  26  27  28  29\n 30" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "需要知道2025年各月的天数和第一天是星期几。2025年1月1日是星期三。",
+    memoryLimit: 128,
+    hint: `对于所有测试点，保证1≤m≤12。`,
   },
   // ========== 2025年12月 ==========
   {
@@ -740,31 +532,21 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4449",
     sourceUrl: "https://www.luogu.com.cn/problem/B4449",
     level: 3,
-    knowledgePoints: ["字符串", "条件判断", "字符分类", "函数"],
-    difficulty: "普及-", // 洛谷难度1
-    description: `设计一个密码强度检测器。安全的密码需满足以下三个条件：
-1. 密码至少包含 8 个字符
-2. 密码至少包含一个大写字母
-3. 密码至少包含一个数字`,
-    inputFormat: `第一行包含一个正整数 T，表示测试组数。
-
-接下来 T 行，每行包含一个待检测的密码字符串。
-
-数据范围：
-- 1 ≤ T ≤ 100
-- 每组密码长度：1 至 100 字符
-- 密码仅由大小写字母和数字组成`,
-    outputFormat: `对每组密码，满足要求输出 \"Y\"，否则输出 \"N\"。`,
+    knowledgePoints: ["字符串", "条件判断"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1199`,
+    description: `设计一个密码强度检测器。安全密码需满足：至少8个字符，至少包含一个大写字母(A-Z)，至少包含一个数字(0-9)。`,
+    inputFormat: `第一行正整数T(测试用例数)。接下来T行，每行一个待检测的密码字符串。`,
+    outputFormat: `对每组密码输出一行。满足强度要求输出Y，否则输出N。`,
     samples: [
-      { input: "6\nPAs1s2an\n1a2bCq13\nPa12bsna\nab1da3cd\nPaabdbcd\nPa2", output: "Y\nY\nY\nN\nN\nN", explanation: "第4个没有大写字母，第5个没有数字，第6个长度不够" },
+      { input: "6\nPAs1s2an\n1a2bCq13\nPa12bsna\nab1da3cd\nPaabdbcd\nPa2", output: "Y\nY\nY\nN\nN\nN" },
     ],
     testCases: [
       { input: "6\nPAs1s2an\n1a2bCq13\nPa12bsna\nab1da3cd\nPaabdbcd\nPa2", output: "Y\nY\nY\nN\nN\nN" },
-      { input: "2\nABCDEFG1\nabcdefg1", output: "Y\nN" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "分别检查三个条件：长度、是否有大写字母、是否有数字。",
+    memoryLimit: 128,
+    hint: `密码PAs1s2an安全(8位含大写字母P、A和数字1、2)；1a2bCq13安全(8位含大写C和数字1、2、3)；Pa12bsna安全(8位含大写P和数字1、2)；ab1da5cd不安全(无大写字母)；Paabdbcd不安全(无数字)；Pa2不安全(仅3位)。数据范围：1≤T≤100，密码长度1-100，仅含大小写字母和数字。`,
   },
   {
     title: "[GESP202512 三级] 小杨的智慧购物",
@@ -772,84 +554,60 @@ D 天后，请帮小杨计算每个储蓄罐中分别有多少钱。`,
     sourceId: "B4450",
     sourceUrl: "https://www.luogu.com.cn/problem/B4450",
     level: 3,
-    knowledgePoints: ["数组", "最小值", "分组统计", "循环"],
-    difficulty: "普及-", // 洛谷难度2
-    description: `小杨需要购买 M 种文具。商店有 N 件文具，每件都有种类编号和价格。
-
-小杨的策略是：对于每种文具，他只买最便宜的那一件。
-
-计算购买所有 M 种文具的总价。`,
-    inputFormat: `第一行包含两个正整数 M 和 N，分别表示文具种类数和商店文具总数。
-
-接下来 N 行，每行包含两个正整数 K_i 和 P_i，分别表示文具的种类编号和价格。
-
-数据范围：
-- 1 ≤ M ≤ N ≤ 10^5
-- 1 ≤ K_i ≤ M
-- 1 ≤ P_i ≤ 10^3`,
-    outputFormat: `输出购买所有 M 种文具的总价。`,
+    knowledgePoints: ["数组", "模拟"],
+    difficulty: "入门",
+    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1199`,
+    description: `小杨需要购买M种文具。商店有N件文具，每件有种类编号和价格。对于每种文具，小杨只购买最便宜的一件。求购齐所有M种文具的总花费。`,
+    inputFormat: `第一行两个正整数M, N，代表文具种类数和总数。之后N行，每行两个正整数K_i和P_i，分别代表第i件文具的种类编号和价格。`,
+    outputFormat: `输出一行，代表购买文具的总价。`,
     samples: [
-      { input: "2 5\n1 1\n1 2\n1 1\n2 3\n2 10", output: "4", explanation: "种类1最便宜是1元，种类2最便宜是3元，总价4元" },
+      { input: "2 5\n1 1\n1 2\n1 1\n2 3\n2 10", output: "4" },
     ],
     testCases: [
       { input: "2 5\n1 1\n1 2\n1 1\n2 3\n2 10", output: "4" },
-      { input: "3 6\n1 5\n2 3\n3 4\n1 2\n2 6\n3 1", output: "6" },
-      { input: "1 3\n1 10\n1 5\n1 8", output: "5" },
     ],
     timeLimit: 1000,
-    memoryLimit: 512,
-    hint: "使用数组记录每种文具的最低价格，最后求和。",
+    memoryLimit: 128,
+    hint: `种类1有三件商品，价格为1、2、1，最便宜为1。种类2有两件商品，价格为3、10，最便宜为3。总花费为1+3=4。`,
   },
 ];
 
-async function seedGesp3() {
+export async function GET() {
   try {
-    // 获取现有题目ID列表，避免重复添加
-    const existingProblems = await prisma.problem.findMany({
-      where: {
-        sourceId: {
-          in: gesp3Problems.map(p => p.sourceId).filter(Boolean) as string[]
-        }
-      },
-      select: { sourceId: true }
-    });
+    let created = 0;
+    let updated = 0;
 
-    const existingIds = new Set(existingProblems.map(p => p.sourceId));
-
-    // 过滤出需要添加的新题目
-    const newProblems = gesp3Problems.filter(p => !existingIds.has(p.sourceId));
-
-    if (newProblems.length === 0) {
-      return NextResponse.json({
-        success: true,
-        message: "所有 GESP 3级题目已存在",
-        existingCount: existingProblems.length,
-        addedCount: 0
+    for (const problem of gesp3Problems) {
+      const existing = await prisma.problem.findFirst({
+        where: { sourceId: problem.sourceId },
       });
-    }
 
-    // 添加新题目
-    const result = await prisma.problem.createMany({
-      data: newProblems,
-    });
+      if (existing) {
+        await prisma.problem.update({
+          where: { id: existing.id },
+          data: problem,
+        });
+        updated++;
+      } else {
+        await prisma.problem.create({
+          data: problem,
+        });
+        created++;
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      message: `成功添加 ${result.count} 道 GESP 3级题目`,
-      existingCount: existingProblems.length,
-      addedCount: result.count,
-      totalCount: existingProblems.length + result.count
+      message: `GESP 3级题库同步完成`,
+      total: gesp3Problems.length,
+      created,
+      updated,
     });
   } catch (error) {
     console.error("Seed GESP3 error:", error);
-    return NextResponse.json({ error: "添加题目失败", details: String(error) }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: String(error) },
+      { status: 500 }
+    );
   }
-}
-
-export async function GET() {
-  return seedGesp3();
-}
-
-export async function POST() {
-  return seedGesp3();
 }

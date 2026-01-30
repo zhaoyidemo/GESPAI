@@ -24,7 +24,7 @@ const gesp4Problems = [
     inputFormat: `一行，包含两个正整数 A 和 B，其中 10 < A < B < 100。`,
     outputFormat: `多行，每行包含一个绝对素数，按从小到大的顺序输出。`,
     samples: [
-      { input: "11 20", output: "11\n13\n17", explanation: "11反转是11，13反转是31，17反转是71，都是素数" },
+      { input: "11 20", output: "11\n13\n17" },
     ],
     testCases: [
       { input: "11 20", output: "11\n13\n17" },
@@ -33,7 +33,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "遍历范围内的每个数，判断它和它的反转数是否都是素数。",
+    hint: ``,
   },
   {
     title: "[GESP样题 四级] 填幻方",
@@ -56,7 +56,7 @@ const gesp4Problems = [
     inputFormat: `一个奇数整数 N，其中 3 ≤ N ≤ 21。`,
     outputFormat: `N 行，每行包含 N 个空格分隔的整数，表示填充后的幻方。`,
     samples: [
-      { input: "3", output: "8 1 6\n3 5 7\n4 9 2", explanation: "3阶幻方" },
+      { input: "3", output: "8 1 6\n3 5 7\n4 9 2" },
     ],
     testCases: [
       { input: "3", output: "8 1 6\n3 5 7\n4 9 2" },
@@ -64,7 +64,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "按照题目描述的算法模拟填充过程，注意边界条件的处理。",
+    hint: ``,
   },
 
   // ========== 2023年6月 ==========
@@ -97,7 +97,7 @@ const gesp4Problems = [
 
 提示：可以边读入边处理并输出。`,
     samples: [
-      { input: "2\n16347\n76344", output: "T\nF", explanation: "16347是幸运数，76344不是" },
+      { input: "2\n16347\n76344", output: "T\nF" },
     ],
     testCases: [
       { input: "2\n16347\n76344", output: "T\nF" },
@@ -105,7 +105,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 128,
-    hint: "按照规则逐位处理，注意奇数位需要乘7后不断求数位和直到结果为一位数。",
+    hint: `可以输入一个数就判断一个数并输出，无需等待所有输入结束`,
   },
   {
     title: "[GESP202306 四级] 图像压缩",
@@ -131,14 +131,14 @@ const gesp4Problems = [
 
 接下来 n 行：压缩后的图像，每个像素用一个十六进制数字表示`,
     samples: [
-      { input: "10\nABCF00FF\nABCF00FF\nABCF00FF\nABCF00FF\nABCF00FF\nABCF00FF\nABCF00FF\n0102030405060708090A0B0C0D0E0F10\n1112131415161718191A1B1C1D1E1F20\n2122232425262728292A2B2C2D2E2F30", output: "（示例输出较长，请参考洛谷原题）", explanation: "AB、CF、FF各出现14次，00出现10次等" },
+      { input: "10\n00FFCFAB00FFAC09071B5CCFAB76\n00AFCBAB11FFAB09981D34CFAF56\n01BFCEAB00FFAC0907F25FCFBA65\n10FBCBAB11FFAB09981DF4CFCA67\n00FFCBFB00FFAC0907A25CCFFC76\n00FFCBAB1CFFCB09FC1AC4CFCF67\n01FCCBAB00FFAC0F071A54CFBA65\n10EFCBAB11FFAB09981B34CFCF67\n01FFCBAB00FFAC0F071054CFAC76\n1000CBAB11FFAB0A981B84CFCF66", output: "ABCFFF00CB09AC07101198011B6776FC\n321032657CD10E\n36409205ACC16D\nB41032657FD16D\n8F409205ACF14D\n324F326570D1FE\n3240C245FC411D\nBF4032687CD16D\n8F409205ACC11D\nB240326878D16E\n83409205ACE11D" },
     ],
     testCases: [
       { input: "10\nABCF00FF\nABCF00FF\nABCF00FF\nABCF00FF\nABCF00FF\nABCF00FF\nABCF00FF\n0102030405060708090A0B0C0D0E0F10\n1112131415161718191A1B1C1D1E1F20\n2122232425262728292A2B2C2D2E2F30", output: "请参考洛谷原题" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "使用map或数组统计灰度值频率，注意排序规则和映射规则。",
+    hint: `灰阶AB、CF和FF出现14次；00出现10次；CB出现9次；09出现7次；AC出现6次；07出现5次；10、11和98出现4次；01、1B、67、76和FC出现3次。`,
   },
 
   // ========== 2023年9月 ==========
@@ -163,8 +163,8 @@ const gesp4Problems = [
 保证所有数由数字和大写字母组成，不以0开头，且是合法的 K 进制数。`,
     outputFormat: `N 行，每行一个十进制整数，对应输入中的 K 进制数的转换结果。`,
     samples: [
-      { input: "2\n8 1362\n16 3F0", output: "754\n1008", explanation: "八进制1362转十进制是754，十六进制3F0转十进制是1008" },
-      { input: "2\n2 11011\n10 123456789", output: "27\n123456789", explanation: "二进制11011转十进制是27" },
+      { input: "2\n8 1362\n16 3F0", output: "754\n1008" },
+      { input: "2\n2 11011\n10 123456789", output: "27\n123456789" },
     ],
     testCases: [
       { input: "2\n8 1362\n16 3F0", output: "754\n1008" },
@@ -173,7 +173,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 128,
-    hint: "从高位到低位遍历，累加每位的贡献值。注意A-F代表10-15。",
+    hint: `对L位K进制数，将第i位数码乘以权值K^i，再相加得十进制值。例：八进制1362=1×8³+3×8²+6×8¹+2×8⁰=754；十六进制3F0=3×16²+15×16¹+0×16⁰=1008。`,
   },
   {
     title: "[GESP202309 四级] 变长编码",
@@ -195,9 +195,9 @@ const gesp4Problems = [
     inputFormat: `一个非负整数 N，其中 0 ≤ N ≤ 10^18。`,
     outputFormat: `编码结果的每个字节用2位十六进制数表示（使用大写字母A-F），字节之间用空格分隔。`,
     samples: [
-      { input: "0", output: "00", explanation: "0的编码是00" },
-      { input: "926", output: "9E 07", explanation: "926的二进制分组编码后得到9E 07" },
-      { input: "987654321012345678", output: "CE 96 C8 A6 F4 CB B6 DA 0D", explanation: "大数的变长编码" },
+      { input: "0", output: "00" },
+      { input: "926", output: "9E 07" },
+      { input: "987654321012345678", output: "CE 96 C8 A6 F4 CB B6 DA 0D" },
     ],
     testCases: [
       { input: "0", output: "00" },
@@ -207,7 +207,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 128,
-    hint: "每次取出低7位，判断是否还有更高位来决定前导位是0还是1。",
+    hint: ``,
   },
 
   // ========== 2023年12月 ==========
@@ -234,8 +234,9 @@ const gesp4Problems = [
 最后一行：需要翻译的字符串 S（长度 ≤ 1000）`,
     outputFormat: `输出翻译后的一行结果。`,
     samples: [
-      { input: "2\nabc a\nd def\nabc.d.d.abc.abcd.", output: "a.def.def.a.UNK.", explanation: "abc翻译为a，d翻译为def，abcd不在字典中翻译为UNK" },
-      { input: "3\nabc a\nd def\nabcd xxxx\nabc,(d)d!-abc?abcd", output: "a,(def)def!-a?xxxx", explanation: "注意标点符号的保留" },
+      { input: "2\nabc a\nd def\nabc.d.d.abc.abcd", output: "a.def.def.a.UNK" },
+      { input: "3\nabc a\nd def\nabcd xxxx\nabc,(d)d!-abc?abcd", output: "a,(def)def!-a?xxxx" },
+      { input: "1\nabcdefghij klmnopqrst\n!()-[]{}\\|;:'\",./?\n<>abcdefghijklmnopqrstuvwxyz", output: "!()-[]{}\\|;:'\",./?\n<>UNK" },
     ],
     testCases: [
       { input: "2\nabc a\nd def\nabc.d.d.abc.abcd.", output: "a.def.def.a.UNK." },
@@ -243,7 +244,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "使用map存储字典，遍历字符串时区分字母和标点符号。",
+    hint: ``,
   },
   {
     title: "[GESP202312 四级] 田忌赛马",
@@ -267,8 +268,8 @@ const gesp4Problems = [
 第三行：N 个空格分隔的整数，表示田忌的马的速度（1 ≤ vᵢ ≤ 2N）`,
     outputFormat: `输出一个整数，表示你最多能赢的轮数。`,
     samples: [
-      { input: "3\n1 3 5\n2 4 6", output: "2", explanation: "用3赢2，用5赢4，输给6" },
-      { input: "5\n10 3 5 8 7\n4 6 1 2 9", output: "5", explanation: "可以全赢" },
+      { input: "3\n1 3 5\n2 4 6", output: "2" },
+      { input: "5\n10 3 5 8 7\n4 6 1 2 9", output: "5" },
     ],
     testCases: [
       { input: "3\n1 3 5\n2 4 6", output: "2" },
@@ -277,7 +278,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "贪心策略：对于每轮田忌的马，用最小的能赢它的马来赢，如果没有能赢的就用最弱的马去输。",
+    hint: `样例解释：第1轮田忌派速度2，你派速度3获胜。第2轮田忌派速度4，你派速度5获胜。第3轮田忌派速度6，你派速度1失败。总共赢得2轮。`,
   },
 
   // ========== 2024年3月 ==========
@@ -303,7 +304,7 @@ const gesp4Problems = [
 接下来 T 行：每行包含两个空格分隔的字符串 A 和 B`,
     outputFormat: `对于每对字符串，如果它们相似则输出 \"similar\"，否则输出 \"not similar\"。`,
     samples: [
-      { input: "5\napple applee\napple appe\napple bpple\napplee bpple\napple apple", output: "similar\nsimilar\nsimilar\nnot similar\nsimilar", explanation: "前三对和第五对相似，第四对不相似" },
+      { input: "5\napple applee\napple appe\napple bpple\napplee bpple\napple apple", output: "similar\nsimilar\nsimilar\nnot similar\nsimilar" },
     ],
     testCases: [
       { input: "5\napple applee\napple appe\napple bpple\napplee bpple\napple apple", output: "similar\nsimilar\nsimilar\nnot similar\nsimilar" },
@@ -311,7 +312,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "分三种情况讨论：长度相等时检查是否只有一处不同；长度差1时检查是否只需插入/删除一个字符。",
+    hint: `1 ≤ T ≤ 100，A和B的长度不超过50，仅含小写字母。`,
   },
   {
     title: "[GESP202403 四级] 做题",
@@ -334,7 +335,7 @@ const gesp4Problems = [
 第二行：n 个整数 a₁, a₂, ..., aₙ（每本题集的题目数量）`,
     outputFormat: `一个整数，表示最多能连续做题的天数。`,
     samples: [
-      { input: "4\n3 1 4 1", output: "3", explanation: "第1天需要1题（用a₂=1），第2天需要2题（用a₁=3），第3天需要3题（用a₃=4），第4天需要4题但没有足够的题集了" },
+      { input: "4\n3 1 4 1", output: "3" },
     ],
     testCases: [
       { input: "4\n3 1 4 1", output: "3" },
@@ -343,7 +344,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "贪心：将题集按题目数量排序，然后从第1天开始尝试分配。",
+    hint: `数据规模：1 ≤ n ≤ 10⁶，1 ≤ aᵢ ≤ 10⁹`,
   },
 
   // ========== 2024年6月 ==========
@@ -365,7 +366,7 @@ const gesp4Problems = [
 接下来 n 行：每行一个长度为 m 的01字符串，表示网格的颜色（0=白色，1=黑色）`,
     outputFormat: `一个整数：最大平衡子矩形的格子数量，如果不存在则输出0。`,
     samples: [
-      { input: "4 5\n00000\n01111\n00011\n00011", output: "16", explanation: "最大平衡子矩形的左上角在(1,2)，右下角在(4,5)，包含16个格子" },
+      { input: "4 5\n00000\n01111\n00011\n00011", output: "16" },
     ],
     testCases: [
       { input: "4 5\n00000\n01111\n00011\n00011", output: "16" },
@@ -374,7 +375,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "枚举所有子矩形，使用前缀和快速计算黑白格子数量。由于n,m≤10，暴力枚举即可。",
+    hint: `对于样例 1，假设 (i,j) 代表第 i 行第 j 列，最大的平衡子矩形的四个顶点分别为 (1,2),(1,5),(4,2),(4,5)。数据范围：对于全部数据，保证有 1≤n,m≤10。`,
   },
   {
     title: "[GESP202406 四级] 宝箱",
@@ -394,7 +395,7 @@ const gesp4Problems = [
 第二行：n 个正整数 a₁, a₂, ..., aₙ（宝箱价值）`,
     outputFormat: `一个整数，表示能带走的宝箱的最大总价值。`,
     samples: [
-      { input: "5 1\n1 2 3 1 2", output: "7", explanation: "选择两个价值为2和一个价值为3的宝箱，总价值2+2+3=7，最大-最小=3-2=1≤k" },
+      { input: "5 1\n1 2 3 1 2", output: "7" },
     ],
     testCases: [
       { input: "5 1\n1 2 3 1 2", output: "7" },
@@ -403,7 +404,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "将宝箱按价值排序，然后枚举最小值，找出所有价值在[min, min+k]范围内的宝箱。",
+    hint: `在背包不损坏的情况下，小杨可以拿走两个价值为2的宝箱和一个价值为3的宝箱。数据范围：1≤n≤1000，0≤k≤1000，1≤a_i≤1000。`,
   },
 
   // ========== 2024年9月 ==========
@@ -435,14 +436,14 @@ const gesp4Problems = [
 - 接下来 n 行：长度为 m 的01字符串`,
     outputFormat: `对于每个测试用例，如果图案存在则输出 \"Yes\"，否则输出 \"No\"。`,
     samples: [
-      { input: "3\n1 4\n0110\n5 5\n00000\n01100\n01100\n00001\n01100\n5 5\n00000\n01100\n01110\n00001\n01100", output: "No\nYes\nNo", explanation: "第一个太小，第二个存在图案，第三个第三行不符合" },
+      { input: "3\n1 4\n0110\n5 5\n00000\n01100\n01100\n00001\n01100\n5 5\n00000\n01100\n01110\n00001\n01100", output: "No\nYes\nNo" },
     ],
     testCases: [
       { input: "3\n1 4\n0110\n5 5\n00000\n01100\n01100\n00001\n01100\n5 5\n00000\n01100\n01110\n00001\n01100", output: "No\nYes\nNo" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "枚举所有4×4的子矩形，检查是否匹配指定的图案。",
+    hint: `示例1展示了标准的4×4匹配模式：0000、0110、0110、0000。数据范围：1≤t≤10，1≤n,m≤100。`,
   },
   {
     title: "[GESP202409 四级] 区间排序",
@@ -466,7 +467,7 @@ const gesp4Problems = [
 接下来 q 行：每行两个整数 lᵢ, rᵢ（区间边界）`,
     outputFormat: `一行 n 个整数，表示所有操作完成后的序列。`,
     samples: [
-      { input: "5\n3 4 5 2 1\n3\n4 5\n3 4\n1 3", output: "1 3 4 5 2", explanation: "排序[4,5]后：[3,4,5,1,2]；排序[3,4]后：[3,4,1,5,2]；排序[1,3]后：[1,3,4,5,2]" },
+      { input: "5\n3 4 5 2 1\n3\n4 5\n3 4\n1 3", output: "1 3 4 5 2" },
     ],
     testCases: [
       { input: "5\n3 4 5 2 1\n3\n4 5\n3 4\n1 3", output: "1 3 4 5 2" },
@@ -474,7 +475,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "直接模拟，对每个区间使用sort函数进行排序。",
+    hint: `样例1解释：第一次升序排序后，序列为[3,4,5,1,2]；第二次升序排序后，序列为[3,4,1,5,2]；第三次升序排序后，序列为[1,3,4,5,2]。约定：1 ≤ n, aᵢ, q ≤ 100，1 ≤ lᵢ ≤ rᵢ ≤ n。`,
   },
 
   // ========== 2024年12月 ==========
@@ -495,8 +496,8 @@ const gesp4Problems = [
     inputFormat: `一个正整数 n（1 ≤ n ≤ 3000）`,
     outputFormat: `n 个空格分隔的整数，表示排序后的前 n 项。`,
     samples: [
-      { input: "5", output: "1 2 3 6 7", explanation: "序列为{1,3,6,2,7}，排序后{1,2,3,6,7}" },
-      { input: "8", output: "1 2 3 6 7 12 13 20", explanation: "序列为{1,3,6,2,7,13,20,12}，排序后{1,2,3,6,7,12,13,20}" },
+      { input: "5", output: "1 2 3 6 7" },
+      { input: "8", output: "1 2 3 6 7 12 13 20" },
     ],
     testCases: [
       { input: "5", output: "1 2 3 6 7" },
@@ -505,7 +506,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "使用set记录已出现的数，按规则生成序列，最后排序输出。",
+    hint: `对n=5：a_1=1; a_1-2=-1(非正整数)→a_2=3; a_2-3=0(非正整数)→a_3=6; a_3-4=2(正整数且未出现)→a_4=2; a_4-5=-3(非正整数)→a_5=7。排序结果：1,2,3,6,7。数据范围：1≤n≤3000。`,
   },
   {
     title: "[GESP202412 四级] 字符排序",
@@ -523,7 +524,7 @@ const gesp4Problems = [
 - 接下来 n 行：每行一个字符串`,
     outputFormat: `对于每个测试用例，如果存在有效排列则输出 \"1\"，否则输出 \"0\"。`,
     samples: [
-      { input: "3\n3\naa\nac\nde\n2\naac\nbc\n1\ngesp", output: "1\n0\n0", explanation: "第一组可以排成aaacde；第二组aac中c在a后面，无法满足；第三组gesp中e<g，无法满足" },
+      { input: "3\n3\naa\nac\nde\n2\naac\nbc\n1\ngesp", output: "1\n0\n0" },
     ],
     testCases: [
       { input: "3\n3\naa\nac\nde\n2\naac\nbc\n1\ngesp", output: "1\n0\n0" },
@@ -531,7 +532,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "首先每个字符串本身必须是非递减的，然后检查是否能将所有字符串按首字符排序拼接成非递减序列。",
+    hint: `For the first test case, arranging as 'aa' + 'ac' + 'de' produces 'aaacde', which satisfies the condition where each character is greater than or equal to all previous characters.`,
   },
 
   // ========== 2025年3月 ==========
@@ -553,7 +554,7 @@ const gesp4Problems = [
 接下来 n 行：长度为 m 的字符串，包含'.'（荒地）和'#'（障碍物）`,
     outputFormat: `一个整数，表示能开垦的最大荒地数量。`,
     samples: [
-      { input: "3 5\n.....\n.#..#\n.....", output: "11", explanation: "移除(2,2)位置的障碍物后，第1行4格，第2行3格，第3行4格，共11格可开垦" },
+      { input: "3 5\n.....\n.#..#\n.....", output: "11" },
     ],
     testCases: [
       { input: "3 5\n.....\n.#..#\n.....", output: "11" },
@@ -561,7 +562,7 @@ const gesp4Problems = [
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "枚举移除哪个障碍物（或不移除），计算每种情况下能开垦的荒地数量。",
+    hint: `After removing the debris at row 2, column 2: cells from row 1 (leftmost 4), row 2 (leftmost 3), and row 3 (leftmost 4) become reclaimable. Total: 4+3+4=11`,
   },
   {
     title: "[GESP202503 四级] 二阶矩阵",
@@ -583,7 +584,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
 接下来 n 行：每行 m 个整数，表示矩阵 A`,
     outputFormat: `一个整数，表示"好的"子矩阵的数量。`,
     samples: [
-      { input: "3 4\n1 2 1 0\n2 4 2 1\n0 3 3 0", output: "2", explanation: "存在2个满足条件的2×2子矩阵" },
+      { input: "3 4\n1 2 1 0\n2 4 2 1\n0 3 3 0", output: "2" },
     ],
     testCases: [
       { input: "3 4\n1 2 1 0\n2 4 2 1\n0 3 3 0", output: "2" },
@@ -591,7 +592,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "枚举所有2×2子矩阵，检查对角线乘积是否相等。",
+    hint: `样例中好的子矩阵如下：[image]\n数据范围：1≤n≤500，1≤m≤500，-100≤Aᵢ,ⱼ≤100`,
   },
 
   // ========== 2025年6月 ==========
@@ -613,8 +614,8 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
 接下来 h 行：每行长度为 w 的字符串（画布内容）`,
     outputFormat: `输出 (x₂ - x₁ + 1) 行，每行 (y₂ - y₁ + 1) 个字符的字符串，表示裁剪后的画布。`,
     samples: [
-      { input: "3 5\n2 2 2 4\n.....\n.>_<.\n.....", output: ">_<", explanation: "保留第2行第2-4列" },
-      { input: "5 5\n1 2 3 4\nAbCdE\nfGhIk\nLmNoP\nqRsTu\nVwXyZ", output: "Cd\nhI", explanation: "保留第1-2行第3-4列" },
+      { input: "3 5\n2 2 2 4\n.....\n.>_<.\n.....", output: ">_<" },
+      { input: "5 5\n1 2 3 4\nAbCdE\nfGhIk\nLmNoP\nqRsTu\nVwXyZ", output: "Cd\nhI" },
     ],
     testCases: [
       { input: "3 5\n2 2 2 4\n.....\n.>_<.\n.....", output: ">_<" },
@@ -622,7 +623,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "按照指定的行列范围提取子矩阵。",
+    hint: `对于所有测试点，保证 1 ≤ h, w ≤ 100，1 ≤ x₁ ≤ x₂ ≤ h，1 ≤ y₁ ≤ y₂ ≤ w。`,
   },
   {
     title: "[GESP202506 四级] 排序",
@@ -646,8 +647,8 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
 接下来 n 行：两个正整数 hᵢ 和 wᵢ（第 i 位同学的身高和体重）`,
     outputFormat: `一个整数，表示最少需要的交换次数。`,
     samples: [
-      { input: "5\n1 60\n3 70\n2 80\n4 55\n4 50", output: "8", explanation: "需要8次相邻交换才能完成排序" },
-      { input: "5\n4 0\n4 0\n2 0\n3 0\n1 0", output: "1", explanation: "只需1次交换" },
+      { input: "5\n1 60\n3 70\n2 80\n4 55\n4 50", output: "8" },
+      { input: "5\n4 0\n4 0\n2 0\n3 0\n1 0", output: "1" },
     ],
     testCases: [
       { input: "5\n1 60\n3 70\n2 80\n4 55\n4 50", output: "8" },
@@ -655,7 +656,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "最少交换次数等于逆序对的数量。可以用冒泡排序或归并排序计算逆序对。",
+    hint: `对于所有测试点，保证1≤n≤3000，0≤h_i, w_i≤10^9。`,
   },
 
   // ========== 2025年9月 ==========
@@ -675,8 +676,8 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
 接下来 n 行：每行 m 个整数（0或1），表示每个格子是否适合部署`,
     outputFormat: `一个整数，表示最大有效矩形区域包含的格子数量。`,
     samples: [
-      { input: "4 3\n0 1 1\n1 0 1\n0 1 1\n1 1 1", output: "4", explanation: "右下角2×2的区域全是1，面积最大" },
-      { input: "3 5\n1 0 1 0 1\n0 1 0 1 0\n0 1 1 1 0", output: "3", explanation: "底部中间1×3的区域，面积为3" },
+      { input: "4 3\n0 1 1\n1 0 1\n0 1 1\n1 1 1", output: "4" },
+      { input: "3 5\n1 0 1 0 1\n0 1 0 1 0\n0 1 1 1 0", output: "3" },
     ],
     testCases: [
       { input: "4 3\n0 1 1\n1 0 1\n0 1 1\n1 1 1", output: "4" },
@@ -684,7 +685,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "由于n,m≤12，可以暴力枚举所有子矩形。也可以使用单调栈优化到O(nm)。",
+    hint: `所有测试点保证 1 ≤ n, m ≤ 12，0 ≤ a_{i,j} ≤ 1。`,
   },
   {
     title: "[GESP202509 四级] 最长连续段",
@@ -702,8 +703,8 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
 第二行：n 个整数，表示数组元素`,
     outputFormat: `一个整数，表示连续段子数组的最大长度。`,
     samples: [
-      { input: "4\n1 0 2 4", output: "3", explanation: "重排为0,1,2,4，前三个元素形成连续段" },
-      { input: "9\n9 9 8 2 4 4 3 5 3", output: "4", explanation: "可以取2,3,4,5形成长度为4的连续段" },
+      { input: "4\n1 0 2 4", output: "3" },
+      { input: "9\n9 9 8 2 4 4 3 5 3", output: "4" },
     ],
     testCases: [
       { input: "4\n1 0 2 4", output: "3" },
@@ -711,7 +712,7 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "关键是找到最长的连续整数序列。先排序去重，然后找最长的连续递增子序列。",
+    hint: `40%的测试点：1 ≤ n ≤ 8。所有测试点：1 ≤ n ≤ 10^5，-10^9 ≤ a_i ≤ 10^9。`,
   },
 
   // ========== 2025年12月 ==========
@@ -733,14 +734,14 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
 接下来 M 行：每行 N 个整数，表示海拔值`,
     outputFormat: `一个整数，表示有效 3×3 区域中海拔总和的最大值。`,
     samples: [
-      { input: "5 5 3\n5 5 5 5 5\n5 1 5 1 5\n5 5 5 5 5\n5 2 5 2 5\n3 5 5 5 2", output: "40", explanation: "某个3×3区域的海拔总和最大为40" },
+      { input: "5 5 3\n5 5 5 5 5\n5 1 5 1 5\n5 5 5 5 5\n5 2 5 2 5\n3 5 5 5 2", output: "40" },
     ],
     testCases: [
       { input: "5 5 3\n5 5 5 5 5\n5 1 5 1 5\n5 5 5 5 5\n5 2 5 2 5\n3 5 5 5 2", output: "40" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "枚举所有3×3区域，检查最大最小差是否≤H，计算总和取最大值。",
+    hint: `对所有测试点，保证1≤M, N≤10³，1≤H, a_{ij}≤10⁵。`,
   },
   {
     title: "[GESP202512 四级] 优先购买",
@@ -765,14 +766,14 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
 保证没有重复的商品名称。`,
     outputFormat: `输出所有购买的商品名称，按字典序排列，每行一个。`,
     samples: [
-      { input: "20 4\napple 6 8\nbus 15 1\ncab 1 10\nwater 4 8", output: "bus\ncab\nwater", explanation: "先买bus(优先级1)花费15元，剩5元；再买water(优先级8,价格4)花费4元，剩1元；再买cab(优先级10,价格1)花费1元" },
+      { input: "20 4\napple 6 8\nbus 15 1\ncab 1 10\nwater 4 8", output: "bus\ncab\nwater" },
     ],
     testCases: [
       { input: "20 4\napple 6 8\nbus 15 1\ncab 1 10\nwater 4 8", output: "bus\ncab\nwater" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
-    hint: "按(优先级,价格,名称)排序商品，然后贪心购买。最后将购买的商品名称按字典序排序输出。",
+    hint: `对所有测试点：1 ≤ |Si| ≤ 10，1 ≤ M, Pi ≤ 10^5，1 ≤ N ≤ 10^3，1 ≤ Vi ≤ 10。商品名仅由小写字母组成且不存在相同商品名。`,
   },
 ];
 

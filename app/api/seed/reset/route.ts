@@ -37,7 +37,7 @@ async function resetAndSeed() {
 - 2 ≤ aᵢ ≤ 10⁶`,
           outputFormat: `输出 n 行，对于每个正整数，如果是幸运数字，输出 1，否则输出 0。`,
           samples: [
-            { input: "3\n7\n12\n30", output: "0\n1\n0", explanation: "7 的质因子只有 7，共 1 种；12 的质因子有 2,3，恰好 2 种；30 的质因子有 2,3,5，共 3 种" },
+            { input: "3\n7\n12\n30", output: "0\n1\n0" },
           ],
           testCases: [
             { input: "3\n7\n12\n30", output: "0\n1\n0" },
@@ -78,7 +78,7 @@ async function resetAndSeed() {
 - 1 ≤ h ≤ 10⁵`,
           outputFormat: `对于每组测试用例，如果小杨能够击败怪物，输出一个整数，代表小杨需要的最少攻击次数；如果不能击败怪物，输出 -1。`,
           samples: [
-            { input: "3\n6\n188\n9999", output: "2\n4\n-1", explanation: "h=6: 魔法攻击质数5，物理攻击1次(1点伤害)，共2次；h=188: 可以用物理攻击组合达成；h=9999: 无法恰好打到0" },
+            { input: "3\n6\n188\n9999", output: "2\n4\n-1" },
           ],
           testCases: [
             { input: "3\n6\n188\n9999", output: "2\n4\n-1" },
@@ -121,7 +121,7 @@ async function resetAndSeed() {
 - 1 ≤ x ≤ 1,000,001`,
           outputFormat: `对于每个 x，如果是幸运数则输出 "lucky"，否则输出幸运化后的最小幸运数。`,
           samples: [
-            { input: "2 4\n1\n4\n5\n9", output: "4\nlucky\n8\nlucky", explanation: "a=2时，超级幸运数是4,9,16,...；1不是幸运数，最小的幸运数是4；4是4的倍数，是幸运数；5不是幸运数，下一个是8；9是9的1倍，是幸运数" },
+            { input: "2 4\n1\n4\n5\n9", output: "4\nlucky\n8\nlucky" },
           ],
           testCases: [
             { input: "2 4\n1\n4\n5\n9", output: "4\nlucky\n8\nlucky" },
@@ -161,7 +161,7 @@ async function resetAndSeed() {
 - 0 ≤ 每科成绩 ≤ 150`,
           outputFormat: `输出 n 行，按输入顺序输出每名同学的排名。`,
           samples: [
-            { input: "5\n100 90 80\n90 100 80\n80 80 100\n100 100 60\n85 85 90", output: "2\n2\n4\n1\n5", explanation: "总分依次为270,270,260,260,260。第4名同学总分260但语数和200最高排第1；第1、2名同学总分270并列第2；其他同学按规则排序" },
+            { input: "5\n100 90 80\n90 100 80\n80 80 100\n100 100 60\n85 85 90", output: "2\n2\n4\n1\n5" },
           ],
           testCases: [
             { input: "5\n100 90 80\n90 100 80\n80 80 100\n100 100 60\n85 85 90", output: "2\n2\n4\n1\n5" },
@@ -204,7 +204,7 @@ async function resetAndSeed() {
 - 2 ≤ B ≤ n`,
           outputFormat: `输出一个非负整数，表示不超过 n 的 B-smooth 数的数量。`,
           samples: [
-            { input: "10 3", output: "7", explanation: "不超过 10 的 3-smooth 数有：1, 2, 3, 4, 6, 8, 9，共 7 个" },
+            { input: "10 3", output: "7" },
           ],
           testCases: [
             { input: "10 3", output: "7" },
@@ -248,7 +248,7 @@ async function resetAndSeed() {
 - 1 ≤ Rᵢ ≤ 10⁶`,
           outputFormat: `输出一个正整数，表示能获得的最高奖励。`,
           samples: [
-            { input: "7\n4 2 4 3 1 4 6\n70 60 50 40 30 20 10", output: "230", explanation: "可以在7个时间段分别安排完成第4,2,3,1,6,7,5个小游戏，其中第4,2,3,1,7个在期限内完成，获得40+60+50+70+10=230" },
+            { input: "7\n4 2 4 3 1 4 6\n70 60 50 40 30 20 10", output: "230" },
           ],
           testCases: [
             { input: "7\n4 2 4 3 1 4 6\n70 60 50 40 30 20 10", output: "230" },
