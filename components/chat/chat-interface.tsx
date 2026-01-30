@@ -132,6 +132,9 @@ export function ChatInterface({
 
     const userMessage = input.trim();
     setInput("");
+    // 清空语音识别状态，避免旧文本重新填充
+    resetTranscript();
+    inputBeforeVoiceRef.current = "";
 
     // 添加用户消息
     const newMessages: Message[] = [...messages, { role: "user", content: userMessage }];
