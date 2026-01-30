@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
-import { getDebugPrompt, buildDebugMessage, type DebugContext } from "@/lib/default-prompts";
+import { getPrompt, buildDebugMessage, type DebugContext } from "@/lib/default-prompts";
 import Anthropic from "@anthropic-ai/sdk";
 
 const anthropic = new Anthropic({
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
       select: { aiDebugPrompt: true },
     });
 
-    const systemPrompt = getDebugPrompt(user?.aiDebugPrompt);
+    const systemPrompt = getPrompt("debug", user?.aiDebugPrompt);
 
     // 解析测试结果
     const testResults = submission.testResults as any[];

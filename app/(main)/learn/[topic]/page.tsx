@@ -3,8 +3,7 @@
 import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChatInterface } from "@/components/chat/chat-interface";
-import { BookOpen, ArrowLeft, CheckCircle } from "lucide-react";
+import { BookOpen, ArrowLeft, GraduationCap, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { getKnowledgePointById } from "@/lib/gesp-knowledge";
 
@@ -24,97 +23,120 @@ export default function LearnTopicPage() {
   };
 
   return (
-    <div className="h-[calc(100vh-8rem)]">
+    <div className="max-w-4xl mx-auto">
       {/* 顶部导航 */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm" asChild>
-            <Link href="/map">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              返回
-            </Link>
-          </Button>
-          <div>
-            <h1 className="text-xl font-bold flex items-center space-x-2">
-              <BookOpen className="h-5 w-5" />
-              <span>{displayPoint.name}</span>
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              GESP {displayPoint.level} 级 · {displayPoint.category}
-            </p>
-          </div>
-        </div>
-        <Button variant="outline" size="sm">
-          <CheckCircle className="h-4 w-4 mr-2" />
-          标记完成
+      <div className="mb-6">
+        <Button variant="ghost" size="sm" asChild>
+          <Link href="/map">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            返回知识点列表
+          </Link>
         </Button>
       </div>
 
-      {/* 主体内容 */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100%-4rem)]">
-        {/* 知识点介绍 */}
-        <Card className="lg:col-span-1 overflow-auto">
-          <CardHeader>
-            <CardTitle className="text-base">知识点介绍</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              {displayPoint.description}
-            </p>
-
-            {displayPoint.details && displayPoint.details.length > 0 && (
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <h4 className="font-medium text-blue-900 mb-2">学习要点</h4>
-                <ul className="text-sm text-blue-700 space-y-1">
-                  {displayPoint.details.map((detail, idx) => (
-                    <li key={idx}>• {detail}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="bg-green-50 p-4 rounded-lg">
-              <h4 className="font-medium text-green-900 mb-2">学习建议</h4>
-              <ul className="text-sm text-green-700 space-y-1">
-                <li>• 先理解基本概念</li>
-                <li>• 多看代码示例</li>
-                <li>• 完成相关练习题</li>
-                <li>• 有问题随时问AI</li>
-              </ul>
-            </div>
-
-            <div className="bg-yellow-50 p-4 rounded-lg">
-              <h4 className="font-medium text-yellow-900 mb-2">考试提示</h4>
-              <p className="text-sm text-yellow-700">
-                本知识点属于 GESP {displayPoint.level} 级考试范围，
-                {displayPoint.level <= 4 ? "考试时间120分钟" : "考试时间180分钟"}，
-                包含单选题、判断题和编程题。
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* AI 对话 */}
-        <Card className="lg:col-span-2 flex flex-col overflow-hidden">
-          <CardHeader className="flex-shrink-0">
-            <CardTitle className="text-base">AI 辅导</CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1 overflow-hidden p-0">
-            <ChatInterface
-              context="learn"
-              knowledgePoint={topic}
-              initialMessages={[
-                {
-                  role: "assistant",
-                  content: `你好！今天我们来学习**${displayPoint.name}**。\n\n${displayPoint.description}\n\n${displayPoint.details && displayPoint.details.length > 0 ? `这个知识点的学习要点包括：\n${displayPoint.details.map(d => `- ${d}`).join('\n')}\n\n` : ''}准备好开始了吗？有任何问题都可以问我！`,
-                },
-              ]}
-              placeholder="问我任何关于这个知识点的问题..."
-              enableVoiceInput
-            />
-          </CardContent>
-        </Card>
+      {/* 知识点信息 */}
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-bold flex items-center justify-center space-x-2 mb-2">
+          <BookOpen className="h-6 w-6" />
+          <span>{displayPoint.name}</span>
+        </h1>
+        <p className="text-muted-foreground">
+          GESP {displayPoint.level} 级 · {displayPoint.category}
+        </p>
+        <p className="text-sm text-muted-foreground mt-2 max-w-2xl mx-auto">
+          {displayPoint.description}
+        </p>
       </div>
+
+      {/* 学习模式选择 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* AI 私教 */}
+        <Link href={`/learn/${topic}/tutor`}>
+          <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all cursor-pointer group">
+            <CardHeader className="text-center pb-2">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <GraduationCap className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              </div>
+              <CardTitle className="text-xl">AI 私教</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-muted-foreground mb-4">
+                AI 作为老师，为你讲解知识点、回答问题、提供代码示例
+              </p>
+              <ul className="text-sm text-left space-y-2 text-muted-foreground">
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">•</span>
+                  <span>循序渐进的知识讲解</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">•</span>
+                  <span>随时提问，即时解答</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-blue-500 mr-2">•</span>
+                  <span>丰富的代码示例和练习</span>
+                </li>
+              </ul>
+              <Button className="mt-6 w-full" variant="outline">
+                开始学习
+              </Button>
+            </CardContent>
+          </Card>
+        </Link>
+
+        {/* 费曼学习 */}
+        <Link href={`/learn/${topic}/feynman`}>
+          <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all cursor-pointer group">
+            <CardHeader className="text-center pb-2">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <MessageCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+              </div>
+              <CardTitle className="text-xl">费曼学习</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-muted-foreground mb-4">
+                你来当老师，把知识点讲给 AI 听，检验你的理解程度
+              </p>
+              <ul className="text-sm text-left space-y-2 text-muted-foreground">
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-2">•</span>
+                  <span>用自己的话解释概念</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-2">•</span>
+                  <span>AI 会追问帮你发现盲点</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-500 mr-2">•</span>
+                  <span>最后获得详细的学习评估</span>
+                </li>
+              </ul>
+              <Button className="mt-6 w-full" variant="outline">
+                开始讲解
+              </Button>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
+
+      {/* 知识点详情 */}
+      {displayPoint.details && displayPoint.details.length > 0 && (
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle className="text-base">学习要点</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              {displayPoint.details.map((detail, idx) => (
+                <li key={idx} className="flex items-start text-sm">
+                  <span className="text-primary mr-2">•</span>
+                  <span className="text-muted-foreground">{detail}</span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

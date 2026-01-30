@@ -15,12 +15,13 @@ interface Message {
 }
 
 interface ChatInterfaceProps {
-  context: "learn" | "problem" | "general";
+  context: "learn" | "problem" | "feynman" | "general";
   knowledgePoint?: string;
   problemId?: string;
   initialMessages?: Message[];
   placeholder?: string;
   enableVoiceInput?: boolean;
+  onMessageSent?: () => void;
 }
 
 // 音量指示器组件 - 3个跳动的点
@@ -73,6 +74,7 @@ export function ChatInterface({
   initialMessages = [],
   placeholder = "输入你的问题...",
   enableVoiceInput = false,
+  onMessageSent,
 }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
@@ -217,6 +219,64 @@ export function ChatInterface({
     scrollToBottom();
   }, [messages]);
 
+  // 费曼学习模式：请求评估
+  const requestFeynmanEvaluation = useCallback(async () => {
+    if (loading || context !== "feynman") return;
+
+    // 添加用户请求评估的消息
+    const evalMessage: Message = {
+      role: "user",
+      content: "我讲完了，请给我一个评估吧！",
+    };
+    const newMessages: Message[] = [...messages, evalMessage];
+    setMessages(newMessages);
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: newMessages,
+          context,
+          knowledgePoint,
+          requestEvaluation: true,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "请求失败");
+      }
+
+      setMessages([...newMessages, { role: "assistant", content: data.response }]);
+    } catch (error) {
+      console.error("Evaluation error:", error);
+      setMessages([
+        ...newMessages,
+        {
+          role: "assistant",
+          content: "抱歉，获取评估时遇到问题。请稍后再试。",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, context, messages, knowledgePoint]);
+
+  // 监听费曼评估事件
+  useEffect(() => {
+    const handleFeynmanEnd = () => {
+      requestFeynmanEvaluation();
+    };
+
+    window.addEventListener("feynman-end-explanation", handleFeynmanEnd);
+    return () => {
+      window.removeEventListener("feynman-end-explanation", handleFeynmanEnd);
+    };
+  }, [requestFeynmanEvaluation]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || loading) return;
@@ -252,6 +312,7 @@ export function ChatInterface({
 
       // 添加 AI 回复
       setMessages([...newMessages, { role: "assistant", content: data.response }]);
+      onMessageSent?.();
     } catch (error) {
       console.error("Chat error:", error);
       setMessages([

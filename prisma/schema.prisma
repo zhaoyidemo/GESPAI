@@ -26,8 +26,11 @@ model User {
   totalXp       Int       @default(0)
   badges        String[]  @default([])
 
-  // AI配置
-  aiDebugPrompt String?   @db.Text  // 用户自定义的AI调试助手提示词
+  // AI配置 - 各场景的自定义提示词
+  aiTutorPrompt  String?  @db.Text  // AI私教提示词
+  aiProblemPrompt String? @db.Text  // 题目辅导提示词
+  aiDebugPrompt  String?  @db.Text  // 调试助手提示词
+  aiFeynmanPrompt String? @db.Text  // 费曼学习提示词
 
   // 关联关系
   studyPlans      StudyPlan[]
