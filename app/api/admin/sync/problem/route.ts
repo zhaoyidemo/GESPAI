@@ -3,6 +3,17 @@ import prisma from "@/lib/db";
 import { fetchLuoguProblem, mapDifficulty } from "@/lib/luogu-sync";
 
 /**
+ * GET: 测试接口是否可用
+ */
+export async function GET() {
+  return NextResponse.json({
+    status: "ok",
+    message: "使用 POST 方法同步题目",
+    usage: "POST { problemId: 'B3941', level: 5 }"
+  });
+}
+
+/**
  * POST: 同步单个题目
  * body: { problemId: "B4051", level: 5 }
  */
