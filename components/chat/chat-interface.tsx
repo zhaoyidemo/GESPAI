@@ -81,6 +81,7 @@ export function ChatInterface({
   const [voiceLang, setVoiceLang] = useState<"zh-CN" | "en-US">("zh-CN");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   // 保存开始录音时输入框已有的文字，用于追加模式
   const inputBeforeVoiceRef = useRef("");
 
@@ -115,13 +116,18 @@ export function ChatInterface({
     localStorage.setItem(VOICE_LANG_KEY, newLang);
   };
 
-  // 当语音识别文本更新时，追加到已有文字后面
+  // 当语音识别文本更新时，追加到已有文字后面，并实时添加标点
   useEffect(() => {
     if (isListening && transcript) {
       const prefix = inputBeforeVoiceRef.current;
-      setInput(prefix ? `${prefix} ${transcript}` : transcript);
+      let text = prefix ? `${prefix} ${transcript}` : transcript;
+      // 中文模式下实时添加标点（非结束状态）
+      if (voiceLang === "zh-CN") {
+        text = addPunctuation(text, false);
+      }
+      setInput(text);
     }
-  }, [transcript, isListening]);
+  }, [transcript, isListening, voiceLang]);
 
   // 错误提示 3 秒后自动消失
   useEffect(() => {
@@ -162,17 +168,23 @@ export function ChatInterface({
     }
   };
 
-  // 空格键快捷键：按住录音，松开停止（仅在输入框未聚焦时生效）
+  // 键盘快捷键：空格键录音，回车键发送（仅在输入框未聚焦时生效）
   useEffect(() => {
-    if (!enableVoiceInput || !isVoiceSupported) return;
-
     const handleKeyDown = (e: KeyboardEvent) => {
-      // 如果输入框聚焦或正在输入，不触发快捷键
+      // 如果输入框聚焦，不触发快捷键
       if (document.activeElement === inputRef.current) return;
       // 如果正在加载，不允许操作
       if (loading) return;
-      // 空格键按下开始录音
-      if (e.code === "Space" && !e.repeat && !isListening) {
+
+      // 回车键发送消息
+      if (e.code === "Enter" && !isListening && input.trim()) {
+        e.preventDefault();
+        formRef.current?.requestSubmit();
+        return;
+      }
+
+      // 空格键按下开始录音（需要启用语音输入）
+      if (enableVoiceInput && isVoiceSupported && e.code === "Space" && !e.repeat && !isListening) {
         e.preventDefault();
         inputBeforeVoiceRef.current = input.trim();
         resetTranscript();
@@ -182,7 +194,7 @@ export function ChatInterface({
 
     const handleKeyUp = (e: KeyboardEvent) => {
       // 空格键松开停止录音
-      if (e.code === "Space" && isListening) {
+      if (enableVoiceInput && isVoiceSupported && e.code === "Space" && isListening) {
         e.preventDefault();
         handleStopListening();
       }
@@ -348,7 +360,7 @@ export function ChatInterface({
       </div>
 
       {/* 输入框 */}
-      <form onSubmit={handleSubmit} className="p-4 border-t bg-white">
+      <form ref={formRef} onSubmit={handleSubmit} className="p-4 border-t bg-white">
         {/* 语音识别状态提示 */}
         {enableVoiceInput && isVoiceSupported && isListening && (
           <div className="flex items-center justify-center mb-2 text-sm text-red-500">
