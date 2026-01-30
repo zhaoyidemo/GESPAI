@@ -405,7 +405,7 @@ export default function HomePage() {
                   <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center mr-3 group-hover:bg-blue-500/20 transition-colors">
                     <BookOpen className="h-4 w-4 text-blue-500" />
                   </div>
-                  知识点地图
+                  知识点
                   <ArrowRight className="ml-auto h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               </Button>

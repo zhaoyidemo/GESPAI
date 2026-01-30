@@ -29,7 +29,7 @@ import {
 
 const navItems = [
   { href: "/", label: "今日任务", icon: Home },
-  { href: "/map", label: "知识点地图", icon: Map },
+  { href: "/map", label: "知识点", icon: Map },
   { href: "/learn/recursion", label: "学习", icon: BookOpen },
   { href: "/problem", label: "题库", icon: Code },
 ];

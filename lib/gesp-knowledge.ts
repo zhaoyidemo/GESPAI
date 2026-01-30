@@ -9,8 +9,6 @@ export interface KnowledgePoint {
   category: string;
   description: string;
   details?: string[];  // 学习要点
-  status?: "not_started" | "in_progress" | "completed";
-  progress?: number;
 }
 
 export interface LevelInfo {
