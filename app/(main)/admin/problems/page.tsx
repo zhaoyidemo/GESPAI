@@ -452,7 +452,7 @@ export default function ProblemsAdminPage() {
           ) : (
             <div className="text-center py-12 text-muted-foreground">
               <Database className="w-12 h-12 mx-auto mb-2 opacity-50" />
-              <p>点击"检查状态"查看同步情况</p>
+              <p>点击「检查状态」查看同步情况</p>
             </div>
           )}
         </CardContent>
