@@ -33,6 +33,8 @@ export function useSpeechRecognition(
   // 用 ref 存储回调，避免 useEffect 依赖变化
   const onResultRef = useRef(onResult);
   const onErrorRef = useRef(onError);
+  // 存储已确认的最终文本（continuous 模式下累加）
+  const finalTranscriptRef = useRef("");
 
   // 保持回调 ref 最新
   useEffect(() => {
@@ -53,27 +55,27 @@ export function useSpeechRecognition(
       recognition.interimResults = true;
 
       recognition.onresult = (event: SpeechRecognitionEvent) => {
-        let finalTranscript = "";
-        let interimTranscript = "";
+        let currentFinal = "";
+        let currentInterim = "";
 
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const result = event.results[i];
           if (result.isFinal) {
-            finalTranscript += result[0].transcript;
+            currentFinal += result[0].transcript;
           } else {
-            interimTranscript += result[0].transcript;
+            currentInterim += result[0].transcript;
           }
         }
 
-        // 实时更新显示（临时结果 + 最终结果）
-        const displayText = finalTranscript || interimTranscript;
-        if (displayText) {
-          setTranscript(displayText);
-          // 只在有最终结果时调用回调
-          if (finalTranscript) {
-            onResultRef.current?.(finalTranscript);
-          }
+        // 如果有新的最终结果，累加到已有文本
+        if (currentFinal) {
+          finalTranscriptRef.current += currentFinal;
+          onResultRef.current?.(finalTranscriptRef.current);
         }
+
+        // 显示文本 = 已确认的文本 + 当前临时文本
+        const displayText = finalTranscriptRef.current + currentInterim;
+        setTranscript(displayText);
       };
 
       recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
@@ -120,6 +122,7 @@ export function useSpeechRecognition(
 
     setError(null);
     setTranscript("");
+    finalTranscriptRef.current = "";
 
     try {
       recognitionRef.current.start();
@@ -147,6 +150,7 @@ export function useSpeechRecognition(
   const resetTranscript = useCallback(() => {
     setTranscript("");
     setError(null);
+    finalTranscriptRef.current = "";
   }, []);
 
   return {
