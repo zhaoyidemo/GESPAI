@@ -6,48 +6,21 @@ import { Button } from "@/components/ui/button";
 import { ChatInterface } from "@/components/chat/chat-interface";
 import { BookOpen, ArrowLeft, CheckCircle } from "lucide-react";
 import Link from "next/link";
-
-// 知识点数据
-const knowledgePointsData: Record<string, { title: string; description: string; level: number }> = {
-  recursion: {
-    title: "递归",
-    description: "递归是一种函数调用自身的编程技巧，是解决分治问题的重要方法。",
-    level: 5,
-  },
-  dfs: {
-    title: "深度优先搜索（DFS）",
-    description: "DFS 是一种遍历或搜索树或图的算法，沿着分支尽可能深地搜索。",
-    level: 5,
-  },
-  bfs: {
-    title: "广度优先搜索（BFS）",
-    description: "BFS 是一种遍历或搜索树或图的算法，逐层向外扩展搜索。",
-    level: 5,
-  },
-  memoization: {
-    title: "记忆化搜索",
-    description: "记忆化搜索是一种优化技术，通过存储已计算的结果避免重复计算。",
-    level: 5,
-  },
-  "binary-search": {
-    title: "二分查找",
-    description: "二分查找是一种在有序数组中查找特定元素的高效算法。",
-    level: 4,
-  },
-  sorting: {
-    title: "排序算法",
-    description: "排序算法是将一组数据按特定顺序排列的方法，包括冒泡、选择、插入等。",
-    level: 4,
-  },
-};
+import { getKnowledgePointById } from "@/lib/gesp-knowledge";
 
 export default function LearnTopicPage() {
   const params = useParams();
   const topic = params.topic as string;
-  const knowledgePoint = knowledgePointsData[topic] || {
-    title: topic,
+  const knowledgePoint = getKnowledgePointById(topic);
+
+  // 如果找不到知识点，显示默认信息
+  const displayPoint = knowledgePoint || {
+    id: topic,
+    name: topic,
     description: "正在加载知识点信息...",
-    level: 5,
+    level: 1,
+    category: "未分类",
+    details: []
   };
 
   return (
@@ -64,10 +37,10 @@ export default function LearnTopicPage() {
           <div>
             <h1 className="text-xl font-bold flex items-center space-x-2">
               <BookOpen className="h-5 w-5" />
-              <span>{knowledgePoint.title}</span>
+              <span>{displayPoint.name}</span>
             </h1>
             <p className="text-sm text-muted-foreground">
-              GESP {knowledgePoint.level} 级
+              GESP {displayPoint.level} 级 · {displayPoint.category}
             </p>
           </div>
         </div>
@@ -86,53 +59,37 @@ export default function LearnTopicPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              {knowledgePoint.description}
+              {displayPoint.description}
             </p>
 
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-2">学习要点</h4>
-              <ul className="text-sm text-blue-700 space-y-1">
-                {topic === "recursion" && (
-                  <>
-                    <li>• 理解递归的基本概念</li>
-                    <li>• 掌握递归的三要素</li>
-                    <li>• 学会分析递归的时间复杂度</li>
-                    <li>• 了解递归与迭代的区别</li>
-                  </>
-                )}
-                {topic === "dfs" && (
-                  <>
-                    <li>• 理解 DFS 的工作原理</li>
-                    <li>• 掌握栈的隐式使用</li>
-                    <li>• 学会处理图的遍历</li>
-                    <li>• 了解回溯的概念</li>
-                  </>
-                )}
-                {topic === "bfs" && (
-                  <>
-                    <li>• 理解 BFS 的工作原理</li>
-                    <li>• 掌握队列的使用</li>
-                    <li>• 学会求最短路径</li>
-                    <li>• 了解层序遍历</li>
-                  </>
-                )}
-                {!["recursion", "dfs", "bfs"].includes(topic) && (
-                  <>
-                    <li>• 理解基本概念</li>
-                    <li>• 掌握核心技巧</li>
-                    <li>• 完成练习题目</li>
-                  </>
-                )}
+            {displayPoint.details && displayPoint.details.length > 0 && (
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h4 className="font-medium text-blue-900 mb-2">学习要点</h4>
+                <ul className="text-sm text-blue-700 space-y-1">
+                  {displayPoint.details.map((detail, idx) => (
+                    <li key={idx}>• {detail}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h4 className="font-medium text-green-900 mb-2">学习建议</h4>
+              <ul className="text-sm text-green-700 space-y-1">
+                <li>• 先理解基本概念</li>
+                <li>• 多看代码示例</li>
+                <li>• 完成相关练习题</li>
+                <li>• 有问题随时问AI</li>
               </ul>
             </div>
 
-            <div className="bg-green-50 p-4 rounded-lg">
-              <h4 className="font-medium text-green-900 mb-2">推荐练习</h4>
-              <ul className="text-sm text-green-700 space-y-1">
-                <li className="hover:underline cursor-pointer">• 斐波那契数列</li>
-                <li className="hover:underline cursor-pointer">• 汉诺塔问题</li>
-                <li className="hover:underline cursor-pointer">• 全排列</li>
-              </ul>
+            <div className="bg-yellow-50 p-4 rounded-lg">
+              <h4 className="font-medium text-yellow-900 mb-2">考试提示</h4>
+              <p className="text-sm text-yellow-700">
+                本知识点属于 GESP {displayPoint.level} 级考试范围，
+                {displayPoint.level <= 4 ? "考试时间120分钟" : "考试时间180分钟"}，
+                包含单选题、判断题和编程题。
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -149,7 +106,7 @@ export default function LearnTopicPage() {
               initialMessages={[
                 {
                   role: "assistant",
-                  content: `你好！今天我们来学习**${knowledgePoint.title}**。\n\n${knowledgePoint.description}\n\n准备好开始了吗？有任何问题都可以问我！`,
+                  content: `你好！今天我们来学习**${displayPoint.name}**。\n\n${displayPoint.description}\n\n${displayPoint.details && displayPoint.details.length > 0 ? `这个知识点的学习要点包括：\n${displayPoint.details.map(d => `- ${d}`).join('\n')}\n\n` : ''}准备好开始了吗？有任何问题都可以问我！`,
                 },
               ]}
               placeholder="问我任何关于这个知识点的问题..."
