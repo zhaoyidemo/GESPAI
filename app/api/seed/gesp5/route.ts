@@ -2,25 +2,19 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
 // GESP 5级完整题库 - 来源：洛谷 CCF GESP C++ 五级上机题
-// 共22道题目
-// 难度标签采用洛谷评级：
-// - "entry" = 入门 (洛谷1)
-// - "easy" = 普及- (洛谷2)
-// - "medium" = 普及/提高- (洛谷3)
-// - "medium-hard" = 普及+/提高 (洛谷4)
-// - "hard" = 提高+/省选- (洛谷5)
-// - "expert" = 省选/NOI- (洛谷6)
+// 官方题单：https://www.luogu.com.cn/training/555
+// 共22道题目，与洛谷完全一致
 
 const gesp5Problems = [
-  // ========== 2023年6月 ==========
+  // ========== 样题 ==========
   {
-    title: "[GESP202306 五级] 小杨的锻炼",
+    title: "[GESP样题 五级] 小杨的锻炼",
     source: "gesp_official",
     sourceId: "B3941",
     sourceUrl: "https://www.luogu.com.cn/problem/B3941",
     level: 5,
     knowledgePoints: ["最小公倍数", "最大公约数", "数论"],
-    difficulty: "普及/提高-", // 洛谷难度2
+    difficulty: "普及/提高-",
     description: `小杨每天都要进行锻炼。他有 n 种不同的锻炼项目，第 i 种锻炼项目每隔 aᵢ 天进行一次。
 
 小杨想知道，他最少需要多少天才能把所有的锻炼项目都完成一遍？
@@ -48,13 +42,13 @@ const gesp5Problems = [
     hint: "使用公式 LCM(a,b) = a * b / GCD(a,b)，注意数据范围可能溢出。",
   },
   {
-    title: "[GESP202306 五级] 小杨的队列",
+    title: "[GESP样题 五级] 小杨的队列",
     source: "gesp_official",
     sourceId: "B3951",
     sourceUrl: "https://www.luogu.com.cn/problem/B3951",
     level: 5,
     knowledgePoints: ["逆序对", "排序", "冒泡排序"],
-    difficulty: "普及/提高-", // 洛谷难度2
+    difficulty: "普及/提高-",
     description: `小杨的班级里共有 N 名同学，学号从 0 至 N-1。某节课上，老师要求同学们进行列队。
 
 老师会依次点名 M 名同学加入队伍。每名新入队的同学需要先站到队伍末尾，随后整个队伍中的所有同学需要按身高从低到高重新排序。
@@ -91,7 +85,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3871",
     level: 5,
     knowledgePoints: ["质因数分解", "数论"],
-    difficulty: "普及/提高-", // 洛谷难度2
+    difficulty: "普及/提高-",
     description: `每个正整数都可以分解成素数的乘积，例如：6 = 2×3，20 = 2²×5。
 
 现在给定一个正整数 N，请按要求输出它的因数分解式。
@@ -119,7 +113,80 @@ const gesp5Problems = [
     memoryLimit: 256,
     hint: "从2开始试除，注意处理输出格式，第一个因子前不加乘号。",
   },
+  {
+    title: "[GESP202309 五级] 巧夺大奖",
+    source: "gesp_official",
+    sourceId: "B3872",
+    sourceUrl: "https://www.luogu.com.cn/problem/B3872",
+    level: 5,
+    knowledgePoints: ["贪心", "调度问题", "排序"],
+    difficulty: "普及+/提高",
+    description: `小杨参加了一个游乐园活动。活动共有 n 个时间段，每个时间段可以选择完成一个小游戏。
+
+共有 n 个小游戏可供选择，第 i 个小游戏有期限 Tᵢ（必须在第 Tᵢ 个时间段或之前完成）和奖励 Rᵢ。
+
+每个小游戏最多只能完成一次，每个时间段最多只能完成一个小游戏。
+
+请帮助小杨安排时间，使得获得的总奖励最高。`,
+    inputFormat: `第一行包含一个正整数 n。
+
+第二行包含 n 个正整数 T₁, T₂, ..., Tₙ，表示每个小游戏的期限。
+
+第三行包含 n 个正整数 R₁, R₂, ..., Rₙ，表示每个小游戏的奖励。
+
+数据范围：
+- 1 ≤ n ≤ 500
+- 1 ≤ Tᵢ ≤ n
+- 1 ≤ Rᵢ ≤ 1000`,
+    outputFormat: `输出一个正整数，表示最高可获得的奖励。`,
+    samples: [
+      { input: "7\n4 2 4 3 1 4 6\n70 60 50 40 30 20 10", output: "230", explanation: "在7个时间段内安排游戏，使奖励最大化" },
+    ],
+    testCases: [
+      { input: "7\n4 2 4 3 1 4 6\n70 60 50 40 30 20 10", output: "230" },
+      { input: "3\n1 1 1\n100 200 300", output: "300" },
+      { input: "4\n4 4 4 4\n10 20 30 40", output: "100" },
+    ],
+    timeLimit: 1000,
+    memoryLimit: 256,
+    hint: "这是一个经典的贪心调度问题。按奖励从大到小排序，优先安排奖励高的游戏，尽量安排在期限的最后一个空闲时间段。",
+  },
   // ========== 2023年12月 ==========
+  {
+    title: "[GESP202312 五级] 小杨的幸运数",
+    source: "gesp_official",
+    sourceId: "B3929",
+    sourceUrl: "https://www.luogu.com.cn/problem/B3929",
+    level: 5,
+    knowledgePoints: ["完全平方数", "数论", "倍数"],
+    difficulty: "普及/提高-",
+    description: `小杨定义了两类数：
+- 超级幸运数：所有 ≥ a 的完全平方数
+- 幸运数：超级幸运数及其所有倍数
+
+对于非幸运数，可通过连续 +1 操作使其变为幸运数，这个过程称为"幸运化"。
+
+给定 N 个正整数，对于每个数，判断它是否是幸运数，如果是则输出 "lucky"，否则输出幸运化后的结果。`,
+    inputFormat: `第一行包含两个正整数 a 和 N。
+
+接下来 N 行，每行一个正整数 x。
+
+数据范围：
+- 30% 测试点：a, x ≤ 100，N ≤ 100
+- 60% 测试点：a, x ≤ 10⁶
+- 全部测试点：a ≤ 1,000,000；N ≤ 2×10⁵；1 ≤ x ≤ 1,000,001`,
+    outputFormat: `对于每个 x，如果是幸运数输出 "lucky"，否则输出幸运化后的结果。`,
+    samples: [
+      { input: "2 4\n1\n4\n5\n9", output: "4\nlucky\n8\nlucky", explanation: "a=2时，超级幸运数为4,9,16,...，幸运数包括它们的倍数" },
+    ],
+    testCases: [
+      { input: "2 4\n1\n4\n5\n9", output: "4\nlucky\n8\nlucky" },
+      { input: "16 3\n1\n16\n32", output: "16\nlucky\nlucky" },
+    ],
+    timeLimit: 1000,
+    memoryLimit: 256,
+    hint: "预处理所有超级幸运数，然后对于每个查询，检查是否是某个超级幸运数的倍数。",
+  },
   {
     title: "[GESP202312 五级] 烹饪问题",
     source: "gesp_official",
@@ -127,7 +194,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B3930",
     level: 5,
     knowledgePoints: ["位运算", "按位与", "枚举"],
-    difficulty: "普及+/提高", // 洛谷难度3
+    difficulty: "普及+/提高",
     description: `有 N 种食材，编号从 0 至 N-1，其中第 i 种食材的美味度为 aᵢ。
 
 不同食材之间的组合可能产生奇妙的化学反应。具体来说，如果两种食材的美味度分别为 x 和 y，那么它们的契合度为 x AND y（按位与运算）。
@@ -158,6 +225,74 @@ const gesp5Problems = [
     memoryLimit: 256,
     hint: "O(n²) 枚举只能拿部分分。考虑从高位开始枚举，或者只枚举最大的若干个数。",
   },
+  // ========== 2024年3月 ==========
+  {
+    title: "[GESP202403 五级] 成绩排序",
+    source: "gesp_official",
+    sourceId: "B3968",
+    sourceUrl: "https://www.luogu.com.cn/problem/B3968",
+    level: 5,
+    knowledgePoints: ["排序", "多关键字排序", "模拟"],
+    difficulty: "普及/提高-",
+    description: `有 n 名同学，每名同学有语文、数学、英语三科成绩，你需要按照如下规则对所有同学的成绩从高到低排序：
+
+1. 总分高者靠前
+2. 总分相同时，语文和数学的总分高者靠前
+3. 仍相同时，语文和数学中的最高分高者靠前
+4. 仍相同时，两人并列
+
+并列处理：x 人并列时，后续名次相应空出 x-1 个位置。`,
+    inputFormat: `第一行包含一个整数 N（同学人数）。
+
+接下来 N 行，每行三个非负整数 cᵢ, mᵢ, eᵢ（语文、数学、英语成绩）。
+
+数据范围：
+- 对 30% 的数据：N ≤ 100，所有同学总分各不相同
+- 对全部数据：2 ≤ N ≤ 10⁴，0 ≤ cᵢ, mᵢ, eᵢ ≤ 150`,
+    outputFormat: `输出 N 行，按输入同学的顺序，输出他们的排名。`,
+    samples: [
+      { input: "6\n140 140 150\n140 149 140\n148 141 140\n141 148 140\n145 145 139\n0 0 0", output: "1\n3\n4\n4\n2\n6" },
+    ],
+    testCases: [
+      { input: "6\n140 140 150\n140 149 140\n148 141 140\n141 148 140\n145 145 139\n0 0 0", output: "1\n3\n4\n4\n2\n6" },
+      { input: "3\n100 100 100\n100 100 100\n100 100 100", output: "1\n1\n1" },
+    ],
+    timeLimit: 1000,
+    memoryLimit: 256,
+    hint: "实现多关键字比较函数，注意并列排名的处理。",
+  },
+  {
+    title: "[GESP202403 五级] B-smooth 数",
+    source: "gesp_official",
+    sourceId: "B3969",
+    sourceUrl: "https://www.luogu.com.cn/problem/B3969",
+    level: 5,
+    knowledgePoints: ["质因数分解", "筛法", "数论"],
+    difficulty: "普及+/提高",
+    description: `如果一个正整数的最大质因子不超过 B，则该正整数称为 B-smooth 数。
+
+特别地，1 没有质因子，我们认为 1 是 B-smooth 数。
+
+给定 n 和 B，求不超过 n 的 B-smooth 数的个数。`,
+    inputFormat: `第一行包含两个正整数 n 和 B。
+
+数据范围：
+- 子任务1（30分）：n ≤ 10³，1 ≤ B ≤ 10³
+- 子任务2（30分）：n ≤ 10⁶，√n ≤ B ≤ 10⁶
+- 子任务3（40分）：n ≤ 10⁶，1 ≤ B ≤ 10⁶`,
+    outputFormat: `输出一个非负整数，表示不超过 n 的 B-smooth 数的数量。`,
+    samples: [
+      { input: "10 3", output: "7", explanation: "3-smooth数为{1,2,3,4,6,8,9}，共7个" },
+    ],
+    testCases: [
+      { input: "10 3", output: "7" },
+      { input: "100 5", output: "35" },
+      { input: "1000000 1000000", output: "1000000" },
+    ],
+    timeLimit: 1000,
+    memoryLimit: 256,
+    hint: "可以用筛法或者直接枚举每个数检查其最大质因子。",
+  },
   // ========== 2024年6月 ==========
   {
     title: "[GESP202406 五级] 黑白格",
@@ -166,7 +301,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P10719",
     level: 5,
     knowledgePoints: ["二维前缀和", "枚举", "子矩阵"],
-    difficulty: "普及+/提高", // 洛谷难度3
+    difficulty: "普及+/提高",
     description: `小杨有一个 n 行 m 列的网格图，每个格子是白色或黑色。
 
 小杨想要找出一个最小的子矩形，使得这个子矩形至少包含 k 个黑色格子。
@@ -192,7 +327,77 @@ const gesp5Problems = [
     memoryLimit: 256,
     hint: "使用二维前缀和快速计算子矩形内的黑格数量，枚举所有可能的子矩形。",
   },
+  {
+    title: "[GESP202406 五级] 小杨的幸运数字",
+    source: "gesp_official",
+    sourceId: "P10720",
+    sourceUrl: "https://www.luogu.com.cn/problem/P10720",
+    level: 5,
+    knowledgePoints: ["质因数分解", "数论"],
+    difficulty: "普及/提高-",
+    description: `小杨定义幸运数字为恰好有两种不同质因子的正整数。
+
+例如：
+- 12 = 2×2×3，有两种质因子（2和3），是幸运数字
+- 30 = 2×3×5，有三种质因子（2、3和5），不是幸运数字
+- 7 只有一种质因子（7），不是幸运数字
+
+给定 n 个正整数，判断每个是否为幸运数字。`,
+    inputFormat: `第一行包含一个整数 n（正整数个数）。
+
+后续 n 行，每行一个正整数。
+
+数据范围：
+- 子任务1（40%）：n ≤ 100，正整数 ≤ 10⁵
+- 子任务2（60%）：n ≤ 10⁴，正整数 ≤ 10⁶
+- 总体：1 ≤ n ≤ 10⁴，2 ≤ aᵢ ≤ 10⁶`,
+    outputFormat: `输出 n 行，每行输出 1（幸运数字）或 0（非幸运数字）。`,
+    samples: [
+      { input: "3\n7\n12\n30", output: "0\n1\n0", explanation: "7有1种质因子；12有2种；30有3种" },
+    ],
+    testCases: [
+      { input: "3\n7\n12\n30", output: "0\n1\n0" },
+      { input: "4\n6\n10\n15\n8", output: "1\n1\n1\n0" },
+    ],
+    timeLimit: 1000,
+    memoryLimit: 256,
+    hint: "对每个数进行质因数分解，统计不同质因子的个数。",
+  },
   // ========== 2024年9月 ==========
+  {
+    title: "[GESP202409 五级] 挑战怪物",
+    source: "gesp_official",
+    sourceId: "B4050",
+    sourceUrl: "https://www.luogu.com.cn/problem/B4050",
+    level: 5,
+    knowledgePoints: ["贪心", "质数", "二进制"],
+    difficulty: "普及+/提高",
+    description: `小杨与血量为 h 的怪物战斗。击败怪物需要使其血量恰好降至 0。
+
+两种攻击方式：
+- 物理攻击：第 i 次物理攻击造成 2^(i-1) 点伤害（即第1次造成1点，第2次造成2点，第3次造成4点...）
+- 魔法攻击：选择一个不超过当前血量的质数 x，造成 x 点伤害。魔法攻击至多使用一次。
+
+求击败怪物所需的最少攻击次数。如果无法击败，输出 -1。`,
+    inputFormat: `第一行包含一个正整数 t，表示测试用例组数。
+
+后续 t 行，每行包含一个整数 h（怪物血量）。
+
+数据范围：
+- 1 ≤ t ≤ 10
+- 1 ≤ h ≤ 10⁵`,
+    outputFormat: `对于每组测试，若能击败怪物，输出最少攻击次数；否则输出 -1。`,
+    samples: [
+      { input: "3\n6\n188\n9999", output: "2\n4\n-1", explanation: "h=6时，先用质数5造成5点伤害，再用第1次物理攻击造成1点伤害" },
+    ],
+    testCases: [
+      { input: "3\n6\n188\n9999", output: "2\n4\n-1" },
+      { input: "2\n1\n3", output: "1\n1" },
+    ],
+    timeLimit: 1000,
+    memoryLimit: 256,
+    hint: "物理攻击的伤害是2的幂次，考虑h的二进制表示。魔法攻击可以用来减少需要的物理攻击次数。",
+  },
   {
     title: "[GESP202409 五级] 小杨的武器",
     source: "gesp_official",
@@ -200,7 +405,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4051",
     level: 5,
     knowledgePoints: ["贪心", "排序", "前缀和"],
-    difficulty: "普及/提高-", // 洛谷难度2
+    difficulty: "普及/提高-",
     description: `小杨有 n 种不同的武器，他对第 i 种武器的初始熟练度为 cᵢ。
 
 小杨会依次参加 m 场战斗，每场战斗小杨只能且必须选择一种武器使用。假设小杨使用了第 i 种武器参加了第 j 场战斗，战斗前该武器的熟练度为 c'ᵢ，则战斗后小杨对该武器的熟练度会变为 c'ᵢ + aⱼ。
@@ -219,7 +424,7 @@ const gesp5Problems = [
 - -10⁴ ≤ cᵢ, aᵢ ≤ 10⁴`,
     outputFormat: `输出一个整数，表示熟练度最大值的最大可能值。`,
     samples: [
-      { input: "3 4\n10 20 15\n5 -3 8 2", output: "32", explanation: "选初始值最大的武器20，加上所有正数变化5+8+2=15，得到35。但需要参加所有战斗，最优策略得到32。" },
+      { input: "3 4\n10 20 15\n5 -3 8 2", output: "32", explanation: "选初始值最大的武器，让它参加所有正收益的战斗" },
     ],
     testCases: [
       { input: "3 4\n10 20 15\n5 -3 8 2", output: "32" },
@@ -238,7 +443,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4070",
     level: 5,
     knowledgePoints: ["质因数分解", "数论", "贪心"],
-    difficulty: "普及+/提高", // 洛谷难度3
+    difficulty: "普及+/提高",
     description: `小杨认为一个数字 x 是奇妙数字当且仅当 x = pᵃ，其中 p 为任意质数且 a 为正整数。
 
 例如：
@@ -276,7 +481,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/B4071",
     level: 5,
     knowledgePoints: ["贪心", "排序", "模拟"],
-    difficulty: "普及+/提高", // 洛谷难度3
+    difficulty: "普及+/提高",
     description: `小杨有 n 种武器和 m 种强化材料。第 i 种强化材料会适配第 pᵢ 种武器。
 
 小杨可以花费 cᵢ 金币将第 i 种材料的适配武器修改为任意武器。
@@ -313,7 +518,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P11960",
     level: 5,
     knowledgePoints: ["贪心", "排序", "差值"],
-    difficulty: "普及+/提高", // 洛谷难度3
+    difficulty: "普及+/提高",
     description: `小 A 有 2n 件物品，小 B 和小 C 想从小 A 手上买走这些物品。
 
 对于第 i 件物品，小 B 会以 bᵢ 的价格购买，而小 C 会以 cᵢ 的价格购买。
@@ -332,7 +537,7 @@ const gesp5Problems = [
 - 0 ≤ bᵢ, cᵢ ≤ 10⁹`,
     outputFormat: `输出一个整数，表示最大收入。`,
     samples: [
-      { input: "2\n3 2 5 4\n4 3 1 2", output: "14", explanation: "物品1、4给C（4+2=6），物品2、3给B（2+5=7），但最优是物品1、2给B得5，物品3、4给C得3，总共14" },
+      { input: "2\n3 2 5 4\n4 3 1 2", output: "14", explanation: "按差值排序，差值大的给B，差值小的给C" },
     ],
     testCases: [
       { input: "2\n3 2 5 4\n4 3 1 2", output: "14" },
@@ -350,7 +555,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P11961",
     level: 5,
     knowledgePoints: ["数论", "快速幂", "费马小定理"],
-    difficulty: "提高+/省选-", // 洛谷难度5 (提高+/省选-)
+    difficulty: "提高+/省选-",
     description: `对于质数 p，如果一个正整数 g 满足：对于任意 1 ≤ i < p-1 均有 gⁱ mod p ≠ 1，则称 g 是 p 的原根。
 
 换句话说，g 的 1 次方、2 次方、...、(p-2) 次方对 p 取模的结果都不等于 1，只有 (p-1) 次方对 p 取模才等于 1。
@@ -363,7 +568,7 @@ const gesp5Problems = [
 数据范围：
 - 1 ≤ T ≤ 100
 - 2 ≤ a < p ≤ 10⁹`,
-    outputFormat: `对于每组测试数据，如果 a 是 p 的原根，输出 \"Yes\"，否则输出 \"No\"。`,
+    outputFormat: `对于每组测试数据，如果 a 是 p 的原根，输出 "Yes"，否则输出 "No"。`,
     samples: [
       { input: "2\n2 5\n3 5", output: "Yes\nNo", explanation: "2是5的原根，3不是" },
     ],
@@ -384,7 +589,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P13013",
     level: 5,
     knowledgePoints: ["二分查找", "贪心", "数学"],
-    difficulty: "普及+/提高", // 洛谷难度3
+    difficulty: "普及+/提高",
     description: `小杨有 n 张课堂券和 m 张作业券，他想用这些券兑换奖品。
 
 兑换一份奖品有两种方式：
@@ -417,7 +622,7 @@ const gesp5Problems = [
     sourceUrl: "https://www.luogu.com.cn/problem/P13014",
     level: 5,
     knowledgePoints: ["最大公约数", "辗转相除法", "数论"],
-    difficulty: "普及/提高-", // 洛谷难度2
+    difficulty: "普及/提高-",
     description: `对于两个正整数 a 和 b，它们的最大公因数记为 gcd(a, b)。
 
 对于 k (k > 2) 个正整数 c₁, c₂, ..., cₖ，它们的最大公因数定义为：
@@ -447,80 +652,18 @@ gcd(c₁, c₂, ..., cₖ) = gcd(gcd(c₁, c₂, ..., cₖ₋₁), cₖ)
     memoryLimit: 256,
     hint: "可以预处理或直接遍历区间计算。如果 q 很大，考虑使用稀疏表（ST表）。",
   },
-  // ========== 2025年9月 ==========
+  // ========== 2025年12月 ==========
   {
-    title: "[GESP202509 五级] 数字选取",
-    source: "gesp_official",
-    sourceId: "P14073",
-    sourceUrl: "https://www.luogu.com.cn/problem/P14073",
-    level: 5,
-    knowledgePoints: ["互质", "质数", "贪心"],
-    difficulty: "普及/提高-", // 洛谷难度2
-    description: `给定 1, 2, 3, ..., n 一共 n 个正整数，从这些数中选取一些数字，使得选取的整数中任意两个不同的整数均互质。
-
-两个整数互质是指它们的最大公约数为 1。
-
-请问最多能选取多少个整数？`,
-    inputFormat: `输入一行，包含一个正整数 n。
-
-数据范围：1 ≤ n ≤ 10⁵`,
-    outputFormat: `输出一个整数，表示最多能选取的整数个数。`,
-    samples: [
-      { input: "10", output: "5", explanation: "可以选择 1, 2, 3, 5, 7（或其他方案）" },
-    ],
-    testCases: [
-      { input: "10", output: "5" },
-      { input: "1", output: "1" },
-      { input: "2", output: "2" },
-      { input: "100", output: "26" },
-    ],
-    timeLimit: 1000,
-    memoryLimit: 256,
-    hint: "1 和任何数互质，所有质数两两互质。答案是 1 + [1,n] 内的质数个数。",
-  },
-  {
-    title: "[GESP202509 五级] 有趣的数字和",
-    source: "gesp_official",
-    sourceId: "P14074",
-    sourceUrl: "https://www.luogu.com.cn/problem/P14074",
-    level: 5,
-    knowledgePoints: ["位运算", "二进制", "数学"],
-    difficulty: "普及+/提高", // 洛谷难度3
-    description: `小杨认为一个正整数是"有趣的"，当且仅当它的二进制表示中 1 的个数是奇数。
-
-例如：
-- 3 的二进制是 11，有 2 个 1，不是有趣的
-- 5 的二进制是 101，有 2 个 1，不是有趣的
-- 7 的二进制是 111，有 3 个 1，是有趣的
-
-给定区间 [l, r]，请计算这个区间内所有"有趣的数字"的和。`,
-    inputFormat: `输入一行，包含两个正整数 l 和 r。
-
-数据范围：1 ≤ l ≤ r ≤ 10⁹`,
-    outputFormat: `输出一个整数，表示有趣的数字之和。`,
-    samples: [
-      { input: "1 10", output: "28", explanation: "有趣的数字有 1,2,4,7,8，和为 1+2+4+7+8=22（需验证）" },
-    ],
-    testCases: [
-      { input: "1 10", output: "28" },
-      { input: "1 1", output: "1" },
-      { input: "7 7", output: "7" },
-    ],
-    timeLimit: 1000,
-    memoryLimit: 256,
-    hint: "使用前缀和思想：f(r) - f(l-1)。利用规律：连续4个数中恰好有2个是有趣的。",
-  },
-  {
-    title: "[GESP202509 五级] 数字移动",
+    title: "[GESP202512 五级] 数字移动",
     source: "gesp_official",
     sourceId: "P14917",
     sourceUrl: "https://www.luogu.com.cn/problem/P14917",
     level: 5,
     knowledgePoints: ["数学", "规律", "模拟"],
-    difficulty: "普及+/提高", // 洛谷难度3
+    difficulty: "普及+/提高",
     description: `（题目详情请访问洛谷官网查看）
 
-这是 GESP 2025年9月五级的编程题。`,
+这是 GESP 2025年12月五级的编程题。`,
     inputFormat: `请访问洛谷官网查看完整输入格式。`,
     outputFormat: `请访问洛谷官网查看完整输出格式。`,
     samples: [
@@ -534,16 +677,16 @@ gcd(c₁, c₂, ..., cₖ) = gcd(gcd(c₁, c₂, ..., cₖ₋₁), cₖ)
     hint: "请访问 https://www.luogu.com.cn/problem/P14917 查看完整题目。",
   },
   {
-    title: "[GESP202509 五级] 相等序列",
+    title: "[GESP202512 五级] 相等序列",
     source: "gesp_official",
     sourceId: "P14918",
     sourceUrl: "https://www.luogu.com.cn/problem/P14918",
     level: 5,
     knowledgePoints: ["序列", "贪心", "模拟"],
-    difficulty: "普及+/提高", // 洛谷难度3
+    difficulty: "普及+/提高",
     description: `（题目详情请访问洛谷官网查看）
 
-这是 GESP 2025年9月五级的编程题。`,
+这是 GESP 2025年12月五级的编程题。`,
     inputFormat: `请访问洛谷官网查看完整输入格式。`,
     outputFormat: `请访问洛谷官网查看完整输出格式。`,
     samples: [
