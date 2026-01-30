@@ -34,20 +34,36 @@ export interface DiffResult {
  */
 export async function fetchLuoguProblem(problemId: string): Promise<SyncResult> {
   try {
+    // 添加超时控制
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
+
     // 洛谷题目API
     const response = await fetch(`https://www.luogu.com.cn/problem/${problemId}?_contentOnly=1`, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'Referer': 'https://www.luogu.com.cn/',
       },
-      next: { revalidate: 0 }, // 不缓存
+      signal: controller.signal,
+      cache: 'no-store',
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       return { success: false, error: `HTTP ${response.status}` };
     }
 
-    const data = await response.json();
+    const text = await response.text();
+
+    // 检查是否返回了 HTML（被拦截）
+    if (text.startsWith('<!') || text.startsWith('<html')) {
+      return { success: false, error: '请求被洛谷拦截，请稍后重试' };
+    }
+
+    const data = JSON.parse(text);
 
     if (data.code !== 200 || !data.currentData?.problem) {
       return { success: false, error: '题目不存在或无法访问' };
@@ -90,19 +106,33 @@ export async function fetchLuoguProblem(problemId: string): Promise<SyncResult> 
  */
 export async function fetchLuoguTrainingProblems(trainingId: string): Promise<{ success: boolean; problemIds?: string[]; error?: string }> {
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
     const response = await fetch(`https://www.luogu.com.cn/training/${trainingId}?_contentOnly=1`, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'Referer': 'https://www.luogu.com.cn/',
       },
-      next: { revalidate: 0 },
+      signal: controller.signal,
+      cache: 'no-store',
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       return { success: false, error: `HTTP ${response.status}` };
     }
 
-    const data = await response.json();
+    const text = await response.text();
+
+    if (text.startsWith('<!') || text.startsWith('<html')) {
+      return { success: false, error: '请求被洛谷拦截' };
+    }
+
+    const data = JSON.parse(text);
 
     if (data.code !== 200 || !data.currentData?.training?.problems) {
       return { success: false, error: '题单不存在或无法访问' };
