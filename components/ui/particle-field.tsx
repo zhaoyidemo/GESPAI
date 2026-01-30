@@ -578,7 +578,7 @@ export function ParticleField({ className }: ParticleFieldProps) {
     <div
       ref={containerRef}
       className={`fixed inset-0 -z-10 ${className || ""}`}
-      style={{ touchAction: "none", pointerEvents: "none" }}
+      style={{ pointerEvents: "none" }}
     />
   );
 }
