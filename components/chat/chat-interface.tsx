@@ -46,17 +46,14 @@ export function ChatInterface({
     resetTranscript,
   } = useSpeechRecognition({
     lang: "zh-CN",
-    onResult: (text) => {
-      setInput(text);
-    },
   });
 
-  // 当语音识别文本更新时，同步到输入框
+  // 当语音识别文本更新时，实时同步到输入框
   useEffect(() => {
-    if (transcript) {
+    if (isListening && transcript) {
       setInput(transcript);
     }
-  }, [transcript]);
+  }, [transcript, isListening]);
 
   // 切换语音录制状态
   const toggleVoiceInput = () => {

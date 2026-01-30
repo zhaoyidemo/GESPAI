@@ -22,7 +22,7 @@ interface UseSpeechRecognitionReturn {
 export function useSpeechRecognition(
   options: UseSpeechRecognitionOptions = {}
 ): UseSpeechRecognitionReturn {
-  const { lang = "zh-CN", continuous = true, onResult, onError } = options;
+  const { lang = "zh-CN", continuous = false, onResult, onError } = options;
 
   const [isListening, setIsListening] = useState(false);
   const [isSupported, setIsSupported] = useState(false);
@@ -30,8 +30,17 @@ export function useSpeechRecognition(
   const [error, setError] = useState<string | null>(null);
 
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  // 用 ref 存储回调，避免 useEffect 依赖变化
+  const onResultRef = useRef(onResult);
+  const onErrorRef = useRef(onError);
 
-  // 检查浏览器支持
+  // 保持回调 ref 最新
+  useEffect(() => {
+    onResultRef.current = onResult;
+    onErrorRef.current = onError;
+  }, [onResult, onError]);
+
+  // 检查浏览器支持并初始化（只在 lang 变化时重新初始化）
   useEffect(() => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -56,17 +65,15 @@ export function useSpeechRecognition(
           }
         }
 
-        const currentTranscript = finalTranscript || interimTranscript;
-        setTranscript((prev) => {
-          // 如果是最终结果，追加到之前的文本
+        // 实时更新显示（临时结果 + 最终结果）
+        const displayText = finalTranscript || interimTranscript;
+        if (displayText) {
+          setTranscript(displayText);
+          // 只在有最终结果时调用回调
           if (finalTranscript) {
-            const newTranscript = prev + finalTranscript;
-            onResult?.(newTranscript);
-            return newTranscript;
+            onResultRef.current?.(finalTranscript);
           }
-          // 如果是临时结果，显示之前的文本加上当前临时结果
-          return prev + interimTranscript;
-        });
+        }
       };
 
       recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
@@ -90,7 +97,7 @@ export function useSpeechRecognition(
         }
         setError(errorMessage);
         setIsListening(false);
-        onError?.(errorMessage);
+        onErrorRef.current?.(errorMessage);
       };
 
       recognition.onend = () => {
@@ -103,9 +110,10 @@ export function useSpeechRecognition(
     return () => {
       if (recognitionRef.current) {
         recognitionRef.current.abort();
+        recognitionRef.current = null;
       }
     };
-  }, [lang, continuous, onResult, onError]);
+  }, [lang, continuous]);
 
   const startListening = useCallback(() => {
     if (!recognitionRef.current) return;
