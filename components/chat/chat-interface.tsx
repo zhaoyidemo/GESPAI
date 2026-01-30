@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Send, Bot, User, Loader2, Mic, MicOff } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
+import { addPunctuation } from "@/lib/auto-punctuation";
 
 interface Message {
   role: "user" | "assistant";
@@ -22,6 +23,49 @@ interface ChatInterfaceProps {
   enableVoiceInput?: boolean;
 }
 
+// 音量指示器组件 - 3个跳动的点
+function VolumeIndicator({ volume }: { volume: number }) {
+  const [tick, setTick] = useState(0);
+
+  // 定时更新以产生动画效果
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTick((t) => t + 1);
+    }, 75);
+    return () => clearInterval(timer);
+  }, []);
+
+  // 根据音量计算每个点的高度（模拟跳动效果）
+  const getHeight = (index: number) => {
+    const base = 4;
+    const maxExtra = 12;
+    // 每个点有不同的相位，产生波浪效果
+    const phase = ((index * 0.3 + tick * 0.1) % 1);
+    const wave = Math.sin(phase * Math.PI * 2) * 0.3 + 0.7;
+    return base + volume * maxExtra * wave;
+  };
+
+  return (
+    <div className="flex items-center space-x-1 mx-2">
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="inline-block w-1 bg-red-500 rounded-full transition-all duration-75"
+          style={{ height: `${getHeight(i)}px` }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// 语言选项
+const LANGUAGES = [
+  { code: "zh-CN", label: "中" },
+  { code: "en-US", label: "EN" },
+] as const;
+
+const VOICE_LANG_KEY = "gespai-voice-lang";
+
 export function ChatInterface({
   context,
   knowledgePoint,
@@ -34,10 +78,19 @@ export function ChatInterface({
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [voiceErrorDisplay, setVoiceErrorDisplay] = useState<string | null>(null);
+  const [voiceLang, setVoiceLang] = useState<"zh-CN" | "en-US">("zh-CN");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   // 保存开始录音时输入框已有的文字，用于追加模式
   const inputBeforeVoiceRef = useRef("");
+
+  // 从 localStorage 读取语言偏好
+  useEffect(() => {
+    const saved = localStorage.getItem(VOICE_LANG_KEY);
+    if (saved === "zh-CN" || saved === "en-US") {
+      setVoiceLang(saved);
+    }
+  }, []);
 
   // 语音识别
   const {
@@ -45,12 +98,22 @@ export function ChatInterface({
     isSupported: isVoiceSupported,
     transcript,
     error: voiceError,
+    volume,
     startListening,
     stopListening,
     resetTranscript,
+    setLang,
   } = useSpeechRecognition({
-    lang: "zh-CN",
+    lang: voiceLang,
   });
+
+  // 切换语言
+  const toggleLanguage = () => {
+    const newLang = voiceLang === "zh-CN" ? "en-US" : "zh-CN";
+    setVoiceLang(newLang);
+    setLang(newLang);
+    localStorage.setItem(VOICE_LANG_KEY, newLang);
+  };
 
   // 当语音识别文本更新时，追加到已有文字后面
   useEffect(() => {
@@ -71,10 +134,26 @@ export function ChatInterface({
     }
   }, [voiceError]);
 
+  // 停止录音时处理自动标点（仅中文）
+  const handleStopListening = useCallback(() => {
+    stopListening();
+    // 延迟一点处理，等待最后的 transcript 更新
+    setTimeout(() => {
+      setInput((prev) => {
+        if (!prev.trim()) return prev;
+        // 只对中文添加标点
+        if (voiceLang === "zh-CN") {
+          return addPunctuation(prev, true);
+        }
+        return prev;
+      });
+    }, 100);
+  }, [stopListening, voiceLang]);
+
   // 切换语音录制状态
   const toggleVoiceInput = () => {
     if (isListening) {
-      stopListening();
+      handleStopListening();
     } else {
       // 保存当前输入框的文字
       inputBeforeVoiceRef.current = input.trim();
@@ -105,7 +184,7 @@ export function ChatInterface({
       // 空格键松开停止录音
       if (e.code === "Space" && isListening) {
         e.preventDefault();
-        stopListening();
+        handleStopListening();
       }
     };
 
@@ -116,7 +195,7 @@ export function ChatInterface({
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [enableVoiceInput, isVoiceSupported, isListening, loading, input, resetTranscript, startListening, stopListening]);
+  }, [enableVoiceInput, isVoiceSupported, isListening, loading, input, resetTranscript, startListening, handleStopListening]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -273,8 +352,9 @@ export function ChatInterface({
         {/* 语音识别状态提示 */}
         {enableVoiceInput && isVoiceSupported && isListening && (
           <div className="flex items-center justify-center mb-2 text-sm text-red-500">
-            <span className="inline-block w-2 h-2 bg-red-500 rounded-full animate-pulse mr-2" />
-            正在录音，点击麦克风或松开空格键停止...
+            <span className="inline-block w-2 h-2 bg-red-500 rounded-full animate-pulse mr-1" />
+            <VolumeIndicator volume={volume} />
+            <span>正在录音，点击麦克风或松开空格键停止...</span>
           </div>
         )}
         {enableVoiceInput && voiceErrorDisplay && (
@@ -292,6 +372,20 @@ export function ChatInterface({
             disabled={loading}
             className="flex-1"
           />
+
+          {/* 语言切换按钮 */}
+          {enableVoiceInput && isVoiceSupported && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={toggleLanguage}
+              disabled={loading || isListening}
+              title={`当前语言: ${voiceLang === "zh-CN" ? "中文" : "English"}，点击切换`}
+              className="w-12 px-0 text-xs font-medium"
+            >
+              {LANGUAGES.find(l => l.code === voiceLang)?.label}
+            </Button>
+          )}
 
           {/* 语音输入按钮 */}
           {enableVoiceInput && isVoiceSupported && (

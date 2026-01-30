@@ -14,20 +14,24 @@ interface UseSpeechRecognitionReturn {
   isSupported: boolean;
   transcript: string;
   error: string | null;
+  volume: number; // 0-1 音量值
   startListening: () => void;
   stopListening: () => void;
   resetTranscript: () => void;
+  setLang: (lang: string) => void;
 }
 
 export function useSpeechRecognition(
   options: UseSpeechRecognitionOptions = {}
 ): UseSpeechRecognitionReturn {
-  const { lang = "zh-CN", continuous = true, onResult, onError } = options;
+  const { lang: initialLang = "zh-CN", continuous = true, onResult, onError } = options;
 
+  const [lang, setLangState] = useState(initialLang);
   const [isListening, setIsListening] = useState(false);
   const [isSupported, setIsSupported] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [volume, setVolume] = useState(0);
 
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   // 用 ref 存储回调，避免 useEffect 依赖变化
@@ -35,6 +39,11 @@ export function useSpeechRecognition(
   const onErrorRef = useRef(onError);
   // 存储已确认的最终文本（continuous 模式下累加）
   const finalTranscriptRef = useRef("");
+  // 音量检测相关
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+  const volumeIntervalRef = useRef<number | null>(null);
 
   // 保持回调 ref 最新
   useEffect(() => {
@@ -117,6 +126,56 @@ export function useSpeechRecognition(
     };
   }, [lang, continuous]);
 
+  // 启动音量检测
+  const startVolumeDetection = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaStreamRef.current = stream;
+
+      const audioContext = new AudioContext();
+      audioContextRef.current = audioContext;
+
+      const analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;
+      analyserRef.current = analyser;
+
+      const source = audioContext.createMediaStreamSource(stream);
+      source.connect(analyser);
+
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+      // 定时读取音量
+      volumeIntervalRef.current = window.setInterval(() => {
+        analyser.getByteFrequencyData(dataArray);
+        // 计算平均音量
+        const average = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+        // 归一化到 0-1
+        setVolume(Math.min(average / 128, 1));
+      }, 50);
+    } catch {
+      // 音量检测失败不影响语音识别
+      console.warn("音量检测初始化失败");
+    }
+  }, []);
+
+  // 停止音量检测
+  const stopVolumeDetection = useCallback(() => {
+    if (volumeIntervalRef.current) {
+      clearInterval(volumeIntervalRef.current);
+      volumeIntervalRef.current = null;
+    }
+    if (mediaStreamRef.current) {
+      mediaStreamRef.current.getTracks().forEach(track => track.stop());
+      mediaStreamRef.current = null;
+    }
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
+    analyserRef.current = null;
+    setVolume(0);
+  }, []);
+
   const startListening = useCallback(() => {
     if (!recognitionRef.current) return;
 
@@ -127,6 +186,7 @@ export function useSpeechRecognition(
     try {
       recognitionRef.current.start();
       setIsListening(true);
+      startVolumeDetection();
     } catch (err) {
       // 如果已经在监听，忽略错误
       if (err instanceof Error && err.message.includes("already started")) {
@@ -134,7 +194,7 @@ export function useSpeechRecognition(
       }
       setError("无法启动语音识别");
     }
-  }, []);
+  }, [startVolumeDetection]);
 
   const stopListening = useCallback(() => {
     if (!recognitionRef.current) return;
@@ -142,10 +202,11 @@ export function useSpeechRecognition(
     try {
       recognitionRef.current.stop();
       setIsListening(false);
+      stopVolumeDetection();
     } catch {
       // 忽略停止时的错误
     }
-  }, []);
+  }, [stopVolumeDetection]);
 
   const resetTranscript = useCallback(() => {
     setTranscript("");
@@ -153,13 +214,26 @@ export function useSpeechRecognition(
     finalTranscriptRef.current = "";
   }, []);
 
+  const setLang = useCallback((newLang: string) => {
+    setLangState(newLang);
+  }, []);
+
+  // 组件卸载时清理
+  useEffect(() => {
+    return () => {
+      stopVolumeDetection();
+    };
+  }, [stopVolumeDetection]);
+
   return {
     isListening,
     isSupported,
     transcript,
     error,
+    volume,
     startListening,
     stopListening,
     resetTranscript,
+    setLang,
   };
 }
