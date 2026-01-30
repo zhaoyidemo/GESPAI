@@ -25,6 +25,7 @@ import {
   Flame,
   Star,
   Sparkles,
+  Database,
 } from "lucide-react";
 
 const navItems = [
@@ -147,6 +148,12 @@ export function Navbar() {
                 <Link href="/setup" className="cursor-pointer">
                   <Settings className="mr-2 h-4 w-4" />
                   学习设置
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/admin/problems" className="cursor-pointer">
+                  <Database className="mr-2 h-4 w-4" />
+                  题库管理
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
