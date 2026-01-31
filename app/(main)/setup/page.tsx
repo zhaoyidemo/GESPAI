@@ -16,7 +16,7 @@ export default function SetupPage() {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    targetLevel: "5",
+    targetLevel: "4",
     examDate: "2026-03-14",
     weeklyHours: "10",
   });
@@ -123,14 +123,9 @@ export default function SetupPage() {
                   <SelectValue placeholder="选择级别" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1">GESP 1 级（入门）</SelectItem>
-                  <SelectItem value="2">GESP 2 级（基础）</SelectItem>
-                  <SelectItem value="3">GESP 3 级（初级）</SelectItem>
                   <SelectItem value="4">GESP 4 级（中级）</SelectItem>
                   <SelectItem value="5">GESP 5 级（进阶）</SelectItem>
                   <SelectItem value="6">GESP 6 级（高级）</SelectItem>
-                  <SelectItem value="7">GESP 7 级（专业）</SelectItem>
-                  <SelectItem value="8">GESP 8 级（精英）</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -139,14 +134,12 @@ export default function SetupPage() {
                   GESP {formData.targetLevel} 级主要内容
                 </h4>
                 <p className="text-sm text-blue-700">
-                  {formData.targetLevel === "5" &&
-                    "递归、深度优先搜索（DFS）、广度优先搜索（BFS）、记忆化搜索等"}
                   {formData.targetLevel === "4" &&
-                    "排序算法、二分查找、简单数据结构（栈、队列）等"}
-                  {formData.targetLevel === "3" &&
-                    "数组、字符串处理、简单算法等"}
-                  {!["3", "4", "5"].includes(formData.targetLevel) &&
-                    "根据级别逐步深入学习编程知识"}
+                    "指针、二维数组、结构体、函数、递推算法、排序算法"}
+                  {formData.targetLevel === "5" &&
+                    "初等数论、高精度运算、链表、二分算法、递归、分治、贪心算法"}
+                  {formData.targetLevel === "6" &&
+                    "树、搜索算法(DFS/BFS)、简单动态规划、面向对象、栈和队列"}
                 </p>
               </div>
             </div>

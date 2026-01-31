@@ -9,7 +9,7 @@ import { BookOpen, Timer } from "lucide-react";
 import { gespKnowledgeData, getLevelExamInfo } from "@/lib/gesp-knowledge";
 
 export default function KnowledgePointsPage() {
-  const [selectedLevel, setSelectedLevel] = useState("1");
+  const [selectedLevel, setSelectedLevel] = useState("4");
 
   const levelData = gespKnowledgeData[selectedLevel];
   const currentPoints = levelData?.points || [];
@@ -32,20 +32,15 @@ export default function KnowledgePointsPage() {
           <BookOpen className="h-6 w-6" />
           <span>知识点</span>
         </h1>
-        <p className="text-muted-foreground">GESP C++ 考试知识点（1-8级）- 基于官方考纲</p>
+        <p className="text-muted-foreground">GESP C++ 考试知识点（4-6级）- 基于官方考纲</p>
       </div>
 
       {/* 级别切换 */}
       <Tabs value={selectedLevel} onValueChange={setSelectedLevel}>
-        <TabsList className="grid grid-cols-8 w-full">
-          <TabsTrigger value="1">1级</TabsTrigger>
-          <TabsTrigger value="2">2级</TabsTrigger>
-          <TabsTrigger value="3">3级</TabsTrigger>
+        <TabsList className="grid grid-cols-3 w-full max-w-md">
           <TabsTrigger value="4">4级</TabsTrigger>
           <TabsTrigger value="5">5级</TabsTrigger>
           <TabsTrigger value="6">6级</TabsTrigger>
-          <TabsTrigger value="7">7级</TabsTrigger>
-          <TabsTrigger value="8">8级</TabsTrigger>
         </TabsList>
 
         <TabsContent value={selectedLevel} className="mt-4">
