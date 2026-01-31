@@ -771,9 +771,15 @@ async function seedGesp6() {
       }
     });
 
+    // 为每个题目添加 testCases（与 samples 相同）
+    const problemsWithTestCases = gesp6Problems.map(p => ({
+      ...p,
+      testCases: p.samples,
+    }));
+
     // 添加所有题目
     const result = await prisma.problem.createMany({
-      data: gesp6Problems,
+      data: problemsWithTestCases,
     });
 
     return NextResponse.json({
