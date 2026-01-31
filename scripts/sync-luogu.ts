@@ -13,22 +13,34 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-// 每个级别的题目ID列表
+// 每个级别的题目ID列表（仅支持4-6级）
 const PROBLEM_IDS: Record<number, { id: string; knowledgePoints: string[]; background?: string }[]> = {
-  1: [
-    // GESP 1级题目列表
-  ],
-  2: [
-    // GESP 2级题目列表
-  ],
-  3: [
-    // GESP 3级题目列表
-  ],
   4: [
     // GESP 4级题目列表
   ],
   5: [
-    // GESP 5级题目列表
+    { id: "B3941", knowledgePoints: ["最小公倍数", "辗转相除法", "数论"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1105" },
+    { id: "B3951", knowledgePoints: ["排序", "插入排序", "逆序对"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1105" },
+    { id: "B3871", knowledgePoints: ["质因数分解", "筛法", "数论"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1131" },
+    { id: "B3872", knowledgePoints: ["贪心", "排序", "调度问题"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1131" },
+    { id: "B3929", knowledgePoints: ["二分", "二分答案", "贪心"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1137" },
+    { id: "B3930", knowledgePoints: ["贪心", "模拟", "优先队列"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1137" },
+    { id: "B3968", knowledgePoints: ["排序", "贪心", "前缀和"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1145" },
+    { id: "B3969", knowledgePoints: ["质因数分解", "筛法", "数论"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1145" },
+    { id: "P10719", knowledgePoints: ["栈", "表达式解析", "模拟"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1153" },
+    { id: "P10720", knowledgePoints: ["递归", "分治", "数论"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1153" },
+    { id: "B4050", knowledgePoints: ["二分", "二分答案", "贪心"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1161" },
+    { id: "B4051", knowledgePoints: ["贪心", "排序", "前缀和"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1161" },
+    { id: "B4070", knowledgePoints: ["递归", "分形", "模拟"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1169" },
+    { id: "B4071", knowledgePoints: ["贪心", "模拟", "策略"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1169" },
+    { id: "P11960", knowledgePoints: ["二分", "二分答案", "模拟"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1177" },
+    { id: "P11961", knowledgePoints: ["贪心", "排序", "调度"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1177" },
+    { id: "P13013", knowledgePoints: ["递归", "分形", "模拟"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1185" },
+    { id: "P13014", knowledgePoints: ["最大公约数", "辗转相除法", "数论"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1185" },
+    { id: "P14073", knowledgePoints: ["贪心", "排序", "区间问题"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1193" },
+    { id: "P14074", knowledgePoints: ["递归", "分治", "数学"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1193" },
+    { id: "P14917", knowledgePoints: ["贪心", "排序", "策略"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1201" },
+    { id: "P14918", knowledgePoints: ["模拟", "栈", "括号匹配"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1201" },
   ],
   6: [
     { id: "P10250", knowledgePoints: ["动态规划", "递推", "记忆化搜索"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1106" },
@@ -53,12 +65,6 @@ const PROBLEM_IDS: Record<number, { id: string; knowledgePoints: string[]; backg
     { id: "P14076", knowledgePoints: ["树", "DFS", "树的遍历", "贪心"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1194" },
     { id: "P14919", knowledgePoints: ["树", "DFS", "动态规划", "树形DP"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1202" },
     { id: "P14920", knowledgePoints: ["动态规划", "背包问题", "01背包"], background: "对应的选择、判断题：https://ti.luogu.com.cn/problemset/1202" },
-  ],
-  7: [
-    // GESP 7级题目列表
-  ],
-  8: [
-    // GESP 8级题目列表
   ],
 };
 
