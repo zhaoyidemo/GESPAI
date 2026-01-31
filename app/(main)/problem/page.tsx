@@ -41,6 +41,7 @@ export default function ProblemListPage() {
       if (filters.level) params.append("level", filters.level);
       if (filters.difficulty) params.append("difficulty", filters.difficulty);
 
+      params.append("limit", "100"); // 一次加载更多题目
       const response = await fetch(`/api/problems?${params}`);
       const data = await response.json();
 
