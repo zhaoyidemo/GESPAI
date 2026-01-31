@@ -256,7 +256,7 @@ export default function ImportPage() {
 
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
               <p className="text-sm text-yellow-800">
-                <strong>提示：</strong>如果提示"请先输入 allow pasting"，请按提示输入后再粘贴脚本。
+                <strong>提示：</strong>如果提示需要输入 allow pasting，请按提示输入后再粘贴脚本。
               </p>
             </div>
 
