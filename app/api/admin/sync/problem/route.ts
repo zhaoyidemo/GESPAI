@@ -42,14 +42,14 @@ export async function POST(request: NextRequest) {
 
     const remote = result.problem;
 
-    // 构建题目数据
+    // 构建题目数据 - 注意：不包含 background 字段
     const problemData = {
       title: remote.title,
       source: "gesp_official",
       sourceId: remote.pid,
       sourceUrl: `https://www.luogu.com.cn/problem/${remote.pid}`,
       level: level || 5,
-      background: remote.background,
+      // background 已移除
       description: remote.description,
       inputFormat: remote.inputFormat,
       outputFormat: remote.outputFormat,

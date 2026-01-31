@@ -198,7 +198,7 @@ async function syncSingleProblem(problemId: string, force: boolean = false) {
     source: "gesp_official",
     sourceId: remote.pid,
     sourceUrl: `https://www.luogu.com.cn/problem/${remote.pid}`,
-    background: remote.background,
+    // background 已移除
     description: remote.description,
     inputFormat: remote.inputFormat,
     outputFormat: remote.outputFormat,
@@ -325,7 +325,7 @@ async function syncLevel(level: number, force: boolean = false) {
         sourceId: remote.pid,
         sourceUrl: `https://www.luogu.com.cn/problem/${remote.pid}`,
         level,
-        background: remote.background,
+        // background 已移除
         description: remote.description,
         inputFormat: remote.inputFormat,
         outputFormat: remote.outputFormat,
