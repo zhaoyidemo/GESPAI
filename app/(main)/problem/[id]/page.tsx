@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { getDifficultyLabel, getJudgeStatusLabel } from "@/lib/utils";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
 interface Problem {
   id: string;
@@ -336,54 +337,56 @@ export default function ProblemPage() {
             </TabsList>
 
             <TabsContent value="description" className="flex-1 overflow-auto p-4">
-              <div className="prose prose-sm max-w-none">
-                <h3>题目描述</h3>
-                <div className="whitespace-pre-wrap">{problem.description}</div>
+              <div className="space-y-6">
+                {/* 题目描述 */}
+                <section>
+                  <h3 className="text-base font-bold mb-3 pb-1 border-b">题目描述</h3>
+                  <MarkdownRenderer content={problem.description} />
+                </section>
 
+                {/* 输入格式 */}
                 {problem.inputFormat && (
-                  <>
-                    <h3>输入格式</h3>
-                    <div className="whitespace-pre-wrap">{problem.inputFormat}</div>
-                  </>
+                  <section>
+                    <h3 className="text-base font-bold mb-3 pb-1 border-b">输入格式</h3>
+                    <MarkdownRenderer content={problem.inputFormat} />
+                  </section>
                 )}
 
+                {/* 输出格式 */}
                 {problem.outputFormat && (
-                  <>
-                    <h3>输出格式</h3>
-                    <div className="whitespace-pre-wrap">{problem.outputFormat}</div>
-                  </>
+                  <section>
+                    <h3 className="text-base font-bold mb-3 pb-1 border-b">输出格式</h3>
+                    <MarkdownRenderer content={problem.outputFormat} />
+                  </section>
                 )}
 
-                <h3>样例</h3>
-                {problem.samples.map((sample, index) => (
-                  <div key={index} className="grid grid-cols-2 gap-4 my-4">
-                    <div>
-                      <p className="font-medium text-sm mb-1">输入 #{index + 1}</p>
-                      <pre className="bg-gray-100 p-2 rounded text-sm">
-                        {sample.input}
-                      </pre>
-                    </div>
-                    <div>
-                      <p className="font-medium text-sm mb-1">输出 #{index + 1}</p>
-                      <pre className="bg-gray-100 p-2 rounded text-sm">
-                        {sample.output}
-                      </pre>
-                    </div>
-                    {sample.explanation && (
-                      <div className="col-span-2 text-sm text-muted-foreground">
-                        说明：{sample.explanation}
+                {/* 样例 */}
+                <section>
+                  <h3 className="text-base font-bold mb-3 pb-1 border-b">样例</h3>
+                  {problem.samples.map((sample, index) => (
+                    <div key={index} className="grid grid-cols-2 gap-4 my-4">
+                      <div>
+                        <p className="font-medium text-sm mb-1">输入 #{index + 1}</p>
+                        <pre className="bg-gray-100 p-3 rounded text-sm font-mono overflow-x-auto">
+                          {sample.input}
+                        </pre>
                       </div>
-                    )}
-                  </div>
-                ))}
-
-                {problem.hint && (
-                  <>
-                    <h3>提示</h3>
-                    <div className="whitespace-pre-wrap text-muted-foreground">
-                      {problem.hint}
+                      <div>
+                        <p className="font-medium text-sm mb-1">输出 #{index + 1}</p>
+                        <pre className="bg-gray-100 p-3 rounded text-sm font-mono overflow-x-auto">
+                          {sample.output}
+                        </pre>
+                      </div>
                     </div>
-                  </>
+                  ))}
+                </section>
+
+                {/* 提示 */}
+                {problem.hint && (
+                  <section>
+                    <h3 className="text-base font-bold mb-3 pb-1 border-b">提示</h3>
+                    <MarkdownRenderer content={problem.hint} />
+                  </section>
                 )}
               </div>
             </TabsContent>
