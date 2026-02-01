@@ -14,7 +14,7 @@
 @layer base {
   :root {
     /* 精心调配的配色系统 - 浅色主题 */
-    --background: 220 20% 98%;
+    --background: 0 0% 100%;
     --foreground: 224 71% 4%;
 
     --card: 0 0% 100%;
