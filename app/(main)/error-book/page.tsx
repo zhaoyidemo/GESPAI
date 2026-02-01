@@ -216,7 +216,7 @@ export default function ErrorBookPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">全部类型</SelectItem>
-                  <SelectItem disabled className="text-xs text-muted-foreground">── 答案错误 [WA] ──</SelectItem>
+                  <div className="px-2 py-1.5 text-xs text-muted-foreground font-medium">答案错误 [WA]</div>
                   {["misread", "boundary", "logic", "algorithm", "overflow"].map((type) => {
                     const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
                     return (
@@ -225,7 +225,7 @@ export default function ErrorBookPage() {
                       </SelectItem>
                     );
                   })}
-                  <SelectItem disabled className="text-xs text-muted-foreground">── 其他状态 ──</SelectItem>
+                  <div className="px-2 py-1.5 text-xs text-muted-foreground font-medium">其他状态</div>
                   {["syntax", "timeout", "runtime", "memory", "format"].map((type) => {
                     const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
                     return (
