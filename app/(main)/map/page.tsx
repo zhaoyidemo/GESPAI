@@ -80,14 +80,14 @@ export default function KnowledgePointsPage() {
         <TabsContent value={selectedLevel} className="mt-4">
           {/* 考试信息 */}
           {examInfo && (
-            <Card className="mb-4 bg-blue-50 border-blue-200">
+            <Card className="mb-4 bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
               <CardContent className="pt-4">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="flex items-center space-x-4">
-                    <Timer className="h-5 w-5 text-blue-600" />
-                    <span className="font-medium text-blue-900">考试时间：{examInfo.examTime}分钟</span>
+                    <Timer className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    <span className="font-medium text-blue-900 dark:text-blue-100">考试时间：{examInfo.examTime}分钟</span>
                   </div>
-                  <div className="flex items-center space-x-4 text-sm text-blue-700">
+                  <div className="flex items-center space-x-4 text-sm text-blue-700 dark:text-blue-300">
                     {examInfo.questionTypes.map((qt, idx) => (
                       <span key={idx}>{qt.type}：{qt.count}题×{qt.score}分</span>
                     ))}
@@ -109,8 +109,8 @@ export default function KnowledgePointsPage() {
                 {points.map((point) => {
                   const record = learningRecords[point.id];
                   const masteryLevel = record?.masteryLevel || 0;
-                  const masteryColor = masteryLevel >= 80 ? "text-green-500" : masteryLevel >= 50 ? "text-amber-500" : "text-gray-400";
-                  const masteryBg = masteryLevel >= 80 ? "bg-green-500" : masteryLevel >= 50 ? "bg-amber-500" : "bg-gray-300";
+                  const masteryColor = masteryLevel >= 80 ? "text-green-500" : masteryLevel >= 50 ? "text-amber-500" : "text-muted-foreground";
+                  const masteryBg = masteryLevel >= 80 ? "bg-green-500" : masteryLevel >= 50 ? "bg-amber-500" : "bg-muted";
 
                   return (
                     <Link
@@ -149,7 +149,7 @@ export default function KnowledgePointsPage() {
                                     {record.tutorCompleted ? (
                                       <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
                                     ) : (
-                                      <Circle className="h-3.5 w-3.5 text-gray-300" />
+                                      <Circle className="h-3.5 w-3.5 text-muted-foreground/50" />
                                     )}
                                     <span>学习</span>
                                   </div>
@@ -157,7 +157,7 @@ export default function KnowledgePointsPage() {
                                     {record.feynmanCompleted ? (
                                       <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
                                     ) : (
-                                      <Circle className="h-3.5 w-3.5 text-gray-300" />
+                                      <Circle className="h-3.5 w-3.5 text-muted-foreground/50" />
                                     )}
                                     <span>费曼</span>
                                   </div>
@@ -169,7 +169,7 @@ export default function KnowledgePointsPage() {
                                       </>
                                     ) : (
                                       <>
-                                        <Circle className="h-3.5 w-3.5 text-gray-300" />
+                                        <Circle className="h-3.5 w-3.5 text-muted-foreground/50" />
                                         <span>练习</span>
                                       </>
                                     )}

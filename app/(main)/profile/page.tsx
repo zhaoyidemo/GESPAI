@@ -135,7 +135,7 @@ export default function ProfilePage() {
                 {earnedBadges.map((badge) => (
                   <div
                     key={badge.code}
-                    className="flex flex-col items-center p-3 rounded-lg bg-yellow-50 border border-yellow-200 badge-earned"
+                    className="flex flex-col items-center p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 badge-earned"
                   >
                     <span className="text-3xl mb-1">{badge.icon}</span>
                     <span className="text-sm font-medium">{badge.name}</span>
@@ -157,7 +157,7 @@ export default function ProfilePage() {
             {lockedBadges.map((badge) => (
               <div
                 key={badge.code}
-                className="flex flex-col items-center p-3 rounded-lg bg-gray-50 border border-gray-200 opacity-60"
+                className="flex flex-col items-center p-3 rounded-lg bg-muted/50 border border-border opacity-60"
               >
                 <span className="text-3xl mb-1 grayscale">{badge.icon}</span>
                 <span className="text-sm font-medium">{badge.name}</span>

@@ -69,20 +69,20 @@ export function PreventionRuleAlert({
                   return (
                     <div
                       key={rule.id}
-                      className="p-3 bg-orange-50 border border-orange-200 rounded-lg"
+                      className="p-3 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800 rounded-lg"
                     >
                       <div className="flex items-center gap-2 mb-2">
-                        <Shield className="h-4 w-4 text-orange-600" />
+                        <Shield className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                         <Badge variant="outline" className="text-xs">
                           {typeConfig?.emoji || "❓"} {typeConfig?.label || rule.errorType}
                         </Badge>
                         {rule.hitCount > 1 && (
-                          <span className="text-xs text-orange-600">
+                          <span className="text-xs text-orange-600 dark:text-orange-400">
                             已触发 {rule.hitCount} 次
                           </span>
                         )}
                       </div>
-                      <p className="text-sm font-medium text-orange-800">
+                      <p className="text-sm font-medium text-orange-800 dark:text-orange-200">
                         {rule.rule}
                       </p>
                     </div>
@@ -99,9 +99,9 @@ export function PreventionRuleAlert({
                   {warnings.map((warning, index) => (
                     <div
                       key={index}
-                      className="p-2 bg-gray-50 border rounded text-sm"
+                      className="p-2 bg-muted/50 border rounded text-sm"
                     >
-                      <p className="text-gray-700">{warning.issue}</p>
+                      <p className="text-foreground">{warning.issue}</p>
                       {warning.suggestion && (
                         <p className="text-xs text-muted-foreground mt-1">
                           建议：{warning.suggestion}
@@ -112,9 +112,9 @@ export function PreventionRuleAlert({
                 </div>
               )}
 
-              <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <CheckCircle2 className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                <p className="text-xs text-blue-700">
+              <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <CheckCircle2 className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                <p className="text-xs text-blue-700 dark:text-blue-300">
                   请检查上述问题后再提交。如果你确认代码没问题，可以继续提交。
                 </p>
               </div>

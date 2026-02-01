@@ -43,15 +43,15 @@ export function ErrorCaseCard({ errorCase }: ErrorCaseCardProps) {
   const statusConfig = {
     pending: {
       label: "待复盘",
-      className: "bg-gray-100 text-gray-700",
+      className: "bg-muted text-muted-foreground",
     },
     in_progress: {
       label: "复盘中",
-      className: "bg-blue-100 text-blue-700",
+      className: "bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300",
     },
     completed: {
       label: "已完成",
-      className: "bg-green-100 text-green-700",
+      className: "bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300",
     },
   };
 
