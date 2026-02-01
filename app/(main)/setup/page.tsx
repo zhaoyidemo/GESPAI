@@ -129,11 +129,11 @@ export default function SetupPage() {
                 </SelectContent>
               </Select>
 
-              <div className="bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <h4 className="font-medium text-blue-900 mb-2">
                   GESP {formData.targetLevel} 级主要内容
                 </h4>
-                <p className="text-sm text-blue-700 dark:text-blue-300">
+                <p className="text-sm text-blue-700">
                   {formData.targetLevel === "4" &&
                     "指针、二维数组、结构体、函数、递推算法、排序算法"}
                   {formData.targetLevel === "5" &&
@@ -157,11 +157,11 @@ export default function SetupPage() {
                 min={new Date().toISOString().split("T")[0]}
               />
 
-              <div className="bg-amber-50 dark:bg-amber-950/30 p-4 rounded-lg border border-amber-200 dark:border-amber-800">
-                <h4 className="font-medium text-amber-900 dark:text-amber-100 mb-1">
+              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                <h4 className="font-medium text-amber-900 mb-1">
                   2026 年 GESP 考试安排
                 </h4>
-                <ul className="text-sm text-amber-700 dark:text-amber-300 space-y-1">
+                <ul className="text-sm text-amber-700 space-y-1">
                   <li>• 3月14日 - 第一次考试</li>
                   <li>• 6月14日 - 第二次考试</li>
                   <li>• 9月13日 - 第三次考试</li>
@@ -192,9 +192,9 @@ export default function SetupPage() {
                 </SelectContent>
               </Select>
 
-              <div className="bg-green-50 dark:bg-green-950/30 p-4 rounded-lg border border-green-200 dark:border-green-800">
-                <h4 className="font-medium text-green-900 dark:text-green-100 mb-2">学习计划预览</h4>
-                <div className="text-sm text-green-700 dark:text-green-300 space-y-1">
+              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                <h4 className="font-medium text-green-900 mb-2">学习计划预览</h4>
+                <div className="text-sm text-green-700 space-y-1">
                   <p>• 目标：GESP {formData.targetLevel} 级</p>
                   <p>• 考试日期：{formData.examDate}</p>
                   <p>• 每周学习：{formData.weeklyHours} 小时</p>

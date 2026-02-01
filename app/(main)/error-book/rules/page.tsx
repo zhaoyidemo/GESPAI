@@ -183,15 +183,15 @@ export default function PreventionRulesPage() {
 
       {/* 高频触发警告 */}
       {frequentRules.length > 0 && (
-        <Card className="border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/30">
+        <Card className="border-orange-200 bg-orange-50">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2 text-orange-800 dark:text-orange-200">
+            <CardTitle className="text-base flex items-center gap-2 text-orange-800">
               <AlertTriangle className="h-5 w-5" />
               需要注意的规则
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-orange-700 dark:text-orange-300 mb-4">
+            <p className="text-sm text-orange-700 mb-4">
               以下规则被多次触发，建议重点关注：
             </p>
             <div className="space-y-2">

@@ -453,13 +453,13 @@ export default function ProblemPage() {
                     <div key={index} className="grid grid-cols-2 gap-4 my-4">
                       <div>
                         <p className="font-medium text-sm mb-1">输入 #{index + 1}</p>
-                        <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm font-mono overflow-x-auto">
+                        <pre className="bg-gray-100 p-3 rounded text-sm font-mono overflow-x-auto">
                           {sample.input}
                         </pre>
                       </div>
                       <div>
                         <p className="font-medium text-sm mb-1">输出 #{index + 1}</p>
-                        <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm font-mono overflow-x-auto">
+                        <pre className="bg-gray-100 p-3 rounded text-sm font-mono overflow-x-auto">
                           {sample.output}
                         </pre>
                       </div>
@@ -496,31 +496,31 @@ export default function ProblemPage() {
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-2">
-                    <span className="inline-block w-5 h-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-center text-sm font-medium flex-shrink-0">1</span>
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">1</span>
                     <span><strong>输出格式</strong>：空格/换行/小数位是否正确？</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="inline-block w-5 h-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-center text-sm font-medium flex-shrink-0">2</span>
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">2</span>
                     <span><strong>变量初始化</strong>：是否所有变量都已正确初始化？</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="inline-block w-5 h-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-center text-sm font-medium flex-shrink-0">3</span>
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">3</span>
                     <span><strong>越界检查</strong>：数组、字符串、vector 下标是否可能越界？</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="inline-block w-5 h-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-center text-sm font-medium flex-shrink-0">4</span>
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">4</span>
                     <span><strong>除零错误</strong>：是否可能出现除以 0 或取模 0 的情况？</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="inline-block w-5 h-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-center text-sm font-medium flex-shrink-0">5</span>
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">5</span>
                     <span><strong>整数溢出</strong>：int 是否会溢出？是否需要用 long long？</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="inline-block w-5 h-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-center text-sm font-medium flex-shrink-0">6</span>
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">6</span>
                     <span><strong>复杂度匹配</strong>：算法复杂度是否与数据范围匹配？</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="inline-block w-5 h-5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 text-center text-sm font-medium flex-shrink-0">7</span>
+                    <span className="inline-block w-5 h-5 rounded bg-blue-100 text-blue-600 text-center text-sm font-medium flex-shrink-0">7</span>
                     <span><strong>边界测试</strong>：最小值/最大值/空值/重复值这四类边界是否已在脑中过了一遍？</span>
                   </li>
                 </ul>
@@ -534,8 +534,8 @@ export default function ProblemPage() {
                   <div
                     className={`p-4 rounded-lg ${
                       judgeResult.status === "accepted"
-                        ? "bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800"
-                        : "bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800"
+                        ? "bg-green-50 border border-green-200"
+                        : "bg-red-50 border border-red-200"
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -630,8 +630,8 @@ export default function ProblemPage() {
                         key={index}
                         className={`p-3 rounded-lg border ${
                           result.passed
-                            ? "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800"
-                            : "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800"
+                            ? "bg-green-50 border-green-200"
+                            : "bg-red-50 border-red-200"
                         }`}
                       >
                         <div className="flex items-center justify-between">
@@ -658,13 +658,13 @@ export default function ProblemPage() {
                             <div className="grid grid-cols-2 gap-2">
                               <div>
                                 <p className="text-muted-foreground">期望输出</p>
-                                <pre className="bg-white dark:bg-gray-800 p-2 rounded text-xs mt-1 overflow-x-auto">
+                                <pre className="bg-white p-2 rounded text-xs mt-1 overflow-x-auto">
                                   {result.expectedOutput}
                                 </pre>
                               </div>
                               <div>
                                 <p className="text-muted-foreground">实际输出</p>
-                                <pre className="bg-white dark:bg-gray-800 p-2 rounded text-xs mt-1 overflow-x-auto">
+                                <pre className="bg-white p-2 rounded text-xs mt-1 overflow-x-auto">
                                   {result.actualOutput || "(空)"}
                                 </pre>
                               </div>

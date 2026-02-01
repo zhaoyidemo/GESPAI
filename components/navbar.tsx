@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ThemeToggle } from "@/components/theme-toggle";
 import {
   Home,
   Map,
@@ -94,20 +93,17 @@ export function Navbar() {
           <div className="hidden sm:flex items-center space-x-4">
             <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-orange-500/10">
               <Flame className="h-4 w-4 text-orange-500" />
-              <span className="text-sm font-semibold text-orange-600 dark:text-orange-400 stat-number">
+              <span className="text-sm font-semibold text-orange-600 stat-number">
                 0
               </span>
             </div>
             <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-amber-500/10">
               <Star className="h-4 w-4 text-amber-500" />
-              <span className="text-sm font-semibold text-amber-600 dark:text-amber-400 stat-number">
+              <span className="text-sm font-semibold text-amber-600 stat-number">
                 0
               </span>
             </div>
           </div>
-
-          {/* Theme Toggle */}
-          <ThemeToggle />
 
           {/* User Dropdown */}
           <DropdownMenu>

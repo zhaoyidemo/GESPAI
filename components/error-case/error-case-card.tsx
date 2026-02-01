@@ -47,11 +47,11 @@ export function ErrorCaseCard({ errorCase }: ErrorCaseCardProps) {
     },
     in_progress: {
       label: "复盘中",
-      className: "bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300",
+      className: "bg-blue-100 text-blue-700",
     },
     completed: {
       label: "已完成",
-      className: "bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300",
+      className: "bg-green-100 text-green-700",
     },
   };
 

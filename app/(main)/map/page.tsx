@@ -80,14 +80,14 @@ export default function KnowledgePointsPage() {
         <TabsContent value={selectedLevel} className="mt-4">
           {/* 考试信息 */}
           {examInfo && (
-            <Card className="mb-4 bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
+            <Card className="mb-4 bg-blue-50 border-blue-200">
               <CardContent className="pt-4">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="flex items-center space-x-4">
-                    <Timer className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    <span className="font-medium text-blue-900 dark:text-blue-100">考试时间：{examInfo.examTime}分钟</span>
+                    <Timer className="h-5 w-5 text-blue-600" />
+                    <span className="font-medium text-blue-900">考试时间：{examInfo.examTime}分钟</span>
                   </div>
-                  <div className="flex items-center space-x-4 text-sm text-blue-700 dark:text-blue-300">
+                  <div className="flex items-center space-x-4 text-sm text-blue-700">
                     {examInfo.questionTypes.map((qt, idx) => (
                       <span key={idx}>{qt.type}：{qt.count}题×{qt.score}分</span>
                     ))}
@@ -120,8 +120,8 @@ export default function KnowledgePointsPage() {
                     >
                       <Card className={cn(
                         "hover:border-primary/50 hover:shadow-md transition-all h-full",
-                        masteryLevel >= 80 && "border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-900/10",
-                        masteryLevel >= 50 && masteryLevel < 80 && "border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-900/10"
+                        masteryLevel >= 80 && "border-green-200 bg-green-50/50",
+                        masteryLevel >= 50 && masteryLevel < 80 && "border-amber-200 bg-amber-50/50"
                       )}>
                         <CardHeader className="pb-2">
                           <div className="flex items-center justify-between">

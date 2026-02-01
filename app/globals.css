@@ -57,44 +57,6 @@
     --gradient-end: 280 65% 60%;
   }
 
-  .dark {
-    /* 深色主题 - 赛博朋克宇宙感 */
-    --background: 222 47% 3%;
-    --foreground: 210 40% 96%;
-
-    --card: 222 47% 6%;
-    --card-foreground: 210 40% 96%;
-
-    --popover: 222 47% 6%;
-    --popover-foreground: 210 40% 96%;
-
-    /* 主色调：霓虹青色 */
-    --primary: 180 100% 50%;
-    --primary-foreground: 222 47% 3%;
-
-    --secondary: 222 47% 11%;
-    --secondary-foreground: 210 40% 96%;
-
-    --muted: 222 47% 11%;
-    --muted-foreground: 215 20% 65%;
-
-    /* 强调色：霓虹品红 */
-    --accent: 300 100% 50%;
-    --accent-foreground: 222 47% 3%;
-
-    --destructive: 0 63% 45%;
-    --destructive-foreground: 210 40% 98%;
-
-    --success: 160 100% 45%;
-    --success-foreground: 160 100% 10%;
-
-    --warning: 45 100% 55%;
-    --warning-foreground: 26 83% 14%;
-
-    --border: 222 47% 15%;
-    --input: 222 47% 12%;
-    --ring: 180 100% 50%;
-  }
 }
 
 @layer base {
@@ -134,25 +96,25 @@
    ============================================ */
 @layer components {
   .glass-card {
-    @apply bg-white/70 dark:bg-slate-900/40;
+    @apply bg-white/70;
     @apply backdrop-blur-xl;
-    @apply border border-white/20 dark:border-cyan-500/10;
-    @apply shadow-lg shadow-black/5 dark:shadow-cyan-500/5;
+    @apply border border-white/20;
+    @apply shadow-lg shadow-black/5;
   }
 
   .glass-card-hover {
     @apply glass-card;
     @apply transition-all duration-300 ease-out;
-    @apply hover:bg-white/80 dark:hover:bg-slate-900/50;
-    @apply hover:shadow-xl dark:hover:shadow-cyan-500/10;
-    @apply hover:border-primary/20 dark:hover:border-cyan-500/30;
+    @apply hover:bg-white/80;
+    @apply hover:shadow-xl;
+    @apply hover:border-primary/20;
     @apply hover:-translate-y-0.5;
   }
 
   .glass-navbar {
-    @apply bg-white/80 dark:bg-slate-950/70;
+    @apply bg-white/80;
     @apply backdrop-blur-xl backdrop-saturate-150;
-    @apply border-b border-white/20 dark:border-cyan-500/10;
+    @apply border-b border-white/20;
   }
 
   /* 霓虹发光效果 */
@@ -498,7 +460,7 @@
 
 .task-card-completed {
   @apply border-l-success;
-  @apply bg-success/5 dark:bg-success/10;
+  @apply bg-success/5;
 }
 
 /* ============================================

@@ -382,7 +382,7 @@ export function ChatInterface({
                           );
                         }
                         return (
-                          <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-3 rounded-lg overflow-x-auto my-2">
+                          <pre className="bg-slate-800 text-slate-100 p-3 rounded-lg overflow-x-auto my-2">
                             <code className={className} {...props}>
                               {children}
                             </code>
@@ -424,14 +424,14 @@ export function ChatInterface({
       <form ref={formRef} onSubmit={handleSubmit} className="p-4 border-t bg-background">
         {/* 语音识别状态提示 */}
         {enableVoiceInput && isVoiceSupported && isListening && (
-          <div className="flex items-center justify-center mb-2 text-sm text-red-500 dark:text-red-400">
-            <span className="inline-block w-2 h-2 bg-red-500 dark:bg-red-400 rounded-full animate-pulse mr-1" />
+          <div className="flex items-center justify-center mb-2 text-sm text-red-500">
+            <span className="inline-block w-2 h-2 bg-red-500 rounded-full animate-pulse mr-1" />
             <VolumeIndicator volume={volume} />
             <span>正在录音，点击麦克风或松开空格键停止...</span>
           </div>
         )}
         {enableVoiceInput && voiceErrorDisplay && (
-          <div className="mb-2 text-sm text-red-500 dark:text-red-400 text-center animate-pulse">
+          <div className="mb-2 text-sm text-red-500 text-center animate-pulse">
             {voiceErrorDisplay}
           </div>
         )}

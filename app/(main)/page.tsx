@@ -213,23 +213,23 @@ export default function HomePage() {
 
       {/* 冲刺模式提示 */}
       {isSprintMode && (
-        <Card className="border-orange-300 dark:border-orange-700 bg-gradient-to-r from-orange-50 via-red-50 to-orange-50 dark:from-orange-900/20 dark:via-red-900/20 dark:to-orange-900/20 animate-pulse-subtle overflow-hidden">
+        <Card className="border-orange-300 bg-gradient-to-r from-orange-50 via-red-50 to-orange-50 animate-pulse-subtle overflow-hidden">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div className="flex items-start gap-4">
-                <div className="p-3 bg-orange-100 dark:bg-orange-900/50 rounded-full animate-bounce">
-                  <AlertTriangle className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                <div className="p-3 bg-orange-100 rounded-full animate-bounce">
+                  <AlertTriangle className="h-6 w-6 text-orange-600" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-bold text-lg text-orange-800 dark:text-orange-200">
+                    <h3 className="font-bold text-lg text-orange-800">
                       🔥 考前冲刺模式已开启
                     </h3>
                     <Badge variant="destructive" className="animate-pulse">
                       倒计时 {daysUntilExam} 天
                     </Badge>
                   </div>
-                  <p className="text-orange-700 dark:text-orange-300">
+                  <p className="text-orange-700">
                     建议每天完成模拟考试 + 复习错题，保持最佳状态迎接考试！
                   </p>
                 </div>
@@ -293,22 +293,22 @@ export default function HomePage() {
                   {dailyTask.tasks.length > 0 && (
                     <div className={`p-3 rounded-xl ${
                       dailyTask.isCompleted
-                        ? "bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
-                        : "bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800"
+                        ? "bg-green-50 border border-green-200"
+                        : "bg-blue-50 border border-blue-200"
                     }`}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           {dailyTask.isCompleted ? (
                             <>
                               <span className="text-2xl">🎉</span>
-                              <span className="font-medium text-green-700 dark:text-green-300">
+                              <span className="font-medium text-green-700">
                                 今日任务全部完成！连胜 +1
                               </span>
                             </>
                           ) : (
                             <>
                               <span className="text-xl">💪</span>
-                              <span className="font-medium text-blue-700 dark:text-blue-300">
+                              <span className="font-medium text-blue-700">
                                 已完成 {dailyTask.tasks.filter((t) => t.completed).length}/{dailyTask.tasks.length}，
                                 再完成 {dailyTask.tasks.filter((t) => !t.completed).length} 个即可保持连胜！
                               </span>
@@ -316,7 +316,7 @@ export default function HomePage() {
                           )}
                         </div>
                         {!dailyTask.isCompleted && (
-                          <span className="text-sm text-amber-600 dark:text-amber-400 font-medium">
+                          <span className="text-sm text-amber-600 font-medium">
                             +{dailyTask.totalXp - dailyTask.completedXp} XP 待领取
                           </span>
                         )}
@@ -329,7 +329,7 @@ export default function HomePage() {
                       key={index}
                       className={`group flex items-center justify-between p-4 rounded-xl transition-all duration-200 ${
                         task.completed
-                          ? "bg-success/5 dark:bg-success/10 border border-success/20"
+                          ? "bg-success/5 border border-success/20"
                           : "glass-card-hover border border-border/50"
                       }`}
                     >
@@ -462,7 +462,7 @@ export default function HomePage() {
                 {userStats.badges.map((badge, index) => (
                   <div
                     key={index}
-                    className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/50 dark:to-amber-800/50 flex items-center justify-center text-2xl hover-lift cursor-pointer"
+                    className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center text-2xl hover-lift cursor-pointer"
                   >
                     {badge}
                   </div>

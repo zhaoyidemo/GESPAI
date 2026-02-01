@@ -135,7 +135,7 @@ export default function ProfilePage() {
                 {earnedBadges.map((badge) => (
                   <div
                     key={badge.code}
-                    className="flex flex-col items-center p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 badge-earned"
+                    className="flex flex-col items-center p-3 rounded-lg bg-amber-50 border border-amber-200 badge-earned"
                   >
                     <span className="text-3xl mb-1">{badge.icon}</span>
                     <span className="text-sm font-medium">{badge.name}</span>

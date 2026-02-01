@@ -78,7 +78,7 @@ export default function TutorPage() {
           </Button>
           <div>
             <h1 className="text-xl font-bold flex items-center space-x-2">
-              <GraduationCap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <GraduationCap className="h-5 w-5 text-blue-600" />
               <span>AI 私教 - {displayPoint.name}</span>
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -88,7 +88,7 @@ export default function TutorPage() {
         </div>
         <div className="flex items-center gap-2">
           {completed ? (
-            <Button variant="outline" className="text-green-600 dark:text-green-400" disabled>
+            <Button variant="outline" className="text-green-600" disabled>
               <CheckCircle2 className="h-4 w-4 mr-2" />
               已完成
             </Button>
@@ -132,9 +132,9 @@ export default function TutorPage() {
             </p>
 
             {displayPoint.details && displayPoint.details.length > 0 && (
-              <div className="bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg">
-                <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">学习要点</h4>
-                <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h4 className="font-medium text-blue-900 mb-2">学习要点</h4>
+                <ul className="text-sm text-blue-700 space-y-1">
                   {displayPoint.details.map((detail, idx) => (
                     <li key={idx}>• {detail}</li>
                   ))}
@@ -142,9 +142,9 @@ export default function TutorPage() {
               </div>
             )}
 
-            <div className="bg-green-50 dark:bg-green-950/30 p-4 rounded-lg">
-              <h4 className="font-medium text-green-900 dark:text-green-100 mb-2">学习建议</h4>
-              <ul className="text-sm text-green-700 dark:text-green-300 space-y-1">
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h4 className="font-medium text-green-900 mb-2">学习建议</h4>
+              <ul className="text-sm text-green-700 space-y-1">
                 <li>• 先理解基本概念</li>
                 <li>• 多看代码示例</li>
                 <li>• 完成相关练习题</li>

@@ -189,14 +189,14 @@ export function AIDebugDrawer({
 
             {/* 错题本联动 */}
             {conversations.length > 0 && submissionId && (
-              <div className="p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
-                <p className="text-sm text-orange-800 dark:text-orange-200 mb-2">
+              <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
+                <p className="text-sm text-orange-800 mb-2">
                   💡 建议将这道题加入错题本，通过三问复盘避免再犯
                 </p>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="w-full border-orange-300 text-orange-700 hover:bg-orange-100 dark:border-orange-700 dark:text-orange-300 dark:hover:bg-orange-900/30"
+                  className="w-full border-orange-300 text-orange-700 hover:bg-orange-100"
                   onClick={handleAddToErrorBook}
                   disabled={addingToErrorBook || addedToErrorBook}
                 >

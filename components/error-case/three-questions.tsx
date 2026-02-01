@@ -57,7 +57,7 @@ function QuestionCard({
       className={cn(
         "transition-all duration-300",
         isActive && "ring-2 ring-primary shadow-lg",
-        isCompleted && "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800",
+        isCompleted && "bg-green-50 border-green-200",
         !isActive && !isCompleted && "opacity-60"
       )}
     >
@@ -66,7 +66,7 @@ function QuestionCard({
           <span className="text-2xl">{emoji}</span>
           <span>第{number}问：{title}</span>
           {isCompleted && (
-            <Badge variant="outline" className="ml-auto bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300">
+            <Badge variant="outline" className="ml-auto bg-green-100 text-green-700">
               \u2705 已完成
             </Badge>
           )}
@@ -88,8 +88,8 @@ function QuestionCard({
               disabled={isLoading}
             />
             {hint && (
-              <div className="p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
-                <p className="text-sm text-blue-800 dark:text-blue-200 flex items-start gap-2">
+              <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <p className="text-sm text-blue-800 flex items-start gap-2">
                   <span className="text-lg">\ud83d\udca1</span>
                   <span className="whitespace-pre-wrap">{hint}</span>
                 </p>
@@ -266,7 +266,7 @@ export function ThreeQuestions({
       </div>
 
       {allCompleted && (
-        <Card className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border-green-200 dark:border-green-800">
+        <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
               <div className="text-4xl">\ud83c\udf89</div>

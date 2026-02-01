@@ -40,7 +40,7 @@ const ERROR_TYPE_CONFIG: Record<
     emoji: "📖",
     description: "审题不清、遗漏条件、误解题意",
     ojStatus: "WA",
-    className: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800",
+    className: "bg-blue-100 text-blue-800 border-blue-200",
     examples: ["没看到「按升序输出」", "漏掉了「不超过」的条件", "误解了输入格式"],
   },
 
@@ -50,7 +50,7 @@ const ERROR_TYPE_CONFIG: Record<
     emoji: "🔲",
     description: "边界条件、特殊情况未处理",
     ojStatus: "WA",
-    className: "bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-800",
+    className: "bg-orange-100 text-orange-800 border-orange-200",
     examples: ["n=0 或 n=1 的情况", "数组为空", "最大值/最小值边界"],
   },
 
@@ -60,7 +60,7 @@ const ERROR_TYPE_CONFIG: Record<
     emoji: "✏️",
     description: "编译错误、语法问题",
     ojStatus: "CE",
-    className: "bg-red-100 text-red-800 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800",
+    className: "bg-red-100 text-red-800 border-red-200",
     examples: ["缺少分号", "括号不匹配", "头文件缺失", "变量未声明"],
   },
 
@@ -70,7 +70,7 @@ const ERROR_TYPE_CONFIG: Record<
     emoji: "🧩",
     description: "算法思路对但代码实现有bug",
     ojStatus: "WA",
-    className: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800",
+    className: "bg-purple-100 text-purple-800 border-purple-200",
     examples: ["循环边界 < 写成 <=", "条件判断反了", "变量用错"],
   },
 
@@ -80,7 +80,7 @@ const ERROR_TYPE_CONFIG: Record<
     emoji: "🎯",
     description: "算法思路本身有问题",
     ojStatus: "WA",
-    className: "bg-pink-100 text-pink-800 border-pink-200 dark:bg-pink-900/30 dark:text-pink-300 dark:border-pink-800",
+    className: "bg-pink-100 text-pink-800 border-pink-200",
     examples: ["用错了算法", "递推公式推错", "贪心策略不对"],
   },
 
@@ -90,7 +90,7 @@ const ERROR_TYPE_CONFIG: Record<
     emoji: "🐢",
     description: "算法复杂度过高",
     ojStatus: "TLE",
-    className: "bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-800",
+    className: "bg-yellow-100 text-yellow-800 border-yellow-200",
     examples: ["O(n²) 应该用 O(n log n)", "暴力枚举数据量太大", "递归没有记忆化"],
   },
 
@@ -100,7 +100,7 @@ const ERROR_TYPE_CONFIG: Record<
     emoji: "💥",
     description: "数组越界、除零、栈溢出",
     ojStatus: "RE",
-    className: "bg-rose-100 text-rose-800 border-rose-200 dark:bg-rose-900/30 dark:text-rose-300 dark:border-rose-800",
+    className: "bg-rose-100 text-rose-800 border-rose-200",
     examples: ["数组下标越界", "除以0或取模0", "递归太深栈溢出"],
   },
 
@@ -110,7 +110,7 @@ const ERROR_TYPE_CONFIG: Record<
     emoji: "💣",
     description: "整数溢出、数据类型不当",
     ojStatus: "WA",
-    className: "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800",
+    className: "bg-amber-100 text-amber-800 border-amber-200",
     examples: ["int 乘法溢出要用 long long", "阶乘/幂运算溢出", "中间结果溢出"],
   },
 
@@ -120,7 +120,7 @@ const ERROR_TYPE_CONFIG: Record<
     emoji: "📦",
     description: "内存使用超出限制",
     ojStatus: "MLE",
-    className: "bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-900/30 dark:text-cyan-300 dark:border-cyan-800",
+    className: "bg-cyan-100 text-cyan-800 border-cyan-200",
     examples: ["数组开得太大", "递归占用栈空间过多"],
   },
 
@@ -130,7 +130,7 @@ const ERROR_TYPE_CONFIG: Record<
     emoji: "📝",
     description: "输出格式不符合要求",
     ojStatus: "PE",
-    className: "bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800",
+    className: "bg-green-100 text-green-800 border-green-200",
     examples: ["多输出/少输出空格", "换行符问题", "小数位数不对"],
   },
 };
@@ -141,7 +141,7 @@ export function ErrorTypeBadge({ type, className, size = "md", showOjStatus = fa
       <Badge
         variant="outline"
         className={cn(
-          "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400",
+          "bg-gray-100 text-gray-600",
           size === "sm" && "text-xs px-1.5 py-0.5",
           size === "lg" && "text-sm px-3 py-1",
           className

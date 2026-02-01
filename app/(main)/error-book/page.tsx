@@ -189,15 +189,15 @@ export default function ErrorBookPage() {
 
       {/* 双维度薄弱点分析 */}
       {weakPointAnalysis.length > 0 && (
-        <Card className="border-red-200 bg-red-50/50 dark:bg-red-900/10 dark:border-red-800">
+        <Card className="border-red-200 bg-red-50/50">
           <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2 text-red-800 dark:text-red-200">
+            <CardTitle className="text-base flex items-center gap-2 text-red-800">
               <TrendingDown className="h-5 w-5" />
               薄弱点分析
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-red-700 dark:text-red-300 mb-4">
+            <p className="text-sm text-red-700 mb-4">
               以下知识点+错误类型组合出现多次，建议重点关注：
             </p>
             <div className="space-y-3">
@@ -207,10 +207,10 @@ export default function ErrorBookPage() {
                 return (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 bg-card rounded-lg border border-red-200 dark:border-red-800"
+                    className="flex items-center justify-between p-3 bg-card rounded-lg border border-red-200"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 font-bold text-sm">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-600 font-bold text-sm">
                         {index + 1}
                       </div>
                       <div>
@@ -228,8 +228,8 @@ export default function ErrorBookPage() {
                 );
               })}
             </div>
-            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-              <p className="text-sm text-blue-700 dark:text-blue-300 flex items-center gap-2">
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-sm text-blue-700 flex items-center gap-2">
                 <AlertTriangle className="h-4 w-4" />
                 建议：针对这些薄弱点进行专项练习，并仔细复盘相关错题
               </p>

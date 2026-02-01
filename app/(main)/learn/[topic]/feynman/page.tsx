@@ -42,7 +42,7 @@ export default function FeynmanPage() {
           </Button>
           <div>
             <h1 className="text-xl font-bold flex items-center space-x-2">
-              <MessageCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+              <MessageCircle className="h-5 w-5 text-green-600" />
               <span>费曼学习 - {displayPoint.name}</span>
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -60,16 +60,16 @@ export default function FeynmanPage() {
             <CardTitle className="text-base">费曼学习法</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="bg-green-50 dark:bg-green-950/30 p-4 rounded-lg">
-              <h4 className="font-medium text-green-900 dark:text-green-100 mb-2">什么是费曼学习法？</h4>
-              <p className="text-sm text-green-700 dark:text-green-300">
+            <div className="bg-green-50 p-4 rounded-lg">
+              <h4 className="font-medium text-green-900 mb-2">什么是费曼学习法？</h4>
+              <p className="text-sm text-green-700">
                 费曼学习法的核心是：如果你能把一个概念讲给别人听，并让对方理解，说明你真正掌握了它。
               </p>
             </div>
 
-            <div className="bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg">
-              <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">你需要做什么？</h4>
-              <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-2">
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h4 className="font-medium text-blue-900 mb-2">你需要做什么？</h4>
+              <ul className="text-sm text-blue-700 space-y-2">
                 <li className="flex items-start">
                   <span className="mr-2">1.</span>
                   <span>用自己的话解释 <strong>{displayPoint.name}</strong></span>
@@ -100,8 +100,8 @@ export default function FeynmanPage() {
               </div>
             )}
 
-            <div className="p-3 bg-yellow-50 dark:bg-yellow-950/30 rounded-lg border border-yellow-200 dark:border-yellow-800">
-              <p className="text-xs text-yellow-700 dark:text-yellow-300">
+            <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+              <p className="text-xs text-yellow-700">
                 💡 <strong>提示</strong>：如果你发现讲不清楚某些地方，说明需要回去再学习一下。这正是费曼学习法的价值所在！
               </p>
             </div>
@@ -116,7 +116,7 @@ export default function FeynmanPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-green-600 dark:text-green-400 border-green-600 dark:border-green-400 hover:bg-green-50 dark:hover:bg-green-950/30"
+                className="text-green-600 border-green-600 hover:bg-green-50"
                 onClick={() => {
                   // 触发结束讲解评估
                   const event = new CustomEvent('feynman-end-explanation');

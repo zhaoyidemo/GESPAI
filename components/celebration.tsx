@@ -171,7 +171,7 @@ export function TaskCompletionToast({
       <div
         className={`
           pointer-events-auto
-          bg-white dark:bg-gray-900
+          bg-white
           rounded-2xl shadow-2xl
           p-6 max-w-sm w-full mx-4
           transform transition-all duration-500
@@ -200,7 +200,7 @@ export function TaskCompletionToast({
                 <p className="text-xs text-muted-foreground">连胜天数</p>
               </div>
             </div>
-            <p className="text-sm text-green-600 dark:text-green-400 font-medium">
+            <p className="text-sm text-green-600 font-medium">
               继续保持，明天见！
             </p>
           </div>
@@ -212,7 +212,7 @@ export function TaskCompletionToast({
             <p className="text-muted-foreground mb-4">
               今日进度 {completedCount}/{totalCount}
             </p>
-            <div className="w-full h-3 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden mb-4">
+            <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden mb-4">
               <div
                 className="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-500"
                 style={{ width: `${(completedCount / totalCount) * 100}%` }}

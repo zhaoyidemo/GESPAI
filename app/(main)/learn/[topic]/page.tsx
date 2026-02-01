@@ -54,8 +54,8 @@ export default function LearnTopicPage() {
         <Link href={`/learn/${topic}/tutor`}>
           <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all cursor-pointer group">
             <CardHeader className="text-center pb-2">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <GraduationCap className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-blue-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <GraduationCap className="h-8 w-8 text-blue-600" />
               </div>
               <CardTitle className="text-xl">AI 私教</CardTitle>
             </CardHeader>
@@ -65,15 +65,15 @@ export default function LearnTopicPage() {
               </p>
               <ul className="text-sm text-left space-y-2 text-muted-foreground">
                 <li className="flex items-start">
-                  <span className="text-blue-500 dark:text-blue-400 mr-2">•</span>
+                  <span className="text-blue-500 mr-2">•</span>
                   <span>循序渐进的知识讲解</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-500 dark:text-blue-400 mr-2">•</span>
+                  <span className="text-blue-500 mr-2">•</span>
                   <span>随时提问，即时解答</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-500 dark:text-blue-400 mr-2">•</span>
+                  <span className="text-blue-500 mr-2">•</span>
                   <span>丰富的代码示例和练习</span>
                 </li>
               </ul>
@@ -88,8 +88,8 @@ export default function LearnTopicPage() {
         <Link href={`/learn/${topic}/feynman`}>
           <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all cursor-pointer group">
             <CardHeader className="text-center pb-2">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <MessageCircle className="h-8 w-8 text-green-600 dark:text-green-400" />
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-green-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <MessageCircle className="h-8 w-8 text-green-600" />
               </div>
               <CardTitle className="text-xl">费曼学习</CardTitle>
             </CardHeader>
@@ -99,15 +99,15 @@ export default function LearnTopicPage() {
               </p>
               <ul className="text-sm text-left space-y-2 text-muted-foreground">
                 <li className="flex items-start">
-                  <span className="text-green-500 dark:text-green-400 mr-2">•</span>
+                  <span className="text-green-500 mr-2">•</span>
                   <span>用自己的话解释概念</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 dark:text-green-400 mr-2">•</span>
+                  <span className="text-green-500 mr-2">•</span>
                   <span>AI 会追问帮你发现盲点</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 dark:text-green-400 mr-2">•</span>
+                  <span className="text-green-500 mr-2">•</span>
                   <span>最后获得详细的学习评估</span>
                 </li>
               </ul>

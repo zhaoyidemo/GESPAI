@@ -347,11 +347,11 @@ export default function ErrorCaseDetailPage({
                     </pre>
                   </ScrollArea>
                   {submission.compileOutput && (
-                    <div className="mt-4 p-3 bg-red-50 dark:bg-red-950/30 rounded-lg border border-red-200 dark:border-red-800">
-                      <p className="text-sm font-medium text-red-800 dark:text-red-200 mb-1">
+                    <div className="mt-4 p-3 bg-red-50 rounded-lg border border-red-200">
+                      <p className="text-sm font-medium text-red-800 mb-1">
                         编译错误
                       </p>
-                      <pre className="text-xs text-red-700 dark:text-red-300 whitespace-pre-wrap">
+                      <pre className="text-xs text-red-700 whitespace-pre-wrap">
                         {submission.compileOutput}
                       </pre>
                     </div>
@@ -439,8 +439,8 @@ export default function ErrorCaseDetailPage({
                           key={i}
                           className={`p-3 rounded-lg border ${
                             test.passed
-                              ? "bg-green-50 dark:bg-green-950/30 border-green-200 dark:border-green-800"
-                              : "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800"
+                              ? "bg-green-50 border-green-200"
+                              : "bg-red-50 border-red-200"
                           }`}
                         >
                           <div className="flex items-center gap-2 mb-2">
@@ -456,7 +456,7 @@ export default function ErrorCaseDetailPage({
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
                             <div>
                               <p className="text-muted-foreground mb-1">输入</p>
-                              <pre className="bg-white dark:bg-gray-800 p-2 rounded border overflow-x-auto">
+                              <pre className="bg-white p-2 rounded border overflow-x-auto">
                                 {test.input}
                               </pre>
                             </div>
@@ -464,7 +464,7 @@ export default function ErrorCaseDetailPage({
                               <p className="text-muted-foreground mb-1">
                                 预期输出
                               </p>
-                              <pre className="bg-white dark:bg-gray-800 p-2 rounded border overflow-x-auto">
+                              <pre className="bg-white p-2 rounded border overflow-x-auto">
                                 {test.expectedOutput}
                               </pre>
                             </div>
@@ -474,7 +474,7 @@ export default function ErrorCaseDetailPage({
                               </p>
                               <pre
                                 className={`p-2 rounded border overflow-x-auto ${
-                                  test.passed ? "bg-white dark:bg-gray-800" : "bg-red-100 dark:bg-red-900/50"
+                                  test.passed ? "bg-white" : "bg-red-100"
                                 }`}
                               >
                                 {test.actualOutput || "(无输出)"}

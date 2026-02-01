@@ -145,17 +145,17 @@ export default function MockExamPage() {
 
       {/* 冲刺模式提示 */}
       {isSprintMode && (
-        <Card className="border-orange-200 dark:border-orange-800 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20">
+        <Card className="border-orange-200 bg-gradient-to-r from-orange-50 to-red-50">
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-orange-100 dark:bg-orange-900/50 rounded-full">
-                <AlertTriangle className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+              <div className="p-3 bg-orange-100 rounded-full">
+                <AlertTriangle className="h-6 w-6 text-orange-600" />
               </div>
               <div>
-                <h3 className="font-bold text-lg text-orange-800 dark:text-orange-200">
+                <h3 className="font-bold text-lg text-orange-800">
                   考前冲刺阶段
                 </h3>
-                <p className="text-orange-700 dark:text-orange-300 mt-1">
+                <p className="text-orange-700 mt-1">
                   距离 GESP {userStats?.targetLevel} 级考试仅剩 {daysUntilExam} 天，
                   建议每天完成一次模拟测试，熟悉考试节奏。
                 </p>
@@ -200,7 +200,7 @@ export default function MockExamPage() {
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="12"
-                      className="text-gray-200 dark:text-gray-700"
+                      className="text-gray-200"
                     />
                     <circle
                       cx="64"
@@ -263,11 +263,11 @@ export default function MockExamPage() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="p-4 bg-blue-50 rounded-lg">
                   <p className="text-2xl font-bold text-blue-600">90</p>
                   <p className="text-sm text-muted-foreground">考试时长（分钟）</p>
                 </div>
-                <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div className="p-4 bg-green-50 rounded-lg">
                   <p className="text-2xl font-bold text-green-600">60</p>
                   <p className="text-sm text-muted-foreground">及格分数</p>
                 </div>
@@ -340,8 +340,8 @@ export default function MockExamPage() {
                         key={index}
                         className={`p-3 rounded-lg border ${
                           exam.passed
-                            ? "bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800"
-                            : "bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800"
+                            ? "bg-green-50 border-green-200"
+                            : "bg-red-50 border-red-200"
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1">
@@ -385,7 +385,7 @@ export default function MockExamPage() {
                   <li>编程题：2题（每题35分）</li>
                   <li>及格线：60分</li>
                 </ul>
-                <p className="text-orange-600 dark:text-orange-400">
+                <p className="text-orange-600">
                   注意：考试开始后请勿离开页面，计时会持续进行。
                 </p>
               </div>

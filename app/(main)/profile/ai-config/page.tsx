@@ -246,7 +246,7 @@ export default function AIConfigPage() {
                     </span>
                   </span>
                   {hasChanges(type) && (
-                    <span className="text-orange-500 dark:text-orange-400 text-xs">● 有未保存的更改</span>
+                    <span className="text-orange-500 text-xs">● 有未保存的更改</span>
                   )}
                 </div>
 
@@ -310,7 +310,7 @@ export default function AIConfigPage() {
           </Tabs>
 
           {/* 提示信息 */}
-          <div className="mt-6 space-y-2 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="mt-6 space-y-2 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <h4 className="text-sm font-medium flex items-center gap-2">
               <Eye className="h-4 w-4" />
               提示词说明
