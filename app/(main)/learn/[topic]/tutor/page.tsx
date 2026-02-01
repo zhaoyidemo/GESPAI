@@ -1,17 +1,23 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChatInterface } from "@/components/chat/chat-interface";
-import { GraduationCap, ArrowLeft } from "lucide-react";
+import { GraduationCap, ArrowLeft, CheckCircle2, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useToast } from "@/components/ui/use-toast";
 import { getKnowledgePointById } from "@/lib/gesp-knowledge";
 
 export default function TutorPage() {
   const params = useParams();
+  const router = useRouter();
+  const { toast } = useToast();
   const topic = params.topic as string;
   const knowledgePoint = getKnowledgePointById(topic);
+  const [completing, setCompleting] = useState(false);
+  const [completed, setCompleted] = useState(false);
 
   const displayPoint = knowledgePoint || {
     id: topic,
@@ -20,6 +26,43 @@ export default function TutorPage() {
     level: 1,
     category: "未分类",
     details: []
+  };
+
+  const handleCompleteLearning = async () => {
+    setCompleting(true);
+    try {
+      const response = await fetch("/api/learning-records", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          knowledgePointId: topic,
+          tutorCompleted: true,
+        }),
+      });
+
+      if (response.ok) {
+        setCompleted(true);
+        toast({
+          title: "学习完成",
+          description: "建议继续进行费曼验证，巩固理解",
+        });
+
+        // 增加XP
+        await fetch("/api/user/xp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount: 20, reason: "完成知识点学习" }),
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "操作失败",
+        description: "请重试",
+      });
+    } finally {
+      setCompleting(false);
+    }
   };
 
   return (
@@ -42,6 +85,37 @@ export default function TutorPage() {
               GESP {displayPoint.level} 级 · {displayPoint.category}
             </p>
           </div>
+        </div>
+        <div className="flex items-center gap-2">
+          {completed ? (
+            <Button variant="outline" className="text-green-600" disabled>
+              <CheckCircle2 className="h-4 w-4 mr-2" />
+              已完成
+            </Button>
+          ) : (
+            <Button
+              onClick={handleCompleteLearning}
+              disabled={completing}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              {completing ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  保存中...
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="h-4 w-4 mr-2" />
+                  完成学习
+                </>
+              )}
+            </Button>
+          )}
+          <Button variant="outline" asChild>
+            <Link href={`/learn/${topic}/feynman`}>
+              费曼验证
+            </Link>
+          </Button>
         </div>
       </div>
 

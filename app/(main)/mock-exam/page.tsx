@@ -31,6 +31,7 @@ import {
 import { getDaysUntil } from "@/lib/utils";
 
 interface MockExamResult {
+  id: string;
   totalScore: number;
   passScore: number;
   passed: boolean;
@@ -39,7 +40,7 @@ interface MockExamResult {
   programmingScore: number;
   programmingTotal: number;
   timeTaken: number; // 分钟
-  date: string;
+  createdAt: string;
 }
 
 interface UserStats {
@@ -58,20 +59,22 @@ export default function MockExamPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/user/stats");
-        const data = await response.json();
-        if (response.ok) {
+        // 获取用户统计
+        const statsResponse = await fetch("/api/user/stats");
+        const statsData = await statsResponse.json();
+        if (statsResponse.ok) {
           setUserStats({
-            targetLevel: data.targetLevel || 5,
-            examDate: data.examDate,
-            totalXp: data.totalXp || 0,
+            targetLevel: statsData.targetLevel || 5,
+            examDate: statsData.examDate,
+            totalXp: statsData.totalXp || 0,
           });
         }
 
-        // 模拟考试历史（后续可以从API获取）
-        const savedHistory = localStorage.getItem("mockExamHistory");
-        if (savedHistory) {
-          setExamHistory(JSON.parse(savedHistory));
+        // 从数据库获取模拟考试历史
+        const examResponse = await fetch("/api/mock-exam?limit=10");
+        const examData = await examResponse.json();
+        if (examResponse.ok && examData.results) {
+          setExamHistory(examData.results);
         }
       } catch (error) {
         console.error("Fetch error:", error);
@@ -305,9 +308,13 @@ export default function MockExamPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => {
-                      localStorage.removeItem("mockExamHistory");
-                      setExamHistory([]);
+                    onClick={async () => {
+                      try {
+                        await fetch("/api/mock-exam", { method: "DELETE" });
+                        setExamHistory([]);
+                      } catch (error) {
+                        console.error("清空记录失败:", error);
+                      }
                     }}
                   >
                     <RotateCcw className="h-4 w-4" />
@@ -347,7 +354,7 @@ export default function MockExamPage() {
                             <span className="font-medium">{exam.totalScore}分</span>
                           </div>
                           <span className="text-xs text-muted-foreground">
-                            {new Date(exam.date).toLocaleDateString()}
+                            {new Date(exam.createdAt).toLocaleDateString()}
                           </span>
                         </div>
                         <div className="text-xs text-muted-foreground">

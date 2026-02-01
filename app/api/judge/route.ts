@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // 如果 AC，增加用户 XP
+    // 如果 AC，增加用户 XP 并更新知识点练习统计
     if (result.status === "accepted") {
       const xpReward = problem.difficulty === "hard" ? 30 : problem.difficulty === "medium" ? 20 : 10;
 
@@ -102,10 +102,61 @@ export async function POST(request: NextRequest) {
         },
       });
 
+      // 更新相关知识点的练习统计
+      const knowledgePoints = problem.knowledgePoints || [];
+      for (const kpId of knowledgePoints) {
+        await prisma.learningRecord.upsert({
+          where: {
+            userId_knowledgePointId: {
+              userId: session.user.id,
+              knowledgePointId: kpId,
+            },
+          },
+          create: {
+            userId: session.user.id,
+            knowledgePointId: kpId,
+            status: "in_progress",
+            practiceCount: 1,
+            correctCount: 1,
+            lastStudiedAt: new Date(),
+          },
+          update: {
+            practiceCount: { increment: 1 },
+            correctCount: { increment: 1 },
+            lastStudiedAt: new Date(),
+          },
+        });
+      }
+
       return NextResponse.json({
         id: submission.id,
         ...result,
         xpEarned: xpReward,
+      });
+    }
+
+    // 非 AC 的情况也更新练习次数
+    const knowledgePoints = problem.knowledgePoints || [];
+    for (const kpId of knowledgePoints) {
+      await prisma.learningRecord.upsert({
+        where: {
+          userId_knowledgePointId: {
+            userId: session.user.id,
+            knowledgePointId: kpId,
+          },
+        },
+        create: {
+          userId: session.user.id,
+          knowledgePointId: kpId,
+          status: "in_progress",
+          practiceCount: 1,
+          correctCount: 0,
+          lastStudiedAt: new Date(),
+        },
+        update: {
+          practiceCount: { increment: 1 },
+          lastStudiedAt: new Date(),
+        },
       });
     }
 

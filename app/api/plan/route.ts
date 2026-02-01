@@ -154,24 +154,133 @@ async function generateDailyTasks(userId: string, plan: object) {
     return existingTask;
   }
 
-  // 根据计划生成今日任务
-  // 这里简化处理，实际应该根据 plan 的内容智能生成
-  const tasks = [
-    {
-      type: "learn",
-      targetId: "recursion",
-      title: "学习递归基础概念",
-      completed: false,
-      xpReward: 20,
+  // 获取用户目标级别
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { targetLevel: true },
+  });
+
+  const targetLevel = user?.targetLevel || 5;
+
+  // 获取用户的学习记录，找出未完成的知识点
+  const learningRecords = await prisma.learningRecord.findMany({
+    where: { userId },
+    select: {
+      knowledgePointId: true,
+      status: true,
+      tutorCompleted: true,
+      feynmanCompleted: true,
+      practiceCount: true,
     },
-    {
-      type: "practice",
-      targetId: "problem-1",
-      title: "完成递归练习题",
+  });
+
+  const completedKPs = new Set(
+    learningRecords
+      .filter((r) => r.status === "completed" || r.status === "mastered")
+      .map((r) => r.knowledgePointId)
+  );
+
+  // 导入知识点数据
+  const { gespKnowledgeData } = await import("@/lib/gesp-knowledge");
+  const levelData = gespKnowledgeData[targetLevel.toString()];
+
+  if (!levelData) {
+    // 如果找不到级别数据，使用默认任务
+    const tasks = [
+      {
+        type: "learn",
+        targetId: "recursion",
+        title: "学习递归算法",
+        completed: false,
+        xpReward: 20,
+      },
+    ];
+
+    return await prisma.dailyTask.create({
+      data: {
+        userId,
+        date: today,
+        tasks,
+        totalXp: 20,
+        completedXp: 0,
+        isCompleted: false,
+      },
+    });
+  }
+
+  // 找出需要学习的知识点（按顺序）
+  const pendingKPs = levelData.points.filter((kp) => !completedKPs.has(kp.id));
+
+  const tasks: Array<{
+    type: string;
+    targetId: string;
+    title: string;
+    completed: boolean;
+    xpReward: number;
+  }> = [];
+
+  // 添加1-2个学习任务
+  const learnCount = Math.min(2, pendingKPs.length);
+  for (let i = 0; i < learnCount; i++) {
+    const kp = pendingKPs[i];
+    const record = learningRecords.find((r) => r.knowledgePointId === kp.id);
+
+    // 如果未完成私教学习
+    if (!record?.tutorCompleted) {
+      tasks.push({
+        type: "learn",
+        targetId: kp.id,
+        title: `学习${kp.name}`,
+        completed: false,
+        xpReward: 20,
+      });
+    }
+    // 如果完成私教但未完成费曼
+    else if (!record?.feynmanCompleted) {
+      tasks.push({
+        type: "feynman",
+        targetId: kp.id,
+        title: `费曼验证: ${kp.name}`,
+        completed: false,
+        xpReward: 25,
+      });
+    }
+  }
+
+  // 添加1个练习任务（如果有相关题目）
+  if (pendingKPs.length > 0) {
+    const kpForPractice = pendingKPs[0];
+    const problemForPractice = await prisma.problem.findFirst({
+      where: {
+        level: targetLevel,
+        knowledgePoints: { has: kpForPractice.id },
+      },
+      select: { id: true, title: true },
+    });
+
+    if (problemForPractice) {
+      tasks.push({
+        type: "practice",
+        targetId: problemForPractice.id,
+        title: `练习: ${problemForPractice.title}`,
+        completed: false,
+        xpReward: 30,
+      });
+    }
+  }
+
+  // 如果没有生成任何任务，添加一个复习任务
+  if (tasks.length === 0) {
+    const randomKP =
+      levelData.points[Math.floor(Math.random() * levelData.points.length)];
+    tasks.push({
+      type: "review",
+      targetId: randomKP.id,
+      title: `复习${randomKP.name}`,
       completed: false,
-      xpReward: 30,
-    },
-  ];
+      xpReward: 15,
+    });
+  }
 
   const dailyTask = await prisma.dailyTask.create({
     data: {

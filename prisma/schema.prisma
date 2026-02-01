@@ -40,6 +40,7 @@ model User {
   dailyTasks      DailyTask[]
   errorCases      ErrorCase[]
   preventionRules PreventionRule[]
+  mockExamResults MockExamResult[]
 
   @@map("users")
 }
@@ -282,4 +283,33 @@ model PreventionRule {
   errorCases    ErrorCase[]
 
   @@map("prevention_rules")
+}
+
+// 模拟考试记录
+model MockExamResult {
+  id              String   @id @default(uuid())
+  userId          String
+
+  targetLevel     Int      // 考试级别
+  totalScore      Int      // 总分
+  passScore       Int      @default(60)  // 及格分数
+  passed          Boolean  // 是否通过
+
+  choiceScore     Int      // 选择题得分
+  choiceTotal     Int      @default(30)  // 选择题总分
+  programmingScore Int     // 编程题得分
+  programmingTotal Int     @default(70)  // 编程题总分
+
+  timeTaken       Int      // 用时（分钟）
+  timeLimit       Int      @default(90)  // 时间限制（分钟）
+
+  // 详细数据
+  choiceAnswers   Json?    // 选择题答案 [{questionId, answer, correct}]
+  programmingResults Json? // 编程题结果 [{problemId, score, status}]
+
+  createdAt       DateTime @default(now())
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("mock_exam_results")
 }
