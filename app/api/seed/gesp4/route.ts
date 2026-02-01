@@ -779,41 +779,24 @@ D₁,₁ × D₂,₂ = D₁,₂ × D₂,₁
 
 async function seedGesp4() {
   try {
-    // 获取现有题目ID列表，避免重复添加
-    const existingProblems = await prisma.problem.findMany({
+    // 删除现有的GESP4题目，重新导入
+    await prisma.problem.deleteMany({
       where: {
         sourceId: {
           in: gesp4Problems.map(p => p.sourceId).filter(Boolean) as string[]
         }
-      },
-      select: { sourceId: true }
+      }
     });
 
-    const existingIds = new Set(existingProblems.map(p => p.sourceId));
-
-    // 过滤出需要添加的新题目
-    const newProblems = gesp4Problems.filter(p => !existingIds.has(p.sourceId));
-
-    if (newProblems.length === 0) {
-      return NextResponse.json({
-        success: true,
-        message: "所有 GESP 4级题目已存在",
-        existingCount: existingProblems.length,
-        addedCount: 0
-      });
-    }
-
-    // 添加新题目
+    // 添加所有题目
     const result = await prisma.problem.createMany({
-      data: newProblems,
+      data: gesp4Problems,
     });
 
     return NextResponse.json({
       success: true,
-      message: `成功添加 ${result.count} 道 GESP 4级题目`,
-      existingCount: existingProblems.length,
-      addedCount: result.count,
-      totalCount: existingProblems.length + result.count
+      message: `成功导入 ${result.count} 道 GESP 4级题目`,
+      count: result.count
     });
   } catch (error) {
     console.error("Seed GESP4 error:", error);
