@@ -38,6 +38,8 @@ model User {
   learningRecords LearningRecord[]
   chatHistories   ChatHistory[]
   dailyTasks      DailyTask[]
+  errorCases      ErrorCase[]
+  preventionRules PreventionRule[]
 
   @@map("users")
 }
@@ -69,6 +71,7 @@ model Problem {
   updatedAt     DateTime @updatedAt
 
   submissions   Submission[]
+  errorCases    ErrorCase[]
 
   @@map("problems")
 }
@@ -99,8 +102,9 @@ model Submission {
 
   createdAt     DateTime @default(now())
 
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  problem       Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem       Problem    @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  errorCase     ErrorCase?
 
   @@map("submissions")
 }
@@ -214,4 +218,62 @@ model Badge {
   createdAt     DateTime @default(now())
 
   @@map("badges")
+}
+
+// 错题记录
+model ErrorCase {
+  id            String   @id @default(uuid())
+  userId        String
+  submissionId  String   @unique  // 关联到失败的提交
+  problemId     String
+
+  // 错误分类：'misread'(读错题) | 'boundary'(边界漏) | 'implementation'(写法错) | 'timeout'(太慢了)
+  errorType     String?
+
+  // 三问答案（学生填写）
+  q1Answer      String?  @db.Text  // 这道题错了哪？
+  q2Answer      String?  @db.Text  // 为什么会错？
+  q3Answer      String?  @db.Text  // 下次怎么避免？
+
+  // AI分析
+  aiAnalysis    Json?    // { classification, hints, suggestedRule }
+
+  // 防错规则
+  preventionRuleId String?
+
+  // 状态：'pending' | 'in_progress' | 'completed'
+  status        String   @default("pending")
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submission    Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  problem       Problem    @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  preventionRule PreventionRule? @relation(fields: [preventionRuleId], references: [id])
+
+  @@map("error_cases")
+}
+
+// 防错规则
+model PreventionRule {
+  id            String   @id @default(uuid())
+  userId        String
+
+  errorType     String   // 关联的错误类型
+  rule          String   @db.Text  // 防错规则内容
+  examples      String[] // 触发案例列表（problemId）
+
+  hitCount      Int      @default(0)  // 再次触发次数
+  lastHitAt     DateTime?
+
+  isActive      Boolean  @default(true)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  errorCases    ErrorCase[]
+
+  @@map("prevention_rules")
 }

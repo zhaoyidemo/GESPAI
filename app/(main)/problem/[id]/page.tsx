@@ -22,6 +22,7 @@ import {
   FileText,
   Sparkles,
   ClipboardCheck,
+  BookX,
 } from "lucide-react";
 import Link from "next/link";
 import { getDifficultyLabel, getJudgeStatusLabel } from "@/lib/utils";
@@ -86,6 +87,9 @@ export default function ProblemPage() {
   const [aiConversations, setAiConversations] = useState<AIConversation[]>([]);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiHelpCount, setAiHelpCount] = useState(0);
+
+  // 错题记录状态
+  const [recordingError, setRecordingError] = useState(false);
 
   const fetchProblem = useCallback(async () => {
     try {
@@ -472,26 +476,68 @@ export default function ProblemPage() {
                     </div>
                   </div>
 
-                  {/* AI帮助按钮 - 仅在错误时显示 */}
+                  {/* AI帮助按钮和错题记录按钮 - 仅在错误时显示 */}
                   {judgeResult.status !== "accepted" && (
-                    <Button
-                      onClick={handleAIHelp}
-                      disabled={aiLoading}
-                      className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-                    >
-                      {aiLoading ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          AI分析中...
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="mr-2 h-4 w-4" />
-                          💡 AI帮我看看
-                          {aiHelpCount > 0 && ` (已帮助${aiHelpCount}次)`}
-                        </>
-                      )}
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={handleAIHelp}
+                        disabled={aiLoading}
+                        className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+                      >
+                        {aiLoading ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                            AI分析中...
+                          </>
+                        ) : (
+                          <>
+                            <Sparkles className="mr-2 h-4 w-4" />
+                            AI帮我看看
+                            {aiHelpCount > 0 && ` (${aiHelpCount})`}
+                          </>
+                        )}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={async () => {
+                          setRecordingError(true);
+                          try {
+                            const response = await fetch("/api/error-case", {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({ submissionId: judgeResult.id }),
+                            });
+                            const data = await response.json();
+                            if (response.ok) {
+                              toast({
+                                title: "已记录到错题本",
+                                description: "可以去错题本进行复盘",
+                              });
+                              // 跳转到错题复盘页面
+                              window.location.href = `/error-book/${data.errorCase.id}`;
+                            } else {
+                              toast({
+                                variant: "destructive",
+                                title: "记录失败",
+                                description: data.error || "请重试",
+                              });
+                            }
+                          } catch (error) {
+                            toast({
+                              variant: "destructive",
+                              title: "记录失败",
+                              description: "网络错误",
+                            });
+                          } finally {
+                            setRecordingError(false);
+                          }
+                        }}
+                        disabled={recordingError}
+                      >
+                        <BookX className="mr-2 h-4 w-4" />
+                        {recordingError ? "记录中..." : "记录错题"}
+                      </Button>
+                    </div>
                   )}
 
                   {/* 测试点详情 */}

@@ -26,6 +26,7 @@ import {
   Star,
   Sparkles,
   Database,
+  BookX,
 } from "lucide-react";
 
 const navItems = [
@@ -33,6 +34,7 @@ const navItems = [
   { href: "/map", label: "知识点", icon: Map },
   { href: "/learn/recursion", label: "学习", icon: BookOpen },
   { href: "/problem", label: "题库", icon: Code },
+  { href: "/error-book", label: "错题本", icon: BookX },
 ];
 
 export function Navbar() {
