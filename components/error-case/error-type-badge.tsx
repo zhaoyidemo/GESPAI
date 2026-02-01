@@ -41,7 +41,7 @@ const ERROR_TYPE_CONFIG: Record<
     description: "审题不清、遗漏条件、误解题意",
     ojStatus: "WA",
     className: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800",
-    examples: ["没看到"按升序输出"", "漏掉了"不超过"的条件", "误解了输入格式"],
+    examples: ["没看到「按升序输出」", "漏掉了「不超过」的条件", "误解了输入格式"],
   },
 
   // === 边界相关 ===
