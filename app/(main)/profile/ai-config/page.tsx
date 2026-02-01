@@ -246,7 +246,7 @@ export default function AIConfigPage() {
                     </span>
                   </span>
                   {hasChanges(type) && (
-                    <span className="text-orange-500 text-xs">● 有未保存的更改</span>
+                    <span className="text-orange-500 dark:text-orange-400 text-xs">● 有未保存的更改</span>
                   )}
                 </div>
 

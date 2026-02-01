@@ -65,15 +65,15 @@ export default function LearnTopicPage() {
               </p>
               <ul className="text-sm text-left space-y-2 text-muted-foreground">
                 <li className="flex items-start">
-                  <span className="text-blue-500 mr-2">•</span>
+                  <span className="text-blue-500 dark:text-blue-400 mr-2">•</span>
                   <span>循序渐进的知识讲解</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-500 mr-2">•</span>
+                  <span className="text-blue-500 dark:text-blue-400 mr-2">•</span>
                   <span>随时提问，即时解答</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-blue-500 mr-2">•</span>
+                  <span className="text-blue-500 dark:text-blue-400 mr-2">•</span>
                   <span>丰富的代码示例和练习</span>
                 </li>
               </ul>
@@ -99,15 +99,15 @@ export default function LearnTopicPage() {
               </p>
               <ul className="text-sm text-left space-y-2 text-muted-foreground">
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">•</span>
+                  <span className="text-green-500 dark:text-green-400 mr-2">•</span>
                   <span>用自己的话解释概念</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">•</span>
+                  <span className="text-green-500 dark:text-green-400 mr-2">•</span>
                   <span>AI 会追问帮你发现盲点</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-green-500 mr-2">•</span>
+                  <span className="text-green-500 dark:text-green-400 mr-2">•</span>
                   <span>最后获得详细的学习评估</span>
                 </li>
               </ul>

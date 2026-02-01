@@ -200,7 +200,7 @@ export function TaskCompletionToast({
                 <p className="text-xs text-muted-foreground">连胜天数</p>
               </div>
             </div>
-            <p className="text-sm text-green-600 font-medium">
+            <p className="text-sm text-green-600 dark:text-green-400 font-medium">
               继续保持，明天见！
             </p>
           </div>

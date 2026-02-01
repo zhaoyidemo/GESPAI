@@ -120,8 +120,8 @@ export default function KnowledgePointsPage() {
                     >
                       <Card className={cn(
                         "hover:border-primary/50 hover:shadow-md transition-all h-full",
-                        masteryLevel >= 80 && "border-green-200 bg-green-50/50 dark:bg-green-900/10",
-                        masteryLevel >= 50 && masteryLevel < 80 && "border-amber-200 bg-amber-50/50 dark:bg-amber-900/10"
+                        masteryLevel >= 80 && "border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-900/10",
+                        masteryLevel >= 50 && masteryLevel < 80 && "border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-900/10"
                       )}>
                         <CardHeader className="pb-2">
                           <div className="flex items-center justify-between">

@@ -213,12 +213,12 @@ export default function HomePage() {
 
       {/* 冲刺模式提示 */}
       {isSprintMode && (
-        <Card className="border-orange-300 bg-gradient-to-r from-orange-50 via-red-50 to-orange-50 dark:from-orange-900/20 dark:via-red-900/20 dark:to-orange-900/20 animate-pulse-subtle overflow-hidden">
+        <Card className="border-orange-300 dark:border-orange-700 bg-gradient-to-r from-orange-50 via-red-50 to-orange-50 dark:from-orange-900/20 dark:via-red-900/20 dark:to-orange-900/20 animate-pulse-subtle overflow-hidden">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-orange-100 dark:bg-orange-900/50 rounded-full animate-bounce">
-                  <AlertTriangle className="h-6 w-6 text-orange-600" />
+                  <AlertTriangle className="h-6 w-6 text-orange-600 dark:text-orange-400" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1">

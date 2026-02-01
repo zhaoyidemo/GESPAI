@@ -49,7 +49,7 @@ export function PreventionRuleAlert({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="max-w-lg">
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2 text-orange-600">
+          <AlertDialogTitle className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
             <AlertTriangle className="h-5 w-5" />
             检测到可能的错误风险
           </AlertDialogTitle>

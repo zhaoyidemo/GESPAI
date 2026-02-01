@@ -167,7 +167,7 @@ export default function ProblemListPage() {
                   <Link
                     key={problem.id}
                     href={`/problem/${problem.id}`}
-                    className="flex items-center justify-between p-4 rounded-lg border hover:border-primary/50 hover:bg-gray-50 transition-colors"
+                    className="flex items-center justify-between p-4 rounded-lg border hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
                   >
                     <div className="flex items-center space-x-4">
                       {getStatusIcon(problem.userStatus)}

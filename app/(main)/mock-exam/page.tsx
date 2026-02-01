@@ -145,11 +145,11 @@ export default function MockExamPage() {
 
       {/* 冲刺模式提示 */}
       {isSprintMode && (
-        <Card className="border-orange-200 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20">
+        <Card className="border-orange-200 dark:border-orange-800 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20">
           <CardContent className="pt-6">
             <div className="flex items-start gap-4">
               <div className="p-3 bg-orange-100 dark:bg-orange-900/50 rounded-full">
-                <AlertTriangle className="h-6 w-6 text-orange-600" />
+                <AlertTriangle className="h-6 w-6 text-orange-600 dark:text-orange-400" />
               </div>
               <div>
                 <h3 className="font-bold text-lg text-orange-800 dark:text-orange-200">

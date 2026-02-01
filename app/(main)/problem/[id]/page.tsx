@@ -453,13 +453,13 @@ export default function ProblemPage() {
                     <div key={index} className="grid grid-cols-2 gap-4 my-4">
                       <div>
                         <p className="font-medium text-sm mb-1">输入 #{index + 1}</p>
-                        <pre className="bg-gray-100 p-3 rounded text-sm font-mono overflow-x-auto">
+                        <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm font-mono overflow-x-auto">
                           {sample.input}
                         </pre>
                       </div>
                       <div>
                         <p className="font-medium text-sm mb-1">输出 #{index + 1}</p>
-                        <pre className="bg-gray-100 p-3 rounded text-sm font-mono overflow-x-auto">
+                        <pre className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm font-mono overflow-x-auto">
                           {sample.output}
                         </pre>
                       </div>
@@ -658,13 +658,13 @@ export default function ProblemPage() {
                             <div className="grid grid-cols-2 gap-2">
                               <div>
                                 <p className="text-muted-foreground">期望输出</p>
-                                <pre className="bg-white p-2 rounded text-xs mt-1 overflow-x-auto">
+                                <pre className="bg-white dark:bg-gray-800 p-2 rounded text-xs mt-1 overflow-x-auto">
                                   {result.expectedOutput}
                                 </pre>
                               </div>
                               <div>
                                 <p className="text-muted-foreground">实际输出</p>
-                                <pre className="bg-white p-2 rounded text-xs mt-1 overflow-x-auto">
+                                <pre className="bg-white dark:bg-gray-800 p-2 rounded text-xs mt-1 overflow-x-auto">
                                   {result.actualOutput || "(空)"}
                                 </pre>
                               </div>

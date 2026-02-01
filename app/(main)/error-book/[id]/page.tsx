@@ -456,7 +456,7 @@ export default function ErrorCaseDetailPage({
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
                             <div>
                               <p className="text-muted-foreground mb-1">输入</p>
-                              <pre className="bg-white p-2 rounded border overflow-x-auto">
+                              <pre className="bg-white dark:bg-gray-800 p-2 rounded border overflow-x-auto">
                                 {test.input}
                               </pre>
                             </div>
@@ -464,7 +464,7 @@ export default function ErrorCaseDetailPage({
                               <p className="text-muted-foreground mb-1">
                                 预期输出
                               </p>
-                              <pre className="bg-white p-2 rounded border overflow-x-auto">
+                              <pre className="bg-white dark:bg-gray-800 p-2 rounded border overflow-x-auto">
                                 {test.expectedOutput}
                               </pre>
                             </div>
@@ -474,7 +474,7 @@ export default function ErrorCaseDetailPage({
                               </p>
                               <pre
                                 className={`p-2 rounded border overflow-x-auto ${
-                                  test.passed ? "bg-white" : "bg-red-100"
+                                  test.passed ? "bg-white dark:bg-gray-800" : "bg-red-100 dark:bg-red-900/50"
                                 }`}
                               >
                                 {test.actualOutput || "(无输出)"}
