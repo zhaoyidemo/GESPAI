@@ -1,52 +1,136 @@
 // 错题诊断相关的 AI 提示词
 
-// 错误类型定义
+// 错误类型定义 - 覆盖 OJ 判题状态和 GESP 学生高频错误
 export const ERROR_TYPES = {
+  // === 审题相关 ===
   misread: {
     code: 'misread',
     label: '📖 读错题',
-    description: '审题不清、遗漏条件',
+    description: '审题不清、遗漏条件、误解题意',
+    ojStatus: 'WA',
+    examples: ['没看到"按升序输出"', '漏掉了"不超过"的条件', '误解了输入格式'],
   },
+
+  // === 边界相关 ===
   boundary: {
     code: 'boundary',
     label: '🔲 边界漏',
     description: '边界条件、特殊情况未处理',
+    ojStatus: 'WA',
+    examples: ['n=0 或 n=1 的情况', '数组为空', '最大值/最小值边界'],
   },
-  implementation: {
-    code: 'implementation',
-    label: '✏️ 写法错',
-    description: '语法错误、逻辑错误、算法实现问题',
+
+  // === 编译相关 [CE] ===
+  syntax: {
+    code: 'syntax',
+    label: '✏️ 语法错',
+    description: '编译错误、语法问题',
+    ojStatus: 'CE',
+    examples: ['缺少分号', '括号不匹配', '头文件缺失', '变量未声明', '拼写错误'],
   },
+
+  // === 逻辑相关 ===
+  logic: {
+    code: 'logic',
+    label: '🧩 逻辑错',
+    description: '算法思路对但代码实现有bug',
+    ojStatus: 'WA',
+    examples: ['循环边界 < 写成 <=', '条件判断反了', 'if-else 分支错误', '变量用错'],
+  },
+
+  // === 算法相关 ===
+  algorithm: {
+    code: 'algorithm',
+    label: '🎯 算法错',
+    description: '算法思路本身有问题',
+    ojStatus: 'WA',
+    examples: ['用错了算法', '递推公式推错', '贪心策略不对', '搜索方向错误'],
+  },
+
+  // === 超时相关 [TLE] ===
   timeout: {
     code: 'timeout',
-    label: '🐢 太慢了',
-    description: '算法复杂度不够优、TLE',
+    label: '🐢 超时了',
+    description: '算法复杂度过高',
+    ojStatus: 'TLE',
+    examples: ['O(n²) 应该用 O(n log n)', '暴力枚举数据量太大', '递归没有记忆化'],
+  },
+
+  // === 运行错误 [RE] ===
+  runtime: {
+    code: 'runtime',
+    label: '💥 运行崩',
+    description: '数组越界、除零、栈溢出',
+    ojStatus: 'RE',
+    examples: ['数组下标越界', '除以0或取模0', '递归太深栈溢出', '空指针访问'],
+  },
+
+  // === 溢出相关 ===
+  overflow: {
+    code: 'overflow',
+    label: '💣 溢出了',
+    description: '整数溢出、数据类型不当',
+    ojStatus: 'WA',
+    examples: ['int 乘法溢出要用 long long', '阶乘/幂运算溢出', '中间结果溢出'],
+  },
+
+  // === 内存相关 [MLE] ===
+  memory: {
+    code: 'memory',
+    label: '📦 内存超',
+    description: '内存使用超出限制',
+    ojStatus: 'MLE',
+    examples: ['数组开得太大', '递归占用栈空间过多', '动态分配未释放'],
+  },
+
+  // === 格式相关 [PE] ===
+  format: {
+    code: 'format',
+    label: '📝 格式错',
+    description: '输出格式不符合要求',
+    ojStatus: 'PE',
+    examples: ['多输出/少输出空格', '换行符问题', '小数位数不对', '末尾多余空行'],
   },
 } as const;
 
 export type ErrorType = keyof typeof ERROR_TYPES;
 
 // 错误分类提示词
-export const classifyErrorPrompt = `你是一位经验丰富的编程老师，正在帮助学生分析代码错误。
+export const classifyErrorPrompt = `你是一位经验丰富的 GESP 编程老师，正在帮助学生分析代码错误。
 
-请分析学生代码的错误类型，返回以下四类之一：
-- misread: 审题不清、遗漏条件（没有正确理解题目要求）
-- boundary: 边界条件、特殊情况未处理（如空数组、n=0、n=1等边界）
-- implementation: 语法错误、逻辑错误、算法实现问题（代码写法有误）
-- timeout: 算法复杂度不够优、超时（TLE）
+请根据提交状态和代码分析，判断错误类型。错误类型共 10 种：
 
-分析时请考虑：
-1. 题目的具体要求
-2. 学生代码的逻辑
-3. 测试用例的失败情况
-4. 编译错误或运行时错误信息
+**编译阶段 [CE]:**
+- syntax: 语法错误（缺分号、括号不匹配、头文件缺失、变量未声明）
+
+**运行阶段 [RE/MLE]:**
+- runtime: 运行崩溃（数组越界、除以0、栈溢出）
+- memory: 内存超限（数组太大、递归太深）
+
+**答案错误 [WA]:**
+- misread: 读错题（审题不清、遗漏条件、误解题意）
+- boundary: 边界漏（n=0、n=1、最大最小值等边界未处理）
+- logic: 逻辑错（算法对但实现有bug，如循环边界、条件判断）
+- algorithm: 算法错（算法思路本身有问题）
+- overflow: 溢出了（int溢出要用long long、中间结果溢出）
+
+**超时 [TLE]:**
+- timeout: 超时了（算法复杂度过高，如O(n²)应该用O(n log n)）
+
+**格式错误 [PE]:**
+- format: 格式错（空格、换行、小数位数不对）
+
+**判断优先级：**
+1. 先看提交状态（CE/RE/TLE/MLE/PE 可直接定位）
+2. WA 需要结合代码和测试用例分析具体原因
+3. 如果多个原因都存在，选择最根本的那个
 
 请用 JSON 格式返回：
 {
   "type": "错误类型代码",
   "confidence": 0.0-1.0的置信度,
   "evidence": "判断依据的简短说明",
-  "summary": "一句话总结错误原因"
+  "summary": "一句话总结错误原因（适合小学生理解）"
 }`;
 
 // 引导提问提示词 - 第一问：这道题错了哪？

@@ -142,23 +142,50 @@ export default function ErrorBookPage() {
         </Card>
       </div>
 
-      {/* 错误类型分布 */}
+      {/* 错误类型分布 - 按 OJ 状态分组 */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">错误类型分布</CardTitle>
+          <CardTitle className="text-base">错误类型分布（10种）</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-4">
-            {Object.entries(ERROR_TYPE_CONFIG).map(([type, config]) => (
-              <div
-                key={type}
-                className="flex items-center gap-2 p-2 rounded-lg bg-muted/50"
-              >
-                <span className="text-xl">{config.emoji}</span>
-                <span className="text-sm">{config.label}</span>
-                <Badge variant="secondary">{errorTypeStats[type] || 0}</Badge>
-              </div>
-            ))}
+        <CardContent className="space-y-4">
+          {/* WA 相关错误 */}
+          <div>
+            <p className="text-xs text-muted-foreground mb-2 font-medium">答案错误 [WA]</p>
+            <div className="flex flex-wrap gap-2">
+              {["misread", "boundary", "logic", "algorithm", "overflow"].map((type) => {
+                const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
+                return (
+                  <div
+                    key={type}
+                    className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-muted/50 text-sm"
+                  >
+                    <span>{config.emoji}</span>
+                    <span>{config.label}</span>
+                    <Badge variant="secondary" className="ml-1">{errorTypeStats[type] || 0}</Badge>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          {/* 其他状态 */}
+          <div>
+            <p className="text-xs text-muted-foreground mb-2 font-medium">其他状态 [CE/TLE/RE/MLE/PE]</p>
+            <div className="flex flex-wrap gap-2">
+              {["syntax", "timeout", "runtime", "memory", "format"].map((type) => {
+                const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
+                return (
+                  <div
+                    key={type}
+                    className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-muted/50 text-sm"
+                  >
+                    <span>{config.emoji}</span>
+                    <span>{config.label}</span>
+                    <span className="text-xs text-muted-foreground">[{config.ojStatus}]</span>
+                    <Badge variant="secondary" className="ml-1">{errorTypeStats[type] || 0}</Badge>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -184,16 +211,29 @@ export default function ErrorBookPage() {
                 </SelectContent>
               </Select>
               <Select value={errorTypeFilter} onValueChange={setErrorTypeFilter}>
-                <SelectTrigger className="w-[120px]">
+                <SelectTrigger className="w-[140px]">
                   <SelectValue placeholder="错误类型" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">全部类型</SelectItem>
-                  {Object.entries(ERROR_TYPE_CONFIG).map(([type, config]) => (
-                    <SelectItem key={type} value={type}>
-                      {config.emoji} {config.label}
-                    </SelectItem>
-                  ))}
+                  <SelectItem disabled className="text-xs text-muted-foreground">── 答案错误 [WA] ──</SelectItem>
+                  {["misread", "boundary", "logic", "algorithm", "overflow"].map((type) => {
+                    const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
+                    return (
+                      <SelectItem key={type} value={type}>
+                        {config.emoji} {config.label}
+                      </SelectItem>
+                    );
+                  })}
+                  <SelectItem disabled className="text-xs text-muted-foreground">── 其他状态 ──</SelectItem>
+                  {["syntax", "timeout", "runtime", "memory", "format"].map((type) => {
+                    const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
+                    return (
+                      <SelectItem key={type} value={type}>
+                        {config.emoji} {config.label}
+                      </SelectItem>
+                    );
+                  })}
                 </SelectContent>
               </Select>
             </div>

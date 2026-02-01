@@ -228,11 +228,24 @@ export default function PreventionRulesPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">全部类型</SelectItem>
-            {Object.entries(ERROR_TYPE_CONFIG).map(([type, config]) => (
-              <SelectItem key={type} value={type}>
-                {config.emoji} {config.label}
-              </SelectItem>
-            ))}
+            <SelectItem disabled className="text-xs text-muted-foreground">── 答案错误 [WA] ──</SelectItem>
+            {["misread", "boundary", "logic", "algorithm", "overflow"].map((type) => {
+              const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
+              return (
+                <SelectItem key={type} value={type}>
+                  {config.emoji} {config.label}
+                </SelectItem>
+              );
+            })}
+            <SelectItem disabled className="text-xs text-muted-foreground">── 其他状态 ──</SelectItem>
+            {["syntax", "timeout", "runtime", "memory", "format"].map((type) => {
+              const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
+              return (
+                <SelectItem key={type} value={type}>
+                  {config.emoji} {config.label}
+                </SelectItem>
+              );
+            })}
           </SelectContent>
         </Select>
         <p className="text-sm text-muted-foreground">
