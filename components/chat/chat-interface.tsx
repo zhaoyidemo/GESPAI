@@ -364,8 +364,8 @@ export function ChatInterface({
             <div
               className={`max-w-[80%] rounded-lg p-3 ${
                 message.role === "user"
-                  ? "bg-primary text-white"
-                  : "bg-gray-100 text-gray-900"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-foreground"
               }`}
             >
               {message.role === "assistant" ? (
@@ -376,13 +376,13 @@ export function ChatInterface({
                         const isInline = !className;
                         if (isInline) {
                           return (
-                            <code className="bg-gray-200 px-1 rounded text-sm" {...props}>
+                            <code className="bg-muted px-1 rounded text-sm" {...props}>
                               {children}
                             </code>
                           );
                         }
                         return (
-                          <pre className="bg-gray-800 text-gray-100 p-3 rounded-lg overflow-x-auto my-2">
+                          <pre className="bg-slate-800 dark:bg-slate-900 text-slate-100 p-3 rounded-lg overflow-x-auto my-2">
                             <code className={className} {...props}>
                               {children}
                             </code>
@@ -408,10 +408,10 @@ export function ChatInterface({
                 <Bot className="h-4 w-4" />
               </AvatarFallback>
             </Avatar>
-            <div className="bg-gray-100 rounded-lg p-3">
+            <div className="bg-muted rounded-lg p-3">
               <div className="flex items-center space-x-2">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                <span className="text-sm text-gray-500">正在思考...</span>
+                <span className="text-sm text-muted-foreground">正在思考...</span>
               </div>
             </div>
           </div>
@@ -421,7 +421,7 @@ export function ChatInterface({
       </div>
 
       {/* 输入框 */}
-      <form ref={formRef} onSubmit={handleSubmit} className="p-4 border-t bg-white">
+      <form ref={formRef} onSubmit={handleSubmit} className="p-4 border-t bg-background">
         {/* 语音识别状态提示 */}
         {enableVoiceInput && isVoiceSupported && isListening && (
           <div className="flex items-center justify-center mb-2 text-sm text-red-500">

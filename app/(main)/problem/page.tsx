@@ -62,7 +62,7 @@ export default function ProblemListPage() {
     if (status && status !== "accepted") {
       return <XCircle className="h-5 w-5 text-red-500" />;
     }
-    return <Circle className="h-5 w-5 text-gray-300" />;
+    return <Circle className="h-5 w-5 text-muted-foreground/50" />;
   };
 
   const filteredProblems = problems.filter((p) =>

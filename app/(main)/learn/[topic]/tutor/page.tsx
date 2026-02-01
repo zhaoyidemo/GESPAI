@@ -78,7 +78,7 @@ export default function TutorPage() {
           </Button>
           <div>
             <h1 className="text-xl font-bold flex items-center space-x-2">
-              <GraduationCap className="h-5 w-5 text-blue-600" />
+              <GraduationCap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               <span>AI 私教 - {displayPoint.name}</span>
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -88,7 +88,7 @@ export default function TutorPage() {
         </div>
         <div className="flex items-center gap-2">
           {completed ? (
-            <Button variant="outline" className="text-green-600" disabled>
+            <Button variant="outline" className="text-green-600 dark:text-green-400" disabled>
               <CheckCircle2 className="h-4 w-4 mr-2" />
               已完成
             </Button>

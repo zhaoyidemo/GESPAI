@@ -42,7 +42,7 @@ export default function FeynmanPage() {
           </Button>
           <div>
             <h1 className="text-xl font-bold flex items-center space-x-2">
-              <MessageCircle className="h-5 w-5 text-green-600" />
+              <MessageCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
               <span>费曼学习 - {displayPoint.name}</span>
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -116,7 +116,7 @@ export default function FeynmanPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-green-600 border-green-600 hover:bg-green-50 dark:hover:bg-green-950/30"
+                className="text-green-600 dark:text-green-400 border-green-600 dark:border-green-400 hover:bg-green-50 dark:hover:bg-green-950/30"
                 onClick={() => {
                   // 触发结束讲解评估
                   const event = new CustomEvent('feynman-end-explanation');

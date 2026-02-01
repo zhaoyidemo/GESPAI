@@ -225,10 +225,10 @@ export function TaskCompletionToast({
         )}
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="absolute top-2 right-2 p-1 rounded-full hover:bg-muted transition-colors"
         >
           <svg
-            className="w-5 h-5 text-gray-400"
+            className="w-5 h-5 text-muted-foreground"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

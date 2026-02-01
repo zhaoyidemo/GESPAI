@@ -32,7 +32,7 @@ export function MarkdownRenderer({ content, className = "" }: MarkdownRendererPr
           if (isInline) {
             return (
               <code
-                className="bg-gray-100 px-1.5 py-0.5 rounded text-sm font-mono"
+                className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono"
                 {...props}
               >
                 {children}
@@ -47,25 +47,25 @@ export function MarkdownRenderer({ content, className = "" }: MarkdownRendererPr
         },
         // 自定义预格式化块样式
         pre: ({ children }) => (
-          <pre className="bg-gray-100 p-3 rounded-lg overflow-x-auto text-sm">
+          <pre className="bg-muted p-3 rounded-lg overflow-x-auto text-sm">
             {children}
           </pre>
         ),
         // 表格样式
         table: ({ children }) => (
           <div className="overflow-x-auto my-4">
-            <table className="min-w-full border-collapse border border-gray-300">
+            <table className="min-w-full border-collapse border border-border">
               {children}
             </table>
           </div>
         ),
         th: ({ children }) => (
-          <th className="border border-gray-300 px-3 py-2 bg-gray-50 font-medium text-left">
+          <th className="border border-border px-3 py-2 bg-muted font-medium text-left">
             {children}
           </th>
         ),
         td: ({ children }) => (
-          <td className="border border-gray-300 px-3 py-2">
+          <td className="border border-border px-3 py-2">
             {children}
           </td>
         ),
@@ -75,7 +75,7 @@ export function MarkdownRenderer({ content, className = "" }: MarkdownRendererPr
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
+            className="text-primary hover:underline"
           >
             {children}
           </a>
@@ -115,11 +115,11 @@ export function MarkdownRenderer({ content, className = "" }: MarkdownRendererPr
         ),
         // 分割线
         hr: () => (
-          <hr className="my-4 border-gray-200" />
+          <hr className="my-4 border-border" />
         ),
         // 引用块
         blockquote: ({ children }) => (
-          <blockquote className="border-l-4 border-gray-300 pl-4 my-2 italic text-gray-600">
+          <blockquote className="border-l-4 border-border pl-4 my-2 italic text-muted-foreground">
             {children}
           </blockquote>
         ),
