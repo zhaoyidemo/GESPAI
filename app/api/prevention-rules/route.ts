@@ -48,20 +48,23 @@ export async function GET(request: NextRequest) {
       ],
     });
 
+    // 添加 relatedCasesCount 字段
+    const rulesWithCount = rules.map((rule) => ({
+      ...rule,
+      relatedCasesCount: rule._count.errorCases,
+    }));
+
     // 按错误类型分组
-    const groupedRules = rules.reduce((acc, rule) => {
-      if (!acc[rule.errorType]) {
-        acc[rule.errorType] = [];
+    const groupedRules: Record<string, typeof rulesWithCount> = {};
+    for (const rule of rulesWithCount) {
+      if (!groupedRules[rule.errorType]) {
+        groupedRules[rule.errorType] = [];
       }
-      acc[rule.errorType].push({
-        ...rule,
-        relatedCasesCount: rule._count.errorCases,
-      });
-      return acc;
-    }, {} as Record<string, typeof rules>);
+      groupedRules[rule.errorType].push(rule);
+    }
 
     return NextResponse.json({
-      rules,
+      rules: rulesWithCount,
       groupedRules,
     });
   } catch (error) {
