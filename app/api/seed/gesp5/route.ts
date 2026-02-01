@@ -15,7 +15,6 @@ const gesp5Problems = [
     level: 5,
     knowledgePoints: ["最小公倍数", "最大公约数", "数论"],
     difficulty: "普及-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1105`,
     description: `小杨的班级里共有 $n$ 名同学，每位同学都有各自的锻炼习惯。具体来说，第 $i$ 位同学每隔 $a_i$ 天就会进行一次锻炼（也就是说，每次锻炼会在上一次锻炼的 $a_i$ 天后进行）。某一天，班上的 $n$ 名同学恰好都来进行了锻炼。他们对此兴奋不已，想要计算出下一次所有同学都来锻炼，至少要过多少天。`,
     inputFormat: `第一行一个整数 $n$，表示同学的数量。
 
@@ -57,7 +56,6 @@ const gesp5Problems = [
     level: 5,
     knowledgePoints: ["逆序对", "排序", "冒泡排序"],
     difficulty: "普及-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1105`,
     description: `小杨是班级的体育委员。在一节体育课上，老师让小杨组织 $N$ 名同学（学号为 $0$ 至 $N - 1$）排成一列做体操。老师要求同学们按照身高从低到高排列。
 
 老师会依次点名 $M$ 次，每次点名一名同学。该同学需要加入队伍。为保持身高顺序，同学们会通过两两交换位置的方式重新排列。每次交换只能交换相邻两位同学的位置。
@@ -98,7 +96,6 @@ const gesp5Problems = [
     level: 5,
     knowledgePoints: ["质因数分解", "数论"],
     difficulty: "普及-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1131`,
     description: `每个正整数都可以表示成素数（质数）的乘积。例如，$6 = 2 \\times 3$，$20 = 2^2 \\times 5$。现在，给定一个正整数，请输出它的因数分解式。`,
     inputFormat: `输入第一行，包含一个正整数 $N$。约定 $2 \\le N \\le 10^{12}$。`,
     outputFormat: `输出一行，为 $N$ 的因数分解式。要求按素数由小到大排列；乘号用星号 \`*\` 表示，星号左右各空一格；当且仅当一个素数出现多次时，将它们合并为指数形式，指数用上箭头 \`^\` 表示，箭头左右不空格。`,
@@ -124,7 +121,6 @@ const gesp5Problems = [
     level: 5,
     knowledgePoints: ["贪心", "调度问题", "排序"],
     difficulty: "普及/提高-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1131`,
     description: `小明参加一档名为"巧夺大奖"的综艺节目，游戏规则如下：
 
 1. 整个游戏分为 $n$ 个时间段。每个时间段，小明可以选择一个小游戏参加（也可以不参加）。
@@ -159,7 +155,6 @@ $7$ 个时间段分别完成第 $4$、$2$、$3$、$1$、$6$、$7$、$5$ 个小�
     level: 5,
     knowledgePoints: ["完全平方数", "数论", "倍数"],
     difficulty: "普及/提高-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1137`,
     description: `小杨认为，所有大于等于 $a$ 的完全平方数都是他的超级幸运数。
 
 小杨还认为，所有超级幸运数的倍数都是他的幸运数。自然地，小杨的所有超级幸运数也都是幸运数。
@@ -207,7 +202,6 @@ $9$ 是幸运数，因此直接输出 \`lucky\` 。
     level: 5,
     knowledgePoints: ["位运算", "按位与", "枚举"],
     difficulty: "普及/提高-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1137`,
     description: `有 $N$ 种食材，编号从 $1$ 至 $N$，其中第 $i$ 种食材的美味度为 $a_i$。
 
 不同食材之间的组合可能产生奇妙的化学反应。具体来说，如果两种食材的美味度分别为 $x$ 和 $y$ ，那么它们的契合度为 $x\\ \\text{and}\\ y $。
@@ -252,7 +246,6 @@ $9$ 是幸运数，因此直接输出 \`lucky\` 。
     level: 5,
     knowledgePoints: ["排序", "多关键字排序", "模拟"],
     difficulty: "普及-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1145`,
     description: `有 $n$ 名同学，每名同学有语文、数学、英语三科成绩，你需要按照如下规则对所有同学的成绩从高到低排序：
 
 1. 比较总分，高者靠前；
@@ -285,7 +278,6 @@ $9$ 是幸运数，因此直接输出 \`lucky\` 。
     level: 5,
     knowledgePoints: ["质因数分解", "筛法", "数论"],
     difficulty: "普及-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1145`,
     description: `小杨同学想寻找一种名为 $ B $-smooth 数的正整数。
 
 如果一个正整数的最大质因子不超过 $ B $，则该正整数为 $ B $-smooth 数。
@@ -326,7 +318,6 @@ $9$ 是幸运数，因此直接输出 \`lucky\` 。
     level: 5,
     knowledgePoints: ["二维前缀和", "枚举", "子矩阵"],
     difficulty: "普及/提高-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1153`,
     description: `小杨有一个 $n$ 行 $m$ 列的网格图，其中每个格子要么是白色，要么是黑色。小杨想知道至少包含 $k$ 个黑色格子的最小子矩形包含了多少个格子。`,
     inputFormat: `第一行包含三个正整数 $n,m,k$，含义如题面所示。
 
@@ -362,7 +353,6 @@ $9$ 是幸运数，因此直接输出 \`lucky\` 。
     level: 5,
     knowledgePoints: ["质因数分解", "数论"],
     difficulty: "普及-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1153`,
     description: `小杨认为他的幸运数字应该恰好有两种不同的质因子，例如，$12=2\\times 2\\times 3$ 的质因子有 $2,3$，恰好为两种不同的质因子，因此 $12$ 是幸运数字。而 $30=2\\times 3\\times 5$有 $2,3,5$ 共三种不同的质因子，因此 $30$ 不是幸运数字。
 
 现在给定 $n$ 个正整数，请你依次判断他们是否是幸运数字。`,
@@ -404,7 +394,6 @@ $30$ 的质因子有 $2,3,5$，因此不是幸运数字。
     level: 5,
     knowledgePoints: ["贪心", "质数", "二进制"],
     difficulty: "普及/提高-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1161`,
     description: `小杨正在和一个怪物战斗，怪物的血量为 $h$，只有当怪物的血量**恰好**为 $0$ 时小杨才能够成功击败怪物。
 
 小杨有两种攻击怪物的方式：
@@ -446,7 +435,6 @@ $30$ 的质因子有 $2,3,5$，因此不是幸运数字。
     level: 5,
     knowledgePoints: ["贪心", "排序", "前缀和"],
     difficulty: "普及-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1161`,
     description: `小杨有 $n$ 种不同的武器，他对第 $i$ 种武器的初始熟练度为 $c_i$。小杨会依次参加 $m$ 场战斗，每场战斗小杨只能且必须选择一种武器使用，假设小杨使用了第 $i$ 种武器参加了第 $j$ 场战斗，战斗前该武器的熟练度为 $c'_i$，则战斗后小杨对该武器的熟练度会变为 $c'_i + a_j$。需要注意的是，$a_j$ 可能是正数，$0$ 或负数，这意味着小杨参加战斗后对武器的熟练度可能会提高，也可能会不变，还有可能降低。小杨想请你编写程序帮他计算出如何选择武器才能使得 $m$ 场战斗后，自己对 $n$ 种武器的熟练度的**最大值尽可能大**。`,
     inputFormat: `第一行包含两个正整数 $n, m$，分别表示武器种数和战斗场数。
 
@@ -479,7 +467,6 @@ $30$ 的质因子有 $2,3,5$，因此不是幸运数字。
     level: 5,
     knowledgePoints: ["质因数分解", "数论", "贪心"],
     difficulty: "普及/提高-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1169`,
     description: `小杨定义一个数 $x$ 为"奇妙数字"当且仅当 $x=p^a$，其中 $p$ 是任意质数，$a$ 是正整数。例如，$8=2^3$ 是奇妙数字，但 $6$ 不是。
 
 对于一个正整数 $n$，小杨想构造一个包含 $m$ 个奇妙数字的集合 $\\{x_1,x_2,\\cdots,x_m\\}$，满足：
@@ -520,7 +507,6 @@ $30$ 的质因子有 $2,3,5$，因此不是幸运数字。
     level: 5,
     knowledgePoints: ["贪心", "排序", "模拟"],
     difficulty: "普及/提高-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1169`,
     description: `小杨有 $n$ 种武器和 $m$ 种强化材料。第 $i$ 种强化材料会适配第 $p_i$ 种武器，小杨可以花费 $c_i$ 金币将该材料对应的适配武器修改为任意武器。
 
 小杨最喜欢第 $1$ 种武器，因此他希望适配该武器的强化材料种类数**严格大于**其他的武器，请你帮小杨计算为了满足该条件最少需要花费多少金币。`,
@@ -559,7 +545,6 @@ $30$ 的质因子有 $2,3,5$，因此不是幸运数字。
     level: 5,
     knowledgePoints: ["贪心", "排序", "差值"],
     difficulty: "普及/提高-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1177`,
     description: `小 A 有 $2n$ 件物品，小 B 和小 C 想从小 A 手上买走这些物品。对于第 $i$ 件物品，小 B 会以 $b_i$ 的价格购买，而小 C 会以 $c_i$ 的价格购买。为了平均分配这 $2n$ 件物品，小 A 决定小 B 和小 C 各自只能买走恰好 $n$ 件物品。你能帮小 A 求出他卖出这 $2n$ 件物品所能获得的最大收入吗？`,
     inputFormat: `第一行，一个正整数 $n$。
 
@@ -593,7 +578,6 @@ $30$ 的质因子有 $2,3,5$，因此不是幸运数字。
     level: 5,
     knowledgePoints: ["数论", "快速幂", "费马小定理"],
     difficulty: "提高+/省选-",
-    background: `截止 2025 年 3 月，本题可能超出了 GESP 考纲范围。原根属于 NOI 大纲 8 级知识点，费马小定理与欧拉定理属于 NOI 大纲 7 级知识点，均未在 GESP 大纲中明确说明。`,
     description: `小 A 知道，对于质数 $p$ 而言，$p$ 的原根 $g$ 是满足以下条件的正整数：
 
 - $1<g<p$；
@@ -626,9 +610,6 @@ $30$ 的质因子有 $2,3,5$，因此不是幸运数字。
     level: 5,
     knowledgePoints: ["二分查找", "贪心", "数学"],
     difficulty: "普及/提高-",
-    background: `为了保证只有时间复杂度正确的代码能够通过本题，时限下降为 400 毫秒。
-
-对应的选择、判断题：https://ti.luogu.com.cn/problemset/1185`,
     description: `班主任给上课专心听讲、认真完成作业的同学们分别发放了若干张课堂优秀券和作业优秀券。同学们可以使用这两种券找班主任兑换奖品。具体来说，可以使用 $a$ 张课堂优秀券和 $b$ 张作业优秀券兑换一份奖品，或者使用 $b$ 张课堂优秀券和 $a$ 张作业优秀券兑换一份奖品。
 
 现在小 A 有 $n$ 张课堂优秀券和 $m$ 张作业优秀券，他最多能兑换多少份奖品呢？`,
@@ -658,7 +639,6 @@ $30$ 的质因子有 $2,3,5$，因此不是幸运数字。
     level: 5,
     knowledgePoints: ["最大公约数", "辗转相除法", "数论"],
     difficulty: "普及-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1185`,
     description: `对于两个正整数 $a,b$，他们的最大公因数记为 $\\gcd(a,b)$。对于 $k > 2$ 个正整数 $c_1,c_2,\\dots,c_k$，他们的最大公因数为：
 
 $$\\gcd(c_1,c_2,\\dots,c_k)=\\gcd(\\gcd(c_1,c_2,\\dots,c_{k-1}),c_k)$$
@@ -691,7 +671,6 @@ $$\\gcd(c_1,c_2,\\dots,c_k)=\\gcd(\\gcd(c_1,c_2,\\dots,c_{k-1}),c_k)$$
     level: 5,
     knowledgePoints: ["数论", "互质", "贪心"],
     difficulty: "普及-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1193`,
     description: `给定正整数 $n$，现在有 $1,2,\\ldots,n$ 共计 $n$ 个整数。你需要从这 $n$ 个整数中选取一些整数，使得所选取的整数中任意两个不同的整数均互质。
 
 请你求出所选取整数的最大数量。`,
@@ -719,9 +698,6 @@ $$\\gcd(c_1,c_2,\\dots,c_k)=\\gcd(\\gcd(c_1,c_2,\\dots,c_{k-1}),c_k)$$
     level: 5,
     knowledgePoints: ["位运算", "二进制", "数学"],
     difficulty: "普及/提高-",
-    background: `为了保证只有时间复杂度正确的代码能够通过本题，时限有所下降。
-
-对应的选择、判断题：https://ti.luogu.com.cn/problemset/1193`,
     description: `如果一个正整数的二进制表示包含奇数个 $1$，那么小 A 就会认为这个正整数是有趣的。
 
 例如，$7$ 的二进制表示为 $111$，包含 $3$ 个 $1$，所以 $7$ 是有趣的。$9$ 的二进制表示为 $1001$，包含 $2$ 个 $1$，所以 $9$ 不是有趣的。
@@ -758,7 +734,6 @@ $$\\gcd(c_1,c_2,\\dots,c_k)=\\gcd(\\gcd(c_1,c_2,\\dots,c_{k-1}),c_k)$$
     level: 5,
     knowledgePoints: ["贪心", "模拟", "二分"],
     difficulty: "普及/提高-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1201`,
     description: `小 A 有一个包含 $N$ 个正整数的序列 $A=\\{A_1,A_2,\\cdots,A_N\\}$，序列 $A$ 恰好包含 $\\frac{N}{2}$ 对不同的正整数。形式化地，对于任意 $1 \\le i \\le N$，存在唯一一个 $j$ 满足 $1\\le j \\le N, i\\neq j, A_i=A_j$。
 
 小 A 希望每对相同的数字在序列中相邻，为了实现这一目的，小 A 每次操作会选择任意 $i$（$1\\le i\\le N$），将当前序列的第 $i$ 个数字移动到任意位置，并花费对应数字的体力。
@@ -792,7 +767,6 @@ $$\\gcd(c_1,c_2,\\dots,c_k)=\\gcd(\\gcd(c_1,c_2,\\dots,c_{k-1}),c_k)$$
     level: 5,
     knowledgePoints: ["质因数分解", "数论", "贪心"],
     difficulty: "普及/提高-",
-    background: `对应的选择、判断题：https://ti.luogu.com.cn/problemset/1201`,
     description: `小 A 有一个包含 $N$ 个正整数的序列 $A=\\{A_1,A_2,\\ldots,A_N\\}$。小 A 每次可以花费 $1$ 个金币执行以下任意一种操作：
 
 - 选择序列中一个正整数 $A_i$（$1\\le i\\le N$），将 $A_i$ 变为 $A_i\\times P$，$P$ 为任意质数；
