@@ -50,8 +50,8 @@ export default function MainLayout({
 
   return (
     <>
-      {/* Three.js 粒子背景 */}
-      <AnimatedBackground variant="particles" />
+      {/* 简洁背景 */}
+      <AnimatedBackground />
 
       {/* 导航栏 */}
       <Navbar />

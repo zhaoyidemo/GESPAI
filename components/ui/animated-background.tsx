@@ -1,23 +1,32 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import dynamic from "next/dynamic";
 
 interface AnimatedBackgroundProps {
   className?: string;
-  variant?: "fluid" | "particles";
+  variant?: "simple" | "fluid" | "particles";
 }
 
-// 动态导入粒子场组件（避免 SSR 问题）
-const ParticleField = dynamic(
-  () => import("./particle-field").then((mod) => mod.ParticleField),
-  {
-    ssr: false,
-    loading: () => <FluidBackground />,
-  }
-);
+// 方案4：纯色渐变背景 + 网格纹理（无动画，最简洁）
+export function SimpleBackground({ className }: { className?: string }) {
+  return (
+    <div className={`fixed inset-0 -z-10 overflow-hidden ${className || ""}`}>
+      {/* 主背景渐变 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950" />
 
-// 纯 CSS 流体背景（备用/加载时显示）
+      {/* 网格纹理 */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
+
+      {/* 顶部微弱光晕 */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-radial from-primary/5 via-transparent to-transparent" />
+
+      {/* 边角渐变 */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
+    </div>
+  );
+}
+
+// 纯 CSS 流体背景（备用）
 export function FluidBackground({ className }: { className?: string }) {
   return (
     <div className={`fixed inset-0 -z-10 overflow-hidden ${className || ""}`}>
@@ -33,51 +42,20 @@ export function FluidBackground({ className }: { className?: string }) {
       {/* 网格纹理 */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
 
-      {/* 噪点纹理 */}
-      <div className="absolute inset-0 opacity-[0.015]" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-      }} />
-
       {/* 渐变覆盖 */}
       <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-background/60" />
     </div>
   );
 }
 
-// 主背景组件 - 可切换模式
-export function AnimatedBackground({ className, variant = "particles" }: AnimatedBackgroundProps) {
-  const [mounted, setMounted] = useState(false);
-  const [useParticles, setUseParticles] = useState(true);
-
-  useEffect(() => {
-    setMounted(true);
-
-    // 检测是否为低性能设备
-    const checkPerformance = () => {
-      // 移动设备或低分辨率设备使用简化版本
-      if (typeof window !== "undefined") {
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        const isLowRes = window.innerWidth < 768;
-        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-        if (prefersReducedMotion || (isMobile && isLowRes)) {
-          setUseParticles(false);
-        }
-      }
-    };
-
-    checkPerformance();
-  }, []);
-
-  if (!mounted) {
+// 主背景组件 - 默认使用简洁版本
+export function AnimatedBackground({ className, variant = "simple" }: AnimatedBackgroundProps) {
+  if (variant === "fluid") {
     return <FluidBackground className={className} />;
   }
 
-  if (variant === "fluid" || !useParticles) {
-    return <FluidBackground className={className} />;
-  }
-
-  return <ParticleField className={className} />;
+  // 默认使用简洁背景
+  return <SimpleBackground className={className} />;
 }
 
 // Canvas 动画背景（中等复杂度）

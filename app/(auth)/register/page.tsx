@@ -76,8 +76,8 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Three.js 粒子背景 */}
-      <AnimatedBackground variant="particles" />
+      {/* 简洁背景 */}
+      <AnimatedBackground />
 
       <div className="w-full max-w-md animate-fade-in relative z-10">
         {/* Logo 和标题 */}
