@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Navbar } from "@/components/navbar";
-import { AnimatedBackground } from "@/components/ui/animated-background";
 import { Sparkles } from "lucide-react";
 
 export default function MainLayout({
@@ -21,18 +20,15 @@ export default function MainLayout({
     }
   }, [status, router]);
 
-  // 默认使用深色主题
+  // 确保移除 dark 类（如果存在）
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (!savedTheme) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    }
+    document.documentElement.classList.remove("dark");
+    localStorage.removeItem("theme");
   }, []);
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="relative">
           {/* 加载动画 */}
           <div className="w-20 h-20 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
@@ -49,10 +45,7 @@ export default function MainLayout({
   }
 
   return (
-    <>
-      {/* 简洁背景 */}
-      <AnimatedBackground />
-
+    <div className="min-h-screen bg-gray-50">
       {/* 导航栏 */}
       <Navbar />
 
@@ -60,6 +53,6 @@ export default function MainLayout({
       <main className="container-responsive py-6 pb-20 relative z-10">
         {children}
       </main>
-    </>
+    </div>
   );
 }
