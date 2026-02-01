@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { X, Loader2, Sparkles, MessageCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { X, Loader2, Sparkles, MessageCircle, BookX, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 
 export interface AIConversation {
@@ -25,11 +27,63 @@ export interface AIDebugDrawerProps {
 export function AIDebugDrawer({
   isOpen,
   onClose,
+  submissionId,
   conversations,
   isLoading,
   onRequestHelp,
   helpCount,
 }: AIDebugDrawerProps) {
+  const router = useRouter();
+  const { toast } = useToast();
+  const [addingToErrorBook, setAddingToErrorBook] = useState(false);
+  const [addedToErrorBook, setAddedToErrorBook] = useState(false);
+
+  // 添加到错题本
+  const handleAddToErrorBook = async () => {
+    if (!submissionId) return;
+
+    setAddingToErrorBook(true);
+    try {
+      const response = await fetch("/api/error-case", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ submissionId }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setAddedToErrorBook(true);
+        toast({
+          title: "已加入错题本",
+          description: "AI分析已同步，可以开始三问复盘",
+        });
+
+        // 延迟跳转，让用户看到提示
+        setTimeout(() => {
+          router.push(`/error-book/${data.errorCase.id}`);
+        }, 1000);
+      } else {
+        if (data.error?.includes("已存在")) {
+          toast({
+            title: "该题已在错题本中",
+            description: "可以直接去错题本查看",
+          });
+        } else {
+          throw new Error(data.error || "添加失败");
+        }
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "添加失败",
+        description: error instanceof Error ? error.message : "请重试",
+      });
+    } finally {
+      setAddingToErrorBook(false);
+    }
+  };
+
   return (
     <>
       {/* 遮罩层 */}
@@ -113,7 +167,7 @@ export function AIDebugDrawer({
           </ScrollArea>
 
           {/* 底部操作 */}
-          <div className="p-4 border-t space-y-2">
+          <div className="p-4 border-t space-y-3">
             <Button
               onClick={onRequestHelp}
               disabled={isLoading}
@@ -132,6 +186,40 @@ export function AIDebugDrawer({
                 </>
               )}
             </Button>
+
+            {/* 错题本联动 */}
+            {conversations.length > 0 && submissionId && (
+              <div className="p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
+                <p className="text-sm text-orange-800 dark:text-orange-200 mb-2">
+                  💡 建议将这道题加入错题本，通过三问复盘避免再犯
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full border-orange-300 text-orange-700 hover:bg-orange-100 dark:border-orange-700 dark:text-orange-300 dark:hover:bg-orange-900/30"
+                  onClick={handleAddToErrorBook}
+                  disabled={addingToErrorBook || addedToErrorBook}
+                >
+                  {addingToErrorBook ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      正在添加...
+                    </>
+                  ) : addedToErrorBook ? (
+                    <>
+                      <BookX className="mr-2 h-4 w-4" />
+                      已加入，正在跳转...
+                    </>
+                  ) : (
+                    <>
+                      <BookX className="mr-2 h-4 w-4" />
+                      加入错题本，开始三问复盘
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </div>
+            )}
 
             {helpCount >= 3 && (
               <p className="text-xs text-center text-muted-foreground">

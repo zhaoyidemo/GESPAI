@@ -146,6 +146,12 @@ model LearningRecord {
   practiceCount    Int      @default(0)  // 练习题目数
   correctCount     Int      @default(0)  // 正确题目数
 
+  // 掌握度相关
+  tutorCompleted   Boolean  @default(false)  // 是否完成AI私教学习
+  feynmanCompleted Boolean  @default(false)  // 是否完成费曼验证
+  feynmanScore     Int?     // 费曼验证得分 0-100
+  masteryLevel     Int      @default(0)  // 综合掌握度 0-100
+
   user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   knowledgePoint   KnowledgePoint @relation(fields: [knowledgePointId], references: [id], onDelete: Cascade)
 

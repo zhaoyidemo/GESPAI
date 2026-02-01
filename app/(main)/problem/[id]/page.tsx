@@ -27,6 +27,7 @@ import {
 import Link from "next/link";
 import { getDifficultyLabel, getJudgeStatusLabel } from "@/lib/utils";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
+import { PreventionRuleAlert } from "@/components/prevention-rule-alert";
 
 interface Problem {
   id: string;
@@ -90,6 +91,22 @@ export default function ProblemPage() {
 
   // 错题记录状态
   const [recordingError, setRecordingError] = useState(false);
+
+  // 防错规则检查状态
+  const [ruleAlertOpen, setRuleAlertOpen] = useState(false);
+  const [triggeredRules, setTriggeredRules] = useState<Array<{
+    id: string;
+    errorType: string;
+    rule: string;
+    hitCount: number;
+  }>>([]);
+  const [ruleWarnings, setRuleWarnings] = useState<Array<{
+    ruleIndex: number;
+    issue: string;
+    suggestion: string;
+    rule: string;
+  }>>([]);
+  const [skipRuleCheck, setSkipRuleCheck] = useState(false);
 
   const fetchProblem = useCallback(async () => {
     try {
@@ -177,16 +194,36 @@ export default function ProblemPage() {
     }
   };
 
-  const handleSubmit = async () => {
-    if (!code.trim()) {
-      toast({
-        variant: "destructive",
-        title: "提交失败",
-        description: "代码不能为空",
+  // 检查防错规则
+  const checkPreventionRules = async (): Promise<boolean> => {
+    try {
+      const response = await fetch("/api/prevention-rules/check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code,
+          problemId: id,
+          problemDescription: problem?.description,
+        }),
       });
-      return;
-    }
 
+      const data = await response.json();
+
+      if (response.ok && data.triggered && data.triggeredRules?.length > 0) {
+        setTriggeredRules(data.triggeredRules);
+        setRuleWarnings(data.warnings || []);
+        setRuleAlertOpen(true);
+        return true; // 触发了规则
+      }
+    } catch (error) {
+      console.error("Check prevention rules error:", error);
+      // 检查失败不阻止提交
+    }
+    return false; // 没有触发规则
+  };
+
+  // 实际执行提交的函数
+  const executeSubmit = async () => {
     setSubmitting(true);
     setJudgeResult(null);
     // 重置AI助手状态（新的提交）
@@ -210,6 +247,8 @@ export default function ProblemPage() {
       if (response.ok) {
         setJudgeResult(data);
         setActiveTab("result");
+        // 提交后重置跳过检查状态
+        setSkipRuleCheck(false);
 
         if (data.status === "accepted") {
           toast({
@@ -236,6 +275,49 @@ export default function ProblemPage() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleSubmit = async () => {
+    if (!code.trim()) {
+      toast({
+        variant: "destructive",
+        title: "提交失败",
+        description: "代码不能为空",
+      });
+      return;
+    }
+
+    // 如果已经确认过跳过检查，直接提交
+    if (skipRuleCheck) {
+      await executeSubmit();
+      return;
+    }
+
+    // 先检查防错规则
+    setSubmitting(true);
+    const hasTriggeredRules = await checkPreventionRules();
+
+    if (hasTriggeredRules) {
+      // 触发了规则，显示对话框，等待用户确认
+      setSubmitting(false);
+      return;
+    }
+
+    // 没有触发规则，直接提交
+    await executeSubmit();
+  };
+
+  // 用户确认继续提交
+  const handleConfirmSubmit = async () => {
+    setRuleAlertOpen(false);
+    setSkipRuleCheck(true);
+    await executeSubmit();
+  };
+
+  // 用户取消提交
+  const handleCancelSubmit = () => {
+    setRuleAlertOpen(false);
+    setSubmitting(false);
   };
 
   if (loading) {
@@ -622,6 +704,16 @@ export default function ProblemPage() {
         isLoading={aiLoading}
         onRequestHelp={handleAIHelp}
         helpCount={aiHelpCount}
+      />
+
+      {/* 防错规则提醒对话框 */}
+      <PreventionRuleAlert
+        open={ruleAlertOpen}
+        onOpenChange={setRuleAlertOpen}
+        triggeredRules={triggeredRules}
+        warnings={ruleWarnings}
+        onConfirm={handleConfirmSubmit}
+        onCancel={handleCancelSubmit}
       />
     </div>
   );

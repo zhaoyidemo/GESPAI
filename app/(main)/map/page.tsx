@@ -1,15 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, Timer } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { BookOpen, Timer, GraduationCap, Target, CheckCircle2, Circle } from "lucide-react";
 import { gespKnowledgeData, getLevelExamInfo } from "@/lib/gesp-knowledge";
+import { cn } from "@/lib/utils";
+
+interface LearningRecord {
+  tutorCompleted: boolean;
+  feynmanCompleted: boolean;
+  feynmanScore: number | null;
+  practiceCount: number;
+  correctCount: number;
+  masteryLevel: number;
+  practiceAccuracy: number | null;
+}
 
 export default function KnowledgePointsPage() {
   const [selectedLevel, setSelectedLevel] = useState("4");
+  const [learningRecords, setLearningRecords] = useState<Record<string, LearningRecord>>({});
+  const [loadingRecords, setLoadingRecords] = useState(true);
+
+  // 获取用户的学习记录
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
+        const response = await fetch(`/api/learning-records?level=${selectedLevel}`);
+        const data = await response.json();
+        if (response.ok) {
+          setLearningRecords(data.records || {});
+        }
+      } catch (error) {
+        console.error("Fetch learning records error:", error);
+      } finally {
+        setLoadingRecords(false);
+      }
+    };
+
+    setLoadingRecords(true);
+    fetchRecords();
+  }, [selectedLevel]);
 
   const levelData = gespKnowledgeData[selectedLevel];
   const currentPoints = levelData?.points || [];
@@ -72,24 +106,88 @@ export default function KnowledgePointsPage() {
                 <Badge variant="outline" className="ml-2">{points.length}个知识点</Badge>
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {points.map((point) => (
-                  <Link
-                    key={point.id}
-                    href={`/learn/${point.id}`}
-                    className="block"
-                  >
-                    <Card className="hover:border-primary/50 hover:shadow-md transition-all h-full">
-                      <CardHeader className="pb-2">
-                        <CardTitle className="text-base">{point.name}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm text-muted-foreground">
-                          {point.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
+                {points.map((point) => {
+                  const record = learningRecords[point.id];
+                  const masteryLevel = record?.masteryLevel || 0;
+                  const masteryColor = masteryLevel >= 80 ? "text-green-500" : masteryLevel >= 50 ? "text-amber-500" : "text-gray-400";
+                  const masteryBg = masteryLevel >= 80 ? "bg-green-500" : masteryLevel >= 50 ? "bg-amber-500" : "bg-gray-300";
+
+                  return (
+                    <Link
+                      key={point.id}
+                      href={`/learn/${point.id}`}
+                      className="block"
+                    >
+                      <Card className={cn(
+                        "hover:border-primary/50 hover:shadow-md transition-all h-full",
+                        masteryLevel >= 80 && "border-green-200 bg-green-50/50 dark:bg-green-900/10",
+                        masteryLevel >= 50 && masteryLevel < 80 && "border-amber-200 bg-amber-50/50 dark:bg-amber-900/10"
+                      )}>
+                        <CardHeader className="pb-2">
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="text-base">{point.name}</CardTitle>
+                            {record && (
+                              <span className={cn("text-lg font-bold", masteryColor)}>
+                                {masteryLevel}%
+                              </span>
+                            )}
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          <p className="text-sm text-muted-foreground">
+                            {point.description}
+                          </p>
+
+                          {/* 掌握度进度条 */}
+                          {record ? (
+                            <div className="space-y-2">
+                              <Progress value={masteryLevel} className="h-2" />
+                              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                {/* 学习状态指示器 */}
+                                <div className="flex items-center gap-3">
+                                  <div className="flex items-center gap-1" title="AI私教">
+                                    {record.tutorCompleted ? (
+                                      <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                                    ) : (
+                                      <Circle className="h-3.5 w-3.5 text-gray-300" />
+                                    )}
+                                    <span>学习</span>
+                                  </div>
+                                  <div className="flex items-center gap-1" title="费曼验证">
+                                    {record.feynmanCompleted ? (
+                                      <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                                    ) : (
+                                      <Circle className="h-3.5 w-3.5 text-gray-300" />
+                                    )}
+                                    <span>费曼</span>
+                                  </div>
+                                  <div className="flex items-center gap-1" title="练习正确率">
+                                    {record.practiceCount > 0 ? (
+                                      <>
+                                        <Target className="h-3.5 w-3.5 text-blue-500" />
+                                        <span>{record.practiceAccuracy}%</span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Circle className="h-3.5 w-3.5 text-gray-300" />
+                                        <span>练习</span>
+                                      </>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <GraduationCap className="h-4 w-4" />
+                              <span>尚未开始学习</span>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ import {
   ErrorCaseCardSkeleton,
   ERROR_TYPE_CONFIG,
 } from "@/components/error-case";
-import { BookOpen, Shield, Filter } from "lucide-react";
+import { BookOpen, Shield, Filter, AlertTriangle, TrendingDown } from "lucide-react";
 
 interface ErrorCase {
   id: string;
@@ -95,6 +95,51 @@ export default function ErrorBookPage() {
     {} as Record<string, number>
   );
 
+  // 双维度分析：错误类型 + 知识点
+  const weakPointAnalysis = useMemo(() => {
+    // 按知识点和错误类型分组统计
+    const analysis: Record<string, Record<string, number>> = {};
+
+    errorCases.forEach((errorCase) => {
+      if (!errorCase.errorType) return;
+
+      const knowledgePoints = errorCase.problem.knowledgePoints || [];
+      knowledgePoints.forEach((kp) => {
+        if (!analysis[kp]) {
+          analysis[kp] = {};
+        }
+        if (!analysis[kp][errorCase.errorType!]) {
+          analysis[kp][errorCase.errorType!] = 0;
+        }
+        analysis[kp][errorCase.errorType!]++;
+      });
+    });
+
+    // 找出高频错误组合（同一知识点+错误类型 >= 2次）
+    const weakPoints: Array<{
+      knowledgePoint: string;
+      errorType: string;
+      count: number;
+    }> = [];
+
+    Object.entries(analysis).forEach(([kp, types]) => {
+      Object.entries(types).forEach(([type, count]) => {
+        if (count >= 2) {
+          weakPoints.push({
+            knowledgePoint: kp,
+            errorType: type,
+            count,
+          });
+        }
+      });
+    });
+
+    // 按次数排序
+    weakPoints.sort((a, b) => b.count - a.count);
+
+    return weakPoints.slice(0, 5); // 最多显示5个
+  }, [errorCases]);
+
   return (
     <div className="space-y-6">
       {/* 页面标题 */}
@@ -141,6 +186,57 @@ export default function ErrorBookPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* 双维度薄弱点分析 */}
+      {weakPointAnalysis.length > 0 && (
+        <Card className="border-red-200 bg-red-50/50 dark:bg-red-900/10 dark:border-red-800">
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2 text-red-800 dark:text-red-200">
+              <TrendingDown className="h-5 w-5" />
+              薄弱点分析
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-red-700 dark:text-red-300 mb-4">
+              以下知识点+错误类型组合出现多次，建议重点关注：
+            </p>
+            <div className="space-y-3">
+              {weakPointAnalysis.map((item, index) => {
+                const typeConfig =
+                  ERROR_TYPE_CONFIG[item.errorType as keyof typeof ERROR_TYPE_CONFIG];
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 bg-white dark:bg-gray-900 rounded-lg border border-red-200 dark:border-red-800"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 font-bold text-sm">
+                        {index + 1}
+                      </div>
+                      <div>
+                        <p className="font-medium">
+                          在 <span className="text-primary">{item.knowledgePoint}</span> 相关题目上
+                        </p>
+                        <p className="text-sm text-muted-foreground flex items-center gap-1">
+                          常犯 <span>{typeConfig?.emoji}</span>
+                          <span className="font-medium">{typeConfig?.label}</span> 错误
+                        </p>
+                      </div>
+                    </div>
+                    <Badge variant="destructive">{item.count} 次</Badge>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <p className="text-sm text-blue-700 dark:text-blue-300 flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4" />
+                建议：针对这些薄弱点进行专项练习，并仔细复盘相关错题
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* 错误类型分布 - 按 OJ 状态分组 */}
       <Card>

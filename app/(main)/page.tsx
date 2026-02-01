@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 import {
   Flame,
   Star,
@@ -21,8 +22,11 @@ import {
   Zap,
   Clock,
   TrendingUp,
+  AlertTriangle,
+  Play,
 } from "lucide-react";
 import { getDaysUntil, formatDate } from "@/lib/utils";
+import { Celebration, TaskCompletionToast } from "@/components/celebration";
 
 interface DailyTask {
   tasks: Array<{
@@ -52,6 +56,10 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [hasSetup, setHasSetup] = useState(true);
 
+  // 庆祝动画状态
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [showCompletionToast, setShowCompletionToast] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,6 +74,22 @@ export default function HomePage() {
         if (planData.plan) {
           setDailyTask(planData.dailyTask);
           setHasSetup(true);
+
+          // 检查是否需要显示庆祝动画
+          if (planData.dailyTask?.isCompleted) {
+            const today = new Date().toDateString();
+            const celebrationKey = `celebration_shown_${today}`;
+            const hasShownToday = localStorage.getItem(celebrationKey);
+
+            if (!hasShownToday) {
+              // 显示庆祝动画
+              setTimeout(() => {
+                setShowCelebration(true);
+                setShowCompletionToast(true);
+                localStorage.setItem(celebrationKey, "true");
+              }, 500);
+            }
+          }
         } else {
           setHasSetup(false);
         }
@@ -129,6 +153,7 @@ export default function HomePage() {
 
   const daysUntilExam = userStats?.examDate ? getDaysUntil(userStats.examDate) : null;
   const progressPercent = dailyTask ? (dailyTask.completedXp / dailyTask.totalXp) * 100 : 0;
+  const isSprintMode = daysUntilExam !== null && daysUntilExam <= 7 && daysUntilExam > 0;
 
   return (
     <div className="space-y-8">
@@ -186,6 +211,45 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* 冲刺模式提示 */}
+      {isSprintMode && (
+        <Card className="border-orange-300 bg-gradient-to-r from-orange-50 via-red-50 to-orange-50 dark:from-orange-900/20 dark:via-red-900/20 dark:to-orange-900/20 animate-pulse-subtle overflow-hidden">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-orange-100 dark:bg-orange-900/50 rounded-full animate-bounce">
+                  <AlertTriangle className="h-6 w-6 text-orange-600" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-bold text-lg text-orange-800 dark:text-orange-200">
+                      🔥 考前冲刺模式已开启
+                    </h3>
+                    <Badge variant="destructive" className="animate-pulse">
+                      倒计时 {daysUntilExam} 天
+                    </Badge>
+                  </div>
+                  <p className="text-orange-700 dark:text-orange-300">
+                    建议每天完成模拟考试 + 复习错题，保持最佳状态迎接考试！
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  className="bg-orange-600 hover:bg-orange-700 shadow-lg"
+                  asChild
+                >
+                  <Link href="/mock-exam">
+                    <Play className="h-4 w-4 mr-2" />
+                    模拟考试
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* 今日任务 */}
         <div className="lg:col-span-2 animate-slide-up stagger-1" style={{ opacity: 0 }}>
@@ -224,7 +288,42 @@ export default function HomePage() {
 
             <div className="p-6">
               {dailyTask?.tasks && dailyTask.tasks.length > 0 ? (
-                <div className="space-y-3">
+                <div className="space-y-4">
+                  {/* 进度提示 */}
+                  {dailyTask.tasks.length > 0 && (
+                    <div className={`p-3 rounded-xl ${
+                      dailyTask.isCompleted
+                        ? "bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
+                        : "bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800"
+                    }`}>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          {dailyTask.isCompleted ? (
+                            <>
+                              <span className="text-2xl">🎉</span>
+                              <span className="font-medium text-green-700 dark:text-green-300">
+                                今日任务全部完成！连胜 +1
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <span className="text-xl">💪</span>
+                              <span className="font-medium text-blue-700 dark:text-blue-300">
+                                已完成 {dailyTask.tasks.filter((t) => t.completed).length}/{dailyTask.tasks.length}，
+                                再完成 {dailyTask.tasks.filter((t) => !t.completed).length} 个即可保持连胜！
+                              </span>
+                            </>
+                          )}
+                        </div>
+                        {!dailyTask.isCompleted && (
+                          <span className="text-sm text-amber-600 dark:text-amber-400 font-medium">
+                            +{dailyTask.totalXp - dailyTask.completedXp} XP 待领取
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  <div className="space-y-3">
                   {dailyTask.tasks.map((task, index) => (
                     <div
                       key={index}
@@ -291,6 +390,7 @@ export default function HomePage() {
                       </div>
                     </div>
                   ))}
+                  </div>
                 </div>
               ) : (
                 <div className="text-center py-12">
@@ -427,6 +527,19 @@ export default function HomePage() {
                 className="w-full justify-start h-12 rounded-xl hover:bg-primary/5 group"
                 asChild
               >
+                <Link href="/mock-exam">
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center mr-3 group-hover:bg-amber-500/20 transition-colors">
+                    <Trophy className="h-4 w-4 text-amber-500" />
+                  </div>
+                  模拟考试
+                  <ArrowRight className="ml-auto h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                className="w-full justify-start h-12 rounded-xl hover:bg-primary/5 group"
+                asChild
+              >
                 <Link href="/import">
                   <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center mr-3 group-hover:bg-emerald-500/20 transition-colors">
                     <Sparkles className="h-4 w-4 text-emerald-500" />
@@ -439,6 +552,25 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* 庆祝动画 */}
+      <Celebration
+        show={showCelebration}
+        onComplete={() => setShowCelebration(false)}
+        duration={3000}
+        particleCount={80}
+      />
+
+      {/* 任务完成提示 */}
+      <TaskCompletionToast
+        show={showCompletionToast}
+        completedCount={dailyTask?.tasks?.filter((t) => t.completed).length || 0}
+        totalCount={dailyTask?.tasks?.length || 0}
+        xpEarned={dailyTask?.completedXp || 0}
+        streakDays={userStats?.streakDays || 0}
+        isAllCompleted={dailyTask?.isCompleted || false}
+        onClose={() => setShowCompletionToast(false)}
+      />
     </div>
   );
 }
