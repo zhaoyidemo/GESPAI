@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +23,7 @@ interface Problem {
 }
 
 export default function ProblemListPage() {
+  const { data: session } = useSession();
   const [problems, setProblems] = useState<Problem[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
@@ -29,8 +31,32 @@ export default function ProblemListPage() {
     difficulty: "",
     search: "",
   });
+  const initialized = useRef(false);
+
+  // 获取用户目标级别作为默认筛选
+  useEffect(() => {
+    if (initialized.current) return;
+    async function loadUserLevel() {
+      try {
+        const res = await fetch("/api/user/stats");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.targetLevel) {
+            initialized.current = true;
+            setFilters((prev) => ({ ...prev, level: String(data.targetLevel) }));
+            return;
+          }
+        }
+      } catch {}
+      initialized.current = true;
+    }
+    if (session?.user) {
+      loadUserLevel();
+    }
+  }, [session]);
 
   useEffect(() => {
+    if (!initialized.current) return;
     fetchProblems();
   }, [filters.level, filters.difficulty]);
 
