@@ -1,7 +1,7 @@
 # GESP AI 产品需求文档 (PRD)
 
-**版本**：MVP v1.2
-**更新日期**：2026年2月1日
+**版本**：MVP v1.3
+**更新日期**：2026年2月4日
 **原始日期**：2026年1月28日
 **目标上线**：1周内（2026年2月4日前）
 **域名**：GESP.AI
@@ -92,8 +92,12 @@ AI在教学过程中必须遵循以下原则：
 | **简单徽章** | 首次AC、7天连胜等里程碑徽章 | P1 | ✅ 已完成 |
 | **AI调试助手** | 代码错误时渐进式智能提示 | P0 | ✅ 已完成 |
 | **AI配置中心** | 四种场景的提示词自定义 | P1 | ✅ 已完成 |
-| **语音输入** | 支持中英文语音输入 | P2 | ✅ 已完成 |
+| **语音输入** | 支持中英文语音输入（讯飞API） | P2 | ✅ 已完成 |
 | **错题三问** | 错题记录、三问复盘、防错规则 | P0 | ✅ 已完成 |
+| **模拟考试** | 模拟GESP真实考试环境 | P1 | ✅ 已完成 |
+| **题库管理** | 从洛谷同步GESP官方题目 | P0 | ✅ 已完成 |
+| **提示词管理** | 15个系统提示词在线编辑管理 | P1 | ✅ 已完成 |
+| **题库智能筛选** | 默认按用户目标级别筛选题目 | P1 | ✅ 已完成 |
 
 ### 3.2 用户系统
 
@@ -958,6 +962,140 @@ model PreventionRule {
 2. 三问引导提示词：通过反问引导学生思考，不直接给答案
 3. 规则生成提示词：根据三问答案生成简短可执行的防错规则
 
+### 3.15 模拟考试
+
+**路由**：`/mock-exam`
+
+**功能描述**：
+模拟真实 GESP 考试环境，帮助学生熟悉考试节奏。
+
+**考试设置**：
+- 考试时长：90 分钟
+- 及格分数：60 分
+- 题型分布：选择题 15 题 × 2 分 = 30 分 + 编程题 2 题 × 35 分 = 70 分
+
+**页面功能**：
+- 预估通过率（基于 XP 和历史模拟成绩计算，SVG 圆形进度图）
+- 考试记录列表：显示得分、通过/失败、题型得分、用时
+- 考前冲刺模式：距离考试 ≤7 天时自动激活，显示特殊提醒和倒计时
+- 清空历史记录功能
+
+**API 端点**：
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/mock-exam` | 获取模拟考试历史记录 |
+| DELETE | `/api/mock-exam` | 清空考试记录 |
+
+### 3.16 管理后台
+
+#### 3.16.1 题库管理
+
+**路由**：`/admin/problems`
+
+**功能描述**：
+从洛谷同步 GESP 官方题目（4/5/6 级），支持增量同步和全量重建。
+
+**页面功能**：
+- 级别选择卡片（4/5/6 级），显示同步状态和本地/洛谷题目数量对比
+- **操作按钮**：
+  - "检查状态"：对比洛谷官方题单与本地数据库，列出缺失/多余题目
+  - "同步缺失"：逐个同步缺少的题目（含题面、测试数据）
+  - "全部重建"：强制重新同步所有题目
+- 实时同步进度条（当前题目 ID、逐条结果 created/updated/error）
+- 缺失题目列表（可点击查看洛谷原题链接）
+
+**API 端点**：
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/admin/sync?level={}` | 检查指定级别题目同步状态 |
+| POST | `/api/admin/sync/problem` | 同步单个题目（含从洛谷抓取） |
+
+#### 3.16.2 数据导入管理
+
+**路由**：`/admin/import`
+
+**功能描述**：
+通过浏览器控制台脚本从洛谷批量获取题目数据，粘贴 JSON 导入到数据库。
+
+**使用流程**：
+1. 选择级别（4/5/6 级）
+2. 复制提供的浏览器脚本
+3. 在洛谷网站 F12 控制台运行脚本，自动获取并复制题目数据到剪贴板
+4. 粘贴 JSON 数据到导入框
+5. 点击"开始导入"，显示导入结果统计（新增/更新/失败）
+
+**API 端点**：
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| POST | `/api/admin/import` | 批量导入题目数据 |
+
+#### 3.16.3 系统提示词管理
+
+**路由**：`/admin/prompts`
+
+**功能描述**：
+集中管理系统中 15 个 AI 提示词，支持在线编辑、对比默认值和一键重置。
+
+**提示词优先级链**：用户自定义 > 数据库管理员设置 > 硬编码默认值
+
+**提示词清单（15 个）**：
+
+| # | Key | 分类 | 名称 | 说明 |
+|---|-----|------|------|------|
+| 1 | tutor | 核心对话 | AI 私教 | 知识点学习时的老师角色 |
+| 2 | problem | 核心对话 | 题目辅导 | 做题时的教练角色 |
+| 3 | debug | 核心对话 | 调试助手 | 代码调试时的辅导角色 |
+| 4 | feynman | 核心对话 | 费曼学习 | 费曼学习法中的学生角色 |
+| 5 | error-classify | 错题诊断 | 错误分类 | AI 分析错误类型 |
+| 6 | error-guide-q1 | 错题诊断 | 引导：错了哪？ | 第一问引导提示 |
+| 7 | error-guide-q2 | 错题诊断 | 引导：为什么错？ | 第二问引导提示 |
+| 8 | error-guide-q3 | 错题诊断 | 引导：怎么避免？ | 第三问引导提示 |
+| 9 | error-generate-rule | 错题诊断 | 规则生成 | 自动生成防错规则 |
+| 10 | error-base | 错题诊断 | 基础系统提示词 | 错题诊断模块的基础角色 |
+| 11 | code-error-analysis | 工具类 | 代码错误分析 | 分析代码错误并解释 |
+| 12 | feynman-question | 工具类 | 费曼验证问题 | 生成验证理解的问题 |
+| 13 | study-plan | 工具类 | 学习计划生成 | 生成考试学习计划 |
+| 14 | code-import | 工具类 | 代码导入分析 | 分析导入代码评估水平 |
+| 15 | prevention-check | 工具类 | 防错规则检查 | 检查代码是否违反规则 |
+
+**页面功能**：
+- 顶部：总提示词数、数据库记录数、"初始化到数据库"按钮
+- Tab 分 3 类浏览：核心对话(4) / 错题诊断(6) / 工具类(5)
+- 每个提示词卡片显示：名称、Key、描述、修改状态（已修改/仅硬编码）、字数
+- 点击卡片展开编辑区：
+  - Textarea 编辑器（最多 20000 字）
+  - "对比默认"按钮：弹出对话框并排展示当前值 vs 硬编码默认值
+  - "恢复默认"按钮：一键回退到硬编码值
+  - "保存"按钮：保存到数据库
+  - 显示最后更新时间
+
+**数据模型**：
+```prisma
+model SystemPrompt {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  category    String
+  name        String
+  description String?  @db.Text
+  content     String   @db.Text
+  isActive    Boolean  @default(true)
+  updatedBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@map("system_prompts")
+}
+```
+
+**API 端点**：
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/admin/prompts` | 获取全部提示词（按分类分组） |
+| GET | `/api/admin/prompts/[key]` | 获取单个详情（含硬编码对比） |
+| PUT | `/api/admin/prompts/[key]` | 更新提示词 / 恢复默认值 |
+| POST | `/api/admin/prompts/seed` | 初始化：将 15 个硬编码提示词写入数据库 |
+
 ---
 
 ## 四、技术架构
@@ -1211,6 +1349,37 @@ CREATE TABLE prevention_rules (
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
+
+-- 系统提示词表
+CREATE TABLE system_prompts (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  key VARCHAR(100) UNIQUE NOT NULL,      -- 提示词唯一标识
+  category VARCHAR(50) NOT NULL,          -- 分类：core/error-diagnosis/tool
+  name VARCHAR(255) NOT NULL,             -- 显示名称
+  description TEXT,                        -- 描述说明
+  content TEXT NOT NULL,                   -- 提示词内容
+  is_active BOOLEAN DEFAULT TRUE,         -- 是否启用
+  updated_by VARCHAR(255),                -- 最后修改者
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 模拟考试记录表
+CREATE TABLE mock_exam_results (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+
+  level INTEGER NOT NULL,               -- GESP级别
+  total_score INTEGER DEFAULT 0,        -- 总分
+  choice_score INTEGER DEFAULT 0,       -- 选择题得分
+  coding_score INTEGER DEFAULT 0,       -- 编程题得分
+  passed BOOLEAN DEFAULT FALSE,         -- 是否通过（≥60分）
+  time_used INTEGER,                    -- 用时（秒）
+
+  details JSONB,                        -- 详细答题记录
+
+  created_at TIMESTAMP DEFAULT NOW()
+);
 ```
 
 ---
@@ -1237,6 +1406,10 @@ CREATE TABLE prevention_rules (
 | 数据导入 | `/import` | 导入洛谷数据 | 🚧 |
 | 个人中心 | `/profile` | 统计、徽章、设置 | ✅ |
 | AI配置 | `/profile/ai-config` | 四种场景提示词配置 | ✅ |
+| 模拟考试 | `/mock-exam` | 模拟GESP考试环境 | ✅ |
+| 题库管理 | `/admin/problems` | 从洛谷同步GESP题目 | ✅ |
+| 数据导入管理 | `/admin/import` | 浏览器脚本批量导入题目 | ✅ |
+| 提示词管理 | `/admin/prompts` | 15个系统提示词在线管理 | ✅ |
 
 ### 5.2 页面流程
 
@@ -1323,6 +1496,27 @@ CREATE TABLE prevention_rules (
 | POST | `/api/seed/gesp[1-8]` | 各级别题目初始化 |
 | POST | `/api/seed/reset` | 重置数据 |
 
+### 6.9 模拟考试
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/mock-exam` | 获取模拟考试历史记录 |
+| DELETE | `/api/mock-exam` | 清空考试记录 |
+
+### 6.10 管理后台 — 题库同步
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/admin/sync?level={}` | 检查指定级别题目同步状态 |
+| POST | `/api/admin/sync/problem` | 同步单个题目（含从洛谷抓取） |
+| POST | `/api/admin/import` | 批量导入题目数据 |
+
+### 6.11 管理后台 — 提示词管理
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/admin/prompts` | 获取全部提示词（按分类分组） |
+| GET | `/api/admin/prompts/[key]` | 获取单个详情（含硬编码对比） |
+| PUT | `/api/admin/prompts/[key]` | 更新提示词 / 恢复默认值 |
+| POST | `/api/admin/prompts/seed` | 初始化：将 15 个硬编码提示词写入数据库 |
+
 ---
 
 ## 七、后续版本规划
@@ -1344,7 +1538,7 @@ CREATE TABLE prevention_rules (
 | **家长端** | 查看孩子学习进度报告 |
 | **智能推送** | 在用户常用学习时间推送提醒 |
 | **更多知识点可视化** | 技能树/地图形式展示 |
-| **模拟考试** | 完整模拟GESP考试 |
+| **AI出题** | AI根据薄弱点生成变体练习题 |
 
 ### V1.3（MVP后2个月）
 
@@ -1391,12 +1585,18 @@ CREATE TABLE prevention_rules (
 - [x] 三问复盘：每一问都有AI引导，学生填写答案
 - [x] 防错规则：完成三问后自动生成规则
 - [x] 规则管理：查看、启用/停用、删除规则
+- [x] 提交前检查：代码提交时自动检查是否违反防错规则
+- [x] 模拟考试：模拟GESP真实考试环境（90分钟、选择题+编程题）
+- [x] 题库管理：从洛谷同步GESP官方题目（4/5/6级）
+- [x] 数据导入管理：浏览器脚本批量导入题目数据
+- [x] 系统提示词管理：15个AI提示词在线编辑、对比默认值、一键重置
+- [x] 题库智能筛选：默认按用户目标级别筛选题目
 - [x] 部署到GESP.AI并可访问
 - [ ] 洛谷数据导入功能完善
 - [ ] 赵知行完成完整的使用测试
 
 ---
 
-*文档版本：v1.2*
-*更新日期：2026年2月1日*
+*文档版本：v1.3*
+*更新日期：2026年2月4日*
 *目标用户：赵知行（小学5年级，GESP 4级→5级，2026年3月14日考试）*
