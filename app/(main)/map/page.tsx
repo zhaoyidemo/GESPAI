@@ -71,10 +71,12 @@ export default function KnowledgePointsPage() {
 
       {/* 级别切换 */}
       <Tabs value={selectedLevel} onValueChange={setSelectedLevel}>
-        <TabsList className="grid grid-cols-3 w-full max-w-md">
+        <TabsList className="grid grid-cols-5 w-full max-w-lg">
           <TabsTrigger value="4">4级</TabsTrigger>
           <TabsTrigger value="5">5级</TabsTrigger>
           <TabsTrigger value="6">6级</TabsTrigger>
+          <TabsTrigger value="7">7级</TabsTrigger>
+          <TabsTrigger value="8">8级</TabsTrigger>
         </TabsList>
 
         <TabsContent value={selectedLevel} className="mt-4">

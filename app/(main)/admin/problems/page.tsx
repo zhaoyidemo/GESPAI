@@ -49,7 +49,7 @@ interface SyncProgress {
   }>;
 }
 
-const GESP_LEVELS = [4, 5, 6];
+const GESP_LEVELS = [4, 5, 6, 7, 8];
 
 export default function ProblemsAdminPage() {
   const [levelStatuses, setLevelStatuses] = useState<Record<number, LevelStatus | null>>({});

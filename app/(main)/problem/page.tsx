@@ -139,6 +139,8 @@ export default function ProblemListPage() {
                 <SelectItem value="4">4 级</SelectItem>
                 <SelectItem value="5">5 级</SelectItem>
                 <SelectItem value="6">6 级</SelectItem>
+                <SelectItem value="7">7 级</SelectItem>
+                <SelectItem value="8">8 级</SelectItem>
               </SelectContent>
             </Select>
 

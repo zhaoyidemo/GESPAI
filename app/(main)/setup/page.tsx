@@ -126,6 +126,8 @@ export default function SetupPage() {
                   <SelectItem value="4">GESP 4 级（中级）</SelectItem>
                   <SelectItem value="5">GESP 5 级（进阶）</SelectItem>
                   <SelectItem value="6">GESP 6 级（高级）</SelectItem>
+                  <SelectItem value="7">GESP 7 级（专业）</SelectItem>
+                  <SelectItem value="8">GESP 8 级（精英）</SelectItem>
                 </SelectContent>
               </Select>
 
