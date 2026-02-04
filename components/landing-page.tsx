@@ -11,9 +11,12 @@ import {
   Check,
   ArrowRight,
   ArrowDown,
-  Zap,
   Terminal,
   ChevronRight,
+  Clock,
+  BarChart3,
+  ShieldCheck,
+  MessageCircle,
 } from "lucide-react";
 
 /* ──────────────────────────────────────────
@@ -95,99 +98,82 @@ function GlowOrbs() {
 }
 
 /* ──────────────────────────────────────────
-   Terminal-style hero code mockup
+   Terminal-style hero mockup — 展示 AI 辅导场景
    ────────────────────────────────────────── */
 function HeroTerminal() {
   const lines = [
-    { prompt: true, text: 'gesp-ai --start "学习计划"', delay: 0 },
-    { prompt: false, text: "✓ 正在分析你的知识盲区...", delay: 800 },
-    { prompt: false, text: "✓ 生成个性化学习路径", delay: 1600 },
-    { prompt: false, text: "✓ 今日任务：递归 + 排序练习", delay: 2400 },
-    { prompt: true, text: 'solve --problem "B3856"', delay: 3400 },
-    { prompt: false, text: "→ AI 提示：试试分治思路", delay: 4200 },
-    { prompt: false, text: "✓ Accepted! +50 XP", delay: 5200 },
+    { role: "ai", text: "今天我们来学 DFS，它就像走迷宫——选一条路走到底，走不通就退回来换条路！" },
+    { role: "student", text: "那怎么知道哪条路走过了？" },
+    { role: "ai", text: "好问题！我们用一个 vis 数组做标记，走过的路标记为 true，这样就不会重复走了。" },
+    { role: "student", text: "vis[i] = true 写在哪里？" },
+    { role: "ai", text: "在进入这个节点的时候标记。来，你试试把 DFS 函数写出来？我帮你看对不对 👀" },
   ];
 
   const [visibleLines, setVisibleLines] = useState(0);
 
   useEffect(() => {
     const timers: NodeJS.Timeout[] = [];
-    lines.forEach((line, i) => {
-      timers.push(
-        setTimeout(() => setVisibleLines(i + 1), line.delay + 600)
-      );
-    });
-    // Loop
-    timers.push(
-      setTimeout(() => setVisibleLines(0), 7000)
-    );
-    const loop = setInterval(() => {
-      setVisibleLines(0);
-      lines.forEach((line, i) => {
-        timers.push(
-          setTimeout(() => setVisibleLines(i + 1), line.delay + 600)
-        );
+    const showLine = (start: number) => {
+      lines.forEach((_, i) => {
+        timers.push(setTimeout(() => setVisibleLines(i + 1), start + i * 1200));
       });
-    }, 8000);
-
-    return () => {
-      timers.forEach(clearTimeout);
-      clearInterval(loop);
+      timers.push(setTimeout(() => setVisibleLines(0), start + lines.length * 1200 + 2000));
     };
+    showLine(600);
+    const loop = setInterval(() => showLine(0), lines.length * 1200 + 3000);
+    return () => { timers.forEach(clearTimeout); clearInterval(loop); };
   }, []);
 
   return (
     <div className="relative w-full max-w-md mx-auto lg:mx-0">
-      {/* Glow behind terminal */}
       <div
         className="absolute -inset-4 rounded-2xl opacity-50 blur-2xl"
-        style={{
-          background: "linear-gradient(135deg, hsla(238,84%,67%,0.2), hsla(263,70%,58%,0.15))",
-        }}
+        style={{ background: "linear-gradient(135deg, hsla(238,84%,67%,0.2), hsla(263,70%,58%,0.15))" }}
       />
       <div className="relative rounded-xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-xl overflow-hidden">
-        {/* Title bar */}
         <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]">
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
             <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
             <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
           </div>
-          <span className="text-[10px] text-white/25 font-mono ml-2">gesp-ai terminal</span>
+          <span className="text-[10px] text-white/25 font-mono ml-2">AI 私教 · DFS 深度优先搜索</span>
         </div>
-        {/* Terminal body */}
-        <div className="p-4 font-mono text-xs sm:text-sm leading-relaxed min-h-[200px]">
+        <div className="p-4 space-y-3 min-h-[240px]">
           {lines.slice(0, visibleLines).map((line, i) => (
             <div
               key={i}
-              className="flex items-start gap-2 animate-fade-in"
+              className={`flex gap-2.5 animate-fade-in ${line.role === "student" ? "justify-end" : ""}`}
               style={{ animationDuration: "0.3s" }}
             >
-              {line.prompt ? (
-                <span className="text-emerald-400/80 shrink-0">❯</span>
-              ) : (
-                <span className="shrink-0 w-3" />
+              {line.role === "ai" && (
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[hsl(238,84%,67%)] to-[hsl(263,70%,58%)] flex items-center justify-center shrink-0 mt-0.5">
+                  <Sparkles className="w-3 h-3 text-white" />
+                </div>
               )}
-              <span
-                className={
-                  line.prompt
-                    ? "text-white/80"
-                    : line.text.includes("✓")
-                    ? "text-emerald-400/70"
-                    : line.text.includes("→")
-                    ? "text-violet-400/70"
-                    : "text-white/50"
-                }
+              <div
+                className={`text-xs sm:text-sm leading-relaxed px-3 py-2 rounded-xl max-w-[85%] ${
+                  line.role === "ai"
+                    ? "bg-white/[0.05] text-white/70"
+                    : "bg-[hsl(238,84%,67%)]/20 text-white/80"
+                }`}
               >
                 {line.text}
-              </span>
+              </div>
             </div>
           ))}
-          {/* Blinking cursor */}
-          <div className="flex items-center gap-2 mt-0.5">
-            <span className="text-emerald-400/80">❯</span>
-            <span className="inline-block w-2 h-4 bg-emerald-400/60 animate-pulse" />
-          </div>
+          {visibleLines < lines.length && visibleLines > 0 && (
+            <div className="flex gap-2.5">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[hsl(238,84%,67%)] to-[hsl(263,70%,58%)] flex items-center justify-center shrink-0">
+                <Sparkles className="w-3 h-3 text-white" />
+              </div>
+              <div className="flex items-center gap-1 px-3 py-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-white/30 animate-bounce" style={{ animationDelay: "0ms" }} />
+                <div className="w-1.5 h-1.5 rounded-full bg-white/30 animate-bounce" style={{ animationDelay: "150ms" }} />
+                <div className="w-1.5 h-1.5 rounded-full bg-white/30 animate-bounce" style={{ animationDelay: "300ms" }} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -195,18 +181,20 @@ function HeroTerminal() {
 }
 
 /* ──────────────────────────────────────────
-   Feature card component
+   痛点 → 方案 卡片
    ────────────────────────────────────────── */
-function FeatureCard({
+function PainPointCard({
   icon: Icon,
-  title,
-  description,
+  pain,
+  solution,
+  detail,
   gradient,
   delay,
 }: {
   icon: React.ElementType;
-  title: string;
-  description: string;
+  pain: string;
+  solution: string;
+  detail: string;
   gradient: string;
   delay: number;
 }) {
@@ -234,7 +222,6 @@ function FeatureCard({
         transition: `all 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
       }}
     >
-      {/* Animated gradient border */}
       <div className="absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: gradient }} />
       <div className="relative rounded-2xl border border-white/[0.06] bg-[#0a0a1a]/80 backdrop-blur-sm p-6 sm:p-8 h-full transition-all duration-500 group-hover:bg-[#0e0e24]/90 group-hover:border-transparent">
         <div
@@ -243,8 +230,12 @@ function FeatureCard({
         >
           <Icon className="w-6 h-6 text-white" strokeWidth={1.5} />
         </div>
-        <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-        <p className="text-sm leading-relaxed text-white/50">{description}</p>
+        {/* 痛点问句 */}
+        <p className="text-white/40 text-sm mb-2">{pain}</p>
+        {/* 方案标题 */}
+        <h3 className="text-lg font-semibold text-white mb-2">{solution}</h3>
+        {/* 细节 */}
+        <p className="text-sm leading-relaxed text-white/50">{detail}</p>
       </div>
     </div>
   );
@@ -257,6 +248,7 @@ function PricingCard({
   name,
   price,
   period,
+  subtitle,
   features,
   cta,
   popular,
@@ -265,6 +257,7 @@ function PricingCard({
   name: string;
   price: string;
   period: string;
+  subtitle?: string;
   features: string[];
   cta: string;
   popular?: boolean;
@@ -294,7 +287,6 @@ function PricingCard({
         transition: `all 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
       }}
     >
-      {/* Popular glow */}
       {popular && (
         <div
           className="absolute -inset-[1px] rounded-2xl"
@@ -308,7 +300,7 @@ function PricingCard({
       {!popular && (
         <div className="absolute -inset-[1px] rounded-2xl border border-white/[0.06]" />
       )}
-      <div className={`relative rounded-2xl bg-[#0a0a1a] p-6 sm:p-8 h-full flex flex-col ${popular ? "ring-0" : ""}`}>
+      <div className="relative rounded-2xl bg-[#0a0a1a] p-6 sm:p-8 h-full flex flex-col">
         {popular && (
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <span className="text-[11px] font-semibold tracking-wider uppercase px-4 py-1 rounded-full bg-gradient-to-r from-[hsl(238,84%,67%)] to-[hsl(263,70%,58%)] text-white">
@@ -322,6 +314,9 @@ function PricingCard({
             <span className="text-4xl font-bold text-white tracking-tight">{price}</span>
             <span className="text-white/30 text-sm">/{period}</span>
           </div>
+          {subtitle && (
+            <p className="text-xs text-emerald-400/70 mt-2">{subtitle}</p>
+          )}
         </div>
         <ul className="space-y-3 mb-8 flex-1">
           {features.map((f, i) => (
@@ -373,6 +368,7 @@ function useSectionReveal() {
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
   const featuresReveal = useSectionReveal();
+  const trustReveal = useSectionReveal();
   const pricingReveal = useSectionReveal();
 
   useEffect(() => {
@@ -392,8 +388,6 @@ export default function LandingPage() {
           backgroundSize: "60px 60px",
         }}
       />
-
-      {/* ─── Floating orbs ─── */}
       <GlowOrbs />
 
       {/* ═══ NAVBAR ═══ */}
@@ -405,7 +399,6 @@ export default function LandingPage() {
         }`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          {/* Logo */}
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[hsl(238,84%,67%)] to-[hsl(263,70%,58%)] flex items-center justify-center shadow-lg shadow-[hsl(238,84%,67%)]/25">
               <Sparkles className="w-4 h-4 text-white" />
@@ -415,23 +408,12 @@ export default function LandingPage() {
               <span className="text-[9px] text-white/30 leading-tight">智能备考助手</span>
             </div>
           </div>
-
-          {/* Center nav */}
           <div className="hidden sm:flex items-center gap-8">
-            <a href="#features" className="text-sm text-white/40 hover:text-white/80 transition-colors">
-              功能
-            </a>
-            <a href="#pricing" className="text-sm text-white/40 hover:text-white/80 transition-colors">
-              定价
-            </a>
+            <a href="#features" className="text-sm text-white/40 hover:text-white/80 transition-colors">为什么选我们</a>
+            <a href="#pricing" className="text-sm text-white/40 hover:text-white/80 transition-colors">定价</a>
           </div>
-
-          {/* CTA */}
           <div className="flex items-center gap-3">
-            <Link
-              href="/login"
-              className="text-sm text-white/50 hover:text-white transition-colors px-3 py-1.5"
-            >
+            <Link href="/login" className="text-sm text-white/50 hover:text-white transition-colors px-3 py-1.5">
               登录
             </Link>
             <Link
@@ -444,21 +426,20 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* ═══ HERO ═══ */}
+      {/* ═══ HERO — 直击痛点 ═══ */}
       <section className="relative min-h-screen flex items-center pt-16">
         <FloatingCode />
         <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 w-full">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left — Copy */}
             <div className="animate-fade-in text-center lg:text-left">
-              {/* Badge */}
+              {/* 定位标签 */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm mb-8">
-                <Zap className="w-3 h-3 text-amber-400" />
-                <span className="text-xs text-white/50">Claude Sonnet 4.5 驱动</span>
+                <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                <span className="text-xs text-white/50">专为 GESP C++ 4-6 级设计</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] mb-6">
-                <span className="text-white">用 AI 重新定义</span>
+              <h1 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-bold tracking-tight leading-[1.15] mb-6">
+                <span className="text-white">孩子备考 GESP</span>
                 <br />
                 <span
                   className="bg-clip-text text-transparent"
@@ -466,15 +447,22 @@ export default function LandingPage() {
                     backgroundImage: "linear-gradient(135deg, hsl(238,84%,67%), hsl(263,70%,58%), hsl(300,60%,55%))",
                   }}
                 >
-                  GESP 备考体验
+                  不用再花几千块请家教
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-white/40 max-w-lg mb-10 mx-auto lg:mx-0 leading-relaxed">
-                AI 私教 · 智能刷题 · 错题诊断 · 模拟考试
+              <p className="text-base sm:text-lg text-white/40 max-w-lg mb-6 mx-auto lg:mx-0 leading-relaxed">
+                ¥49/月的 AI 编程私教，24 小时在线辅导。
                 <br />
-                一站式搞定 GESP C++ 4-6 级备考
+                AI 规划每天学什么、随时答疑、精准诊断薄弱点。
               </p>
+
+              {/* 价格锚定 */}
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-white/[0.03] border border-white/[0.06] mb-8">
+                <span className="text-xs text-white/30 line-through">线下 1 对 1：300-800 元/小时</span>
+                <span className="text-xs text-white/20">→</span>
+                <span className="text-xs text-emerald-400/80 font-medium">GESP AI：¥49/月 不限时</span>
+              </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
                 <Link
@@ -488,20 +476,19 @@ export default function LandingPage() {
                   href="#features"
                   className="flex items-center gap-2 px-6 py-3.5 rounded-xl text-white/50 hover:text-white/80 border border-white/[0.06] hover:border-white/[0.12] transition-all"
                 >
-                  了解更多
+                  看看怎么帮到孩子
                   <ArrowDown className="w-4 h-4" />
                 </a>
               </div>
             </div>
 
-            {/* Right — Terminal */}
+            {/* 右侧 — AI 对话模拟 */}
             <div className="animate-slide-up hidden lg:block" style={{ animationDelay: "0.2s", animationFillMode: "both" }}>
               <HeroTerminal />
             </div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-pulse-soft">
           <div className="w-5 h-8 rounded-full border border-white/10 flex items-start justify-center p-1">
             <div className="w-1 h-2 rounded-full bg-white/20 animate-bounce" style={{ animationDuration: "1.5s" }} />
@@ -509,10 +496,9 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══ FEATURES ═══ */}
+      {/* ═══ FEATURES — 痛点 → 方案 ═══ */}
       <section id="features" className="relative py-24 sm:py-32">
         <div ref={featuresReveal.ref} className="max-w-6xl mx-auto px-4 sm:px-6">
-          {/* Section header */}
           <div
             className="text-center mb-16"
             style={{
@@ -523,51 +509,53 @@ export default function LandingPage() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] mb-6">
               <Terminal className="w-3 h-3 text-white/40" />
-              <span className="text-xs text-white/40">核心功能</span>
+              <span className="text-xs text-white/40">为什么选择 GESP AI</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-              AI 驱动的
+              家长的
               <span
-                className="bg-clip-text text-transparent ml-2"
-                style={{
-                  backgroundImage: "linear-gradient(135deg, hsl(238,84%,67%), hsl(263,70%,58%))",
-                }}
+                className="bg-clip-text text-transparent ml-1"
+                style={{ backgroundImage: "linear-gradient(135deg, hsl(238,84%,67%), hsl(263,70%,58%))" }}
               >
-                全方位备考
+                四个焦虑
               </span>
+              ，我们逐个解决
             </h2>
             <p className="text-white/35 max-w-xl mx-auto">
-              从知识学习到实战演练，AI 全程陪伴你的 GESP 备考之旅
+              不懂编程也能帮孩子备考，让 AI 做你做不到的事
             </p>
           </div>
 
-          {/* Feature grid */}
           <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
-            <FeatureCard
-              icon={BrainCircuit}
-              title="AI 私教"
-              description="一对一智能辅导，用最适合你的方式讲解每一个知识点。支持语音提问，像真人老师一样随时答疑。"
+            <PainPointCard
+              icon={MessageCircle}
+              pain="孩子做题卡住了，晚上 10 点没人能问？"
+              solution="AI 老师 24 小时在线答疑"
+              detail="不用等下次上课。孩子随时提问，AI 用比喻和例子讲到孩子听懂为止。支持语音提问，打字慢也没关系。"
               gradient="linear-gradient(90deg, hsla(238,84%,67%,0.5), hsla(200,90%,60%,0.5))"
               delay={0}
             />
-            <FeatureCard
-              icon={Code2}
-              title="智能刷题"
-              description="覆盖 GESP 4-6 级全部题型，在线代码编辑器 + Judge0 实时评测，每次提交都有 AI 针对性反馈。"
+            <PainPointCard
+              icon={Clock}
+              pain="每天不知道该学什么、练什么？"
+              solution="AI 自动规划每日学习任务"
+              detail="输入目标级别和考试日期，AI 根据孩子的薄弱点自动安排每天学什么、练哪道题。家长和孩子都不用操心。"
               gradient="linear-gradient(90deg, hsla(263,70%,58%,0.5), hsla(300,60%,55%,0.5))"
               delay={100}
             />
-            <FeatureCard
+            <PainPointCard
               icon={SearchCode}
-              title="错题诊断"
-              description="AI 自动分类错误类型，引导「三问复盘法」——错了哪？为什么错？怎么避免？生成专属防错规则。"
+              pain="同样的错误，一犯再犯？"
+              solution="三问复盘 + 防错规则，错过的不再错"
+              detail="AI 引导孩子想清楚三个问题：错了哪？为什么错？怎么避免？自动生成防错规则，下次提交代码前 AI 主动提醒。"
               gradient="linear-gradient(90deg, hsla(160,70%,45%,0.5), hsla(200,80%,55%,0.5))"
               delay={200}
             />
-            <FeatureCard
-              icon={Trophy}
-              title="模拟考试"
-              description="完全还原 GESP 真实考试环境：90 分钟限时、选择题 + 编程题，AI 精准预估你的通过率。"
+            <PainPointCard
+              icon={BarChart3}
+              pain="花了钱，不知道孩子到底学到哪了？"
+              solution="学习数据全透明，进度一目了然"
+              detail="知识点掌握度百分比、每日任务完成率、模拟考试通过率预估——所有数据清清楚楚，不再花冤枉钱。"
               gradient="linear-gradient(90deg, hsla(38,90%,55%,0.5), hsla(20,85%,55%,0.5))"
               delay={300}
             />
@@ -575,13 +563,43 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══ PRICING ═══ */}
-      <section id="pricing" className="relative py-24 sm:py-32">
-        {/* Subtle divider glow */}
+      {/* ═══ 信任板块 — 硬实力 ═══ */}
+      <section className="relative py-16 sm:py-20">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+        <div ref={trustReveal.ref} className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div
+            className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+            style={{
+              opacity: trustReveal.visible ? 1 : 0,
+              transform: trustReveal.visible ? "translateY(0)" : "translateY(20px)",
+              transition: "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+          >
+            {[
+              { value: "4-6 级", label: "覆盖 GESP 考纲", sub: "知识点完整对齐官方大纲" },
+              { value: "100+", label: "洛谷真题同步", sub: "题库持续更新中" },
+              { value: "24h", label: "AI 随时在线", sub: "不受时间地点限制" },
+              { value: "10 种", label: "错误类型诊断", sub: "精准定位每一次失误" },
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <div
+                  className="text-3xl sm:text-4xl font-bold tracking-tight mb-1 bg-clip-text text-transparent"
+                  style={{ backgroundImage: "linear-gradient(135deg, hsl(238,84%,67%), hsl(263,70%,58%))" }}
+                >
+                  {item.value}
+                </div>
+                <p className="text-sm font-medium text-white/70 mb-0.5">{item.label}</p>
+                <p className="text-xs text-white/30">{item.sub}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
+      {/* ═══ PRICING — 价格锚定 ═══ */}
+      <section id="pricing" className="relative py-24 sm:py-32">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
         <div ref={pricingReveal.ref} className="max-w-5xl mx-auto px-4 sm:px-6">
-          {/* Section header */}
           <div
             className="text-center mb-16"
             style={{
@@ -592,30 +610,28 @@ export default function LandingPage() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/[0.06] bg-white/[0.02] mb-6">
               <Sparkles className="w-3 h-3 text-white/40" />
-              <span className="text-xs text-white/40">灵活定价</span>
+              <span className="text-xs text-white/40">简单透明的定价</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-              选择适合你的
+              一节线下课的钱
               <span
-                className="bg-clip-text text-transparent ml-2"
-                style={{
-                  backgroundImage: "linear-gradient(135deg, hsl(238,84%,67%), hsl(263,70%,58%))",
-                }}
+                className="bg-clip-text text-transparent ml-1"
+                style={{ backgroundImage: "linear-gradient(135deg, hsl(238,84%,67%), hsl(263,70%,58%))" }}
               >
-                方案
+                ，用一整个月
               </span>
             </h2>
-            <p className="text-white/35">
-              从免费体验开始，随时升级解锁全部功能
+            <p className="text-white/35 max-w-xl mx-auto">
+              线下 C++ 1 对 1 培训 300-800 元/小时，GESP AI 从免费开始
             </p>
           </div>
 
-          {/* Pricing grid */}
           <div className="grid lg:grid-cols-3 gap-5 items-start">
             <PricingCard
               name="免费体验"
               price="¥0"
               period="月"
+              subtitle="永久免费，无需绑卡"
               features={[
                 "每日 3 题练习",
                 "基础 AI 辅导",
@@ -630,13 +646,14 @@ export default function LandingPage() {
               price="¥49"
               period="月"
               popular
+              subtitle="≈ 线下一节课的价格"
               features={[
                 "无限刷题 + 在线评测",
-                "AI 私教 · 不限次对话",
-                "错题诊断 · 三问复盘",
-                "个性化学习计划",
-                "防错规则库",
-                "XP 与成就系统",
+                "AI 私教不限次对话",
+                "AI 自动规划每日任务",
+                "错题三问复盘 + 防错规则",
+                "费曼学习法训练",
+                "XP 经验值与成就徽章",
               ]}
               cta="免费试用"
               delay={100}
@@ -645,13 +662,14 @@ export default function LandingPage() {
               name="冲刺版"
               price="¥99"
               period="月"
+              subtitle="考前最后一个月强推"
               features={[
                 "标准版全部功能",
                 "无限模拟考试",
-                "考前冲刺计划",
-                "优先 AI 响应",
-                "费曼学习法训练",
-                "详细学情报告",
+                "AI 生成考前冲刺计划",
+                "优先 AI 响应速度",
+                "薄弱知识点专项强化",
+                "详细学情分析报告",
               ]}
               cta="免费试用"
               delay={200}
@@ -663,28 +681,25 @@ export default function LandingPage() {
       {/* ═══ BOTTOM CTA ═══ */}
       <section className="relative py-24 sm:py-32">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-        {/* CTA glow */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full pointer-events-none"
-          style={{
-            background: "radial-gradient(circle, hsla(238,84%,67%,0.08) 0%, transparent 70%)",
-          }}
+          style={{ background: "radial-gradient(circle, hsla(238,84%,67%,0.08) 0%, transparent 70%)" }}
         />
         <div className="relative z-10 text-center max-w-2xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            准备好了吗？
+            别让孩子在备考路上孤军奋战
           </h2>
           <p className="text-lg text-white/35 mb-10">
-            让 AI 成为你的备考搭档，从今天开始高效学习
+            一个好的 AI 私教，可能就是通过考试的关键
           </p>
           <Link
             href="/register"
             className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[hsl(238,84%,67%)] to-[hsl(263,70%,58%)] text-white font-medium text-lg hover:opacity-90 transition-all shadow-2xl shadow-[hsl(238,84%,67%)]/25 hover:shadow-[hsl(238,84%,67%)]/40"
           >
-            免费试用
+            免费试用，立即开始
             <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
           </Link>
-          <p className="mt-4 text-xs text-white/20">无需信用卡 · 即刻开始</p>
+          <p className="mt-4 text-xs text-white/20">无需付费 · 注册即可体验核心功能</p>
         </div>
       </section>
 
@@ -698,47 +713,25 @@ export default function LandingPage() {
             <span className="text-xs text-white/25">© 2025 GESP AI. All rights reserved.</span>
           </div>
           <div className="flex items-center gap-6">
-            <a href="#features" className="text-xs text-white/20 hover:text-white/40 transition-colors">
-              功能
-            </a>
-            <a href="#pricing" className="text-xs text-white/20 hover:text-white/40 transition-colors">
-              定价
-            </a>
-            <Link href="/login" className="text-xs text-white/20 hover:text-white/40 transition-colors">
-              登录
-            </Link>
+            <a href="#features" className="text-xs text-white/20 hover:text-white/40 transition-colors">功能</a>
+            <a href="#pricing" className="text-xs text-white/20 hover:text-white/40 transition-colors">定价</a>
+            <Link href="/login" className="text-xs text-white/20 hover:text-white/40 transition-colors">登录</Link>
           </div>
         </div>
       </footer>
 
-      {/* ─── Custom CSS for this page ─── */}
+      {/* ─── Custom keyframes ─── */}
       <style jsx>{`
         @keyframes codeDrift {
-          0% {
-            transform: translateY(0) translateX(0);
-            opacity: 0;
-          }
-          5% {
-            opacity: 1;
-          }
-          95% {
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(-120px) translateX(40px);
-            opacity: 0;
-          }
+          0% { transform: translateY(0) translateX(0); opacity: 0; }
+          5% { opacity: 1; }
+          95% { opacity: 1; }
+          100% { transform: translateY(-120px) translateX(40px); opacity: 0; }
         }
         @keyframes orbFloat {
-          0%, 100% {
-            transform: translate(0, 0) scale(1);
-          }
-          33% {
-            transform: translate(30px, -40px) scale(1.05);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.95);
-          }
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          33% { transform: translate(30px, -40px) scale(1.05); }
+          66% { transform: translate(-20px, 20px) scale(0.95); }
         }
       `}</style>
     </div>
