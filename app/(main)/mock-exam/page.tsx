@@ -120,7 +120,7 @@ export default function MockExamPage() {
       {/* 顶部导航 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href="/">
+          <Link href="/dashboard">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
               返回首页

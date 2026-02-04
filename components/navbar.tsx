@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { href: "/", label: "今日任务", icon: Home },
+  { href: "/dashboard", label: "今日任务", icon: Home },
   { href: "/map", label: "知识点", icon: Map },
   { href: "/map", label: "学习", icon: BookOpen },
   { href: "/problem", label: "题库", icon: Code },
@@ -45,7 +45,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full glass-navbar">
       <div className="container-responsive flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-3 group">
+        <Link href="/dashboard" className="flex items-center space-x-3 group">
           <div className="relative">
             <div className="w-10 h-10 bg-gradient-to-br from-primary via-accent to-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/25 group-hover:shadow-primary/40 transition-shadow">
               <Sparkles className="w-5 h-5 text-white" />

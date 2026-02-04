@@ -41,7 +41,7 @@ export default function LoginPage() {
           title: "登录成功",
           description: "欢迎回来！",
         });
-        router.push("/");
+        router.push("/dashboard");
         router.refresh();
       }
     } catch {

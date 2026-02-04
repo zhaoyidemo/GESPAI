@@ -46,7 +46,7 @@ export default function SetupPage() {
         description: "AI 已为你生成专属学习计划",
       });
 
-      router.push("/");
+      router.push("/dashboard");
     } catch (error) {
       toast({
         variant: "destructive",
