@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -145,29 +146,7 @@ export async function generateStudyPlan(
     (examDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
   );
 
-  const systemPrompt = `你是一位专业的GESP考试规划师。请根据学生的情况，制定详细的学习计划。
-
-请以JSON格式返回学习计划，包含以下结构：
-{
-  "overview": "计划概述",
-  "totalWeeks": 周数,
-  "weeklyPlan": [
-    {
-      "week": 1,
-      "theme": "本周主题",
-      "knowledgePoints": ["知识点1", "知识点2"],
-      "practiceProblems": ["练习题类型"],
-      "goals": ["本周目标1", "本周目标2"]
-    }
-  ],
-  "milestones": [
-    {
-      "week": 周数,
-      "description": "里程碑描述"
-    }
-  ],
-  "tips": ["学习建议1", "学习建议2"]
-}`;
+  const systemPrompt = await getSystemPrompt("study-plan");
 
   const userMessage = `请为我制定GESP ${targetLevel}级考试的学习计划。
 
@@ -206,15 +185,7 @@ export async function analyzeCodeError(
   error: string,
   problemDescription: string
 ): Promise<string> {
-  const systemPrompt = `你是一位耐心的编程老师，擅长分析学生代码中的错误并给出清晰的解释。
-
-## 分析原则
-1. 首先指出错误的具体位置
-2. 解释错误的原因（用学生能理解的语言）
-3. 给出修复建议（但不直接给出完整代码）
-4. 如果是常见错误，简要介绍如何避免
-
-请用中文回复，适度使用emoji。`;
+  const systemPrompt = await getSystemPrompt("code-error-analysis");
 
   const userMessage = `**题目描述**
 ${problemDescription}
@@ -237,18 +208,7 @@ export async function generateFeynmanQuestion(
   knowledgePoint: string,
   code: string
 ): Promise<{ question: string; expectedKeywords: string[] }> {
-  const systemPrompt = `你是一位考核学生理解程度的老师。学生刚刚完成了一道编程题，请生成一个简单的问题来验证他是否真正理解了解题思路。
-
-请以JSON格式返回：
-{
-  "question": "你的问题",
-  "expectedKeywords": ["学生回答应该包含的关键词"]
-}
-
-问题应该：
-1. 简洁明了，一句话即可
-2. 考察核心概念，不是死记硬背
-3. 让学生用自己的话解释`;
+  const systemPrompt = await getSystemPrompt("feynman-question");
 
   const response = await chat(
     [

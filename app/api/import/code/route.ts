@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { chat } from "@/lib/claude";
+import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,16 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 调用 AI 分析代码
-    const systemPrompt = `你是一位专业的编程教育专家，请分析学生提供的代码，评估其编程水平。
-
-请以 JSON 格式返回分析结果：
-{
-  "level": 1-8, // 预估的 GESP 级别
-  "knowledgePoints": ["知识点1", "知识点2"], // 代码中体现的知识点
-  "strengths": ["优点1", "优点2"], // 代码的优点
-  "improvements": ["建议1", "建议2"], // 改进建议
-  "summary": "总体评价"
-}`;
+    const systemPrompt = await getSystemPrompt("code-import");
 
     const response = await chat(
       [

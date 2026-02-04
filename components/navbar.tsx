@@ -26,6 +26,7 @@ import {
   Sparkles,
   Database,
   BookX,
+  MessageSquareCode,
 } from "lucide-react";
 
 const navItems = [
@@ -152,6 +153,12 @@ export function Navbar() {
                 <Link href="/admin/problems" className="cursor-pointer">
                   <Database className="mr-2 h-4 w-4" />
                   题库管理
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/admin/prompts" className="cursor-pointer">
+                  <MessageSquareCode className="mr-2 h-4 w-4" />
+                  提示词管理
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />

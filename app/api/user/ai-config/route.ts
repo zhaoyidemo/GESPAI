@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
-import { getDefaultPrompt, PromptType } from "@/lib/default-prompts";
+import { PromptType } from "@/lib/default-prompts";
+import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 
 // 数据库字段映射
 const PROMPT_FIELDS: Record<PromptType, string> = {
@@ -44,23 +45,31 @@ export async function GET(req: NextRequest) {
       );
     }
 
+    // 获取系统默认提示词（数据库优先，硬编码兜底）
+    const [defaultTutor, defaultProblem, defaultDebug, defaultFeynman] = await Promise.all([
+      getSystemPrompt("tutor"),
+      getSystemPrompt("problem"),
+      getSystemPrompt("debug"),
+      getSystemPrompt("feynman"),
+    ]);
+
     // 返回所有提示词配置
     return NextResponse.json({
       prompts: {
         tutor: {
-          value: user.aiTutorPrompt || getDefaultPrompt("tutor"),
+          value: user.aiTutorPrompt || defaultTutor,
           isCustom: !!user.aiTutorPrompt,
         },
         problem: {
-          value: user.aiProblemPrompt || getDefaultPrompt("problem"),
+          value: user.aiProblemPrompt || defaultProblem,
           isCustom: !!user.aiProblemPrompt,
         },
         debug: {
-          value: user.aiDebugPrompt || getDefaultPrompt("debug"),
+          value: user.aiDebugPrompt || defaultDebug,
           isCustom: !!user.aiDebugPrompt,
         },
         feynman: {
-          value: user.aiFeynmanPrompt || getDefaultPrompt("feynman"),
+          value: user.aiFeynmanPrompt || defaultFeynman,
           isCustom: !!user.aiFeynmanPrompt,
         },
       },

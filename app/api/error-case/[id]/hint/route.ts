@@ -3,13 +3,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { chat } from "@/lib/claude";
-import {
-  baseSystemPrompt,
-  guideQ1Prompt,
-  guideQ2Prompt,
-  guideQ3Prompt,
-  ERROR_TYPES,
-} from "@/lib/prompts/error-diagnosis";
+import { ERROR_TYPES } from "@/lib/prompts/error-diagnosis";
+import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -78,12 +73,16 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       : "";
 
     // 选择对应的引导提示词
-    let guidePrompt = "";
+    const guidePromptKeyMap: Record<number, string> = {
+      1: "error-guide-q1",
+      2: "error-guide-q2",
+      3: "error-guide-q3",
+    };
+    const guidePrompt = await getSystemPrompt(guidePromptKeyMap[questionNumber]);
     let contextInfo = "";
 
     switch (questionNumber) {
       case 1:
-        guidePrompt = guideQ1Prompt;
         contextInfo = `**题目**: ${problem.title}
 
 **题目描述**:
@@ -105,7 +104,6 @@ ${currentAnswer ? `**学生当前的回答**: ${currentAnswer}` : "学生还没�
         break;
 
       case 2:
-        guidePrompt = guideQ2Prompt;
         contextInfo = `**题目**: ${problem.title}
 
 **学生代码**:
@@ -121,7 +119,6 @@ ${currentAnswer ? `**学生对"为什么会错"的当前回答**: ${currentAnswe
         break;
 
       case 3:
-        guidePrompt = guideQ3Prompt;
         contextInfo = `**题目**: ${problem.title}
 
 **错误类型**: ${errorTypeInfo?.label || "未分类"}
@@ -136,9 +133,10 @@ ${currentAnswer ? `**学生对"下次怎么避免"的当前回答**: ${currentAn
     }
 
     // 调用 Claude API
+    const errorBase = await getSystemPrompt("error-base");
     const response = await chat(
       [{ role: "user", content: contextInfo }],
-      `${baseSystemPrompt}\n\n${guidePrompt}`,
+      `${errorBase}\n\n${guidePrompt}`,
       512
     );
 

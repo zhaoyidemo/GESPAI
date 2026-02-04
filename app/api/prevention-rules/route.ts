@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { chat } from "@/lib/claude";
-import { baseSystemPrompt, generateRulePrompt } from "@/lib/prompts/error-diagnosis";
+import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 
 // 获取防错规则列表
 export async function GET(request: NextRequest) {
@@ -126,9 +126,13 @@ export async function POST(request: NextRequest) {
 
 请根据以上信息生成一条简短的防错规则。`;
 
+      const [errorBase, errorGenRule] = await Promise.all([
+        getSystemPrompt("error-base"),
+        getSystemPrompt("error-generate-rule"),
+      ]);
       finalRule = await chat(
         [{ role: "user", content: contextInfo }],
-        `${baseSystemPrompt}\n\n${generateRulePrompt}`,
+        `${errorBase}\n\n${errorGenRule}`,
         256
       );
     }

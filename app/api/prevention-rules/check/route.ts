@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { chat } from "@/lib/claude";
-import { baseSystemPrompt } from "@/lib/prompts/error-diagnosis";
+import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 
 // 检查是否触发已有规则
 export async function POST(request: NextRequest) {
@@ -74,9 +74,10 @@ ${problemDescription ? `**题目描述**:\n${problemDescription}` : ""}
 如果代码没有明显违反任何规则，triggered 应为 false。
 只有当代码有较高可能违反规则时才返回 triggered: true。`;
 
+    const errorBase = await getSystemPrompt("error-base");
     const response = await chat(
       [{ role: "user", content: checkPrompt }],
-      baseSystemPrompt,
+      errorBase,
       1024
     );
 

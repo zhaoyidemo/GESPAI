@@ -3,10 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { chat } from "@/lib/claude";
-import {
-  classifyErrorPrompt,
-  baseSystemPrompt,
-} from "@/lib/prompts/error-diagnosis";
+import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -93,9 +90,13 @@ ${failedTestsInfo ? `**失败的测试用例**\n${failedTestsInfo}` : ""}
 请分析这个代码的错误类型。`;
 
     // 调用 Claude API 分析
+    const [errorBase, errorClassify] = await Promise.all([
+      getSystemPrompt("error-base"),
+      getSystemPrompt("error-classify"),
+    ]);
     const response = await chat(
       [{ role: "user", content: userMessage }],
-      `${baseSystemPrompt}\n\n${classifyErrorPrompt}`,
+      `${errorBase}\n\n${errorClassify}`,
       1024
     );
 

@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
-import { getDefaultPrompt, PromptType } from "@/lib/default-prompts";
+import { PromptType } from "@/lib/default-prompts";
+import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 
 // 数据库字段映射
 const PROMPT_FIELDS: Record<PromptType, string> = {
@@ -48,7 +49,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       message: "已恢复默认配置",
-      prompt: getDefaultPrompt(type),
+      prompt: await getSystemPrompt(type),
     });
   } catch (error) {
     console.error("Reset AI config error:", error);

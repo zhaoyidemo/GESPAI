@@ -285,6 +285,23 @@ model PreventionRule {
   @@map("prevention_rules")
 }
 
+// 系统提示词
+model SystemPrompt {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  category    String
+  name        String
+  description String?  @db.Text
+  content     String   @db.Text
+  isActive    Boolean  @default(true)
+  updatedBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@map("system_prompts")
+}
+
 // 模拟考试记录
 model MockExamResult {
   id              String   @id @default(uuid())
