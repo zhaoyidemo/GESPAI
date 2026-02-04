@@ -14,6 +14,13 @@ function endsWithQuestion(text: string): boolean {
 }
 
 /**
+ * 检测文本中是否已包含中文标点（讯飞等引擎已自动添加标点的情况）
+ */
+function hasChinesePunctuation(text: string): boolean {
+  return /[，。？！、；：]/.test(text);
+}
+
+/**
  * 为文本添加标点符号
  * @param text 原始文本
  * @param isEnd 是否是录音结束（决定末尾标点）
@@ -22,6 +29,21 @@ export function addPunctuation(text: string, isEnd: boolean = false): string {
   if (!text || !text.trim()) return text;
 
   let result = text.trim();
+
+  // 如果文本中已包含中文标点（讯飞等引擎已处理），跳过中间断句逻辑
+  if (hasChinesePunctuation(result)) {
+    if (isEnd) {
+      const finalLastChar = result[result.length - 1];
+      if (!/[，。？！,.\?!、；：]/.test(finalLastChar)) {
+        if (endsWithQuestion(result)) {
+          result += "？";
+        } else {
+          result += "。";
+        }
+      }
+    }
+    return result;
+  }
 
   // 如果已经有标点，不处理
   const lastChar = result[result.length - 1];
