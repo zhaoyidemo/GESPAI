@@ -108,9 +108,9 @@ ${failedTestsInfo ? `**失败的测试用例**\n${failedTestsInfo}` : ""}
       }
     } catch {
       aiAnalysis = {
-        type: "implementation",
-        confidence: 0.5,
-        evidence: "无法解析AI响应",
+        type: "logic",
+        confidence: 0.3,
+        evidence: "AI响应格式异常，默认归类为逻辑错误",
         summary: response,
       };
     }

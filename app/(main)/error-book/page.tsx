@@ -241,14 +241,14 @@ export default function ErrorBookPage() {
       {/* 错误类型分布 - 按 OJ 状态分组 */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">错误类型分布（10种）</CardTitle>
+          <CardTitle className="text-base">错误类型分布</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* WA 相关错误 */}
           <div>
             <p className="text-xs text-muted-foreground mb-2 font-medium">答案错误 [WA]</p>
             <div className="flex flex-wrap gap-2">
-              {["misread", "boundary", "logic", "algorithm", "overflow"].map((type) => {
+              {["misread", "boundary", "careless", "uninit", "logic", "algorithm", "overflow"].map((type) => {
                 const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
                 return (
                   <div
@@ -265,9 +265,9 @@ export default function ErrorBookPage() {
           </div>
           {/* 其他状态 */}
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-medium">其他状态 [CE/TLE/RE/MLE/PE]</p>
+            <p className="text-xs text-muted-foreground mb-2 font-medium">其他状态 [CE/TLE/RE]</p>
             <div className="flex flex-wrap gap-2">
-              {["syntax", "timeout", "runtime", "memory", "format"].map((type) => {
+              {["syntax", "timeout", "runtime"].map((type) => {
                 const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
                 return (
                   <div
@@ -313,7 +313,7 @@ export default function ErrorBookPage() {
                 <SelectContent>
                   <SelectItem value="all">全部类型</SelectItem>
                   <div className="px-2 py-1.5 text-xs text-muted-foreground font-medium">答案错误 [WA]</div>
-                  {["misread", "boundary", "logic", "algorithm", "overflow"].map((type) => {
+                  {["misread", "boundary", "careless", "uninit", "logic", "algorithm", "overflow"].map((type) => {
                     const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
                     return (
                       <SelectItem key={type} value={type}>
@@ -322,7 +322,7 @@ export default function ErrorBookPage() {
                     );
                   })}
                   <div className="px-2 py-1.5 text-xs text-muted-foreground font-medium">其他状态</div>
-                  {["syntax", "timeout", "runtime", "memory", "format"].map((type) => {
+                  {["syntax", "timeout", "runtime"].map((type) => {
                     const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
                     return (
                       <SelectItem key={type} value={type}>

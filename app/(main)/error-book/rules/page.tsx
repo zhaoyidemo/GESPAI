@@ -229,7 +229,7 @@ export default function PreventionRulesPage() {
           <SelectContent>
             <SelectItem value="all">全部类型</SelectItem>
             <div className="px-2 py-1.5 text-xs text-muted-foreground font-medium">答案错误 [WA]</div>
-            {["misread", "boundary", "logic", "algorithm", "overflow"].map((type) => {
+            {["misread", "boundary", "careless", "uninit", "logic", "algorithm", "overflow"].map((type) => {
               const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
               return (
                 <SelectItem key={type} value={type}>
@@ -238,7 +238,7 @@ export default function PreventionRulesPage() {
               );
             })}
             <div className="px-2 py-1.5 text-xs text-muted-foreground font-medium">其他状态</div>
-            {["syntax", "timeout", "runtime", "memory", "format"].map((type) => {
+            {["syntax", "timeout", "runtime"].map((type) => {
               const config = ERROR_TYPE_CONFIG[type as keyof typeof ERROR_TYPE_CONFIG];
               return (
                 <SelectItem key={type} value={type}>

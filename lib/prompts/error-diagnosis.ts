@@ -2,20 +2,20 @@
 
 // 错误类型定义 - 覆盖 OJ 判题状态和 GESP 学生高频错误
 export const ERROR_TYPES = {
-  // === 审题相关 ===
+  // === 审题相关 [WA] ===
   misread: {
     code: 'misread',
-    label: '📖 读错题',
-    description: '审题不清、遗漏条件、误解题意',
+    label: '📖 审题疏漏',
+    description: '没看清题目条件、遗漏约束、误解题意',
     ojStatus: 'WA',
     examples: ['没看到"按升序输出"', '漏掉了"不超过"的条件', '误解了输入格式'],
   },
 
-  // === 边界相关 ===
+  // === 边界相关 [WA] ===
   boundary: {
     code: 'boundary',
-    label: '🔲 边界漏',
-    description: '边界条件、特殊情况未处理',
+    label: '🔲 边界遗漏',
+    description: '没有处理特殊输入或极端情况',
     ojStatus: 'WA',
     examples: ['n=0 或 n=1 的情况', '数组为空', '最大值/最小值边界'],
   },
@@ -23,35 +23,44 @@ export const ERROR_TYPES = {
   // === 编译相关 [CE] ===
   syntax: {
     code: 'syntax',
-    label: '✏️ 语法错',
-    description: '编译错误、语法问题',
+    label: '✏️ 语法错误',
+    description: '代码无法通过编译',
     ojStatus: 'CE',
-    examples: ['缺少分号', '括号不匹配', '头文件缺失', '变量未声明', '拼写错误'],
+    examples: ['缺少分号', '括号不匹配', '头文件缺失', '变量未声明'],
   },
 
-  // === 逻辑相关 ===
+  // === 粗心相关 [WA] ===
+  careless: {
+    code: 'careless',
+    label: '👀 粗心笔误',
+    description: '思路正确但手误写错，如变量名打错、复制后忘改',
+    ojStatus: 'WA',
+    examples: ['变量名 sum 写成 sun', '复制后忘改变量', '+ 写成 -', 'mod 少写一个 0'],
+  },
+
+  // === 逻辑相关 [WA] ===
   logic: {
     code: 'logic',
-    label: '🧩 逻辑错',
-    description: '算法思路对但代码实现有bug',
+    label: '🧩 逻辑错误',
+    description: '算法思路正确，但代码实现有漏洞，改几行就能修好',
     ojStatus: 'WA',
-    examples: ['循环边界 < 写成 <=', '条件判断反了', 'if-else 分支错误', '变量用错'],
+    examples: ['循环边界 < 写成 <=', '条件判断方向反了', 'if-else 分支遗漏'],
   },
 
-  // === 算法相关 ===
+  // === 算法相关 [WA] ===
   algorithm: {
     code: 'algorithm',
-    label: '🎯 算法错',
-    description: '算法思路本身有问题',
+    label: '💡 思路错误',
+    description: '解题方法选错了或理解错了，需要换一种思路重写',
     ojStatus: 'WA',
-    examples: ['用错了算法', '递推公式推错', '贪心策略不对', '搜索方向错误'],
+    examples: ['该用 BFS 的题用了 DFS', '递推公式推导错误', '贪心策略不成立'],
   },
 
   // === 超时相关 [TLE] ===
   timeout: {
     code: 'timeout',
-    label: '🐢 超时了',
-    description: '算法复杂度过高',
+    label: '⏰ 效率不足',
+    description: '程序运行太慢，算法复杂度过高',
     ojStatus: 'TLE',
     examples: ['O(n²) 应该用 O(n log n)', '暴力枚举数据量太大', '递归没有记忆化'],
   },
@@ -59,75 +68,76 @@ export const ERROR_TYPES = {
   // === 运行错误 [RE] ===
   runtime: {
     code: 'runtime',
-    label: '💥 运行崩',
-    description: '数组越界、除零、栈溢出',
+    label: '💥 运行崩溃',
+    description: '程序运行中途崩溃退出',
     ojStatus: 'RE',
-    examples: ['数组下标越界', '除以0或取模0', '递归太深栈溢出', '空指针访问'],
+    examples: ['数组下标越界', '除以 0 或取模 0', '递归太深栈溢出'],
   },
 
-  // === 溢出相关 ===
+  // === 溢出相关 [WA] ===
   overflow: {
     code: 'overflow',
-    label: '💣 溢出了',
-    description: '整数溢出、数据类型不当',
+    label: '💣 数值溢出',
+    description: '计算结果超出 int 范围，需要用 long long',
     ojStatus: 'WA',
-    examples: ['int 乘法溢出要用 long long', '阶乘/幂运算溢出', '中间结果溢出'],
+    examples: ['int 乘法溢出', '阶乘/幂运算结果过大', '中间计算结果溢出'],
   },
 
-  // === 内存相关 [MLE] ===
-  memory: {
-    code: 'memory',
-    label: '📦 内存超',
-    description: '内存使用超出限制',
-    ojStatus: 'MLE',
-    examples: ['数组开得太大', '递归占用栈空间过多', '动态分配未释放'],
-  },
-
-  // === 格式相关 [PE] ===
-  format: {
-    code: 'format',
-    label: '📝 格式错',
-    description: '输出格式不符合要求',
-    ojStatus: 'PE',
-    examples: ['多输出/少输出空格', '换行符问题', '小数位数不对', '末尾多余空行'],
+  // === 初始化相关 [WA/RE] ===
+  uninit: {
+    code: 'uninit',
+    label: '🔧 未初始化',
+    description: '变量、数组没有赋初值，或多组数据之间没有重置',
+    ojStatus: 'WA',
+    examples: ['局部变量未赋初值导致随机结果', '数组没有 memset 清零', '多组数据间忘记重置变量'],
   },
 } as const;
 
 export type ErrorType = keyof typeof ERROR_TYPES;
 
 // 错误分类提示词
-export const classifyErrorPrompt = `你是一位经验丰富的 GESP 编程老师，正在帮助学生分析代码错误。
+export const classifyErrorPrompt = `你是一位经验丰富的 GESP 编程老师，正在帮助小学生分析代码错误。
 
-请根据提交状态和代码分析，判断错误类型。错误类型共 10 种：
+请根据提交状态和代码分析，判断错误属于以下 10 种类型中的哪一种：
 
 **编译阶段 [CE]:**
-- syntax: 语法错误（缺分号、括号不匹配、头文件缺失、变量未声明）
+- syntax: 语法错误 — 代码无法编译（缺分号、括号不匹配、头文件缺失、变量未声明）
 
-**运行阶段 [RE/MLE]:**
-- runtime: 运行崩溃（数组越界、除以0、栈溢出）
-- memory: 内存超限（数组太大、递归太深）
-
-**答案错误 [WA]:**
-- misread: 读错题（审题不清、遗漏条件、误解题意）
-- boundary: 边界漏（n=0、n=1、最大最小值等边界未处理）
-- logic: 逻辑错（算法对但实现有bug，如循环边界、条件判断）
-- algorithm: 算法错（算法思路本身有问题）
-- overflow: 溢出了（int溢出要用long long、中间结果溢出）
+**运行阶段 [RE]:**
+- runtime: 运行崩溃 — 程序运行中途崩溃（数组越界、除以0、栈溢出）
 
 **超时 [TLE]:**
-- timeout: 超时了（算法复杂度过高，如O(n²)应该用O(n log n)）
+- timeout: 效率不足 — 程序运行太慢，算法复杂度过高
 
-**格式错误 [PE]:**
-- format: 格式错（空格、换行、小数位数不对）
+**答案错误 [WA]:**
+- misread: 审题疏漏 — 没看清题目要求（遗漏条件、误解题意、看错输入输出格式）
+- boundary: 边界遗漏 — 没处理特殊情况（n=0、n=1、空输入、最大最小值）
+- careless: 粗心笔误 — 思路完全正确但手误写错（变量名打错、复制后忘改、运算符写反）
+- uninit: 未初始化 — 变量/数组没赋初值，或多组数据之间忘记重置
+- logic: 逻辑错误 — 思路正确但实现有漏洞，改几行就能修好（循环边界错、条件判断错）
+- algorithm: 思路错误 — 解题方法本身选错了，需要换思路重写（该用BFS却用了贪心）
+- overflow: 数值溢出 — 计算结果超出 int 范围，需要用 long long
 
 **判断优先级：**
-1. 先看提交状态（CE/RE/TLE/MLE/PE 可直接定位）
-2. WA 需要结合代码和测试用例分析具体原因
-3. 如果多个原因都存在，选择最根本的那个
+1. CE → 直接判为 syntax
+2. RE → 先检查是否因未初始化导致（uninit），否则判为 runtime
+3. TLE → 判为 timeout
+4. WA → 按以下顺序逐步排查：
+   a. 变量/数组未初始化或多组数据未重置 → uninit
+   b. 变量名明显写错、运算符写反等手误 → careless
+   c. 仅在极端输入（n=0, n=1, 最大值）失败 → boundary
+   d. 题目条件遗漏或误解 → misread
+   e. 数值计算溢出 → overflow
+   f. 思路正确但实现细节有bug → logic
+   g. 解题方法/算法本身不对 → algorithm
+
+**logic 与 algorithm 的区分标准：**
+- logic: 学生的整体思路是对的，只是代码某处写错了，改几行就能AC
+- algorithm: 学生的方法本身行不通，需要换一种算法才能解决
 
 请用 JSON 格式返回：
 {
-  "type": "错误类型代码",
+  "type": "错误类型代码（10种之一）",
   "confidence": 0.0-1.0的置信度,
   "evidence": "判断依据的简短说明",
   "summary": "一句话总结错误原因（适合小学生理解）"
