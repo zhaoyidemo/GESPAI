@@ -1,6 +1,6 @@
 # GESP AI 产品需求文档 (PRD)
 
-**版本**：MVP v1.3
+**版本**：MVP v1.4
 **更新日期**：2026年2月4日
 **原始日期**：2026年1月28日
 **目标上线**：1周内（2026年2月4日前）
@@ -94,7 +94,7 @@ AI在教学过程中必须遵循以下原则：
 | **AI配置中心** | 四种场景的提示词自定义 | P1 | ✅ 已完成 |
 | **语音输入** | 支持中英文语音输入（讯飞API） | P2 | ✅ 已完成 |
 | **错题三问** | 错题记录、三问复盘、防错规则 | P0 | ✅ 已完成 |
-| **模拟考试** | 模拟GESP真实考试环境 | P1 | ✅ 已完成 |
+| **模拟考试** | 模拟GESP真实考试环境 | P1 | 🚧 框架完成 |
 | **题库管理** | 从洛谷同步GESP官方题目 | P0 | ✅ 已完成 |
 | **提示词管理** | 15个系统提示词在线编辑管理 | P1 | ✅ 已完成 |
 | **题库智能筛选** | 默认按用户目标级别筛选题目 | P1 | ✅ 已完成 |
@@ -489,23 +489,7 @@ AI分析代码，识别知识点和潜在问题
 记录到用户学习历史
 ```
 
-**方式3：对话式采集**
-```
-AI：知行，为了更好地帮你规划学习，我想了解一下你之前的学习情况。
-    你最近在洛谷做过哪些题？有没有哪些题卡住了？
-
-用户：我做了P1605迷宫，WA了好几次，后来看题解才过的
-
-AI：明白了！P1605是DFS的经典题。你还记得当时卡在哪里吗？
-
-用户：好像是边界条件没处理好
-
-AI：好的，我记下了。DFS的边界条件确实是个常见坑点，
-    我会在后面的学习计划里安排专项练习。
-    还有其他题吗？
-```
-
-**当前状态**：API框架已完成，数据解析逻辑开发中
+**当前状态**：洛谷导入和代码粘贴的 API 框架已完成，数据解析逻辑开发中
 
 ### 3.9 知识点地图
 
@@ -761,7 +745,7 @@ aiFeynmanPrompt TEXT  -- 费曼学习提示词
 为小学生用户提供更便捷的输入方式，降低打字负担。
 
 **功能特性**：
-- 支持中英文双语识别（Web Speech API）
+- 支持中英文双语识别（讯飞实时语音听写 API）
 - 一键切换语言按钮
 - 实时语音转文字
 - 音量可视化指示器（3个跳动的点）
@@ -778,8 +762,9 @@ aiFeynmanPrompt TEXT  -- 费曼学习提示词
 ```
 
 **实现细节**：
-- 使用 `useSpeechRecognition` 自定义 Hook
-- 支持连续识别模式
+- 使用 `useSpeechRecognition` 自定义 Hook（封装讯飞 WebSocket API）
+- 通过 `/api/speech/auth` 获取讯飞签名认证
+- 支持连续识别模式，采用 PCM 音频编码
 - 语言偏好保存到 localStorage
 - 错误提示3秒后自动消失
 
@@ -797,16 +782,16 @@ AI 引导学生自我诊断错误，通过三问复盘形成深度记忆，而�
 
 | 分类 | 代码 | 标签 | OJ状态 | 说明 |
 |------|------|------|--------|------|
-| 审题相关 | misread | 📖 读错题 | WA | 审题不清、遗漏条件、误解题意 |
-| 边界相关 | boundary | 🔲 边界漏 | WA | 边界条件、特殊情况未处理 |
-| 编译相关 | syntax | ✏️ 语法错 | CE | 缺分号、括号不匹配、头文件缺失 |
-| 逻辑相关 | logic | 🧩 逻辑错 | WA | 算法对但实现有bug |
-| 算法相关 | algorithm | 🎯 算法错 | WA | 算法思路本身有问题 |
-| 超时相关 | timeout | 🐢 超时了 | TLE | 算法复杂度过高 |
-| 运行相关 | runtime | 💥 运行崩 | RE | 数组越界、除零、栈溢出 |
-| 溢出相关 | overflow | 💣 溢出了 | WA | int溢出、中间结果溢出 |
-| 内存相关 | memory | 📦 内存超 | MLE | 数组太大、递归占用过多 |
-| 格式相关 | format | 📝 格式错 | PE | 空格、换行、小数位数问题 |
+| 审题相关 | misread | 📖 审题疏漏 | WA | 没看清题目条件、遗漏约束、误解题意 |
+| 边界相关 | boundary | 🔲 边界遗漏 | WA | 没有处理特殊输入或极端情况 |
+| 编译相关 | syntax | ✏️ 语法错误 | CE | 缺分号、括号不匹配、头文件缺失 |
+| 粗心相关 | careless | 👀 粗心笔误 | WA | 思路正确但手误写错，变量名打错、复制后忘改 |
+| 逻辑相关 | logic | 🧩 逻辑错误 | WA | 算法思路正确，但代码实现有漏洞 |
+| 算法相关 | algorithm | 💡 思路错误 | WA | 解题方法选错了或理解错了 |
+| 超时相关 | timeout | ⏰ 效率不足 | TLE | 程序运行太慢，算法复杂度过高 |
+| 运行相关 | runtime | 💥 运行崩溃 | RE | 数组下标越界、除以0、递归太深 |
+| 溢出相关 | overflow | 💣 数值溢出 | WA | int溢出、中间计算结果溢出 |
+| 初始化相关 | uninit | 🔧 未初始化 | WA/RE | 变量未赋初值、多组数据间忘记重置 |
 
 **三问流程**：
 
@@ -988,6 +973,8 @@ model PreventionRule {
 
 ### 3.16 管理后台
 
+> **待办：** 当前管理后台无权限控制，任何登录用户均可访问 `/admin/*` 页面和 API。后续需在 User 模型增加 `isAdmin` 字段并在管理路由中校验权限。
+
 #### 3.16.1 题库管理
 
 **路由**：`/admin/problems`
@@ -1110,8 +1097,10 @@ model SystemPrompt {
 | **后端** | Next.js API Routes |
 | **数据库** | PostgreSQL + Prisma ORM |
 | **认证** | NextAuth.js (JWT策略) |
-| **AI** | Claude API (Anthropic) |
+| **AI** | Claude Sonnet 4.5 (Anthropic) |
 | **判题** | Judge0 API |
+| **语音识别** | 讯飞实时语音听写 API |
+| **3D特效** | Three.js（庆祝动画） |
 | **部署** | Railway |
 | **域名** | GESP.AI |
 
@@ -1144,243 +1133,123 @@ model SystemPrompt {
 
 ### 4.3 数据库表结构
 
-```sql
--- 用户表
-CREATE TABLE users (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  email VARCHAR(255) UNIQUE,
-  username VARCHAR(50) UNIQUE NOT NULL,
-  password_hash VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW(),
+以下基于 Prisma schema 生成，为系统实际使用的数据模型。
 
-  -- 学习目标
-  target_level INTEGER DEFAULT 5,
-  exam_date DATE,
-  weekly_schedule JSONB,
+**数据模型总览（13 个模型）**：
 
-  -- 统计
-  streak_days INTEGER DEFAULT 0,
-  last_active_date DATE,
-  total_xp INTEGER DEFAULT 0,
-  badges TEXT[] DEFAULT '{}',
+| 模型 | 表名 | 说明 |
+|------|------|------|
+| User | users | 用户信息、学习目标、AI配置、统计数据 |
+| Problem | problems | 题目（来源、级别、难度、描述、测试用例） |
+| Submission | submissions | 代码提交（评测结果、AI调试记录） |
+| KnowledgePoint | knowledge_points | 知识点树形结构 |
+| LearningRecord | learning_records | 学习进度（私教/费曼/练习/掌握度） |
+| StudyPlan | study_plans | AI生成的学习计划 |
+| DailyTask | daily_tasks | 每日任务 |
+| ChatHistory | chat_histories | AI对话历史 |
+| Badge | badges | 成就徽章 |
+| ErrorCase | error_cases | 错题记录（三问答案、AI分析） |
+| PreventionRule | prevention_rules | 防错规则（触发统计） |
+| SystemPrompt | system_prompts | 系统提示词（15个，管理员可编辑） |
+| MockExamResult | mock_exam_results | 模拟考试记录 |
 
-  -- AI配置 - 各场景的自定义提示词
-  ai_tutor_prompt TEXT,
-  ai_problem_prompt TEXT,
-  ai_debug_prompt TEXT,
-  ai_feynman_prompt TEXT
-);
+**关键模型字段**：
 
--- 学习计划表
-CREATE TABLE study_plans (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES users(id),
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW(),
+```prisma
+model User {
+  id              String    @id @default(uuid())
+  email           String?   @unique
+  username        String    @unique
+  passwordHash    String
+  // 学习目标
+  targetLevel     Int       @default(5)     // GESP目标级别
+  examDate        DateTime?                  // 考试日期
+  weeklySchedule  Json?                      // 每周可用时间
+  // 统计数据
+  streakDays      Int       @default(0)
+  lastActiveDate  DateTime?
+  totalXp         Int       @default(0)
+  badges          String[]  @default([])
+  // AI配置 - 四种场景的自定义提示词（为空则使用系统默认）
+  aiTutorPrompt   String?   @db.Text
+  aiProblemPrompt String?   @db.Text
+  aiDebugPrompt   String?   @db.Text
+  aiFeynmanPrompt String?   @db.Text
+  @@map("users")
+}
 
-  start_date DATE,
-  end_date DATE,
-  target_level INTEGER,
-  weekly_plan JSONB,  -- AI生成的完整计划
-  is_active BOOLEAN DEFAULT TRUE
-);
+model Problem {
+  id              String   @id @default(uuid())
+  title           String
+  source          String   // 'gesp_official' | 'luogu' | 'custom'
+  sourceId        String?
+  sourceUrl       String?
+  level           Int      // GESP级别 1-8
+  knowledgePoints String[]
+  difficulty      String   // 洛谷难度
+  background      String?  @db.Text  // 题目背景
+  description     String   @db.Text
+  inputFormat     String?  @db.Text
+  outputFormat    String?  @db.Text
+  samples         Json     // [{input, output, explanation?}]
+  testCases       Json     // [{input, output}]
+  timeLimit       Int      @default(1000)  // 毫秒
+  memoryLimit     Int      @default(256)   // MB
+  hint            String?  @db.Text
+  solution        String?  @db.Text
+  @@map("problems")
+}
 
--- 每日任务表
-CREATE TABLE daily_tasks (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES users(id),
-  date DATE,
+model LearningRecord {
+  id                String   @id @default(uuid())
+  userId            String
+  knowledgePointId  String
+  status            String   @default("not_started") // not_started/in_progress/completed/mastered
+  progress          Int      @default(0)  // 0-100
+  studyTime         Int      @default(0)  // 累计学习时间（分钟）
+  practiceCount     Int      @default(0)  // 练习题目数
+  correctCount      Int      @default(0)  // 正确题目数
+  tutorCompleted    Boolean  @default(false)  // AI私教完成
+  feynmanCompleted  Boolean  @default(false)  // 费曼验证完成
+  feynmanScore      Int?     // 费曼验证得分 0-100
+  masteryLevel      Int      @default(0)  // 综合掌握度 0-100
+  @@unique([userId, knowledgePointId])
+  @@map("learning_records")
+}
 
-  tasks JSONB,  -- [{type, targetId, title, completed, xpReward}]
-  total_xp INTEGER DEFAULT 0,
-  completed_xp INTEGER DEFAULT 0,
-  is_completed BOOLEAN DEFAULT FALSE,
+model MockExamResult {
+  id                String   @id @default(uuid())
+  userId            String
+  targetLevel       Int      // 考试级别
+  totalScore        Int      // 总分
+  passScore         Int      @default(60)   // 及格分数
+  passed            Boolean  // 是否通过
+  choiceScore       Int      // 选择题得分
+  choiceTotal       Int      @default(30)   // 选择题总分
+  programmingScore  Int      // 编程题得分
+  programmingTotal  Int      @default(70)   // 编程题总分
+  timeTaken         Int      // 用时（分钟）
+  timeLimit         Int      @default(90)   // 时间限制（分钟）
+  choiceAnswers     Json?    // [{questionId, answer, correct}]
+  programmingResults Json?   // [{problemId, score, status}]
+  @@map("mock_exam_results")
+}
 
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW(),
-
-  UNIQUE(user_id, date)
-);
-
--- 题目表
-CREATE TABLE problems (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  title VARCHAR(255) NOT NULL,
-  source VARCHAR(50) NOT NULL,
-  source_id VARCHAR(50),
-  source_url TEXT,
-
-  level INTEGER,
-  knowledge_points TEXT[],
-  difficulty VARCHAR(50),
-
-  description TEXT,
-  input_format TEXT,
-  output_format TEXT,
-  samples JSONB,
-  test_cases JSONB,
-  time_limit INTEGER DEFAULT 1000,
-  memory_limit INTEGER DEFAULT 256,
-
-  hint TEXT,
-  solution TEXT,
-
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
--- 提交记录表
-CREATE TABLE submissions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES users(id),
-  problem_id UUID REFERENCES problems(id),
-  created_at TIMESTAMP DEFAULT NOW(),
-
-  code TEXT,
-  language VARCHAR(20) DEFAULT 'cpp',
-  status VARCHAR(20),
-  score INTEGER DEFAULT 0,
-
-  compile_output TEXT,
-  run_output TEXT,
-  error_message TEXT,
-  time_used INTEGER,
-  memory_used INTEGER,
-
-  test_results JSONB,
-
-  -- AI调试助手相关
-  ai_help_count INTEGER DEFAULT 0,
-  ai_conversations JSONB
-);
-
--- 知识点表
-CREATE TABLE knowledge_points (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name VARCHAR(255) NOT NULL,
-  level INTEGER,
-  category VARCHAR(100),
-  description TEXT,
-
-  parent_id UUID REFERENCES knowledge_points(id),
-  prerequisites TEXT[] DEFAULT '{}',
-
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
--- 学习记录表
-CREATE TABLE learning_records (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES users(id),
-  knowledge_point_id UUID REFERENCES knowledge_points(id),
-
-  status VARCHAR(20) DEFAULT 'not_started',
-  progress INTEGER DEFAULT 0,
-
-  started_at TIMESTAMP,
-  completed_at TIMESTAMP,
-  last_studied_at TIMESTAMP,
-
-  study_time INTEGER DEFAULT 0,
-  practice_count INTEGER DEFAULT 0,
-  correct_count INTEGER DEFAULT 0,
-
-  UNIQUE(user_id, knowledge_point_id)
-);
-
--- 对话历史表
-CREATE TABLE chat_histories (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES users(id),
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW(),
-
-  context VARCHAR(100),  -- 'learn_xxx' | 'feynman_xxx' | 'problem_xxx' | 'general'
-  messages JSONB
-);
-
--- 徽章表
-CREATE TABLE badges (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  code VARCHAR(50) UNIQUE,
-  name VARCHAR(100),
-  description TEXT,
-  icon VARCHAR(50),
-  condition JSONB,
-
-  created_at TIMESTAMP DEFAULT NOW()
-);
-
--- 错题记录表
-CREATE TABLE error_cases (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-  submission_id UUID UNIQUE REFERENCES submissions(id) ON DELETE CASCADE,
-  problem_id UUID REFERENCES problems(id) ON DELETE CASCADE,
-
-  error_type VARCHAR(50),  -- 10种错误类型之一
-  q1_answer TEXT,          -- 第一问答案
-  q2_answer TEXT,          -- 第二问答案
-  q3_answer TEXT,          -- 第三问答案
-  ai_analysis JSONB,       -- AI分析结果
-
-  prevention_rule_id UUID REFERENCES prevention_rules(id),
-  status VARCHAR(20) DEFAULT 'pending',  -- pending/in_progress/completed
-
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
--- 防错规则表
-CREATE TABLE prevention_rules (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-
-  error_type VARCHAR(50) NOT NULL,  -- 关联的错误类型
-  rule TEXT NOT NULL,               -- 规则内容
-  examples TEXT[] DEFAULT '{}',     -- 触发案例列表
-
-  hit_count INTEGER DEFAULT 0,      -- 再次触发次数
-  last_hit_at TIMESTAMP,
-  is_active BOOLEAN DEFAULT TRUE,
-
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
--- 系统提示词表
-CREATE TABLE system_prompts (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  key VARCHAR(100) UNIQUE NOT NULL,      -- 提示词唯一标识
-  category VARCHAR(50) NOT NULL,          -- 分类：core/error-diagnosis/tool
-  name VARCHAR(255) NOT NULL,             -- 显示名称
-  description TEXT,                        -- 描述说明
-  content TEXT NOT NULL,                   -- 提示词内容
-  is_active BOOLEAN DEFAULT TRUE,         -- 是否启用
-  updated_by VARCHAR(255),                -- 最后修改者
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
--- 模拟考试记录表
-CREATE TABLE mock_exam_results (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-
-  level INTEGER NOT NULL,               -- GESP级别
-  total_score INTEGER DEFAULT 0,        -- 总分
-  choice_score INTEGER DEFAULT 0,       -- 选择题得分
-  coding_score INTEGER DEFAULT 0,       -- 编程题得分
-  passed BOOLEAN DEFAULT FALSE,         -- 是否通过（≥60分）
-  time_used INTEGER,                    -- 用时（秒）
-
-  details JSONB,                        -- 详细答题记录
-
-  created_at TIMESTAMP DEFAULT NOW()
-);
+model SystemPrompt {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  category    String   // core/error-diagnosis/tool
+  name        String
+  description String?  @db.Text
+  content     String   @db.Text
+  isActive    Boolean  @default(true)
+  updatedBy   String?
+  @@index([category])
+  @@map("system_prompts")
+}
 ```
+
+其余模型（Submission、KnowledgePoint、StudyPlan、DailyTask、ChatHistory、Badge、ErrorCase、PreventionRule）详见 `prisma/schema.prisma`。
 
 ---
 
@@ -1406,7 +1275,7 @@ CREATE TABLE mock_exam_results (
 | 数据导入 | `/import` | 导入洛谷数据 | 🚧 |
 | 个人中心 | `/profile` | 统计、徽章、设置 | ✅ |
 | AI配置 | `/profile/ai-config` | 四种场景提示词配置 | ✅ |
-| 模拟考试 | `/mock-exam` | 模拟GESP考试环境 | ✅ |
+| 模拟考试 | `/mock-exam` | 模拟GESP考试环境 | 🚧 |
 | 题库管理 | `/admin/problems` | 从洛谷同步GESP题目 | ✅ |
 | 数据导入管理 | `/admin/import` | 浏览器脚本批量导入题目 | ✅ |
 | 提示词管理 | `/admin/prompts` | 15个系统提示词在线管理 | ✅ |
@@ -1451,6 +1320,7 @@ CREATE TABLE mock_exam_results (
 | GET | `/api/problems/[id]` | 题目详情 |
 | POST | `/api/judge` | 提交代码判题 |
 | GET | `/api/judge` | 获取提交历史 |
+| GET | `/api/judge/test` | Judge0 API 连通性测试 |
 
 ### 6.4 AI对话
 | 方法 | 端点 | 功能 |
@@ -1462,9 +1332,21 @@ CREATE TABLE mock_exam_results (
 | 方法 | 端点 | 功能 |
 |------|------|------|
 | GET | `/api/user/stats` | 获取用户统计数据 |
+| POST | `/api/user/xp` | 更新XP经验值 |
 | GET | `/api/user/ai-config` | 获取AI配置 |
 | POST | `/api/user/ai-config` | 保存AI提示词 |
 | POST | `/api/user/ai-config/reset` | 重置AI配置 |
+
+### 6.5.1 学习记录
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/learning-records` | 获取用户学习记录 |
+| POST | `/api/learning-records` | 创建/更新学习记录 |
+
+### 6.5.2 语音认证
+| 方法 | 端点 | 功能 |
+|------|------|------|
+| GET | `/api/speech/auth` | 获取讯飞语音识别签名URL |
 
 ### 6.6 数据导入
 | 方法 | 端点 | 功能 |
@@ -1493,13 +1375,15 @@ CREATE TABLE mock_exam_results (
 | 方法 | 端点 | 功能 |
 |------|------|------|
 | POST | `/api/seed` | 统一初始化 |
-| POST | `/api/seed/gesp[1-8]` | 各级别题目初始化 |
+| POST | `/api/seed/gesp[1-8]` | 各级别题目初始化（当前已实现4-6级） |
 | POST | `/api/seed/reset` | 重置数据 |
+| POST | `/api/seed/cleanup` | 清理多余级别数据 |
 
 ### 6.9 模拟考试
 | 方法 | 端点 | 功能 |
 |------|------|------|
 | GET | `/api/mock-exam` | 获取模拟考试历史记录 |
+| POST | `/api/mock-exam` | 保存考试结果 |
 | DELETE | `/api/mock-exam` | 清空考试记录 |
 
 ### 6.10 管理后台 — 题库同步
@@ -1553,7 +1437,6 @@ CREATE TABLE mock_exam_results (
 | 功能 | 描述 |
 |------|------|
 | **API官方对接** | 与洛谷等平台官方合作 |
-| **AI出题** | AI根据薄弱点生成变体题 |
 | **视频讲解** | 算法动画可视化 |
 | **社区** | 用户讨论、题解分享 |
 
@@ -1586,7 +1469,7 @@ CREATE TABLE mock_exam_results (
 - [x] 防错规则：完成三问后自动生成规则
 - [x] 规则管理：查看、启用/停用、删除规则
 - [x] 提交前检查：代码提交时自动检查是否违反防错规则
-- [x] 模拟考试：模拟GESP真实考试环境（90分钟、选择题+编程题）
+- [ ] 模拟考试：完成考试执行页（计时、答题、交卷流程）
 - [x] 题库管理：从洛谷同步GESP官方题目（4/5/6级）
 - [x] 数据导入管理：浏览器脚本批量导入题目数据
 - [x] 系统提示词管理：15个AI提示词在线编辑、对比默认值、一键重置
@@ -1597,6 +1480,6 @@ CREATE TABLE mock_exam_results (
 
 ---
 
-*文档版本：v1.3*
+*文档版本：v1.4*
 *更新日期：2026年2月4日*
 *目标用户：赵知行（小学5年级，GESP 4级→5级，2026年3月14日考试）*

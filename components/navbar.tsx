@@ -32,7 +32,7 @@ import {
 const navItems = [
   { href: "/", label: "今日任务", icon: Home },
   { href: "/map", label: "知识点", icon: Map },
-  { href: "/learn/recursion", label: "学习", icon: BookOpen },
+  { href: "/map", label: "学习", icon: BookOpen },
   { href: "/problem", label: "题库", icon: Code },
   { href: "/error-book", label: "错题本", icon: BookX },
 ];
