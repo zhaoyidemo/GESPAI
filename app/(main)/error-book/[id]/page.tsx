@@ -514,7 +514,7 @@ export default function ErrorCaseDetailPage({
             <Card className="mt-4 bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm flex items-center gap-2">
-                  \ud83d\udee1\ufe0f 防错规则
+                  🛡️ 防错规则
                 </CardTitle>
               </CardHeader>
               <CardContent>

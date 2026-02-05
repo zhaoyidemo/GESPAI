@@ -67,7 +67,7 @@ function QuestionCard({
           <span>第{number}问：{title}</span>
           {isCompleted && (
             <Badge variant="outline" className="ml-auto bg-green-100 text-green-700">
-              \u2705 已完成
+              ✅ 已完成
             </Badge>
           )}
         </CardTitle>
@@ -90,7 +90,7 @@ function QuestionCard({
             {hint && (
               <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                 <p className="text-sm text-blue-800 flex items-start gap-2">
-                  <span className="text-lg">\ud83d\udca1</span>
+                  <span className="text-lg">💡</span>
                   <span className="whitespace-pre-wrap">{hint}</span>
                 </p>
               </div>
@@ -102,7 +102,7 @@ function QuestionCard({
                 onClick={onGetHint}
                 disabled={isLoading}
               >
-                {isLoading ? "\ud83e\udd14 思考中..." : "\ud83d\udca1 给点提示"}
+                {isLoading ? "🤔 思考中..." : "💡 给点提示"}
               </Button>
               <Button
                 size="sm"
@@ -110,7 +110,7 @@ function QuestionCard({
                 disabled={!answer?.trim() || isLoading}
                 className="ml-auto"
               >
-                \u2705 确认回答
+                ✅ 确认回答
               </Button>
             </div>
           </>
@@ -209,7 +209,7 @@ export function ThreeQuestions({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold flex items-center gap-2">
-          \ud83d\udcdd 错题三问
+          📝 错题三问
         </h3>
         <div className="flex items-center gap-2">
           <Badge variant={allCompleted ? "default" : "secondary"}>
@@ -223,7 +223,7 @@ export function ThreeQuestions({
           number={1}
           title="这道题错了哪？"
           description="仔细看看代码，找出错误的位置和表现"
-          emoji="\ud83d\udd0d"
+          emoji="🔍"
           answer={isQ1Completed ? q1Answer : localQ1}
           isActive={currentQuestion === 1}
           isCompleted={isQ1Completed}
@@ -238,7 +238,7 @@ export function ThreeQuestions({
           number={2}
           title="为什么会错？"
           description="分析错误的根本原因，是什么导致你这样写"
-          emoji="\ud83e\udde0"
+          emoji="🧠"
           answer={isQ2Completed ? q2Answer : localQ2}
           isActive={currentQuestion === 2}
           isCompleted={isQ2Completed}
@@ -253,7 +253,7 @@ export function ThreeQuestions({
           number={3}
           title="下次怎么避免？"
           description="总结一条防错规则，帮助你以后不再犯同样的错"
-          emoji="\ud83d\udee1\ufe0f"
+          emoji="🛡️"
           answer={isQ3Completed ? q3Answer : localQ3}
           isActive={currentQuestion === 3}
           isCompleted={isQ3Completed}
@@ -269,13 +269,13 @@ export function ThreeQuestions({
         <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
-              <div className="text-4xl">\ud83c\udf89</div>
+              <div className="text-4xl">🎉</div>
               <h4 className="font-semibold text-lg">太棒了！你完成了错题三问</h4>
               <p className="text-sm text-muted-foreground">
                 现在可以生成一条防错规则，帮助你以后避免类似错误
               </p>
               <Button onClick={onGenerateRule}>
-                \u2728 生成防错规则
+                ✨ 生成防错规则
               </Button>
             </div>
           </CardContent>

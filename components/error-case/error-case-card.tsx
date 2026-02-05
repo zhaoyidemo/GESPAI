@@ -82,7 +82,7 @@ export function ErrorCaseCard({ errorCase }: ErrorCaseCardProps) {
         <CardContent className="pt-0">
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
-              <span>\ud83d\udcdd</span>
+              <span>📝</span>
               <span>三问进度: {questionsCompleted}/3</span>
             </div>
             <span>
@@ -91,7 +91,7 @@ export function ErrorCaseCard({ errorCase }: ErrorCaseCardProps) {
           </div>
           {errorCase.preventionRule && (
             <div className="mt-2 p-2 bg-muted/50 rounded text-xs">
-              <span className="text-muted-foreground">\ud83d\udee1\ufe0f 防错规则：</span>
+              <span className="text-muted-foreground">🛡️ 防错规则：</span>
               <span className="line-clamp-1">{errorCase.preventionRule.rule}</span>
             </div>
           )}

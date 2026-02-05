@@ -62,13 +62,13 @@ export function PreventionRuleCard({
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className="text-xl">\ud83d\udee1\ufe0f</span>
+            <span className="text-xl">🛡️</span>
             <ErrorTypeBadge type={rule.errorType} size="sm" />
           </div>
           <div className="flex items-center gap-2">
             {rule.hitCount > 0 && (
               <Badge variant="destructive" className="text-xs">
-                \u26a0\ufe0f 触发 {rule.hitCount} 次
+                ⚠️ 触发 {rule.hitCount} 次
               </Badge>
             )}
             <Badge
@@ -100,7 +100,7 @@ export function PreventionRuleCard({
               onClick={handleToggle}
               disabled={isUpdating}
             >
-              {rule.isActive ? "\u23f8\ufe0f 停用" : "\u25b6\ufe0f 启用"}
+              {rule.isActive ? "⏸️ 停用" : "▶️ 启用"}
             </Button>
             <Button
               variant="ghost"
@@ -109,7 +109,7 @@ export function PreventionRuleCard({
               disabled={isUpdating}
               className="text-destructive hover:text-destructive"
             >
-              \ud83d\uddd1\ufe0f 删除
+              🗑️ 删除
             </Button>
           </div>
         )}

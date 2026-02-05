@@ -206,7 +206,7 @@ export default function PreventionRulesPage() {
                     className="flex items-center justify-between p-3 bg-card rounded-lg border"
                   >
                     <div className="flex items-center gap-2">
-                      <span>{typeConfig?.emoji || "\u2753"}</span>
+                      <span>{typeConfig?.emoji || "❓"}</span>
                       <span className="text-sm">{rule.rule}</span>
                     </div>
                     <Badge variant="destructive">
@@ -284,7 +284,7 @@ export default function PreventionRulesPage() {
             return (
               <div key={type}>
                 <h3 className="font-semibold mb-3 flex items-center gap-2">
-                  <span className="text-xl">{typeConfig?.emoji || "\u2753"}</span>
+                  <span className="text-xl">{typeConfig?.emoji || "❓"}</span>
                   <span>{typeConfig?.label || type}</span>
                   <Badge variant="secondary">{typeRules.length}</Badge>
                 </h3>

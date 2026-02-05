@@ -111,24 +111,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       where: { id },
       data: updateData,
       include: {
-        problem: {
-          select: {
-            id: true,
-            title: true,
-            level: true,
-            difficulty: true,
-            knowledgePoints: true,
-          },
-        },
-        submission: {
-          select: {
-            id: true,
-            status: true,
-            code: true,
-            testResults: true,
-            createdAt: true,
-          },
-        },
+        problem: true,
+        submission: true,
         preventionRule: true,
       },
     });
