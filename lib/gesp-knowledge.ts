@@ -542,7 +542,7 @@ export const gespKnowledgeData: Record<string, LevelInfo> = {
           "掌握链表的插入操作",
           "掌握链表的删除操作",
           "掌握链表的遍历操作",
-          "掌握链表的反转操作",
+          "掌握链表的查找操作",
           "理解单链表、双链表、循环链表的区别"
         ]
       },
