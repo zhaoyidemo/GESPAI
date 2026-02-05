@@ -1,5 +1,5 @@
 /**
- * GESP C++ 4-6级知识点数据
+ * GESP C++ 4-8级知识点数据
  * 严格按照《GESP C++编程能力等级标准》整理
  */
 
@@ -429,6 +429,246 @@ export const gespKnowledgeData: Record<string, LevelInfo> = {
           "掌握队列的入队和出队操作",
           "掌握循环队列的实现",
           "了解队列的应用场景"
+        ]
+      }
+    ]
+  },
+  "7": {
+    level: 7,
+    title: "C++编程七级",
+    examTime: 180,
+    description: "掌握数学库函数、复杂动态规划、图的定义与遍历、哈希表",
+    objectives: "掌握常用数学库函数，了解相关函数概念与定义。掌握复杂动态规划，包括二维动态规划、求LIS、LCS等内容，并掌握利用滚动数组等的优化方法。了解图的定义与广搜和深搜的算法，泛洪算法。了解哈希表的概念和知识。",
+    points: [
+      {
+        id: "math-functions",
+        name: "数学库函数",
+        category: "C++基础",
+        description: "三角函数、对数函数、指数函数的使用",
+        details: [
+          "掌握三角函数：sin(x)、cos(x)等",
+          "掌握对数函数：log10(x)返回以10为底的对数，log2(x)返回以2为底的对数",
+          "掌握指数函数：exp(x)计算e的x次幂"
+        ]
+      },
+      {
+        id: "dp-2d",
+        name: "二维动态规划",
+        category: "算法",
+        description: "二维DP及动态规划最值优化",
+        details: [
+          "掌握二维动态规划的基本思想",
+          "掌握动态规划最值优化方法",
+          "能够解决二维DP问题"
+        ]
+      },
+      {
+        id: "interval-dp",
+        name: "区间动态规划",
+        category: "算法",
+        description: "区间DP的概念和应用",
+        details: [
+          "理解区间动态规划的概念",
+          "掌握区间DP的状态定义",
+          "能够解决区间DP问题"
+        ]
+      },
+      {
+        id: "lis",
+        name: "最长上升子序列(LIS)",
+        category: "算法",
+        description: "求解最长上升子序列问题",
+        details: [
+          "理解最长上升子序列的概念",
+          "掌握LIS的动态规划解法",
+          "了解LIS的二分优化方法"
+        ]
+      },
+      {
+        id: "lcs",
+        name: "最长公共子序列(LCS)",
+        category: "算法",
+        description: "求解最长公共子序列问题",
+        details: [
+          "理解最长公共子序列的概念",
+          "掌握LCS的动态规划解法",
+          "能够分析LCS的时间和空间复杂度"
+        ]
+      },
+      {
+        id: "rolling-array",
+        name: "滚动数组优化",
+        category: "算法",
+        description: "基于滚动数组降低动态规划空间复杂度",
+        details: [
+          "理解滚动数组的原理",
+          "掌握使用滚动数组优化空间复杂度",
+          "能够将二维DP优化为一维"
+        ]
+      },
+      {
+        id: "graph-basic",
+        name: "图的基本概念",
+        category: "数据结构",
+        description: "图的定义、种类和数据结构表示",
+        details: [
+          "掌握图的基本定义",
+          "理解有向图和无向图的区别",
+          "掌握图节点的度的概念",
+          "掌握图的数据结构表示（邻接矩阵、邻接表）"
+        ]
+      },
+      {
+        id: "graph-traversal",
+        name: "图的遍历",
+        category: "算法",
+        description: "基于DFS和BFS的图搜索与遍历",
+        details: [
+          "掌握图的深度优先遍历(DFS)",
+          "掌握图的广度优先遍历(BFS)",
+          "能够根据问题选择合适的遍历方法"
+        ]
+      },
+      {
+        id: "flood-fill",
+        name: "泛洪算法",
+        category: "算法",
+        description: "图的泛洪(flood fill)算法",
+        details: [
+          "理解泛洪算法的原理",
+          "掌握泛洪算法的实现",
+          "了解泛洪算法的应用场景"
+        ]
+      },
+      {
+        id: "hash-table",
+        name: "哈希表",
+        category: "数据结构",
+        description: "哈希表的概念与应用",
+        details: [
+          "掌握哈希表的基本概念",
+          "理解哈希函数的作用",
+          "掌握哈希表的应用"
+        ]
+      }
+    ]
+  },
+  "8": {
+    level: 8,
+    title: "C++编程八级",
+    examTime: 180,
+    description: "掌握计数原理、排列组合、图论算法（最短路径、最小生成树）、算法优化",
+    objectives: "掌握基本计数原理，理解加法原理和乘法原理的区别与使用。掌握排列组合概念，能够实现常见排列组合问题的编程求解方法。掌握杨辉三角形的概念和应用。掌握代数与平面几何的基本知识。掌握较为复杂算法的时间复杂度和空间复杂度分析方法，及其一般的算法优化技巧，能根据数学知识优化算法。",
+    points: [
+      {
+        id: "counting-principle",
+        name: "计数原理",
+        category: "数学",
+        description: "加法原理和乘法原理",
+        details: [
+          "掌握加法原理的概念和应用",
+          "掌握乘法原理的概念和应用",
+          "理解加法原理和乘法原理的区别"
+        ]
+      },
+      {
+        id: "permutation",
+        name: "排列",
+        category: "数学",
+        description: "排列的基本概念和编程实现",
+        details: [
+          "掌握排列的基本概念",
+          "掌握排列数的计算方法",
+          "能够实现排列问题的编程求解"
+        ]
+      },
+      {
+        id: "combination",
+        name: "组合",
+        category: "数学",
+        description: "组合的基本概念和编程实现",
+        details: [
+          "掌握组合的基本概念",
+          "掌握组合数的计算方法",
+          "能够实现组合问题的编程求解"
+        ]
+      },
+      {
+        id: "pascal-triangle",
+        name: "杨辉三角",
+        category: "数学",
+        description: "杨辉三角形（帕斯卡三角形）的概念和实现",
+        details: [
+          "掌握杨辉三角形的定义",
+          "理解杨辉三角形与组合数的关系",
+          "掌握杨辉三角形的编程实现"
+        ]
+      },
+      {
+        id: "binary-lifting",
+        name: "倍增法",
+        category: "算法",
+        description: "倍增法的概念和时间复杂度",
+        details: [
+          "理解倍增法的基本概念",
+          "了解倍增法的时间复杂度",
+          "能够使用倍增法解决相关问题"
+        ]
+      },
+      {
+        id: "algebra-geometry",
+        name: "代数与平面几何",
+        category: "数学",
+        description: "方程求解和基本图形面积计算",
+        details: [
+          "掌握一元一次方程的求解",
+          "掌握二元一次方程的求解",
+          "掌握三角形、圆形、长方形等基本图形的面积计算"
+        ]
+      },
+      {
+        id: "mst",
+        name: "最小生成树",
+        category: "算法",
+        description: "Kruskal算法和Prim算法",
+        details: [
+          "掌握最小生成树的概念",
+          "掌握Kruskal算法的原理和实现",
+          "掌握Prim算法的原理和实现"
+        ]
+      },
+      {
+        id: "shortest-path",
+        name: "最短路径",
+        category: "算法",
+        description: "Dijkstra算法和Floyd算法",
+        details: [
+          "掌握最短路径的概念",
+          "掌握单源最短路径的Dijkstra算法",
+          "掌握多源最短路径的Floyd算法",
+          "理解不同算法的适用场景"
+        ]
+      },
+      {
+        id: "complexity-analysis",
+        name: "算法效率分析",
+        category: "算法",
+        description: "复杂算法的时间和空间复杂度分析",
+        details: [
+          "掌握较复杂算法的时间复杂度分析方法",
+          "掌握较复杂算法的空间复杂度分析方法",
+          "能够分析各类算法（排序、查找、树和图遍历、搜索、分治、动态规划等）的复杂度"
+        ]
+      },
+      {
+        id: "algorithm-optimization",
+        name: "算法优化",
+        category: "算法",
+        description: "算法优化的一般方法和技巧",
+        details: [
+          "理解不同算法求解同一问题在复杂度上的差异",
+          "掌握算法优化的一般方法",
+          "理解使用数学知识辅助求解问题的技巧（如等差、等比数列求和公式）"
         ]
       }
     ]
