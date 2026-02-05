@@ -26,9 +26,20 @@ const gesp5Problems = [
       { input: "4\n2 4 6 8", output: "24" },
     ],
     testCases: [
+      // 原始样例 (3个)
       { input: "3\n1 2 3", output: "6" },
       { input: "4\n2 4 8 16", output: "16" },
       { input: "4\n2 4 6 8", output: "24" },
+      // 补充测试用例 (9个)
+      { input: "2\n1 1", output: "1" },           // n=2 最小边界
+      { input: "2\n7 11", output: "77" },         // 两个质数
+      { input: "2\n12 18", output: "36" },        // 有公因子
+      { input: "3\n5 10 15", output: "30" },      // 倍数关系
+      { input: "3\n3 7 11", output: "231" },      // 三个互质数
+      { input: "5\n2 3 5 7 11", output: "2310" }, // 5个质数
+      { input: "10\n1 2 3 4 5 6 7 8 9 10", output: "2520" }, // n=10 最大边界
+      { input: "3\n50 25 10", output: "50" },     // a_i=50 边界
+      { input: "4\n6 6 6 6", output: "6" },       // 全部相同
     ],
     timeLimit: 1000,
     memoryLimit: 256,
