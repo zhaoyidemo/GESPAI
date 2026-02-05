@@ -1,10 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { ErrorTypeBadge } from "./error-type-badge";
 import { cn } from "@/lib/utils";
+import { Trash2 } from "lucide-react";
 
 interface ErrorCaseCardProps {
   errorCase: {
@@ -31,9 +34,11 @@ interface ErrorCaseCardProps {
       rule: string;
     } | null;
   };
+  onDelete?: (id: string) => Promise<void>;
 }
 
-export function ErrorCaseCard({ errorCase }: ErrorCaseCardProps) {
+export function ErrorCaseCard({ errorCase, onDelete }: ErrorCaseCardProps) {
+  const [isDeleting, setIsDeleting] = useState(false);
   const questionsCompleted = [
     errorCase.q1Answer,
     errorCase.q2Answer,
@@ -57,12 +62,38 @@ export function ErrorCaseCard({ errorCase }: ErrorCaseCardProps) {
 
   const status = statusConfig[errorCase.status as keyof typeof statusConfig] || statusConfig.pending;
 
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!onDelete) return;
+    if (!confirm(`确定要删除「${errorCase.problem.title}」的错题记录吗？`)) return;
+
+    setIsDeleting(true);
+    try {
+      await onDelete(errorCase.id);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <Link href={`/error-book/${errorCase.id}`}>
-      <Card className="hover:shadow-md transition-shadow cursor-pointer">
+      <Card className="hover:shadow-md transition-shadow cursor-pointer group relative">
+        {onDelete && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive hover:bg-destructive/10 z-10"
+            onClick={handleDelete}
+            disabled={isDeleting}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        )}
         <CardHeader className="pb-2">
           <div className="flex items-start justify-between gap-2">
-            <CardTitle className="text-base font-medium line-clamp-1">
+            <CardTitle className="text-base font-medium line-clamp-1 pr-8">
               {errorCase.problem.title}
             </CardTitle>
             <Badge variant="outline" className={cn("shrink-0", status.className)}>

@@ -19,6 +19,7 @@ import {
   ERROR_TYPE_CONFIG,
 } from "@/components/error-case";
 import { BookOpen, Shield, Filter, AlertTriangle, TrendingDown } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ErrorCase {
   id: string;
@@ -50,10 +51,37 @@ export default function ErrorBookPage() {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [errorTypeFilter, setErrorTypeFilter] = useState<string>("all");
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchErrorCases();
   }, [statusFilter, errorTypeFilter]);
+
+  const handleDeleteErrorCase = async (id: string) => {
+    try {
+      const response = await fetch(`/api/error-case/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setErrorCases((prev) => prev.filter((e) => e.id !== id));
+        toast({
+          title: "删除成功",
+          description: "错题记录已删除",
+        });
+      } else {
+        const data = await response.json();
+        throw new Error(data.error || "删除失败");
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "删除失败",
+        description: error instanceof Error ? error.message : "请重试",
+      });
+      throw error;
+    }
+  };
 
   const fetchErrorCases = async () => {
     setLoading(true);
@@ -356,7 +384,11 @@ export default function ErrorBookPage() {
           ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {errorCases.map((errorCase) => (
-                <ErrorCaseCard key={errorCase.id} errorCase={errorCase} />
+                <ErrorCaseCard
+                  key={errorCase.id}
+                  errorCase={errorCase}
+                  onDelete={handleDeleteErrorCase}
+                />
               ))}
             </div>
           )}
