@@ -136,6 +136,9 @@ export default function ProblemListPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">全部级别</SelectItem>
+                <SelectItem value="1">1 级</SelectItem>
+                <SelectItem value="2">2 级</SelectItem>
+                <SelectItem value="3">3 级</SelectItem>
                 <SelectItem value="4">4 级</SelectItem>
                 <SelectItem value="5">5 级</SelectItem>
                 <SelectItem value="6">6 级</SelectItem>
