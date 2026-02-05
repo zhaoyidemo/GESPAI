@@ -125,24 +125,9 @@ ${failedTestsInfo ? `**失败的测试用例**\n${failedTestsInfo}` : ""}
         status: "in_progress",
       },
       include: {
-        problem: {
-          select: {
-            id: true,
-            title: true,
-            level: true,
-            difficulty: true,
-            knowledgePoints: true,
-          },
-        },
-        submission: {
-          select: {
-            id: true,
-            status: true,
-            code: true,
-            testResults: true,
-            createdAt: true,
-          },
-        },
+        problem: true,
+        submission: true,
+        preventionRule: true,
       },
     });
 
