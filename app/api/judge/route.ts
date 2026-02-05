@@ -103,29 +103,37 @@ export async function POST(request: NextRequest) {
       });
 
       // 更新相关知识点的练习统计
-      const knowledgePoints = problem.knowledgePoints || [];
-      for (const kpId of knowledgePoints) {
-        await prisma.learningRecord.upsert({
-          where: {
-            userId_knowledgePointId: {
-              userId: session.user.id,
-              knowledgePointId: kpId,
-            },
-          },
-          create: {
-            userId: session.user.id,
-            knowledgePointId: kpId,
-            status: "in_progress",
-            practiceCount: 1,
-            correctCount: 1,
-            lastStudiedAt: new Date(),
-          },
-          update: {
-            practiceCount: { increment: 1 },
-            correctCount: { increment: 1 },
-            lastStudiedAt: new Date(),
-          },
+      // 注意：problem.knowledgePoints 是字符串名称数组，需要先查找对应的 KnowledgePoint
+      const knowledgePointNames = problem.knowledgePoints || [];
+      for (const kpName of knowledgePointNames) {
+        // 根据名称和级别查找知识点
+        const kp = await prisma.knowledgePoint.findFirst({
+          where: { name: kpName, level: problem.level },
         });
+
+        if (kp) {
+          await prisma.learningRecord.upsert({
+            where: {
+              userId_knowledgePointId: {
+                userId: session.user.id,
+                knowledgePointId: kp.id,
+              },
+            },
+            create: {
+              userId: session.user.id,
+              knowledgePointId: kp.id,
+              status: "in_progress",
+              practiceCount: 1,
+              correctCount: 1,
+              lastStudiedAt: new Date(),
+            },
+            update: {
+              practiceCount: { increment: 1 },
+              correctCount: { increment: 1 },
+              lastStudiedAt: new Date(),
+            },
+          });
+        }
       }
 
       return NextResponse.json({
@@ -136,28 +144,34 @@ export async function POST(request: NextRequest) {
     }
 
     // 非 AC 的情况也更新练习次数
-    const knowledgePoints = problem.knowledgePoints || [];
-    for (const kpId of knowledgePoints) {
-      await prisma.learningRecord.upsert({
-        where: {
-          userId_knowledgePointId: {
-            userId: session.user.id,
-            knowledgePointId: kpId,
-          },
-        },
-        create: {
-          userId: session.user.id,
-          knowledgePointId: kpId,
-          status: "in_progress",
-          practiceCount: 1,
-          correctCount: 0,
-          lastStudiedAt: new Date(),
-        },
-        update: {
-          practiceCount: { increment: 1 },
-          lastStudiedAt: new Date(),
-        },
+    const knowledgePointNames = problem.knowledgePoints || [];
+    for (const kpName of knowledgePointNames) {
+      const kp = await prisma.knowledgePoint.findFirst({
+        where: { name: kpName, level: problem.level },
       });
+
+      if (kp) {
+        await prisma.learningRecord.upsert({
+          where: {
+            userId_knowledgePointId: {
+              userId: session.user.id,
+              knowledgePointId: kp.id,
+            },
+          },
+          create: {
+            userId: session.user.id,
+            knowledgePointId: kp.id,
+            status: "in_progress",
+            practiceCount: 1,
+            correctCount: 0,
+            lastStudiedAt: new Date(),
+          },
+          update: {
+            practiceCount: { increment: 1 },
+            lastStudiedAt: new Date(),
+          },
+        });
+      }
     }
 
     return NextResponse.json({
