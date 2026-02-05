@@ -30,16 +30,22 @@ const gesp5Problems = [
       { input: "3\n1 2 3", output: "6" },
       { input: "4\n2 4 8 16", output: "16" },
       { input: "4\n2 4 6 8", output: "24" },
-      // 补充测试用例 (9个)
-      { input: "2\n1 1", output: "1" },           // n=2 最小边界
-      { input: "2\n7 11", output: "77" },         // 两个质数
-      { input: "2\n12 18", output: "36" },        // 有公因子
-      { input: "3\n5 10 15", output: "30" },      // 倍数关系
-      { input: "3\n3 7 11", output: "231" },      // 三个互质数
-      { input: "5\n2 3 5 7 11", output: "2310" }, // 5个质数
-      { input: "10\n1 2 3 4 5 6 7 8 9 10", output: "2520" }, // n=10 最大边界
-      { input: "3\n50 25 10", output: "50" },     // a_i=50 边界
-      { input: "4\n6 6 6 6", output: "6" },       // 全部相同
+      // 极端测试用例 (15个) - 覆盖边界和特殊情况
+      { input: "2\n1 50", output: "50" },         // n=2最小, a极端混合
+      { input: "2\n49 50", output: "2450" },      // 两个最大且互质
+      { input: "10\n1 1 1 1 1 1 1 1 1 1", output: "1" },  // n=10最大, 全1
+      { input: "10\n50 50 50 50 50 50 50 50 50 50", output: "50" },  // n=10最大, 全50
+      { input: "2\n1 1", output: "1" },           // 全为1
+      { input: "2\n50 50", output: "50" },        // 全为50
+      { input: "10\n1 2 3 4 5 6 7 8 9 50", output: "12600" },  // 1到50混合
+      { input: "3\n41 43 47", output: "82861" },  // 三个大质数
+      { input: "4\n37 41 43 47", output: "3065857" },  // 四个大质数
+      { input: "10\n2 3 5 7 11 13 17 19 23 29", output: "6469693230" },  // 10个小质数，最大LCM
+      { input: "3\n6 10 15", output: "30" },      // 复杂公因子关系
+      { input: "3\n12 18 24", output: "72" },     // 有公因子的三数
+      { input: "3\n16 32 48", output: "96" },     // 2的幂次相关
+      { input: "2\n25 50", output: "50" },        // 倍数关系
+      { input: "2\n1 49", output: "49" },         // 1和49
     ],
     timeLimit: 1000,
     memoryLimit: 256,
