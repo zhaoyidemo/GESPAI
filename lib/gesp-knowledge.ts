@@ -1,5 +1,5 @@
 /**
- * GESP C++ 4-8级知识点数据
+ * GESP C++ 1-8级知识点数据
  * 严格按照《GESP C++编程能力等级标准》整理
  */
 
@@ -21,6 +21,336 @@ export interface LevelInfo {
 }
 
 export const gespKnowledgeData: Record<string, LevelInfo> = {
+  "1": {
+    level: 1,
+    title: "C++编程一级",
+    examTime: 120,
+    description: "掌握计算机基础、顺序/分支/循环结构、基本数据类型和运算",
+    objectives: "学生通过计算机基础知识的学习，了解计算机的构成与操作，以及计算机的发展历程。通过编程基础知识以及语句的掌握，可以独立完成简单功能的顺序结构、分支结构、循环结构的程序。",
+    points: [
+      {
+        id: "computer-basic",
+        name: "计算机基础知识",
+        category: "计算机基础",
+        description: "计算机的软硬件组成、常见操作、发展历程",
+        details: [
+          "了解计算机的基本构成（CPU、内存、I/O设备等）",
+          "了解Windows、Linux等操作系统基本概念和常见操作",
+          "了解计算机的历史及在现代社会中的常见应用"
+        ]
+      },
+      {
+        id: "ide-usage",
+        name: "集成开发环境",
+        category: "计算机基础",
+        description: "IDE的基本使用（如Dev C++）",
+        details: [
+          "掌握创建文件、编辑文件、保存文件",
+          "掌握编译、解释、调试的基本操作",
+          "理解程序的注释和调试的概念"
+        ]
+      },
+      {
+        id: "sequential-structure",
+        name: "顺序结构",
+        category: "程序结构",
+        description: "顺序结构程序的编写",
+        details: [
+          "掌握顺序结构程序的编写",
+          "掌握基础的cin/cout语句",
+          "掌握基础的scanf/printf语句",
+          "掌握赋值语句"
+        ]
+      },
+      {
+        id: "branch-structure",
+        name: "分支结构",
+        category: "程序结构",
+        description: "if语句、if-else语句、switch语句",
+        details: [
+          "掌握if语句的使用",
+          "掌握if-else语句的使用",
+          "掌握switch语句的使用",
+          "了解三目运算符"
+        ]
+      },
+      {
+        id: "loop-structure",
+        name: "循环结构",
+        category: "程序结构",
+        description: "for、while、do-while循环语句",
+        details: [
+          "掌握for循环语句的使用",
+          "掌握while循环语句的使用",
+          "掌握do-while循环语句的使用",
+          "掌握continue和break语句在循环中的应用"
+        ]
+      },
+      {
+        id: "basic-concepts",
+        name: "程序基本概念",
+        category: "C++基础",
+        description: "标识符、关键字、常量、变量、表达式",
+        details: [
+          "掌握标识符、关键字的概念",
+          "掌握常量与变量的命名、定义、作用",
+          "掌握变量的初始化与赋值",
+          "掌握变量的自加与自减运算"
+        ]
+      },
+      {
+        id: "arithmetic-operation",
+        name: "算术运算",
+        category: "C++基础",
+        description: "加、减、乘、除、整除、求余",
+        details: [
+          "掌握基础算术表达式",
+          "掌握加、减、乘、除运算",
+          "掌握整除和求余运算"
+        ]
+      },
+      {
+        id: "logic-operation",
+        name: "逻辑运算",
+        category: "C++基础",
+        description: "与(&&)、或(||)、非(!)",
+        details: [
+          "掌握逻辑与运算(&&)",
+          "掌握逻辑或运算(||)",
+          "掌握逻辑非运算(!)"
+        ]
+      },
+      {
+        id: "relational-operation",
+        name: "关系运算",
+        category: "C++基础",
+        description: "大于、小于、等于、不等于等关系运算",
+        details: [
+          "掌握大于、大于等于运算",
+          "掌握小于、小于等于运算",
+          "掌握等于、不等于运算"
+        ]
+      },
+      {
+        id: "basic-data-types",
+        name: "基本数据类型",
+        category: "C++基础",
+        description: "整型、实数型、字符型、布尔型",
+        details: [
+          "掌握整数型：int、long long",
+          "掌握实数型：float、double",
+          "掌握字符型：char",
+          "掌握布尔型：bool"
+        ]
+      }
+    ]
+  },
+  "2": {
+    level: 2,
+    title: "C++编程二级",
+    examTime: 120,
+    description: "掌握计算机存储与网络、数据类型转换、多层分支循环、数学函数",
+    objectives: "通过计算机基础知识的学习，了解计算机的存储与网络知识、程序设计语言分类及特点、常见的编程语言和绘制流程图的方法。通过C++知识的学习，掌握数据类型的转换方法及数学库函数的使用，可以独立完成多分支结构与循环结构的程序。",
+    points: [
+      {
+        id: "storage-network",
+        name: "计算机存储与网络",
+        category: "计算机基础",
+        description: "ROM、RAM、Cache、计算机网络分类、TCP/IP模型",
+        details: [
+          "了解随机存储器(RAM)、只读存储器(ROM)和高速缓冲存储器(Cache)的功能及区别",
+          "了解计算机网络的分类（WAN、MAN、LAN）",
+          "了解TCP/IP四层模型与OSI七层模型",
+          "了解IP地址及子网划分"
+        ]
+      },
+      {
+        id: "programming-language",
+        name: "程序设计语言",
+        category: "计算机基础",
+        description: "程序设计语言分类及常见高级语言",
+        details: [
+          "了解程序设计语言的分类（机器语言、汇编语言、高级语言）",
+          "了解各类语言的特点",
+          "了解常见的高级语言（C++、Python等）"
+        ]
+      },
+      {
+        id: "flowchart",
+        name: "流程图",
+        category: "计算机基础",
+        description: "流程图的概念、绘制和描述",
+        details: [
+          "了解流程图的概念及基本表示符号",
+          "掌握绘制流程图的方法",
+          "能正确使用流程图描述程序设计的三种基本结构"
+        ]
+      },
+      {
+        id: "ascii-encoding",
+        name: "ASCII编码",
+        category: "计算机基础",
+        description: "ASCII编码原理和字符转换",
+        details: [
+          "了解编码的基本概念和ASCII编码原理",
+          "识别常用字符的ASCII码（空格:32、'0':48、'A':65、'a':97）",
+          "掌握ASCII码和字符之间相互转换的方法"
+        ]
+      },
+      {
+        id: "type-conversion",
+        name: "数据类型转换",
+        category: "C++基础",
+        description: "强制类型转换和隐式类型转换",
+        details: [
+          "掌握强制类型转换的方法",
+          "理解隐式类型转换的规则"
+        ]
+      },
+      {
+        id: "nested-branch",
+        name: "多层分支结构",
+        category: "程序结构",
+        description: "if、if-else、switch语句的嵌套",
+        details: [
+          "掌握if语句的嵌套使用",
+          "掌握if-else语句的嵌套使用",
+          "掌握switch语句的嵌套使用"
+        ]
+      },
+      {
+        id: "nested-loop",
+        name: "多层循环语句",
+        category: "程序结构",
+        description: "for、while、do-while循环的嵌套",
+        details: [
+          "掌握for循环的嵌套使用",
+          "掌握while循环的嵌套使用",
+          "掌握do-while循环的嵌套使用",
+          "掌握不同循环语句相互嵌套的方法"
+        ]
+      },
+      {
+        id: "math-basic-functions",
+        name: "数学函数",
+        category: "C++基础",
+        description: "abs、sqrt、max、min、rand等数学函数",
+        details: [
+          "掌握绝对值函数abs()的使用",
+          "掌握平方根函数sqrt()的使用",
+          "掌握最大值函数max()的使用",
+          "掌握最小值函数min()的使用",
+          "掌握随机数函数rand()/srand()的使用"
+        ]
+      }
+    ]
+  },
+  "3": {
+    level: 3,
+    title: "C++编程三级",
+    examTime: 120,
+    description: "掌握进制转换、位运算、一维数组、字符串、枚举和模拟算法",
+    objectives: "掌握计算机中常用进位制、位运算及数据编码的知识，掌握一维数组、字符串类型及其函数的使用，掌握枚举法、模拟法的原理和运用技巧，对于较简单的实际问题能构造算法、描述算法、实现算法并调试程序。",
+    points: [
+      {
+        id: "data-encoding",
+        name: "数据编码",
+        category: "计算机基础",
+        description: "原码、反码、补码",
+        details: [
+          "了解二进制数据编码",
+          "理解原码的概念",
+          "理解反码的概念",
+          "理解补码的概念"
+        ]
+      },
+      {
+        id: "number-system",
+        name: "进制转换",
+        category: "计算机基础",
+        description: "二进制、八进制、十进制、十六进制的转换",
+        details: [
+          "掌握二进制与十进制的相互转换",
+          "掌握八进制与十进制的相互转换",
+          "掌握十六进制与十进制的相互转换",
+          "掌握不同进制之间的转换方法"
+        ]
+      },
+      {
+        id: "bit-operation",
+        name: "位运算",
+        category: "C++基础",
+        description: "与(&)、或(|)、非(~)、异或(^)、左移(<<)、右移(>>)",
+        details: [
+          "掌握位与运算(&)的使用方法及原理",
+          "掌握位或运算(|)的使用方法及原理",
+          "掌握位非运算(~)的使用方法及原理",
+          "掌握位异或运算(^)的使用方法及原理",
+          "掌握左移运算(<<)的使用方法及原理",
+          "掌握右移运算(>>)的使用方法及原理"
+        ]
+      },
+      {
+        id: "algorithm-description",
+        name: "算法与描述",
+        category: "算法",
+        description: "算法的概念及自然语言、流程图、伪代码描述",
+        details: [
+          "了解算法的概念",
+          "熟练运用自然语言描述算法",
+          "熟练运用流程图描述算法",
+          "熟练运用伪代码描述算法"
+        ]
+      },
+      {
+        id: "1d-array",
+        name: "一维数组",
+        category: "数据结构",
+        description: "C++一维数组的定义和使用（不包括变长数组）",
+        details: [
+          "掌握一维数组的定义",
+          "掌握一维数组的初始化",
+          "掌握一维数组元素的访问",
+          "掌握一维数组的遍历"
+        ]
+      },
+      {
+        id: "string-basic",
+        name: "字符串及其函数",
+        category: "C++基础",
+        description: "字符串的大小写转换、搜索、分割、替换",
+        details: [
+          "掌握字符串的基本使用",
+          "掌握字符串大小写转换",
+          "掌握字符串搜索",
+          "掌握字符串分割",
+          "掌握字符串替换"
+        ]
+      },
+      {
+        id: "enumeration",
+        name: "枚举算法",
+        category: "算法",
+        description: "枚举算法的原理及特点",
+        details: [
+          "理解枚举算法的原理",
+          "理解枚举算法的特点",
+          "能够使用枚举算法解决实际问题"
+        ]
+      },
+      {
+        id: "simulation",
+        name: "模拟算法",
+        category: "算法",
+        description: "模拟算法的原理及特点",
+        details: [
+          "理解模拟算法的原理",
+          "理解模拟算法的特点",
+          "能够使用模拟算法解决实际问题"
+        ]
+      }
+    ]
+  },
   "4": {
     level: 4,
     title: "C++编程四级",
