@@ -15,7 +15,6 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Home,
-  Map,
   BookOpen,
   Code,
   User,
@@ -31,8 +30,7 @@ import {
 
 const navItems = [
   { href: "/dashboard", label: "今日任务", icon: Home },
-  { href: "/map", label: "知识点", icon: Map },
-  { href: "/map", label: "学习", icon: BookOpen },
+  { href: "/map", label: "知识点", icon: BookOpen },
   { href: "/problem", label: "题库", icon: Code },
   { href: "/error-book", label: "错题本", icon: BookX },
 ];
