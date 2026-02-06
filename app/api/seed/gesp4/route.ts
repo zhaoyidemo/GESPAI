@@ -1187,24 +1187,34 @@ $$[4], [0], [1], [2], [4, 0], [0, 1], [1, 2], [4, 0, 1], [0, 1, 2], [4, 0, 1, 2]
 
 async function seedGesp4() {
   try {
-    // 删除现有的GESP4题目，重新导入
-    await prisma.problem.deleteMany({
-      where: {
-        sourceId: {
-          in: gesp4Problems.map(p => p.sourceId).filter(Boolean) as string[]
-        }
-      }
-    });
+    let addedCount = 0;
+    let updatedCount = 0;
 
-    // 添加所有题目（每道题已有独立的 testCases 字段）
-    const result = await prisma.problem.createMany({
-      data: gesp4Problems,
-    });
+    for (const problem of gesp4Problems) {
+      const existing = await prisma.problem.findFirst({
+        where: { sourceId: problem.sourceId }
+      });
+
+      if (existing) {
+        await prisma.problem.update({
+          where: { id: existing.id },
+          data: problem
+        });
+        updatedCount++;
+      } else {
+        await prisma.problem.create({
+          data: problem
+        });
+        addedCount++;
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      message: `成功导入 ${result.count} 道 GESP 4级题目`,
-      count: result.count
+      message: `GESP 4级：新增 ${addedCount} 道，更新 ${updatedCount} 道`,
+      addedCount,
+      updatedCount,
+      totalCount: gesp4Problems.length
     });
   } catch (error) {
     console.error("Seed GESP4 error:", error);

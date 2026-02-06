@@ -1248,24 +1248,34 @@ $3$|$40\\%$|$\\le 20$|$\\le 10^5$|$\\le 1000$|
 
 async function seedGesp6() {
   try {
-    // 删除现有的GESP6题目，重新导入
-    await prisma.problem.deleteMany({
-      where: {
-        sourceId: {
-          in: gesp6Problems.map(p => p.sourceId).filter(Boolean) as string[]
-        }
-      }
-    });
+    let addedCount = 0;
+    let updatedCount = 0;
 
-    // 添加所有题目（每个题目已包含独立的 testCases）
-    const result = await prisma.problem.createMany({
-      data: gesp6Problems,
-    });
+    for (const problem of gesp6Problems) {
+      const existing = await prisma.problem.findFirst({
+        where: { sourceId: problem.sourceId }
+      });
+
+      if (existing) {
+        await prisma.problem.update({
+          where: { id: existing.id },
+          data: problem
+        });
+        updatedCount++;
+      } else {
+        await prisma.problem.create({
+          data: problem
+        });
+        addedCount++;
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      message: `成功导入 ${result.count} 道 GESP 6级题目（已更新为与洛谷100%一致）`,
-      count: result.count
+      message: `GESP 6级：新增 ${addedCount} 道，更新 ${updatedCount} 道`,
+      addedCount,
+      updatedCount,
+      totalCount: gesp6Problems.length
     });
   } catch (error) {
     console.error("Seed GESP6 error:", error);

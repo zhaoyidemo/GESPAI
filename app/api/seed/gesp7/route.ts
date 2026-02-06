@@ -1226,22 +1226,34 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
 
 async function seedGesp7() {
   try {
-    await prisma.problem.deleteMany({
-      where: {
-        sourceId: {
-          in: gesp7Problems.map(p => p.sourceId).filter(Boolean) as string[]
-        }
-      }
-    });
+    let addedCount = 0;
+    let updatedCount = 0;
 
-    const result = await prisma.problem.createMany({
-      data: gesp7Problems,
-    });
+    for (const problem of gesp7Problems) {
+      const existing = await prisma.problem.findFirst({
+        where: { sourceId: problem.sourceId }
+      });
+
+      if (existing) {
+        await prisma.problem.update({
+          where: { id: existing.id },
+          data: problem
+        });
+        updatedCount++;
+      } else {
+        await prisma.problem.create({
+          data: problem
+        });
+        addedCount++;
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      message: `成功导入 ${result.count} 道 GESP 7级题目（已更新为与洛谷100%一致，含完整测试用例）`,
-      count: result.count
+      message: `GESP 7级：新增 ${addedCount} 道，更新 ${updatedCount} 道`,
+      addedCount,
+      updatedCount,
+      totalCount: gesp7Problems.length
     });
   } catch (error) {
     console.error("Seed GESP7 error:", error);

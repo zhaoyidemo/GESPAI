@@ -1082,24 +1082,34 @@ $$\\gcd(c_1,c_2,\\dots,c_k)=\\gcd(\\gcd(c_1,c_2,\\dots,c_{k-1}),c_k)$$
 
 async function seedGesp5() {
   try {
-    // 删除现有的GESP5题目，重新导入
-    await prisma.problem.deleteMany({
-      where: {
-        sourceId: {
-          in: gesp5Problems.map(p => p.sourceId).filter(Boolean) as string[]
-        }
-      }
-    });
+    let addedCount = 0;
+    let updatedCount = 0;
 
-    // 添加所有题目
-    const result = await prisma.problem.createMany({
-      data: gesp5Problems,
-    });
+    for (const problem of gesp5Problems) {
+      const existing = await prisma.problem.findFirst({
+        where: { sourceId: problem.sourceId }
+      });
+
+      if (existing) {
+        await prisma.problem.update({
+          where: { id: existing.id },
+          data: problem
+        });
+        updatedCount++;
+      } else {
+        await prisma.problem.create({
+          data: problem
+        });
+        addedCount++;
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      message: `成功导入 ${result.count} 道 GESP 5级题目（已更新为与洛谷100%一致）`,
-      count: result.count
+      message: `GESP 5级：新增 ${addedCount} 道，更新 ${updatedCount} 道`,
+      addedCount,
+      updatedCount,
+      totalCount: gesp5Problems.length
     });
   } catch (error) {
     console.error("Seed GESP5 error:", error);

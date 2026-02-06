@@ -1228,22 +1228,34 @@ $3$|$40\\%$|$\\leq 1000$|
 
 async function seedGesp8() {
   try {
-    await prisma.problem.deleteMany({
-      where: {
-        sourceId: {
-          in: gesp8Problems.map(p => p.sourceId).filter(Boolean) as string[]
-        }
-      }
-    });
+    let addedCount = 0;
+    let updatedCount = 0;
 
-    const result = await prisma.problem.createMany({
-      data: gesp8Problems,
-    });
+    for (const problem of gesp8Problems) {
+      const existing = await prisma.problem.findFirst({
+        where: { sourceId: problem.sourceId }
+      });
+
+      if (existing) {
+        await prisma.problem.update({
+          where: { id: existing.id },
+          data: problem
+        });
+        updatedCount++;
+      } else {
+        await prisma.problem.create({
+          data: problem
+        });
+        addedCount++;
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      message: `成功导入 ${result.count} 道 GESP 8级题目（已更新为与洛谷100%一致）`,
-      count: result.count
+      message: `GESP 8级：新增 ${addedCount} 道，更新 ${updatedCount} 道`,
+      addedCount,
+      updatedCount,
+      totalCount: gesp8Problems.length
     });
   } catch (error) {
     console.error("Seed GESP8 error:", error);

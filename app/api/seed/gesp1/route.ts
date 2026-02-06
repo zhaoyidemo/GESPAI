@@ -947,24 +947,35 @@ $$ F=C\\times 1.8+32 $$
 
 async function seedGesp1() {
   try {
-    // 删除现有的GESP1题目，重新导入
-    await prisma.problem.deleteMany({
-      where: {
-        sourceId: {
-          in: gesp1Problems.map(p => p.sourceId).filter(Boolean) as string[]
-        }
-      }
-    });
+    let addedCount = 0;
+    let updatedCount = 0;
 
-    // 添加所有题目（每道题目已包含完整的 testCases）
-    const result = await prisma.problem.createMany({
-      data: gesp1Problems,
-    });
+    // 使用 upsert 模式：有则更新，无则创建（保留关联的错题记录）
+    for (const problem of gesp1Problems) {
+      const existing = await prisma.problem.findFirst({
+        where: { sourceId: problem.sourceId }
+      });
+
+      if (existing) {
+        await prisma.problem.update({
+          where: { id: existing.id },
+          data: problem
+        });
+        updatedCount++;
+      } else {
+        await prisma.problem.create({
+          data: problem
+        });
+        addedCount++;
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      message: `成功导入 ${result.count} 道 GESP 1级题目`,
-      count: result.count
+      message: `GESP 1级：新增 ${addedCount} 道，更新 ${updatedCount} 道`,
+      addedCount,
+      updatedCount,
+      totalCount: gesp1Problems.length
     });
   } catch (error) {
     console.error("Seed GESP1 error:", error);
