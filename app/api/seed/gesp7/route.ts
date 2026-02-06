@@ -25,6 +25,32 @@ const gesp7Problems = [
     samples: [
       { input: `6 4\n1 1 0 1 0 0\n0 1 1 0 0 0\n1 0 1 0 0 1\n0 0 1 1 0 1\n0 0 0 1 1 0\n1 0 0 0 1 1`, output: `3 3 6` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `6 4\n1 1 0 1 0 0\n0 1 1 0 0 0\n1 0 1 0 0 1\n0 0 1 1 0 1\n0 0 0 1 1 0\n1 0 0 0 1 1`, output: `3 3 6` },
+      // 最小规模 n=1
+      { input: `1 1\n1`, output: `1 1 2` },
+      // n=2 简单情况
+      { input: `2 1\n1 1\n1 1`, output: `2 2 4` },
+      { input: `2 2\n1 0\n0 1`, output: `1 1 2` },
+      // 全连通图（所有节点互相可达）
+      { input: `3 1\n1 1 1\n1 1 1\n1 1 1`, output: `3 3 6` },
+      // 无额外连接（只有自环）
+      { input: `3 2\n1 0 0\n0 1 0\n0 0 1`, output: `1 1 2` },
+      // 单向边测试
+      { input: `3 1\n1 1 1\n0 1 0\n0 0 1`, output: `1 1 2` },
+      { input: `4 2\n1 1 0 0\n0 1 1 0\n0 0 1 1\n0 0 0 1`, output: `2 2 4` },
+      // 星形图（中心节点）
+      { input: `5 1\n1 1 1 1 1\n0 1 0 0 0\n0 0 1 0 0\n0 0 0 1 0\n0 0 0 0 1`, output: `5 1 6` },
+      { input: `5 3\n1 0 1 0 0\n0 1 1 0 0\n0 0 1 0 0\n0 0 1 1 0\n0 0 1 0 1`, output: `1 5 6` },
+      // 链式图
+      { input: `4 1\n1 1 0 0\n0 1 1 0\n0 0 1 1\n0 0 0 1`, output: `2 1 3` },
+      { input: `4 4\n1 0 0 0\n1 1 0 0\n0 1 1 0\n0 0 1 1`, output: `1 2 3` },
+      // 边界节点测试
+      { input: `5 5\n1 0 0 0 1\n0 1 0 0 1\n0 0 1 0 1\n0 0 0 1 1\n0 0 0 0 1`, output: `1 5 6` },
+      // 较大规模
+      { input: `10 5\n1 0 0 0 1 0 0 0 0 0\n0 1 0 0 1 0 0 0 0 0\n0 0 1 0 1 0 0 0 0 0\n0 0 0 1 1 0 0 0 0 0\n1 1 1 1 1 1 1 1 1 1\n0 0 0 0 1 1 0 0 0 0\n0 0 0 0 1 0 1 0 0 0\n0 0 0 0 1 0 0 1 0 0\n0 0 0 0 1 0 0 0 1 0\n0 0 0 0 1 0 0 0 0 1`, output: `10 10 20` },
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: `### 样例 1 解释
@@ -68,6 +94,34 @@ $4$ 号迷宫能直接到达的迷宫有 $3,4,6$ 号迷宫，共 $3$ 个。
       { input: `6 11\n1 1 2 1 1 2\n3 2\n3 1\n5 3\n4 2\n2 6\n3 6\n1 6\n4 6\n1 2\n5 1\n5 4`, output: `4` },
       { input: `6 11\n5 9 10 5 1 6\n5 4\n5 2\n4 2\n3 1\n5 3\n6 1\n4 1\n4 3\n5 1\n2 3\n2 1`, output: `4` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `5 4\n2 10 6 3 1\n5 2\n2 3\n3 1\n1 4`, output: `3` },
+      { input: `6 11\n1 1 2 1 1 2\n3 2\n3 1\n5 3\n4 2\n2 6\n3 6\n1 6\n4 6\n1 2\n5 1\n5 4`, output: `4` },
+      { input: `6 11\n5 9 10 5 1 6\n5 4\n5 2\n4 2\n3 1\n5 3\n6 1\n4 1\n4 3\n5 1\n2 3\n2 1`, output: `4` },
+      // 单节点（最小规模）
+      { input: `1 0\n5`, output: `1` },
+      // 两节点链
+      { input: `2 1\n1 2\n1 2`, output: `2` },
+      { input: `2 1\n2 1\n1 2`, output: `1` },
+      // 链式DAG（特殊约定子任务1）
+      { input: `4 3\n1 2 3 4\n1 2\n2 3\n3 4`, output: `4` },
+      { input: `4 3\n4 3 2 1\n1 2\n2 3\n3 4`, output: `1` },
+      // 权值只有1和2（子任务2）
+      { input: `5 4\n1 2 1 2 1\n1 2\n2 3\n3 4\n4 5`, output: `3` },
+      { input: `4 4\n2 2 1 1\n1 2\n1 3\n2 4\n3 4`, output: `2` },
+      // 全相同权值
+      { input: `5 4\n3 3 3 3 3\n1 2\n2 3\n3 4\n4 5`, output: `5` },
+      // 严格递增/递减路径
+      { input: `5 4\n1 2 3 4 5\n1 2\n2 3\n3 4\n4 5`, output: `5` },
+      { input: `5 4\n5 4 3 2 1\n1 2\n2 3\n3 4\n4 5`, output: `1` },
+      // 分叉DAG
+      { input: `6 5\n1 2 3 1 2 3\n1 2\n2 3\n1 4\n4 5\n5 6`, output: `3` },
+      // 复杂DAG
+      { input: `7 8\n1 3 2 5 4 6 7\n1 2\n1 3\n2 4\n3 4\n4 5\n4 6\n5 7\n6 7`, output: `4` },
+      // 权值范围极端（A_i <= 10）
+      { input: `5 5\n10 1 10 1 10\n1 2\n2 3\n3 4\n4 5\n1 5`, output: `3` },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `### 数据规模与约定
@@ -105,6 +159,33 @@ $4$ 号迷宫能直接到达的迷宫有 $3,4,6$ 号迷宫，共 $3$ 个。
       { input: `3 3 0 2\n100 2 4\n0 1\n1 2\n0 2`, output: `-95` },
       { input: `4 4 3 0\n1 2 3 4\n1 0\n0 1\n3 2\n2 3`, output: `No solution` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `3 5 0 2\n1 2 4\n1 0\n2 0\n0 1\n2 1\n1 2`, output: `5` },
+      { input: `3 3 0 2\n100 2 4\n0 1\n1 2\n0 2`, output: `-95` },
+      { input: `4 4 3 0\n1 2 3 4\n1 0\n0 1\n3 2\n2 3`, output: `No solution` },
+      // 最小规模 N=2
+      { input: `2 1 0 1\n10 20\n0 1`, output: `11` },
+      { input: `2 1 0 1\n100 10\n0 1`, output: `-89` },
+      // 直接交换（单次交易）
+      { input: `3 1 0 2\n5 10 15\n0 2`, output: `11` },
+      // 无解情况
+      { input: `3 0 0 2\n1 2 3`, output: `No solution` },
+      { input: `5 3 0 4\n1 2 3 4 5\n0 1\n1 2\n2 3`, output: `No solution` },
+      // 负花费（赚钱）
+      { input: `3 2 0 2\n100 50 10\n0 1\n1 2`, output: `-78` },
+      { input: `4 3 0 3\n1000 500 200 100\n0 1\n1 2\n2 3`, output: `-897` },
+      // 多条路径选最优
+      { input: `4 4 0 3\n10 20 15 25\n0 1\n1 3\n0 2\n2 3`, output: `17` },
+      // 价值相同的商品
+      { input: `3 2 0 2\n10 10 10\n0 1\n1 2`, output: `2` },
+      // 环形交易路径
+      { input: `4 4 0 2\n5 10 20 15\n0 1\n1 3\n3 2\n0 2`, output: `16` },
+      // 大价值差
+      { input: `3 2 0 2\n1 1000000000 500000000\n0 1\n1 2`, output: `499999999` },
+      // 复杂图结构
+      { input: `5 6 0 4\n10 20 30 25 40\n0 1\n0 2\n1 3\n2 3\n3 4\n1 4`, output: `32` },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `**数据范围**
@@ -141,6 +222,33 @@ $4$ 号迷宫能直接到达的迷宫有 $3,4,6$ 号迷宫，共 $3$ 个。
     samples: [
       { input: `4\n1 2 10 100\n1 100 1\n1 1 2 0`, output: `219` },
       { input: `6\n3 7 2 8 9 4\n1 3 9 27 81\n0 1 2 1 2 0`, output: `56` },
+    ],
+    testCases: [
+      // 原始样例
+      { input: `4\n1 2 10 100\n1 100 1\n1 1 2 0`, output: `219` },
+      { input: `6\n3 7 2 8 9 4\n1 3 9 27 81\n0 1 2 1 2 0`, output: `56` },
+      // 最小规模 N=1
+      { input: `1\n10\n\n0`, output: `20` },
+      { input: `1\n10\n\n1`, output: `20` },
+      { input: `1\n10\n\n2`, output: `20` },
+      // N=2 简单情况
+      { input: `2\n5 10\n1\n0 1`, output: `18` },
+      { input: `2\n5 10\n100\n0 0`, output: `30` },
+      // 全胜策略（小杨出牌全相同）
+      { input: `3\n10 10 10\n1 1\n0 0 0`, output: `60` },
+      { input: `3\n10 10 10\n1 1\n1 1 1`, output: `60` },
+      // 换牌代价很高
+      { input: `4\n1 1 1 100\n1000000 1000000 1000000\n0 1 2 0`, output: `103` },
+      // 换牌代价为0
+      { input: `4\n10 10 10 10\n0 0 0\n0 1 2 0`, output: `80` },
+      // 全平局
+      { input: `3\n10 10 10\n1 1\n0 0 0`, output: `60` },
+      // 分数全为0
+      { input: `3\n0 0 0\n1 1\n0 1 2`, output: `0` },
+      // 复杂换牌决策
+      { input: `5\n10 1 10 1 10\n2 2 2 2\n0 1 0 1 0`, output: `44` },
+      // 大规模换牌代价递增
+      { input: `4\n100 100 100 100\n1 10 100\n0 1 2 0`, output: `689` },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -181,6 +289,35 @@ $4$ 号迷宫能直接到达的迷宫有 $3,4,6$ 号迷宫，共 $3$ 个。
       { input: "4 3\n1 2\n2 3\n4 2", output: "1 3" },
       { input: "7 5\n1 2\n2 3\n4 2\n5 6\n6 7", output: "2 5" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "4 3\n1 2\n2 3\n4 2", output: "1 3" },
+      { input: "7 5\n1 2\n2 3\n4 2\n5 6\n6 7", output: "2 5" },
+      // 最小规模 n=2
+      { input: "2 1\n1 2", output: "1 1" },
+      // 简单链
+      { input: "3 2\n1 2\n2 3", output: "1 2" },
+      // 单个连通分量（二分图）
+      { input: "4 4\n1 2\n1 4\n3 2\n3 4", output: "2 2" },
+      // 多个独立连通分量
+      { input: "6 3\n1 2\n3 4\n5 6", output: "3 3" },
+      // 孤立节点
+      { input: "5 2\n1 2\n2 3", output: "1 4" },
+      // 星形二分图
+      { input: "5 4\n1 2\n1 3\n1 4\n1 5", output: "1 4" },
+      // 完全二分图形态
+      { input: "6 6\n1 4\n1 5\n1 6\n2 4\n2 5\n3 6", output: "3 3" },
+      // 长链
+      { input: "6 5\n1 2\n2 3\n3 4\n4 5\n5 6", output: "3 3" },
+      // 复杂混合
+      { input: "8 6\n1 2\n2 3\n3 4\n5 6\n7 8\n6 7", output: "3 5" },
+      // 大连通分量+孤立节点
+      { input: "10 4\n1 2\n2 3\n3 4\n4 5", output: "2 8" },
+      // 奇数链
+      { input: "7 6\n1 2\n2 3\n3 4\n4 5\n5 6\n6 7", output: "3 4" },
+      // 多个小连通分量
+      { input: "9 4\n1 2\n3 4\n5 6\n7 8", output: "4 5" },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `### 数据规模与约定
@@ -210,6 +347,36 @@ $4$ 号迷宫能直接到达的迷宫有 $3,4,6$ 号迷宫，共 $3$ 个。
     outputFormat: `输出一行一个整数表示答案。`,
     samples: [
       { input: "5 6\n1 2 3 4 4 5\n1 2 3 3 4 5\n1 2 2 3 4 5\n1 6 6 7 7 8\n6 6 7 7 8 8", output: "7" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "5 6\n1 2 3 4 4 5\n1 2 3 3 4 5\n1 2 2 3 4 5\n1 6 6 7 7 8\n6 6 7 7 8 8", output: "7" },
+      // 最小规模 1x1
+      { input: "1 1\n1", output: "1" },
+      // 2x2 全相同
+      { input: "2 2\n1 1\n1 1", output: "1" },
+      // 2x2 全不同
+      { input: "2 2\n1 2\n3 4", output: "4" },
+      // 横条形状 (1xn)
+      { input: "1 5\n1 1 1 1 1", output: "1" },
+      { input: "1 5\n1 2 3 4 5", output: "5" },
+      // 竖条形状 (nx1)
+      { input: "5 1\n1\n1\n1\n1\n1", output: "1" },
+      { input: "5 1\n1\n2\n3\n4\n5", output: "5" },
+      // L形方块
+      { input: "3 3\n1 2 2\n1 3 3\n1 1 3", output: "3" },
+      // 平移等价测试
+      { input: "4 4\n1 1 2 2\n3 3 4 4\n1 1 2 2\n3 3 4 4", output: "1" },
+      // T形方块
+      { input: "3 3\n1 1 1\n2 1 2\n2 2 2", output: "2" },
+      // 复杂形状
+      { input: "4 4\n1 1 2 3\n1 2 2 3\n4 4 2 3\n4 5 5 5", output: "4" },
+      // 棋盘格
+      { input: "4 4\n1 2 1 2\n2 1 2 1\n1 2 1 2\n2 1 2 1", output: "2" },
+      // 大连通块
+      { input: "3 3\n1 1 1\n1 1 1\n1 1 1", output: "1" },
+      // 对角线不连通
+      { input: "2 2\n1 2\n2 1", output: "2" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -241,6 +408,32 @@ $4$ 号迷宫能直接到达的迷宫有 $3,4,6$ 号迷宫，共 $3$ 个。
     outputFormat: `输出一个整数，代表最少执行的操作次数。`,
     samples: [
       { input: "5\n0 1 0 1 0\n1 2\n1 3\n3 4\n3 5", output: "2" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "5\n0 1 0 1 0\n1 2\n1 3\n3 4\n3 5", output: "2" },
+      // 最小规模 n=1
+      { input: "1\n0", output: "1" },
+      { input: "1\n1", output: "0" },
+      // n=2 链
+      { input: "2\n1 1\n1 2", output: "0" },
+      { input: "2\n0 1\n1 2", output: "0" },
+      { input: "2\n0 0\n1 2", output: "2" },
+      // 全黑色
+      { input: "4\n1 1 1 1\n1 2\n2 3\n3 4", output: "0" },
+      // 全白色
+      { input: "4\n0 0 0 0\n1 2\n2 3\n3 4", output: "4" },
+      // 链形态（子任务1）
+      { input: "5\n1 0 1 0 1\n1 2\n2 3\n3 4\n4 5", output: "2" },
+      { input: "6\n0 1 0 0 1 0\n1 2\n2 3\n3 4\n4 5\n5 6", output: "2" },
+      // 只有两个黑色节点（子任务2）
+      { input: "5\n1 0 0 0 1\n1 2\n2 3\n3 4\n4 5", output: "3" },
+      { input: "7\n0 1 0 0 0 1 0\n1 2\n2 3\n3 4\n4 5\n5 6\n6 7", output: "3" },
+      // 星形树
+      { input: "5\n0 1 1 1 1\n1 2\n1 3\n1 4\n1 5", output: "1" },
+      { input: "5\n1 0 0 0 0\n1 2\n1 3\n1 4\n1 5", output: "0" },
+      // 复杂树形
+      { input: "7\n0 1 0 1 0 1 0\n1 2\n1 3\n2 4\n2 5\n3 6\n3 7", output: "1" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -277,6 +470,34 @@ $3$|$40\\%$|$\\leq 10^5$|$0\\leq a_i\\leq 1$|
     samples: [
       { input: "5\n3 2 4 3 2", output: "2" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "5\n3 2 4 3 2", output: "2" },
+      // 最小规模 n=1
+      { input: "1\n1", output: "1" },
+      { input: "1\n4", output: "1" },
+      { input: "1\n2", output: "0" },
+      // n=2 简单情况
+      { input: "2\n1 1", output: "3" },
+      { input: "2\n4 4", output: "3" },
+      { input: "2\n2 2", output: "1" },
+      // 只有1和2（子任务1）
+      { input: "5\n1 2 2 1 1", output: "4" },
+      { input: "6\n2 2 2 2 2 2", output: "6" },
+      { input: "4\n1 1 1 1", output: "10" },
+      // 完全平方数
+      { input: "5\n1 4 9 16 25", output: "5" },
+      { input: "4\n4 4 4 4", output: "10" },
+      // 质数（乘积不能是完全平方数）
+      { input: "3\n2 3 5", output: "0" },
+      { input: "4\n2 3 2 3", output: "1" },
+      // 混合测试
+      { input: "6\n1 2 8 1 2 8", output: "4" },
+      // 全相同非完全平方
+      { input: "4\n6 6 6 6", output: "1" },
+      // 大范围 a_i <= 30
+      { input: "5\n30 30 30 30 30", output: "0" },
+    ],
     timeLimit: 1000,
     memoryLimit: 500,
     hint: `### 样例解释
@@ -311,6 +532,32 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
     outputFormat: `对于每组测试用例，输出一行一个整数，代表最优策略下小杨的得分最多是多少。`,
     samples: [
       { input: `2\n3 3 1\n000\n111\n01?\n3 3 1\n000\n?0?\n01?`, output: `4\n2` },
+    ],
+    testCases: [
+      // 原始样例
+      { input: `2\n3 3 1\n000\n111\n01?\n3 3 1\n000\n?0?\n01?`, output: `4\n2` },
+      // 最小规模 1x1
+      { input: `1\n1 1 1\n1`, output: `1` },
+      { input: `1\n1 1 1\n0`, output: `0` },
+      { input: `1\n1 1 1\n?`, output: `1` },
+      // 2x2 简单情况
+      { input: `1\n2 2 1\n11\n11`, output: `4` },
+      { input: `1\n2 2 1\n00\n00`, output: `0` },
+      { input: `1\n2 2 1\n1?\n?1`, output: `3` },
+      // x=1 限制（子任务1）
+      { input: `1\n3 3 1\n111\n000\n111`, output: `5` },
+      { input: `1\n3 3 1\n?0?\n000\n?0?`, output: `1` },
+      // 全是问号
+      { input: `1\n2 2 2\n??\n??`, output: `2` },
+      { input: `1\n3 3 3\n???\n???\n???`, output: `5` },
+      // 无问号
+      { input: `1\n3 3 5\n101\n010\n101`, output: `3` },
+      // 路径选择
+      { input: `1\n3 3 2\n10?\n?1?\n??1`, output: `5` },
+      // 大x值
+      { input: `1\n2 3 10\n???\n???`, output: `4` },
+      // 多组测试
+      { input: `3\n2 2 1\n11\n11\n2 2 1\n00\n00\n2 2 1\n??\n??`, output: `4\n0\n2` },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -351,6 +598,33 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
     samples: [
       { input: `2\n5\n0 1 0 1 0\n1 2\n1 3\n3 4\n3 5\n5\n1 1 1 1 1\n1 2\n1 3\n3 4\n3 5\n`, output: `Yes\nNo\n` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `2\n5\n0 1 0 1 0\n1 2\n1 3\n3 4\n3 5\n5\n1 1 1 1 1\n1 2\n1 3\n3 4\n3 5\n`, output: `Yes\nNo\n` },
+      // 最小规模 n=1
+      { input: `1\n1\n1`, output: `Yes\n` },
+      // n=2 链
+      { input: `1\n2\n1 1\n1 2`, output: `Yes\n` },
+      { input: `1\n2\n1 0\n1 2`, output: `Yes\n` },
+      // 链形树 - 宝物分布
+      { input: `1\n4\n1 0 0 1\n1 2\n2 3\n3 4`, output: `Yes\n` },
+      { input: `1\n5\n1 0 1 0 1\n1 2\n2 3\n3 4\n4 5`, output: `Yes\n` },
+      // 星形树
+      { input: `1\n4\n1 1 1 1\n1 2\n1 3\n1 4`, output: `No\n` },
+      { input: `1\n4\n1 0 0 0\n1 2\n1 3\n1 4`, output: `Yes\n` },
+      { input: `1\n5\n0 1 1 0 0\n1 2\n1 3\n1 4\n1 5`, output: `Yes\n` },
+      // 欧拉路径判定
+      { input: `1\n6\n1 1 1 0 0 0\n1 2\n2 3\n3 4\n4 5\n5 6`, output: `Yes\n` },
+      { input: `1\n7\n1 1 1 1 0 0 0\n1 2\n1 3\n2 4\n2 5\n3 6\n3 7`, output: `No\n` },
+      // 复杂树
+      { input: `1\n6\n0 1 0 1 0 0\n1 2\n1 3\n2 4\n3 5\n3 6`, output: `Yes\n` },
+      // 多组测试
+      { input: `2\n3\n1 0 1\n1 2\n2 3\n3\n1 1 1\n1 2\n2 3`, output: `Yes\nYes\n` },
+      // 边界 - 只有一个宝物
+      { input: `1\n5\n0 0 1 0 0\n1 2\n2 3\n3 4\n4 5`, output: `Yes\n` },
+      // 宝物在叶子节点
+      { input: `1\n5\n0 1 0 0 1\n1 2\n1 3\n3 4\n3 5`, output: `Yes\n` },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `### 样例 1 解释
@@ -388,6 +662,32 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
     samples: [
       { input: `3\n3 2 3\n1 2\n1 2\n2 3\n3 3 4\n1 2\n1 2\n2 3\n3 1000 1000\n1 2\n1 2\n2 3`, output: `3\n-1\n-1` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `3\n3 2 3\n1 2\n1 2\n2 3\n3 3 4\n1 2\n1 2\n2 3\n3 1000 1000\n1 2\n1 2\n2 3`, output: `3\n-1\n-1` },
+      // 最小规模 n=1
+      { input: `1\n1 5 10\n5 5`, output: `5` },
+      { input: `1\n1 5 3\n5 5`, output: `-1` },
+      { input: `1\n1 10 5\n5 5`, output: `-1` },
+      // 子任务1：p_i=1, c_i=1
+      { input: `1\n3 2 3\n1 1\n1 1\n1 1`, output: `2` },
+      { input: `1\n5 3 5\n1 1\n1 1\n1 1\n1 1\n1 1`, output: `3` },
+      // 子任务2：c_i=1, Q=2
+      { input: `1\n3 5 2\n2 1\n3 1\n4 1`, output: `2` },
+      { input: `1\n4 10 2\n5 1\n5 1\n3 1\n2 1`, output: `2` },
+      // 恰好满足
+      { input: `1\n2 5 5\n3 3\n2 2`, output: `5` },
+      { input: `1\n3 10 10\n5 5\n3 3\n2 2`, output: `10` },
+      // 无解情况
+      { input: `1\n2 100 10\n10 10\n10 10`, output: `-1` },
+      { input: `1\n3 10 5\n5 10\n3 10\n2 10`, output: `-1` },
+      // 选择最优组合
+      { input: `1\n4 10 15\n5 5\n3 3\n4 4\n2 2`, output: `8` },
+      // 大数据边界
+      { input: `1\n2 50000 50000\n25000 25000\n25000 25000`, output: `50000` },
+      // 多组测试
+      { input: `2\n2 3 5\n2 2\n1 3\n2 5 3\n3 2\n2 1`, output: `5\n3` },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `| 子任务编号 | 数据点占比 | $n$ | $p_i$ | $c_i$ | $P$ | $Q$ |
@@ -420,6 +720,34 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
     samples: [
       { input: `5\n6 2 3 4 5\n1 2\n2 3\n2 5\n1 4`, output: `3` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `5\n6 2 3 4 5\n1 2\n2 3\n2 5\n1 4`, output: `3` },
+      // 最小规模 n=1
+      { input: `1\n100`, output: `1` },
+      // n=2 链
+      { input: `2\n10 5\n1 2`, output: `2` },
+      { input: `2\n5 10\n1 2`, output: `1` },
+      { input: `2\n5 5\n1 2`, output: `1` },
+      // 链形树 - 递减
+      { input: `4\n10 8 6 4\n1 2\n2 3\n3 4`, output: `4` },
+      // 链形树 - 递增
+      { input: `4\n4 6 8 10\n1 2\n2 3\n3 4`, output: `1` },
+      // 星形树
+      { input: `5\n10 5 6 7 8\n1 2\n1 3\n1 4\n1 5`, output: `5` },
+      { input: `5\n5 10 10 10 10\n1 2\n1 3\n1 4\n1 5`, output: `1` },
+      // 全相同权值
+      { input: `4\n5 5 5 5\n1 2\n2 3\n3 4`, output: `1` },
+      // 复杂树形
+      { input: `7\n10 8 6 4 3 2 1\n1 2\n1 3\n2 4\n2 5\n3 6\n3 7`, output: `7` },
+      { input: `6\n1 5 4 3 2 6\n1 2\n2 3\n3 4\n4 5\n5 6`, output: `2` },
+      // 权值差异大
+      { input: `5\n1000000 1 2 3 4\n1 2\n2 3\n3 4\n4 5`, output: `5` },
+      // 最大权值在叶子
+      { input: `5\n1 2 3 4 100\n1 2\n2 3\n3 4\n4 5`, output: `1` },
+      // 二叉树结构
+      { input: `7\n7 6 5 4 3 2 1\n1 2\n1 3\n2 4\n2 5\n3 6\n3 7`, output: `7` },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `| 子任务编号 | 数据点占比 | $n$ |
@@ -446,6 +774,33 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
     outputFormat: `共 $n$ 行，第 $i$ 行 ($1 \\leq i \\leq n$) 包含 $k$ 个整数，第 $j$ 个整数 ($1 \\leq j \\leq k$) 表示从结点 $i$ 出发恰好移动 $j$ 步之后可能位置的结点数量。`,
     samples: [
       { input: `4 4 3\n1 2\n1 3\n2 3\n3 4`, output: `2 4 4\n2 4 4\n3 3 4\n1 3 3` },
+    ],
+    testCases: [
+      // 原始样例
+      { input: `4 4 3\n1 2\n1 3\n2 3\n3 4`, output: `2 4 4\n2 4 4\n3 3 4\n1 3 3` },
+      // 最小规模 n=2, k=1
+      { input: `2 1 1\n1 2`, output: `1\n1` },
+      // k=1 子任务
+      { input: `3 2 1\n1 2\n2 3`, output: `1\n2\n1` },
+      { input: `4 3 1\n1 2\n1 3\n1 4`, output: `3\n1\n1\n1` },
+      // 自环
+      { input: `2 2 2\n1 2\n1 1`, output: `2 2\n1 2` },
+      // 完全图
+      { input: `3 3 2\n1 2\n2 3\n1 3`, output: `2 3\n2 3\n2 3` },
+      // 链形图
+      { input: `4 3 3\n1 2\n2 3\n3 4`, output: `1 2 2\n2 2 3\n2 2 3\n1 2 2` },
+      // 星形图
+      { input: `5 4 2\n1 2\n1 3\n1 4\n1 5`, output: `4 4\n1 4\n1 4\n1 4\n1 4` },
+      // 环形图
+      { input: `4 4 2\n1 2\n2 3\n3 4\n4 1`, output: `2 3\n2 3\n2 3\n2 3` },
+      // k较大
+      { input: `3 2 5\n1 2\n2 3`, output: `1 2 2 2 2\n2 2 2 3 3\n1 2 2 2 2` },
+      // 孤立节点（无边）
+      { input: `3 1 2\n1 2`, output: `1 1\n1 1\n0 0` },
+      // 重边
+      { input: `2 3 2\n1 2\n1 2\n1 2`, output: `1 2\n1 2` },
+      // 多连通分量
+      { input: `4 2 2\n1 2\n3 4`, output: `1 1\n1 1\n1 1\n1 1` },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -479,6 +834,34 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
     samples: [
       { input: `7\naaaaabb`, output: `9` },
       { input: `9\nbabacabab`, output: `2` },
+    ],
+    testCases: [
+      // 原始样例
+      { input: `7\naaaaabb`, output: `9` },
+      { input: `9\nbabacabab`, output: `2` },
+      // 最小规模 |S|=1
+      { input: `1\na`, output: `0` },
+      // |S|=2
+      { input: `2\naa`, output: `1` },
+      { input: `2\nab`, output: `0` },
+      // 只有a和b（子任务1）
+      { input: `4\naabb`, output: `3` },
+      { input: `4\nabab`, output: `1` },
+      { input: `6\naaabbb`, output: `4` },
+      // 全相同字符
+      { input: `6\naaaaaa`, output: `9` },
+      { input: `5\nbbbbb`, output: `6` },
+      // 交替字符
+      { input: `6\nababab`, output: `3` },
+      { input: `8\nabababab`, output: `4` },
+      // 多种字符
+      { input: `6\naabbcc`, output: `4` },
+      { input: `8\naabbccdd`, output: `5` },
+      // 无法消除
+      { input: `5\nabcde`, output: `0` },
+      // 复杂情况
+      { input: `10\naabbccaabb`, output: `11` },
+      { input: `8\nabbaabba`, output: `6` },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -516,6 +899,34 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
       { input: `5 4\n1 2\n2 3\n3 1\n4 5`, output: `3` },
       { input: `5 10\n1 2\n1 3\n1 4\n1 5\n2 3\n2 4\n2 5\n3 4\n3 5\n4 5`, output: `30` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `5 4\n1 2\n2 3\n3 1\n4 5`, output: `3` },
+      { input: `5 10\n1 2\n1 3\n1 4\n1 5\n2 3\n2 4\n2 5\n3 4\n3 5\n4 5`, output: `30` },
+      // 最小规模 n=2, m=1
+      { input: `2 1\n1 2`, output: `0` },
+      // 链形图
+      { input: `4 3\n1 2\n2 3\n3 4`, output: `2` },
+      { input: `5 4\n1 2\n2 3\n3 4\n4 5`, output: `3` },
+      // 三角形
+      { input: `3 3\n1 2\n2 3\n1 3`, output: `3` },
+      // 星形图
+      { input: `5 4\n1 2\n1 3\n1 4\n1 5`, output: `6` },
+      { input: `6 5\n1 2\n1 3\n1 4\n1 5\n1 6`, output: `10` },
+      // 环形图
+      { input: `4 4\n1 2\n2 3\n3 4\n4 1`, output: `4` },
+      { input: `5 5\n1 2\n2 3\n3 4\n4 5\n5 1`, output: `5` },
+      // 孤立边
+      { input: `6 3\n1 2\n3 4\n5 6`, output: `0` },
+      // 完全图 K4
+      { input: `4 6\n1 2\n1 3\n1 4\n2 3\n2 4\n3 4`, output: `12` },
+      // 两个三角形共享一条边
+      { input: `4 5\n1 2\n2 3\n1 3\n1 4\n3 4`, output: `7` },
+      // 度数计算验证
+      { input: `4 4\n1 2\n1 3\n2 4\n3 4`, output: `4` },
+      // 无边图
+      { input: `5 0`, output: `0` },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `**【样例解释 #1】**
@@ -547,6 +958,34 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
       { input: `3\n1 2\n2 4\n3 2`, output: `8` },
       { input: `5\n1 1\n2 3\n6 1\n8 2\n5 7`, output: `2` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `3\n1 2\n2 4\n3 2`, output: `8` },
+      { input: `5\n1 1\n2 3\n6 1\n8 2\n5 7`, output: `2` },
+      // 最小规模 n=1
+      { input: `1\n5 5`, output: `10` },
+      { input: `1\n3 5`, output: `0` },
+      // n=2 简单情况
+      { input: `2\n1 2\n2 1`, output: `6` },
+      { input: `2\n1 1\n2 2`, output: `6` },
+      // 全相同
+      { input: `3\n5 5\n5 5\n5 5`, output: `30` },
+      // 无法平衡
+      { input: `2\n1 2\n1 2`, output: `0` },
+      { input: `3\n1 2\n1 2\n1 2`, output: `0` },
+      // 单个食材恰好平衡
+      { input: `2\n3 3\n1 2`, output: `6` },
+      // 需要选择多个
+      { input: `4\n1 3\n2 1\n3 2\n1 1`, output: `14` },
+      // 大数值边界
+      { input: `2\n500 500\n500 500`, output: `2000` },
+      // 复杂选择
+      { input: `5\n1 2\n2 1\n3 3\n4 5\n5 4`, output: `24` },
+      // 只选一个最优
+      { input: `4\n10 10\n1 2\n2 1\n5 3`, output: `20` },
+      // 全选情况
+      { input: `3\n1 2\n2 3\n3 1`, output: `12` },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于 $40\\%$ 的测试点，保证 $1 \\le n \\le 10$，$1 \\le a_i,b_i \\le 10$。
@@ -577,6 +1016,35 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
       { input: `4 4\n1 2\n2 3\n3 1\n1 4`, output: `0` },
       { input: `6 4\n1 2\n2 3\n3 1\n6 5`, output: `2` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `4 4\n1 2\n2 3\n3 1\n1 4`, output: `0` },
+      { input: `6 4\n1 2\n2 3\n3 1\n6 5`, output: `2` },
+      // 最小规模 n=1
+      { input: `1 0`, output: `0` },
+      // n=2 已连通
+      { input: `2 1\n1 2`, output: `0` },
+      // n=2 未连通
+      { input: `2 0`, output: `1` },
+      // 全连通（链）
+      { input: `4 3\n1 2\n2 3\n3 4`, output: `0` },
+      // 多个连通分量
+      { input: `5 2\n1 2\n3 4`, output: `2` },
+      { input: `6 3\n1 2\n3 4\n5 6`, output: `2` },
+      // 全孤立
+      { input: `5 0`, output: `4` },
+      { input: `4 0`, output: `3` },
+      // 自环
+      { input: `3 2\n1 1\n2 2`, output: `2` },
+      // 重边
+      { input: `3 4\n1 2\n1 2\n2 3\n2 3`, output: `0` },
+      // 大连通分量+孤立
+      { input: `10 5\n1 2\n2 3\n3 4\n4 5\n5 1`, output: `4` },
+      // 完全图
+      { input: `4 6\n1 2\n1 3\n1 4\n2 3\n2 4\n3 4`, output: `0` },
+      // 两个大连通分量
+      { input: `8 6\n1 2\n2 3\n3 1\n5 6\n6 7\n7 8`, output: `1` },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于 $40\\%$ 的测试点，保证 $1\\le n\\le 100$，$1\\le m\\le 100$。
@@ -603,6 +1071,35 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
     samples: [
       { input: `3\n1 6\n3 7\n2 4`, output: `2` },
       { input: `4\n1 1\n2 2\n1 3\n2 4`, output: `3` },
+    ],
+    testCases: [
+      // 原始样例
+      { input: `3\n1 6\n3 7\n2 4`, output: `2` },
+      { input: `4\n1 1\n2 2\n1 3\n2 4`, output: `3` },
+      // 最小规模 n=1
+      { input: `1\n1 1`, output: `1` },
+      { input: `1\n5 5`, output: `1` },
+      { input: `1\n3 2`, output: `0` },
+      // n=2 简单情况
+      { input: `2\n1 1\n2 2`, output: `2` },
+      { input: `2\n2 1\n1 2`, output: `1` },
+      // 全可达
+      { input: `3\n1 1\n2 2\n3 3`, output: `3` },
+      { input: `4\n0 1\n1 2\n2 3\n3 4`, output: `3` },
+      // 同一位置不同时间
+      { input: `3\n5 1\n5 3\n5 5`, output: `1` },
+      // 需要等待
+      { input: `3\n1 2\n2 4\n3 6`, output: `3` },
+      // 无法到达（位置>时间）
+      { input: `3\n5 1\n6 2\n7 3`, output: `0` },
+      // 复杂选择
+      { input: `5\n1 2\n3 3\n2 5\n4 6\n5 8`, output: `3` },
+      // 大坐标/时间
+      { input: `2\n1000000000 1000000000\n1 1`, output: `2` },
+      // 多个同时可达
+      { input: `4\n1 3\n2 3\n3 3\n1 4`, output: `2` },
+      // 时间相同
+      { input: `3\n1 5\n2 5\n3 5`, output: `1` },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -634,6 +1131,34 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
       { input: `3 3\n1 2\n1 3\n2 3`, output: `1` },
       { input: `4 4\n1 2\n2 3\n3 4\n2 4`, output: `2` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `3 3\n1 2\n1 3\n2 3`, output: `1` },
+      { input: `4 4\n1 2\n2 3\n3 4\n2 4`, output: `2` },
+      // 最小规模 n=2
+      { input: `2 1\n1 2`, output: `1` },
+      // 链形图
+      { input: `4 3\n1 2\n2 3\n3 4`, output: `2` },
+      { input: `5 4\n1 2\n2 3\n3 4\n4 5`, output: `3` },
+      // 完全图
+      { input: `4 6\n1 2\n1 3\n1 4\n2 3\n2 4\n3 4`, output: `1` },
+      // 星形图
+      { input: `5 4\n1 2\n1 3\n1 4\n1 5`, output: `1` },
+      { input: `6 5\n1 2\n1 3\n1 4\n1 5\n1 6`, output: `1` },
+      // 环形图
+      { input: `4 4\n1 2\n2 3\n3 4\n4 1`, output: `2` },
+      { input: `5 5\n1 2\n2 3\n3 4\n4 5\n5 1`, output: `2` },
+      // 二叉树
+      { input: `7 6\n1 2\n1 3\n2 4\n2 5\n3 6\n3 7`, output: `1` },
+      // 多条最短路
+      { input: `5 6\n1 2\n1 3\n2 4\n3 4\n2 5\n4 5`, output: `2` },
+      // 中心节点最优
+      { input: `5 5\n1 2\n2 3\n2 4\n2 5\n3 4`, output: `2` },
+      // 重边
+      { input: `3 4\n1 2\n1 2\n2 3\n2 3`, output: `2` },
+      // 大直径
+      { input: `6 5\n1 2\n2 3\n3 4\n4 5\n5 6`, output: `3` },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于 $40\\%$ 的测试点，保证 $1\\le n\\le 300$。
@@ -663,6 +1188,34 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
       { input: `4\n2 1 3 2\n1 5 6 3`, output: `12` },
       { input: `8\n1 3 2 4 3 5 4 6\n0 2 5 6 4 3 3 4`, output: `21` },
     ],
+    testCases: [
+      // 原始样例
+      { input: `4\n2 1 3 2\n1 5 6 3`, output: `12` },
+      { input: `8\n1 3 2 4 3 5 4 6\n0 2 5 6 4 3 3 4`, output: `21` },
+      // 最小规模 n=1
+      { input: `1\n5\n10`, output: `10` },
+      { input: `1\n0\n5`, output: `5` },
+      // n=2
+      { input: `2\n1 2\n3 5`, output: `6` },
+      { input: `2\n5 5\n3 5`, output: `5` },
+      // c_i=0 子任务
+      { input: `3\n0 0 0\n5 4 3`, output: `15` },
+      { input: `4\n0 0 0 0\n1 2 3 4`, output: `12` },
+      // 全相同c_i
+      { input: `4\n5 5 5 5\n1 3 4 2`, output: `4` },
+      { input: `3\n3 3 3\n10 5 2`, output: `15` },
+      // 递增/递减c_i
+      { input: `4\n1 2 3 4\n2 4 6 8`, output: `14` },
+      { input: `4\n4 3 2 1\n2 4 6 8`, output: `14` },
+      // 大差异
+      { input: `3\n0 10000 0\n1 1 1`, output: `13` },
+      // 最优分组
+      { input: `5\n1 5 2 4 3\n10 8 6 4 2`, output: `22` },
+      // 全选为一组
+      { input: `3\n1 2 3\n0 0 100`, output: `102` },
+      // 每人一组
+      { input: `3\n10 20 30\n100 0 0`, output: `300` },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于 $40\\%$ 的测试点，保证 $c_i=0$。
@@ -681,18 +1234,13 @@ async function seedGesp7() {
       }
     });
 
-    const problemsWithTestCases = gesp7Problems.map(p => ({
-      ...p,
-      testCases: p.samples,
-    }));
-
     const result = await prisma.problem.createMany({
-      data: problemsWithTestCases,
+      data: gesp7Problems,
     });
 
     return NextResponse.json({
       success: true,
-      message: `成功导入 ${result.count} 道 GESP 7级题目（已更新为与洛谷100%一致）`,
+      message: `成功导入 ${result.count} 道 GESP 7级题目（已更新为与洛谷100%一致，含完整测试用例）`,
       count: result.count
     });
   } catch (error) {
