@@ -22,6 +22,21 @@ const gesp1Problems = [
       { input: "4", output: "2" },
       { input: "6", output: "2" },
     ],
+    testCases: [
+      { input: "4", output: "2" },  // 原始样例：2x2, 4x1
+      { input: "6", output: "2" },  // 原始样例：3x2, 6x1
+      { input: "2", output: "1" },  // 最小值边界：只有2x1
+      { input: "3", output: "1" },  // 质数：只有3x1
+      { input: "1000", output: "8" },  // 最大值边界：1000=2^3*5^3，因数对(1,1000)(2,500)(4,250)(5,200)(8,125)(10,100)(20,50)(25,40)
+      { input: "16", output: "3" },  // 完全平方数：4x4, 2x8, 1x16
+      { input: "36", output: "5" },  // 完全平方数：6x6, 4x9, 3x12, 2x18, 1x36
+      { input: "100", output: "5" },  // 完全平方数：10x10, 5x20, 4x25, 2x50, 1x100
+      { input: "12", output: "3" },  // 合数：3x4, 2x6, 1x12
+      { input: "7", output: "1" },  // 质数：只有7x1
+      { input: "997", output: "1" },  // 大质数：只有997x1
+      { input: "64", output: "4" },  // 2的幂：8x8, 4x16, 2x32, 1x64
+      { input: "24", output: "4" },  // 多因数：4x6, 3x8, 2x12, 1x24
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: `【样例 1 解释】
@@ -47,6 +62,21 @@ const gesp1Problems = [
       { input: "2022 1", output: "31" },
       { input: "2020 2", output: "29" },
     ],
+    testCases: [
+      { input: "2022 1", output: "31" },  // 原始样例：平年1月
+      { input: "2020 2", output: "29" },  // 原始样例：闰年2月
+      { input: "2000 2", output: "29" },  // 边界：能被400整除的闰年2月
+      { input: "2100 2", output: "28" },  // 特殊：能被100整除但不能被400整除，平年
+      { input: "2024 2", output: "29" },  // 普通闰年2月
+      { input: "2023 2", output: "28" },  // 平年2月
+      { input: "2022 4", output: "30" },  // 30天的月份
+      { input: "2022 6", output: "30" },  // 6月30天
+      { input: "2022 9", output: "30" },  // 9月30天
+      { input: "2022 11", output: "30" },  // 11月30天
+      { input: "2022 12", output: "31" },  // 12月31天
+      { input: "3000 2", output: "28" },  // 最大年份边界，平年
+      { input: "2400 2", output: "29" },  // 能被400整除的闰年
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -65,6 +95,20 @@ const gesp1Problems = [
     samples: [
       { input: "9\n5\n9\n6", output: "1" },
       { input: "9\n5\n10\n0", output: "55" },
+    ],
+    testCases: [
+      { input: "9\n5\n9\n6", output: "1" },  // 原始样例：只差1分钟
+      { input: "9\n5\n10\n0", output: "55" },  // 原始样例：跨小时
+      { input: "0\n0\n23\n59", output: "1439" },  // 最大时间差：全天
+      { input: "0\n0\n0\n1", output: "1" },  // 最小边界：相差1分钟
+      { input: "0\n0\n1\n0", output: "60" },  // 整小时
+      { input: "12\n30\n12\n45", output: "15" },  // 同一小时内
+      { input: "8\n0\n12\n0", output: "240" },  // 4小时整
+      { input: "23\n0\n23\n59", output: "59" },  // 边界：最后一小时
+      { input: "0\n59\n1\n0", output: "1" },  // 跨小时只差1分钟
+      { input: "6\n30\n18\n45", output: "735" },  // 跨越12小时15分
+      { input: "10\n10\n10\n20", output: "10" },  // 同小时相差10分钟
+      { input: "0\n0\n12\n0", output: "720" },  // 半天
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -88,6 +132,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
       { input: "4", output: "20" },
       { input: "10", output: "220" },
     ],
+    testCases: [
+      { input: "3", output: "10" },  // 原始样例：1+3+6=10
+      { input: "4", output: "20" },  // 原始样例：1+3+6+10=20
+      { input: "10", output: "220" },  // 原始样例
+      { input: "2", output: "4" },  // 最小边界(n>1)：1+(1+2)=4
+      { input: "5", output: "35" },  // 1+3+6+10+15=35
+      { input: "100", output: "171700" },  // 最大边界：公式 n(n+1)(n+2)/6
+      { input: "6", output: "56" },  // 1+3+6+10+15+21=56
+      { input: "7", output: "84" },  // 继续增加
+      { input: "8", output: "120" },
+      { input: "9", output: "165" },
+      { input: "20", output: "1540" },  // 中等规模
+      { input: "50", output: "22100" },  // 较大规模
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -108,6 +166,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
     samples: [
       { input: "2018 2022", output: "2020" },
     ],
+    testCases: [
+      { input: "2018 2022", output: "2020" },  // 原始样例：中间只有2020一个闰年
+      { input: "1 5", output: "4" },  // 最小边界：中间只有4年
+      { input: "2000 2010", output: "8016" },  // 2004+2008=4012? 不对，是年份和：2004+2008=4012
+      { input: "1996 2004", output: "2000" },  // 中间只有2000
+      { input: "2016 2024", output: "2020" },  // 中间只有2020
+      { input: "1900 1910", output: "7616" },  // 1904+1908=3812? 1900不是闰年，中间1904,1908
+      { input: "2014 2022", output: "4036" },  // 2016+2020=4036
+      { input: "100 200", output: "2352" },  // 中间闰年：104,108,112,...196
+      { input: "1999 2001", output: "2000" },  // 2000是闰年
+      { input: "2001 2003", output: "0" },  // 中间没有闰年
+      { input: "1 100", output: "2496" },  // 4,8,12,...96共24个闰年
+      { input: "2010 2022", output: "6048" },  // 2012+2016+2020=6048
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -126,6 +198,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
     samples: [
       { input: "0 0 0 A", output: "0" },
       { input: "11 59 59 P", output: "86399" },
+    ],
+    testCases: [
+      { input: "0 0 0 A", output: "0" },  // 原始样例：午夜0点
+      { input: "11 59 59 P", output: "86399" },  // 原始样例：23:59:59
+      { input: "0 0 1 A", output: "1" },  // 第1秒
+      { input: "0 1 0 A", output: "60" },  // 第1分钟
+      { input: "1 0 0 A", output: "3600" },  // 第1小时
+      { input: "0 0 0 P", output: "43200" },  // 正午12:00
+      { input: "11 59 59 A", output: "43199" },  // 11:59:59 AM
+      { input: "6 30 30 A", output: "23430" },  // 6*3600+30*60+30
+      { input: "6 30 30 P", output: "66630" },  // 18*3600+30*60+30
+      { input: "5 0 0 P", output: "61200" },  // 17:00:00
+      { input: "10 10 10 A", output: "36610" },  // 10*3600+10*60+10
+      { input: "10 10 10 P", output: "79810" },  // 22*3600+10*60+10
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -154,6 +240,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
       { input: "1\n1\n1\n20", output: "Yes\n10" },
       { input: "1\n1\n1\n5", output: "No\n5" },
     ],
+    testCases: [
+      { input: "1\n1\n1\n20", output: "Yes\n10" },  // 原始样例：够钱有剩余
+      { input: "1\n1\n1\n5", output: "No\n5" },  // 原始样例：不够钱
+      { input: "1\n1\n1\n10", output: "Yes\n0" },  // 刚好够：2+5+3=10
+      { input: "10\n10\n10\n100", output: "Yes\n0" },  // 最大边界刚好够：20+50+30=100
+      { input: "10\n10\n10\n50", output: "No\n50" },  // 最大边界不够
+      { input: "1\n1\n1\n9", output: "No\n1" },  // 差1元
+      { input: "1\n1\n1\n11", output: "Yes\n1" },  // 多1元
+      { input: "5\n2\n3\n30", output: "Yes\n1" },  // 10+10+9=29，剩1元
+      { input: "3\n4\n2\n20", output: "No\n12" },  // 6+20+6=32，差12元
+      { input: "2\n1\n1\n15", output: "Yes\n3" },  // 4+5+3=12，剩3元
+      { input: "10\n1\n1\n28", output: "Yes\n0" },  // 20+5+3=28
+      { input: "1\n10\n1\n55", output: "Yes\n0" },  // 2+50+3=55
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -172,6 +272,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
     samples: [
       { input: "7\n1\n10", output: "7" },
       { input: "7\n10\n20", output: "31" },
+    ],
+    testCases: [
+      { input: "7\n1\n10", output: "7" },  // 原始样例
+      { input: "7\n10\n20", output: "31" },  // 原始样例：14+17=31
+      { input: "2\n1\n10", output: "32" },  // k=2：2+4+6+8+10+12(个位2)，但范围1-10，所以2+4+6+8+10+2=32
+      { input: "5\n1\n20", output: "75" },  // k=5：5,10,15,20(倍数)+5,15(个位5重复)=5+10+15+20=50? 需要去重：5,10,15,20共50，但5和15已含，所以50
+      { input: "3\n1\n30", output: "198" },  // k=3：3,6,9,12,15,18,21,24,27,30(倍数)+3,13,23(个位3)
+      { input: "9\n1\n100", output: "603" },  // k=9的倍数和个位9的数
+      { input: "2\n1\n1", output: "0" },  // 范围只有1，不是2的幸运数
+      { input: "2\n2\n2", output: "2" },  // 范围只有2，是2的幸运数
+      { input: "5\n100\n100", output: "100" },  // 100是5的倍数
+      { input: "3\n999\n1000", output: "999" },  // 999是3的倍数，1000不是
+      { input: "4\n10\n50", output: "280" },  // 12,14,16,20,24,28,32,34,36,40,44,48
+      { input: "6\n1\n60", output: "576" },  // 6的倍数和个位6的数
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -200,6 +314,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
       { input: "1\n6", output: "7" },
       { input: "5\n3", output: "1" },
     ],
+    testCases: [
+      { input: "1\n6", output: "7" },  // 原始样例：周一+6天=周日
+      { input: "5\n3", output: "1" },  // 原始样例：周五+3天=周一
+      { input: "1\n1", output: "2" },  // 最小N：周一+1=周二
+      { input: "7\n1", output: "1" },  // 周日+1=周一
+      { input: "1\n7", output: "1" },  // 整周：回到周一
+      { input: "1\n364", output: "1" },  // 最大N，364=52*7，回到周一
+      { input: "3\n10", output: "6" },  // 周三+10=周六
+      { input: "6\n2", output: "1" },  // 周六+2=周一
+      { input: "7\n7", output: "7" },  // 周日+7=周日
+      { input: "4\n100", output: "6" },  // 周四+100天，100%7=2，周四+2=周六
+      { input: "2\n5", output: "7" },  // 周二+5=周日
+      { input: "1\n14", output: "1" },  // 两周回到原点
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: `**样例解释 1**
@@ -225,6 +353,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
       { input: "5\n2", output: "1\n3\n5" },
       { input: "10\n3", output: "1\n2\n4\n5\n7\n8\n10" },
     ],
+    testCases: [
+      { input: "5\n2", output: "1\n3\n5" },  // 原始样例：跳过2的倍数
+      { input: "10\n3", output: "1\n2\n4\n5\n7\n8\n10" },  // 原始样例：跳过3的倍数
+      { input: "1\n2", output: "1" },  // 最小N：只有1
+      { input: "2\n2", output: "1" },  // N=2，跳过2
+      { input: "3\n2", output: "1\n3" },  // 跳过2
+      { input: "10\n2", output: "1\n3\n5\n7\n9" },  // 跳过偶数
+      { input: "10\n5", output: "1\n2\n3\n4\n6\n7\n8\n9" },  // 跳过5和10
+      { input: "15\n4", output: "1\n2\n3\n5\n6\n7\n9\n10\n11\n13\n14\n15" },  // 跳过4,8,12
+      { input: "7\n7", output: "1\n2\n3\n4\n5\n6" },  // 只跳过7
+      { input: "20\n10", output: "1\n2\n3\n4\n5\n6\n7\n8\n9\n11\n12\n13\n14\n15\n16\n17\n18\n19" },  // 跳过10,20
+      { input: "6\n100", output: "1\n2\n3\n4\n5\n6" },  // M>N，不跳过任何数
+      { input: "12\n6", output: "1\n2\n3\n4\n5\n7\n8\n9\n10\n11" },  // 跳过6,12
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -245,6 +387,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
     samples: [
       { input: "100", output: "7\n9" },
       { input: "199", output: "15\n4" },
+    ],
+    testCases: [
+      { input: "100", output: "7\n9" },  // 原始样例：100/13=7余9
+      { input: "199", output: "15\n4" },  // 原始样例：199/13=15余4
+      { input: "1", output: "0\n1" },  // 最小边界：买不起
+      { input: "12", output: "0\n12" },  // 刚好不够买一本
+      { input: "13", output: "1\n0" },  // 刚好买一本
+      { input: "14", output: "1\n1" },  // 买一本剩1元
+      { input: "26", output: "2\n0" },  // 刚好买两本
+      { input: "50", output: "3\n11" },  // 50/13=3余11
+      { input: "130", output: "10\n0" },  // 刚好买10本
+      { input: "150", output: "11\n7" },  // 150/13=11余7
+      { input: "195", output: "15\n0" },  // 195=13*15，刚好
+      { input: "65", output: "5\n0" },  // 65=13*5
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -268,6 +424,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
       { input: "6", output: "1\n2\n3\n6" },
       { input: "10", output: "1\n2\n5\n10" },
     ],
+    testCases: [
+      { input: "1", output: "1" },  // 原始样例：最小值
+      { input: "6", output: "1\n2\n3\n6" },  // 原始样例
+      { input: "10", output: "1\n2\n5\n10" },  // 原始样例
+      { input: "2", output: "1\n2" },  // 最小质数
+      { input: "7", output: "1\n7" },  // 质数
+      { input: "997", output: "1\n997" },  // 大质数
+      { input: "16", output: "1\n2\n4\n8\n16" },  // 完全平方数(2的幂)
+      { input: "36", output: "1\n2\n3\n4\n6\n9\n12\n18\n36" },  // 完全平方数，因数多
+      { input: "100", output: "1\n2\n4\n5\n10\n20\n25\n50\n100" },  // 100的因数
+      { input: "1000", output: "1\n2\n4\n5\n8\n10\n20\n25\n40\n50\n100\n125\n200\n250\n500\n1000" },  // 最大边界
+      { input: "12", output: "1\n2\n3\n4\n6\n12" },  // 常见合数
+      { input: "24", output: "1\n2\n3\n4\n6\n8\n12\n24" },  // 因数较多
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: ``,
@@ -287,6 +457,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
     outputFormat: `输出一行，包含三个整数，分别表示小杨开始休息时刻的时、分、秒。`,
     samples: [
       { input: "12\n59\n59\n10", output: "13 0 9" },
+    ],
+    testCases: [
+      { input: "12\n59\n59\n10", output: "13 0 9" },  // 原始样例：跨小时
+      { input: "1\n0\n0\n1", output: "1 0 1" },  // 最小边界：加1秒
+      { input: "1\n0\n0\n60", output: "1 1 0" },  // 加1分钟
+      { input: "1\n0\n0\n3600", output: "2 0 0" },  // 最大k：加1小时
+      { input: "12\n0\n0\n3600", output: "13 0 0" },  // 12点加1小时
+      { input: "1\n59\n59\n1", output: "2 0 0" },  // 秒进位到分再进位到时
+      { input: "5\n30\n30\n30", output: "5 31 0" },  // 秒进位
+      { input: "10\n45\n50\n70", output: "10 47 0" },  // 进位测试
+      { input: "8\n0\n0\n1800", output: "8 30 0" },  // 加30分钟
+      { input: "3\n20\n40\n100", output: "3 22 20" },  // 一般情况
+      { input: "11\n58\n30\n90", output: "12 0 0" },  // 进位到整点
+      { input: "6\n15\n45\n3599", output: "7 15 44" },  // 接近最大k
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -308,6 +492,22 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
     samples: [
       { input: "8", output: "Yes" },
       { input: "9", output: "No" },
+    ],
+    testCases: [
+      { input: "8", output: "Yes" },  // 原始样例：2^3=8
+      { input: "9", output: "No" },  // 原始样例：不是立方数
+      { input: "1", output: "Yes" },  // 最小边界：1^3=1
+      { input: "27", output: "Yes" },  // 3^3=27
+      { input: "64", output: "Yes" },  // 4^3=64
+      { input: "125", output: "Yes" },  // 5^3=125
+      { input: "216", output: "Yes" },  // 6^3=216
+      { input: "343", output: "Yes" },  // 7^3=343
+      { input: "512", output: "Yes" },  // 8^3=512
+      { input: "729", output: "Yes" },  // 9^3=729
+      { input: "1000", output: "Yes" },  // 最大边界：10^3=1000
+      { input: "2", output: "No" },  // 不是立方数
+      { input: "100", output: "No" },  // 100不是立方数
+      { input: "999", output: "No" },  // 接近1000但不是立方数
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -334,6 +534,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
       { input: "12\n1\n2", output: "4" },
       { input: "13\n1\n2", output: "4" },
     ],
+    testCases: [
+      { input: "12\n1\n2", output: "4" },  // 原始样例：12/(1+2)=4
+      { input: "13\n1\n2", output: "4" },  // 原始样例：有余数
+      { input: "1\n1\n1", output: "0" },  // 最小边界：钱不够买一对
+      { input: "2\n1\n1", output: "1" },  // 刚好买一对
+      { input: "100\n10\n10", output: "5" },  // 100/20=5
+      { input: "100000\n1\n1", output: "50000" },  // 最大边界
+      { input: "50\n5\n5", output: "5" },  // 50/10=5
+      { input: "100\n3\n7", output: "10" },  // 100/10=10
+      { input: "99\n10\n10", output: "4" },  // 99/20=4余19
+      { input: "1000\n100\n100", output: "5" },  // 1000/200=5
+      { input: "15\n2\n3", output: "3" },  // 15/5=3
+      { input: "7\n3\n5", output: "0" },  // 7/8=0，买不起一对
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `**样例解释 1**
@@ -359,6 +573,20 @@ $1+(1+2)+(1+2+3)+(1+2+3+4)+ \\cdots +(1+2+3+4+5+ \\cdots +n)$ 的累计相加。
     outputFormat: `输出一个整数，表示其中美丽数字的数量。`,
     samples: [
       { input: "3\n1 9 72", output: "1" },
+    ],
+    testCases: [
+      { input: "3\n1 9 72", output: "1" },  // 原始样例
+      { input: "1\n9", output: "1" },  // 最小n：9是美丽数字
+      { input: "1\n72", output: "0" },  // 72是9和8的公倍数，不是美丽数字
+      { input: "5\n9 18 27 36 45", output: "5" },  // 全是9的倍数但不是8的倍数
+      { input: "5\n72 144 216 288 360", output: "0" },  // 全是72的倍数（9和8的公倍数）
+      { input: "10\n1 2 3 4 5 6 7 8 9 10", output: "1" },  // 只有9是美丽数字
+      { input: "4\n8 16 24 32", output: "0" },  // 全是8的倍数但不是9的倍数
+      { input: "6\n9 18 27 72 81 90", output: "5" },  // 72不是美丽数字
+      { input: "1\n1", output: "0" },  // 1不是美丽数字
+      { input: "3\n99 99999 9", output: "3" },  // 99=11*9，99999=11111*9，9=9，都是美丽数字
+      { input: "2\n144 999", output: "1" },  // 144=72*2是8和9的倍数，999是9的倍数不是8的倍数
+      { input: "5\n63 81 117 153 189", output: "5" },  // 全是9的倍数，检查是否是8的倍数
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -392,6 +620,20 @@ $$ F=C\\times 1.8+32 $$
       { input: "412.00", output: "Temperature is too high!" },
       { input: "173.56", output: "-99.59 -147.26" },
     ],
+    testCases: [
+      { input: "412.00", output: "Temperature is too high!" },  // 原始样例：温度过高
+      { input: "173.56", output: "-99.59 -147.26" },  // 原始样例：正常输出
+      { input: "273.15", output: "0.00 32.00" },  // 0摄氏度，32华氏度
+      { input: "373.15", output: "100.00 212.00" },  // 100摄氏度，恰好212华氏度（边界）
+      { input: "373.16", output: "Temperature is too high!" },  // 刚超过212华氏度
+      { input: "0.01", output: "-273.14 -459.65" },  // 接近绝对零度
+      { input: "100.00", output: "-173.15 -279.67" },  // 100开尔文
+      { input: "300.00", output: "26.85 80.33" },  // 室温左右
+      { input: "310.15", output: "37.00 98.60" },  // 人体温度
+      { input: "350.00", output: "76.85 170.33" },  // 中间值
+      { input: "233.15", output: "-40.00 -40.00" },  // 特殊：摄氏和华氏相等的点
+      { input: "255.37", output: "-17.78 0.00" },  // 华氏0度
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `$0<K<10^5$`,
@@ -409,6 +651,20 @@ $$ F=C\\times 1.8+32 $$
     outputFormat: `输出两个正整数（英文空格间隔），代表奇数的个数和偶数的个数。如奇数或偶数的个数为 $0$，则对应输出 $0$。`,
     samples: [
       { input: "5\n1\n2\n3\n4\n5", output: "3 2" },
+    ],
+    testCases: [
+      { input: "5\n1\n2\n3\n4\n5", output: "3 2" },  // 原始样例
+      { input: "1\n1", output: "1 0" },  // 最小n：只有一个奇数
+      { input: "1\n2", output: "0 1" },  // 最小n：只有一个偶数
+      { input: "4\n2\n4\n6\n8", output: "0 4" },  // 全是偶数
+      { input: "4\n1\n3\n5\n7", output: "4 0" },  // 全是奇数
+      { input: "6\n1\n2\n3\n4\n5\n6", output: "3 3" },  // 奇偶相等
+      { input: "10\n10\n20\n30\n40\n50\n60\n70\n80\n90\n100", output: "0 10" },  // 全是偶数（10的倍数）
+      { input: "3\n99999\n100000\n1", output: "2 1" },  // 大数测试
+      { input: "2\n11111\n22222", output: "1 1" },  // 各一个
+      { input: "7\n7\n14\n21\n28\n35\n42\n49", output: "4 3" },  // 7的倍数
+      { input: "5\n2\n2\n2\n2\n2", output: "0 5" },  // 全相同偶数
+      { input: "5\n1\n1\n1\n1\n1", output: "5 0" },  // 全相同奇数
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -431,6 +687,20 @@ $$ F=C\\times 1.8+32 $$
       { input: "10\n2\n3", output: "8" },
       { input: "5\n2\n4", output: "3" },
     ],
+    testCases: [
+      { input: "10\n2\n3", output: "8" },  // 原始样例：3/2=1本被啃，剩8本
+      { input: "5\n2\n4", output: "3" },  // 原始样例：4/2=2本被啃，剩3本
+      { input: "10\n10\n1", output: "10" },  // 时间不够啃完一本
+      { input: "100\n1\n50", output: "50" },  // 每小时啃一本
+      { input: "1000\n1\n999", output: "1" },  // 最大边界：剩1本
+      { input: "50\n5\n10", output: "48" },  // 10/5=2本被啃
+      { input: "20\n3\n9", output: "17" },  // 9/3=3本被啃
+      { input: "15\n4\n7", output: "14" },  // 7/4=1本被啃
+      { input: "100\n10\n100", output: "90" },  // 100/10=10本被啃
+      { input: "500\n100\n350", output: "497" },  // 350/100=3本被啃
+      { input: "10\n1\n1", output: "9" },  // 刚好啃完1本
+      { input: "200\n7\n21", output: "197" },  // 21/7=3本被啃
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于所有测试点，保证 $1\\leq n,x,y\\leq 1000$，保证 $y$ 小时后至少会剩下一本完整的书。`,
@@ -448,6 +718,20 @@ $$ F=C\\times 1.8+32 $$
     outputFormat: `$n$ 行，每行一个整数，表示每个整数四舍五入后的结果。`,
     samples: [
       { input: "5\n43\n58\n25\n67\n90", output: "40\n60\n30\n70\n90" },
+    ],
+    testCases: [
+      { input: "5\n43\n58\n25\n67\n90", output: "40\n60\n30\n70\n90" },  // 原始样例
+      { input: "1\n1", output: "0" },  // 最小边界：1四舍五入为0
+      { input: "1\n4", output: "0" },  // 4四舍五入为0
+      { input: "1\n5", output: "10" },  // 5五入为10
+      { input: "1\n10", output: "10" },  // 整十数不变
+      { input: "1\n10000", output: "10000" },  // 最大边界
+      { input: "4\n11\n15\n19\n20", output: "10\n20\n20\n20" },  // 边界测试
+      { input: "3\n99\n100\n101", output: "100\n100\n100" },  // 跨百位
+      { input: "5\n1234\n5678\n9999\n1000\n555", output: "1230\n5680\n10000\n1000\n560" },  // 大数测试
+      { input: "4\n24\n25\n34\n35", output: "20\n30\n30\n40" },  // 四舍五入临界值
+      { input: "3\n50\n500\n5000", output: "50\n500\n5000" },  // 整十数
+      { input: "6\n6\n16\n26\n36\n46\n56", output: "10\n20\n30\n40\n50\n60" },  // 连续进位
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -470,6 +754,20 @@ $$ F=C\\times 1.8+32 $$
       { input: "8\n3\n2", output: "6" },
       { input: "19\n3\n30", output: "19" },
     ],
+    testCases: [
+      { input: "8\n3\n2", output: "6" },  // 原始样例：3*2=6 < 8
+      { input: "19\n3\n30", output: "19" },  // 原始样例：3*30=90 > 19，读完全书
+      { input: "1\n1\n1", output: "1" },  // 最小边界：刚好读完
+      { input: "1000\n1\n1000", output: "1000" },  // 最大边界：刚好读完
+      { input: "100\n10\n5", output: "50" },  // 10*5=50 < 100
+      { input: "100\n10\n20", output: "100" },  // 10*20=200 > 100
+      { input: "50\n100\n1", output: "50" },  // 一天能读完全书
+      { input: "1000\n1000\n1", output: "1000" },  // 一天读完
+      { input: "500\n50\n10", output: "500" },  // 刚好读完
+      { input: "500\n50\n9", output: "450" },  // 差一天读完
+      { input: "7\n2\n3", output: "6" },  // 2*3=6 < 7
+      { input: "10\n3\n4", output: "10" },  // 3*4=12 > 10
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于所有测试点，保证 $n,k,t$ 均不超过 $1000$。`,
@@ -487,6 +785,20 @@ $$ F=C\\times 1.8+32 $$
     outputFormat: `一行，一个整数，表示至少多少天后他们会再次同一天值日。`,
     samples: [
       { input: "4\n6", output: "12" },
+    ],
+    testCases: [
+      { input: "4\n6", output: "12" },  // 原始样例：LCM(4,6)=12
+      { input: "1\n1", output: "1" },  // 最小边界：每天都值日
+      { input: "1\n100", output: "100" },  // LCM(1,100)=100
+      { input: "100\n100", output: "100" },  // 相同周期
+      { input: "2\n3", output: "6" },  // LCM(2,3)=6
+      { input: "5\n7", output: "35" },  // 互质：LCM(5,7)=35
+      { input: "12\n18", output: "36" },  // LCM(12,18)=36
+      { input: "6\n8", output: "24" },  // LCM(6,8)=24
+      { input: "15\n20", output: "60" },  // LCM(15,20)=60
+      { input: "7\n11", output: "77" },  // 互质：LCM(7,11)=77
+      { input: "50\n75", output: "150" },  // LCM(50,75)=150
+      { input: "99\n100", output: "9900" },  // 接近最大边界
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -509,6 +821,20 @@ $$ F=C\\times 1.8+32 $$
       { input: "8\n7\n9\n10", output: "3.00" },
       { input: "8\n7\n2\n11", output: "2.20" },
     ],
+    testCases: [
+      { input: "8\n7\n9\n10", output: "3.00" },  // 原始样例：满8减7，得10-7=3；9折得9，选满减
+      { input: "8\n7\n2\n11", output: "2.20" },  // 原始样例：满8减7，得11-7=4；2折得2.2，选打折
+      { input: "100\n1\n9\n50", output: "45.00" },  // 不满100，只能打9折：50*0.9=45
+      { input: "50\n10\n5\n100", output: "50.00" },  // 满减：100-10=90；5折：50；选打折
+      { input: "10\n5\n9\n10", output: "5.00" },  // 刚好满减：10-5=5；9折：9；选满减
+      { input: "100\n99\n1\n100", output: "1.00" },  // 满减：100-99=1；1折：10；选满减
+      { input: "50\n25\n5\n50", output: "25.00" },  // 满减：50-25=25；5折：25；相等
+      { input: "20\n10\n8\n30", output: "20.00" },  // 满减：30-10=20；8折：24；选满减
+      { input: "100\n50\n9\n50", output: "45.00" },  // 不满100，打9折：45
+      { input: "10\n1\n5\n15", output: "7.50" },  // 满减：15-1=14；5折：7.5；选打折
+      { input: "1\n1\n1\n1", output: "0.10" },  // 边界：满减无效(y=x违反条件)，这个不会出现
+      { input: "50\n49\n1\n50", output: "1.00" },  // 满减：50-49=1；1折：5；选满减
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于所有测试点，保证 $1 \\leq y < x \\leq 100$，$1 \\leq n < 10$，$1 \\leq p \\leq 100$。`,
@@ -527,6 +853,20 @@ $$ F=C\\times 1.8+32 $$
     samples: [
       { input: "2", output: "5" },
       { input: "5", output: "55" },
+    ],
+    testCases: [
+      { input: "2", output: "5" },  // 原始样例：1+4=5
+      { input: "5", output: "55" },  // 原始样例：1+4+9+16+25=55
+      { input: "1", output: "1" },  // 最小边界：只有1层
+      { input: "3", output: "14" },  // 1+4+9=14
+      { input: "4", output: "30" },  // 1+4+9+16=30
+      { input: "10", output: "385" },  // 1+4+9+...+100=385
+      { input: "50", output: "42925" },  // 最大边界：n(n+1)(2n+1)/6
+      { input: "6", output: "91" },  // 1+4+9+16+25+36=91
+      { input: "7", output: "140" },  // 1+4+9+16+25+36+49=140
+      { input: "8", output: "204" },  // 继续累加
+      { input: "9", output: "285" },  // 继续累加
+      { input: "20", output: "2870" },  // 中等规模
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -548,6 +888,20 @@ $$ F=C\\times 1.8+32 $$
     samples: [
       { input: "100.4\n300.2\n60.6\n70.5", output: "50.2" },
       { input: "99.8\n200.9\n60.2\n70.1", output: "49.9" },
+    ],
+    testCases: [
+      { input: "100.4\n300.2\n60.6\n70.5", output: "50.2" },  // 原始样例：体积费50.2 < 重量费70.5
+      { input: "99.8\n200.9\n60.2\n70.1", output: "49.9" },  // 原始样例：体积费49.9 < 重量费60.2
+      { input: "10.0\n100.0\n5.0\n10.0", output: "5.0" },  // 体积费5 = 重量费5
+      { input: "20.0\n299.9\n8.0\n15.0", output: "8.0" },  // G<300用M，体积费10 > 重量费8
+      { input: "20.0\n300.0\n8.0\n15.0", output: "10.0" },  // G>=300用N，体积费10 < 重量费15
+      { input: "1.0\n1.0\n1.0\n2.0", output: "0.5" },  // 最小边界：体积费0.5 < 重量费1
+      { input: "1000.0\n1000.0\n500.0\n600.0", output: "500.0" },  // 最大边界
+      { input: "50.0\n250.0\n30.0\n40.0", output: "25.0" },  // 体积费25 < 重量费30
+      { input: "100.0\n350.0\n40.0\n45.0", output: "45.0" },  // G>=300用N，体积费50 > 重量费45
+      { input: "60.0\n299.0\n25.0\n35.0", output: "25.0" },  // G<300用M，体积费30 > 重量费25
+      { input: "200.0\n500.0\n80.0\n90.0", output: "90.0" },  // G>=300用N，体积费100 > 重量费90
+      { input: "40.0\n150.0\n20.0\n30.0", output: "20.0" },  // G<300用M=20，体积费20=重量费20
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -571,6 +925,20 @@ $$ F=C\\times 1.8+32 $$
     samples: [
       { input: "5\n10\n1\n20\n99\n19", output: "R\nR\nL\n99\nL" },
     ],
+    testCases: [
+      { input: "5\n10\n1\n20\n99\n19", output: "R\nR\nL\n99\nL" },  // 原始样例
+      { input: "1\n1", output: "R" },  // 最小电量
+      { input: "1\n10", output: "R" },  // P=10边界
+      { input: "1\n11", output: "L" },  // P=11边界
+      { input: "1\n20", output: "L" },  // P=20边界
+      { input: "1\n21", output: "21" },  // P=21边界
+      { input: "1\n100", output: "100" },  // 最大电量
+      { input: "3\n5\n15\n50", output: "R\nL\n50" },  // 三种情况各一个
+      { input: "4\n9\n10\n11\n12", output: "R\nR\nL\nL" },  // 边界连续测试
+      { input: "4\n18\n19\n20\n21", output: "L\nL\nL\n21" },  // 另一边界测试
+      { input: "6\n1\n2\n3\n4\n5\n6", output: "R\nR\nR\nR\nR\nR" },  // 全R
+      { input: "5\n50\n60\n70\n80\n90", output: "50\n60\n70\n80\n90" },  // 全数字
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于所有测试点，保证 $1 \\leq T \\leq 20$，$1 \\leq P \\leq 100$。`,
@@ -588,14 +956,9 @@ async function seedGesp1() {
       }
     });
 
-    // 添加所有题目（testCases 复用 samples）
-    const problemsWithTestCases = gesp1Problems.map(p => ({
-      ...p,
-      testCases: p.samples,
-    }));
-
+    // 添加所有题目（每道题目已包含完整的 testCases）
     const result = await prisma.problem.createMany({
-      data: problemsWithTestCases,
+      data: gesp1Problems,
     });
 
     return NextResponse.json({

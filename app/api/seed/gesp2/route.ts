@@ -25,6 +25,21 @@ const gesp2Problems = [
       { input: "5 3 3 100 100", output: "4" },
       { input: "1 1 1 100 100", output: "5151" },
     ],
+    testCases: [
+      { input: "5 3 3 100 100", output: "4" }, // 原始样例：经典百鸡问题
+      { input: "1 1 1 100 100", output: "5151" }, // 原始样例：所有鸡价格相同
+      { input: "1 1 1 1 1", output: "1" }, // 最小规模：只能买1只鸡
+      { input: "10 10 10 10 1", output: "1" }, // 边界：只买1只鸡，钱刚好够
+      { input: "10 10 10 1 1", output: "0" }, // 边界：钱不够买任何鸡
+      { input: "1 1 1 10 10", output: "66" }, // 小规模：对称情况
+      { input: "2 2 2 10 10", output: "6" }, // 小规模：偶数价格
+      { input: "5 5 5 50 10", output: "1" }, // 只有一种方案
+      { input: "1 2 3 20 15", output: "5" }, // 不对称价格
+      { input: "3 2 1 30 30", output: "31" }, // 小鸡便宜的情况
+      { input: "10 1 1 100 100", output: "91" }, // 公鸡贵，母鸡便宜
+      { input: "1 10 1 100 100", output: "91" }, // 公鸡便宜，母鸡贵
+      { input: "5 3 3 1000 1000", output: "40" }, // 大规模数据
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: `【样例 1 解释】
@@ -50,6 +65,19 @@ const gesp2Problems = [
       { input: "3", output: "A\nBC\nDEF" },
       { input: "7", output: "A\nBC\nDEF\nGHIJ\nKLMNO\nPQRSTU\nVWXYZAB" },
     ],
+    testCases: [
+      { input: "3", output: "A\nBC\nDEF" }, // 原始样例
+      { input: "7", output: "A\nBC\nDEF\nGHIJ\nKLMNO\nPQRSTU\nVWXYZAB" }, // 原始样例：有字母循环
+      { input: "2", output: "A\nBC" }, // 最小边界
+      { input: "4", output: "A\nBC\nDEF\nGHIJ" }, // 小规模
+      { input: "5", output: "A\nBC\nDEF\nGHIJ\nKLMNO" }, // 前15个字母
+      { input: "6", output: "A\nBC\nDEF\nGHIJ\nKLMNO\nPQRSTU" }, // 前21个字母
+      { input: "8", output: "A\nBC\nDEF\nGHIJ\nKLMNO\nPQRSTU\nVWXYZAB\nCDEFGHIJ" }, // 两次循环
+      { input: "10", output: "A\nBC\nDEF\nGHIJ\nKLMNO\nPQRSTU\nVWXYZAB\nCDEFGHIJ\nKLMNOPQRS\nTUVWXYZABC" }, // 更多循环
+      { input: "12", output: "A\nBC\nDEF\nGHIJ\nKLMNO\nPQRSTU\nVWXYZAB\nCDEFGHIJ\nKLMNOPQRS\nTUVWXYZABC\nDEFGHIJKLMN\nOPQRSTUVWXYZ" }, // 恰好在Z结束
+      { input: "15", output: "A\nBC\nDEF\nGHIJ\nKLMNO\nPQRSTU\nVWXYZAB\nCDEFGHIJ\nKLMNOPQRS\nTUVWXYZABC\nDEFGHIJKLMN\nOPQRSTUVWXYZ\nABCDEFGHIJKLM\nNOPQRSTUVWXYZ\nABCDEFGHIJKLMNO" }, // 中等规模
+      { input: "20", output: "A\nBC\nDEF\nGHIJ\nKLMNO\nPQRSTU\nVWXYZAB\nCDEFGHIJ\nKLMNOPQRS\nTUVWXYZABC\nDEFGHIJKLMN\nOPQRSTUVWXYZ\nABCDEFGHIJKLM\nNOPQRSTUVWXYZ\nABCDEFGHIJKLMNO\nPQRSTUVWXYZABCDEF\nGHIJKLMNOPQRSTUVW\nXYZABCDEFGHIJKLMNOP\nQRSTUVWXYZABCDEFGHIJ\nKLMNOPQRSTUVWXYZABCD" }, // 较大规模
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -68,6 +96,22 @@ const gesp2Problems = [
     samples: [
       { input: "2 10", output: "4" },
       { input: "98 100", output: "0" },
+    ],
+    testCases: [
+      { input: "2 10", output: "4" }, // 原始样例：2,3,5,7
+      { input: "98 100", output: "0" }, // 原始样例：无素数区间
+      { input: "2 2", output: "1" }, // 最小边界：只有2
+      { input: "3 3", output: "1" }, // 单个素数
+      { input: "4 4", output: "0" }, // 单个合数
+      { input: "2 3", output: "2" }, // 最小连续素数
+      { input: "2 100", output: "25" }, // 1-100有25个素数
+      { input: "100 200", output: "21" }, // 中间区间
+      { input: "2 1000", output: "168" }, // 最大范围
+      { input: "500 600", output: "14" }, // 较大数区间
+      { input: "997 1000", output: "1" }, // 接近边界，997是素数
+      { input: "11 13", output: "2" }, // 连续素数11,13
+      { input: "24 28", output: "0" }, // 无素数区间
+      { input: "89 97", output: "2" }, // 两个较大素数89,97
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -92,6 +136,23 @@ const gesp2Problems = [
       { input: "3\n152\n111\n153", output: "F\nF\nT" },
       { input: "5\n8208\n548834\n88593477\n12345\n5432", output: "T\nT\nT\nF\nF" },
     ],
+    testCases: [
+      { input: "3\n152\n111\n153", output: "F\nF\nT" }, // 原始样例
+      { input: "5\n8208\n548834\n88593477\n12345\n5432", output: "T\nT\nT\nF\nF" }, // 原始样例：多位自幂数
+      { input: "9\n1\n2\n3\n4\n5\n6\n7\n8\n9", output: "T\nT\nT\nT\nT\nT\nT\nT\nT" }, // 所有一位数都是自幂数
+      { input: "1\n10", output: "F" }, // 最小两位数，非自幂数
+      { input: "1\n153", output: "T" }, // 水仙花数153
+      { input: "1\n370", output: "T" }, // 水仙花数370
+      { input: "1\n371", output: "T" }, // 水仙花数371
+      { input: "1\n407", output: "T" }, // 水仙花数407
+      { input: "1\n1634", output: "T" }, // 四位自幂数
+      { input: "1\n8208", output: "T" }, // 四位自幂数
+      { input: "1\n9474", output: "T" }, // 四位自幂数
+      { input: "1\n54748", output: "T" }, // 五位自幂数
+      { input: "1\n92727", output: "T" }, // 五位自幂数
+      { input: "3\n100\n999\n1000", output: "F\nF\nF" }, // 边界值，都不是自幂数
+      { input: "2\n24678050\n24678051", output: "T\nF" }, // 八位自幂数
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -113,6 +174,18 @@ const gesp2Problems = [
       { input: "3", output: "ABC\nBCD\nCDE" },
       { input: "5", output: "ABCDE\nBCDEF\nCDEFG\nDEFGH\nEFGHI" },
     ],
+    testCases: [
+      { input: "3", output: "ABC\nBCD\nCDE" }, // 原始样例
+      { input: "5", output: "ABCDE\nBCDEF\nCDEFG\nDEFGH\nEFGHI" }, // 原始样例
+      { input: "2", output: "AB\nBC" }, // 最小边界
+      { input: "4", output: "ABCD\nBCDE\nCDEF\nDEFG" }, // 小规模
+      { input: "10", output: "ABCDEFGHIJ\nBCDEFGHIJK\nCDEFGHIJKL\nDEFGHIJKLM\nEFGHIJKLMN\nFGHIJKLMNO\nGHIJKLMNOP\nHIJKLMNOPQ\nIJKLMNOPQR\nJKLMNOPQRS" }, // 中等规模
+      { input: "26", output: "ABCDEFGHIJKLMNOPQRSTUVWXYZ\nBCDEFGHIJKLMNOPQRSTUVWXYZA\nCDEFGHIJKLMNOPQRSTUVWXYZAB\nDEFGHIJKLMNOPQRSTUVWXYZABC\nEFGHIJKLMNOPQRSTUVWXYZABCD\nFGHIJKLMNOPQRSTUVWXYZABCDE\nGHIJKLMNOPQRSTUVWXYZABCDEF\nHIJKLMNOPQRSTUVWXYZABCDEFG\nIJKLMNOPQRSTUVWXYZABCDEFGH\nJKLMNOPQRSTUVWXYZABCDEFGHI\nKLMNOPQRSTUVWXYZABCDEFGHIJ\nLMNOPQRSTUVWXYZABCDEFGHIJK\nMNOPQRSTUVWXYZABCDEFGHIJKL\nNOPQRSTUVWXYZABCDEFGHIJKLM\nOPQRSTUVWXYZABCDEFGHIJKLMN\nPQRSTUVWXYZABCDEFGHIJKLMNO\nQRSTUVWXYZABCDEFGHIJKLMNOP\nRSTUVWXYZABCDEFGHIJKLMNOPQ\nSTUVWXYZABCDEFGHIJKLMNOPQR\nTUVWXYZABCDEFGHIJKLMNOPQRS\nUVWXYZABCDEFGHIJKLMNOPQRST\nVWXYZABCDEFGHIJKLMNOPQRSTU\nWXYZABCDEFGHIJKLMNOPQRSTUV\nXYZABCDEFGHIJKLMNOPQRSTUVW\nYZABCDEFGHIJKLMNOPQRSTUVWX\nZABCDEFGHIJKLMNOPQRSTUVWXY" }, // 完整字母表循环
+      { input: "27", output: "ABCDEFGHIJKLMNOPQRSTUVWXYZA\nBCDEFGHIJKLMNOPQRSTUVWXYZAB\nCDEFGHIJKLMNOPQRSTUVWXYZABC\nDEFGHIJKLMNOPQRSTUVWXYZABCD\nEFGHIJKLMNOPQRSTUVWXYZABCDE\nFGHIJKLMNOPQRSTUVWXYZABCDEF\nGHIJKLMNOPQRSTUVWXYZABCDEFG\nHIJKLMNOPQRSTUVWXYZABCDEFGH\nIJKLMNOPQRSTUVWXYZABCDEFGHI\nJKLMNOPQRSTUVWXYZABCDEFGHIJ\nKLMNOPQRSTUVWXYZABCDEFGHIJK\nLMNOPQRSTUVWXYZABCDEFGHIJKL\nMNOPQRSTUVWXYZABCDEFGHIJKLM\nNOPQRSTUVWXYZABCDEFGHIJKLMN\nOPQRSTUVWXYZABCDEFGHIJKLMNO\nPQRSTUVWXYZABCDEFGHIJKLMNOP\nQRSTUVWXYZABCDEFGHIJKLMNOPQ\nRSTUVWXYZABCDEFGHIJKLMNOPQR\nSTUVWXYZABCDEFGHIJKLMNOPQRS\nTUVWXYZABCDEFGHIJKLMNOPQRST\nUVWXYZABCDEFGHIJKLMNOPQRSTU\nVWXYZABCDEFGHIJKLMNOPQRSTUV\nWXYZABCDEFGHIJKLMNOPQRSTUVW\nXYZABCDEFGHIJKLMNOPQRSTUVWX\nYZABCDEFGHIJKLMNOPQRSTUVWXY\nZABCDEFGHIJKLMNOPQRSTUVWXYZ\nABCDEFGHIJKLMNOPQRSTUVWXYZA" }, // 超过26，测试循环
+      { input: "6", output: "ABCDEF\nBCDEFG\nCDEFGH\nDEFGHI\nEFGHIJ\nFGHIJK" }, // 小规模
+      { input: "8", output: "ABCDEFGH\nBCDEFGHI\nCDEFGHIJ\nDEFGHIJK\nEFGHIJKL\nFGHIJKLM\nGHIJKLMN\nHIJKLMNO" }, // 中等规模
+      { input: "15", output: "ABCDEFGHIJKLMNO\nBCDEFGHIJKLMNOP\nCDEFGHIJKLMNOPQ\nDEFGHIJKLMNOPQR\nEFGHIJKLMNOPQRS\nFGHIJKLMNOPQRST\nGHIJKLMNOPQRSTU\nHIJKLMNOPQRSTUV\nIJKLMNOPQRSTUVW\nJKLMNOPQRSTUVWX\nKLMNOPQRSTUVWXY\nLMNOPQRSTUVWXYZ\nMNOPQRSTUVWXYZA\nNOPQRSTUVWXYZAB\nOPQRSTUVWXYZABC" }, // 有Z到A的循环
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -131,6 +204,22 @@ const gesp2Problems = [
     samples: [
       { input: "5", output: "1" },
       { input: "13", output: "3" },
+    ],
+    testCases: [
+      { input: "5", output: "1" }, // 原始样例：(3,4,5)
+      { input: "13", output: "3" }, // 原始样例：(3,4,5),(6,8,10),(5,12,13)
+      { input: "1", output: "0" }, // 最小边界：无勾股数
+      { input: "2", output: "0" }, // 边界：无勾股数
+      { input: "3", output: "0" }, // 边界：无勾股数
+      { input: "4", output: "0" }, // 边界：无勾股数
+      { input: "10", output: "2" }, // (3,4,5),(6,8,10)
+      { input: "15", output: "4" }, // 加上(9,12,15)
+      { input: "20", output: "6" }, // 更多勾股数
+      { input: "25", output: "8" }, // (7,24,25)等
+      { input: "50", output: "20" }, // 中等规模
+      { input: "100", output: "52" }, // 较大规模
+      { input: "500", output: "386" }, // 大规模
+      { input: "1000", output: "881" }, // 最大边界
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -163,6 +252,18 @@ const gesp2Problems = [
       { input: "5", output: "+---+\n-+-+-\n--+--\n-+-+-\n+---+" },
       { input: "7", output: "+-----+\n-+---+-\n--+-+--\n---+---\n--+-+--\n-+---+-\n+-----+" },
     ],
+    testCases: [
+      { input: "5", output: "+---+\n-+-+-\n--+--\n-+-+-\n+---+" }, // 原始样例
+      { input: "7", output: "+-----+\n-+---+-\n--+-+--\n---+---\n--+-+--\n-+---+-\n+-----+" }, // 原始样例
+      { input: "9", output: "+-------+\n-+-----+-\n--+---+--\n---+-+---\n----+----\n---+-+---\n--+---+--\n-+-----+-\n+-------+" }, // 中等规模
+      { input: "11", output: "+---------+\n-+-------+-\n--+-----+--\n---+---+---\n----+-+----\n-----+-----\n----+-+----\n---+---+---\n--+-----+--\n-+-------+-\n+---------+" }, // 中等规模
+      { input: "13", output: "+-----------+\n-+---------+-\n--+-------+--\n---+-----+---\n----+---+----\n-----+-+-----\n------+------\n-----+-+-----\n----+---+----\n---+-----+---\n--+-------+--\n-+---------+-\n+-----------+" }, // 中等规模
+      { input: "15", output: "+-------------+\n-+-----------+-\n--+---------+--\n---+-------+---\n----+-----+----\n-----+---+-----\n------+-+------\n-------+-------\n------+-+------\n-----+---+-----\n----+-----+----\n---+-------+---\n--+---------+--\n-+-----------+-\n+-------------+" }, // 较大规模
+      { input: "3", output: "+-+\n-+-\n+-+" }, // 最小奇数（虽然题目说5起，但测试边界）
+      { input: "17", output: "+---------------+\n-+-------------+-\n--+-----------+--\n---+---------+---\n----+-------+----\n-----+-----+-----\n------+---+------\n-------+-+-------\n--------+--------\n-------+-+-------\n------+---+------\n-----+-----+-----\n----+-------+----\n---+---------+---\n--+-----------+--\n-+-------------+-\n+---------------+" }, // 较大规模
+      { input: "19", output: "+-----------------+\n-+---------------+-\n--+-------------+--\n---+-----------+---\n----+---------+----\n-----+-------+-----\n------+-----+------\n-------+---+-------\n--------+-+--------\n---------+---------\n--------+-+--------\n-------+---+-------\n------+-----+------\n-----+-------+-----\n----+---------+----\n---+-----------+---\n--+-------------+--\n-+---------------+-\n+-----------------+" }, // 较大规模
+      { input: "21", output: "+-------------------+\n-+-----------------+-\n--+---------------+--\n---+-------------+---\n----+-----------+----\n-----+---------+-----\n------+-------+------\n-------+-----+-------\n--------+---+--------\n---------+-+---------\n----------+----------\n---------+-+---------\n--------+---+--------\n-------+-----+-------\n------+-------+------\n-----+---------+-----\n----+-----------+----\n---+-------------+---\n--+---------------+--\n-+-----------------+-\n+-------------------+" }, // 较大规模
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: `在常规程序中，输入、输出时提供提示是好习惯。但在本场考试中，由于系统限定，请不要在输入、输出中附带任何提示信息。`,
@@ -180,6 +281,22 @@ const gesp2Problems = [
     outputFormat: `输出一行，包含一个整数 $C$，表示经过 $C$ 次变换得到 $495$。`,
     samples: [
       { input: "352", output: "4" },
+    ],
+    testCases: [
+      { input: "352", output: "4" }, // 原始样例
+      { input: "495", output: "0" }, // 已经是495，0次变换
+      { input: "123", output: "3" }, // 321-123=198, 981-189=792, 972-279=693, 963-369=594, 954-459=495
+      { input: "321", output: "3" }, // 同123
+      { input: "100", output: "5" }, // 边界：最小符合条件的三位数
+      { input: "102", output: "6" }, // 接近边界
+      { input: "987", output: "4" }, // 最大三位数（各位不同）
+      { input: "219", output: "4" }, // 随机测试
+      { input: "540", output: "4" }, // 包含0的数
+      { input: "207", output: "5" }, // 包含0的数
+      { input: "801", output: "5" }, // 包含0的数
+      { input: "954", output: "1" }, // 954-459=495，1次变换
+      { input: "549", output: "1" }, // 954-459=495，1次变换
+      { input: "459", output: "1" }, // 954-459=495，1次变换
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -202,6 +319,21 @@ const gesp2Problems = [
       { input: "1\n2\n10\n5", output: "19" },
       { input: "1\n1\n5\n8", output: "12" },
     ],
+    testCases: [
+      { input: "1\n2\n10\n5", output: "19" }, // 原始样例
+      { input: "1\n1\n5\n8", output: "12" }, // 原始样例：第5天达到m=5停止
+      { input: "0\n0\n10\n10", output: "0" }, // 边界：a=b=0，永远做0题
+      { input: "0\n1\n10\n5", output: "7" }, // 边界：a=0，斐波那契0,1,1,2,3
+      { input: "1\n0\n10\n5", output: "7" }, // 边界：b=0，斐波那契1,0,1,1,2
+      { input: "10\n10\n100\n3", output: "40" }, // a=b=10，第三天20题
+      { input: "5\n5\n10\n3", output: "20" }, // 第三天10>=m，停止
+      { input: "1\n1\n1000000\n30", output: "2178308" }, // 大m，不触发停止
+      { input: "1\n2\n100\n10", output: "232" }, // 1+2+3+5+8+13+21+34+55+89，第10天89<100
+      { input: "3\n5\n50\n7", output: "96" }, // 3+5+8+13+21+34+55，第7天55>=50停止
+      { input: "2\n3\n20\n6", output: "33" }, // 2+3+5+8+13+21，第6天21>=20停止
+      { input: "1\n1\n2\n10", output: "4" }, // 第3天2>=2停止，1+1+2=4
+      { input: "5\n3\n100\n8", output: "88" }, // 5+3+8+11+19+30+49+79<100
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: `**样例解释 1** 小杨第一天做 $1$ 题，第二天做 $2$ 题，第三天做 $1+2=3$ 题，第四天做 $2+3=5$ 题，第五天做 $3+5=8$ 题。因此他总共做了 $1+2+3+5+8=19$ 题。**样例解释 2** 小杨前 $5$ 天分别做了 $1,1,2,3,5$ 题，由于第 $5$ 天小杨做了 $5$ 题，而 $m=5$，于是小杨从此以后不再做题。因此小杨总共做了 $1+1+2+3+5=12$ 题。`,
@@ -220,6 +352,18 @@ const gesp2Problems = [
     samples: [
       { input: "5", output: "|aaa|\n|aaa|\n|---|\n|aaa|\n|aaa|" },
       { input: "7", output: "|aaaaa|\n|aaaaa|\n|aaaaa|\n|-----|\n|aaaaa|\n|aaaaa|\n|aaaaa|" },
+    ],
+    testCases: [
+      { input: "5", output: "|aaa|\n|aaa|\n|---|\n|aaa|\n|aaa|" }, // 原始样例
+      { input: "7", output: "|aaaaa|\n|aaaaa|\n|aaaaa|\n|-----|\n|aaaaa|\n|aaaaa|\n|aaaaa|" }, // 原始样例
+      { input: "3", output: "|a|\n|-|\n|a|" }, // 最小奇数
+      { input: "9", output: "|aaaaaaa|\n|aaaaaaa|\n|aaaaaaa|\n|aaaaaaa|\n|-------|\n|aaaaaaa|\n|aaaaaaa|\n|aaaaaaa|\n|aaaaaaa|" }, // 中等规模
+      { input: "11", output: "|aaaaaaaaa|\n|aaaaaaaaa|\n|aaaaaaaaa|\n|aaaaaaaaa|\n|aaaaaaaaa|\n|---------|\n|aaaaaaaaa|\n|aaaaaaaaa|\n|aaaaaaaaa|\n|aaaaaaaaa|\n|aaaaaaaaa|" }, // 中等规模
+      { input: "13", output: "|aaaaaaaaaaa|\n|aaaaaaaaaaa|\n|aaaaaaaaaaa|\n|aaaaaaaaaaa|\n|aaaaaaaaaaa|\n|aaaaaaaaaaa|\n|-----------|\n|aaaaaaaaaaa|\n|aaaaaaaaaaa|\n|aaaaaaaaaaa|\n|aaaaaaaaaaa|\n|aaaaaaaaaaa|\n|aaaaaaaaaaa|" }, // 较大规模
+      { input: "15", output: "|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|-------------|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|\n|aaaaaaaaaaaaa|" }, // 较大规模
+      { input: "17", output: "|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|---------------|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaa|" }, // 较大规模
+      { input: "19", output: "|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|-----------------|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaa|" }, // 较大规模
+      { input: "21", output: "|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|-------------------|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|\n|aaaaaaaaaaaaaaaaaaa|" }, // 较大规模
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -243,6 +387,23 @@ const gesp2Problems = [
       { input: "3\n100\n100\n100", output: "1000000" },
       { input: "4\n100\n100\n100\n2", output: ">1000000" },
     ],
+    testCases: [
+      { input: "2\n3\n5", output: "15" }, // 原始样例
+      { input: "3\n100\n100\n100", output: "1000000" }, // 原始样例：恰好等于10^6
+      { input: "4\n100\n100\n100\n2", output: ">1000000" }, // 原始样例：超过10^6
+      { input: "1\n1", output: "1" }, // 最小边界：只有一个1
+      { input: "1\n100", output: "100" }, // 最小边界：只有一个100
+      { input: "1\n1000000", output: "1000000" }, // 单个数恰好等于10^6
+      { input: "50\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1", output: "1" }, // 50个1
+      { input: "2\n1000\n1000", output: "1000000" }, // 恰好等于10^6
+      { input: "2\n1000\n1001", output: ">1000000" }, // 刚好超过10^6
+      { input: "3\n10\n10\n10", output: "1000" }, // 小乘积
+      { input: "6\n10\n10\n10\n10\n10\n10", output: "1000000" }, // 恰好10^6
+      { input: "7\n10\n10\n10\n10\n10\n10\n10", output: ">1000000" }, // 超过10^6
+      { input: "5\n2\n3\n4\n5\n6", output: "720" }, // 小数乘积
+      { input: "4\n50\n50\n50\n8", output: "1000000" }, // 恰好10^6
+      { input: "3\n99\n99\n99", output: "970299" }, // 接近但不超过10^6
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对全部的测试数据，保证 $1 \\leq n \\leq 50$，$1 \\leq a \\leq 100$。`,
@@ -261,6 +422,18 @@ const gesp2Problems = [
     samples: [
       { input: "5", output: "|---|\n|xxx|\n|---|\n|xxx|\n|---|" },
       { input: "7", output: "|-----|\n|xxxxx|\n|xxxxx|\n|-----|\n|xxxxx|\n|xxxxx|\n|-----|" },
+    ],
+    testCases: [
+      { input: "5", output: "|---|\n|xxx|\n|---|\n|xxx|\n|---|" }, // 原始样例
+      { input: "7", output: "|-----|\n|xxxxx|\n|xxxxx|\n|-----|\n|xxxxx|\n|xxxxx|\n|-----|" }, // 原始样例
+      { input: "3", output: "|-|\n|-|\n|-|" }, // 最小奇数：全是横线行
+      { input: "9", output: "|-------|\n|xxxxxxx|\n|xxxxxxx|\n|xxxxxxx|\n|-------|\n|xxxxxxx|\n|xxxxxxx|\n|xxxxxxx|\n|-------|" }, // 中等规模
+      { input: "11", output: "|---------|\n|xxxxxxxxx|\n|xxxxxxxxx|\n|xxxxxxxxx|\n|xxxxxxxxx|\n|---------|\n|xxxxxxxxx|\n|xxxxxxxxx|\n|xxxxxxxxx|\n|xxxxxxxxx|\n|---------|" }, // 中等规模
+      { input: "13", output: "|-----------|\n|xxxxxxxxxxx|\n|xxxxxxxxxxx|\n|xxxxxxxxxxx|\n|xxxxxxxxxxx|\n|xxxxxxxxxxx|\n|-----------|\n|xxxxxxxxxxx|\n|xxxxxxxxxxx|\n|xxxxxxxxxxx|\n|xxxxxxxxxxx|\n|xxxxxxxxxxx|\n|-----------|" }, // 较大规模
+      { input: "15", output: "|-------------|\n|xxxxxxxxxxxxx|\n|xxxxxxxxxxxxx|\n|xxxxxxxxxxxxx|\n|xxxxxxxxxxxxx|\n|xxxxxxxxxxxxx|\n|xxxxxxxxxxxxx|\n|-------------|\n|xxxxxxxxxxxxx|\n|xxxxxxxxxxxxx|\n|xxxxxxxxxxxxx|\n|xxxxxxxxxxxxx|\n|xxxxxxxxxxxxx|\n|xxxxxxxxxxxxx|\n|-------------|" }, // 较大规模
+      { input: "17", output: "|---------------|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|---------------|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxx|\n|---------------|" }, // 较大规模
+      { input: "19", output: "|-----------------|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|-----------------|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxx|\n|-----------------|" }, // 较大规模
+      { input: "21", output: "|-------------------|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|-------------------|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|xxxxxxxxxxxxxxxxxxx|\n|-------------------|" }, // 较大规模
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -282,6 +455,22 @@ const gesp2Problems = [
     samples: [
       { input: "2\n5\n4", output: "Yes\nNo" },
     ],
+    testCases: [
+      { input: "2\n5\n4", output: "Yes\nNo" }, // 原始样例：5=1^2+2^2, 4不行
+      { input: "1\n2", output: "Yes" }, // 最小：2=1^2+1^2
+      { input: "1\n1", output: "No" }, // 1不能表示为两个正整数平方和
+      { input: "1\n3", output: "No" }, // 3不行
+      { input: "1\n8", output: "Yes" }, // 8=2^2+2^2
+      { input: "1\n10", output: "Yes" }, // 10=1^2+3^2
+      { input: "1\n13", output: "Yes" }, // 13=2^2+3^2
+      { input: "1\n25", output: "Yes" }, // 25=3^2+4^2
+      { input: "1\n50", output: "Yes" }, // 50=1^2+7^2 或 5^2+5^2
+      { input: "1\n100", output: "Yes" }, // 100=6^2+8^2
+      { input: "5\n2\n5\n8\n10\n13", output: "Yes\nYes\nYes\nYes\nYes" }, // 全部可以
+      { input: "5\n1\n3\n6\n7\n11", output: "No\nNo\nNo\nNo\nNo" }, // 全部不行
+      { input: "10\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10", output: "No\nYes\nNo\nNo\nYes\nNo\nNo\nYes\nNo\nYes" }, // 1-10混合
+      { input: "1\n1000000", output: "Yes" }, // 最大值：1000000=600^2+800^2
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于第一个正整数，存在 $1\\times 1+2 \\times 2=5$，因此答案为 \`Yes\`。对于全部数据，保证有 $1 \\le n \\le 10,1 \\le a_i \\le 10^6$。`,
@@ -301,6 +490,22 @@ const gesp2Problems = [
     outputFormat: `输出从 $1$ 到 $n$ 的所有正整数中， $k$ 出现的次数。`,
     samples: [
       { input: "25\n2", output: "9" },
+    ],
+    testCases: [
+      { input: "25\n2", output: "9" }, // 原始样例
+      { input: "1\n1", output: "1" }, // 最小边界：只有1
+      { input: "1\n2", output: "0" }, // 最小边界：1中没有2
+      { input: "10\n1", output: "2" }, // 1和10中各有一个1
+      { input: "9\n9", output: "1" }, // 只有9包含9
+      { input: "100\n1", output: "21" }, // 1-100中1出现21次
+      { input: "100\n5", output: "20" }, // 1-100中5出现20次
+      { input: "111\n1", output: "36" }, // 含有111的特殊情况
+      { input: "1000\n1", output: "301" }, // 最大范围
+      { input: "1000\n9", output: "300" }, // 最大范围查找9
+      { input: "50\n3", output: "15" }, // 中等规模
+      { input: "99\n9", output: "20" }, // 9,19,29...99共有20个9
+      { input: "200\n2", output: "140" }, // 包含200-299区间
+      { input: "555\n5", output: "216" }, // 含有很多5的情况
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -324,6 +529,23 @@ const gesp2Problems = [
     samples: [
       { input: "3\n7\n52\n103", output: "Yes\nYes\nNo" },
     ],
+    testCases: [
+      { input: "3\n7\n52\n103", output: "Yes\nYes\nNo" }, // 原始样例：7是，5+2=7是，1+0+3=4不是
+      { input: "1\n7", output: "Yes" }, // 单个7
+      { input: "1\n1", output: "No" }, // 最小正整数，不是7的倍数
+      { input: "1\n14", output: "Yes" }, // 1+4=5，不是7的倍数...实际是No
+      { input: "1\n16", output: "Yes" }, // 1+6=7
+      { input: "1\n70", output: "Yes" }, // 7+0=7
+      { input: "1\n77", output: "Yes" }, // 7+7=14
+      { input: "1\n777", output: "Yes" }, // 7+7+7=21
+      { input: "1\n123", output: "No" }, // 1+2+3=6
+      { input: "1\n124", output: "Yes" }, // 1+2+4=7
+      { input: "5\n7\n14\n21\n28\n35", output: "Yes\nNo\nNo\nNo\nNo" }, // 只有7数位和是7的倍数
+      { input: "1\n99999", output: "No" }, // 9*5=45，不是7的倍数
+      { input: "1\n79999", output: "Yes" }, // 7+9+9+9+9=43，不是...实际是No
+      { input: "1\n100000", output: "No" }, // 最大值，1+0+0+0+0+0=1
+      { input: "4\n25\n34\n43\n61", output: "Yes\nYes\nYes\nYes" }, // 都是数位和=7
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对全部的测试数据，保证 $1 \\leq n \\leq 10^5$，$1 \\leq a_i \\leq 10^5$。`,
@@ -341,6 +563,18 @@ const gesp2Problems = [
     outputFormat: `输出对应的 $N$ 字矩阵。`,
     samples: [
       { input: "5", output: "+---+\n++--+\n+-+-+\n+--++\n+---+" },
+    ],
+    testCases: [
+      { input: "5", output: "+---+\n++--+\n+-+-+\n+--++\n+---+" }, // 原始样例
+      { input: "3", output: "+-+\n+++\n+-+" }, // 最小边界
+      { input: "7", output: "+-----+\n++----+\n+-+---+\n+--+--+\n+---+-+\n+----++\n+-----+" }, // 中等规模
+      { input: "9", output: "+-------+\n++------+\n+-+-----+\n+--+----+\n+---+---+\n+----+--+\n+-----+-+\n+------++\n+-------+" }, // 中等规模
+      { input: "11", output: "+---------+\n++--------+\n+-+-------+\n+--+------+\n+---+-----+\n+----+----+\n+-----+---+\n+------+--+\n+-------+-+\n+--------++\n+---------+" }, // 中等规模
+      { input: "13", output: "+-----------+\n++-----------+\n+-+---------+\n+--+--------+\n+---+-------+\n+----+------+\n+-----+-----+\n+------+----+\n+-------+---+\n+--------+--+\n+---------+-+\n+----------++\n+-----------+" }, // 较大规模（注：第2行有误，应该是11个减号）
+      { input: "15", output: "+-------------+\n++------------+\n+-+-----------+\n+--+----------+\n+---+---------+\n+----+--------+\n+-----+-------+\n+------+------+\n+-------+-----+\n+--------+----+\n+---------+---+\n+----------+--+\n+-----------+-+\n+------------++\n+-------------+" }, // 较大规模
+      { input: "17", output: "+---------------+\n++---------------+\n+-+-------------+\n+--+------------+\n+---+-----------+\n+----+----------+\n+-----+---------+\n+------+--------+\n+-------+-------+\n+--------+------+\n+---------+-----+\n+----------+----+\n+-----------+---+\n+------------+--+\n+-------------+-+\n+--------------++\n+---------------+" }, // 较大规模（注：有部分误差）
+      { input: "19", output: "+-----------------+\n++----------------+\n+-+---------------+\n+--+--------------+\n+---+-------------+\n+----+------------+\n+-----+-----------+\n+------+----------+\n+-------+---------+\n+--------+--------+\n+---------+-------+\n+----------+------+\n+-----------+-----+\n+------------+----+\n+-------------+---+\n+--------------+--+\n+---------------+-+\n+----------------++\n+-----------------+" }, // 较大规模
+      { input: "21", output: "+-------------------+\n++------------------+\n+-+-----------------+\n+--+----------------+\n+---+---------------+\n+----+--------------+\n+-----+-------------+\n+------+------------+\n+-------+-----------+\n+--------+----------+\n+---------+---------+\n+----------+--------+\n+-----------+-------+\n+------------+------+\n+-------------+-----+\n+--------------+----+\n+---------------+---+\n+----------------+--+\n+-----------------+-+\n+------------------++\n+-------------------+" }, // 较大规模
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -362,6 +596,23 @@ const gesp2Problems = [
     samples: [
       { input: "3\n16\n81\n10", output: "2\n3\n-1" },
     ],
+    testCases: [
+      { input: "3\n16\n81\n10", output: "2\n3\n-1" }, // 原始样例
+      { input: "1\n1", output: "1" }, // 最小：1^4=1
+      { input: "1\n16", output: "2" }, // 2^4=16
+      { input: "1\n81", output: "3" }, // 3^4=81
+      { input: "1\n256", output: "4" }, // 4^4=256
+      { input: "1\n625", output: "5" }, // 5^4=625
+      { input: "1\n1296", output: "6" }, // 6^4=1296
+      { input: "1\n2401", output: "7" }, // 7^4=2401
+      { input: "1\n4096", output: "8" }, // 8^4=4096
+      { input: "1\n6561", output: "9" }, // 9^4=6561
+      { input: "1\n10000", output: "10" }, // 10^4=10000
+      { input: "1\n100000000", output: "100" }, // 100^4=10^8，最大
+      { input: "5\n2\n3\n4\n5\n6", output: "-1\n-1\n-1\n-1\n-1" }, // 都不是四次方
+      { input: "1\n15", output: "-1" }, // 接近16但不是
+      { input: "1\n17", output: "-1" }, // 接近16但不是
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于全部数据，保证有 $1\\leq t\\leq 10^5$，$1\\leq a_i\\leq 10^8$。`,
@@ -379,6 +630,22 @@ const gesp2Problems = [
     outputFormat: `输出这些正整数的数位和的最大值。`,
     samples: [
       { input: "3\n16\n81\n10", output: "9" },
+    ],
+    testCases: [
+      { input: "3\n16\n81\n10", output: "9" }, // 原始样例：1+6=7, 8+1=9, 1+0=1，最大9
+      { input: "1\n1", output: "1" }, // 最小：单个数字1
+      { input: "1\n9", output: "9" }, // 单个数字最大
+      { input: "1\n99", output: "18" }, // 9+9=18
+      { input: "1\n999", output: "27" }, // 9+9+9=27
+      { input: "1\n12345", output: "15" }, // 样例中的例子
+      { input: "5\n1\n2\n3\n4\n5", output: "5" }, // 全是一位数
+      { input: "3\n100\n200\n300", output: "3" }, // 都是一个非零数字
+      { input: "2\n99999\n11111", output: "45" }, // 9*5=45 vs 1*5=5
+      { input: "1\n999999999999", output: "108" }, // 最大值10^12-1，12个9
+      { input: "3\n123\n456\n789", output: "24" }, // 6, 15, 24
+      { input: "4\n10\n100\n1000\n10000", output: "1" }, // 都是1
+      { input: "2\n5555\n4444", output: "20" }, // 20 vs 16
+      { input: "1\n1000000000000", output: "1" }, // 10^12
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -400,6 +667,21 @@ const gesp2Problems = [
     samples: [
       { input: "3 4", output: "1 2 3 4\n2 4 6 8\n3 6 9 12" },
     ],
+    testCases: [
+      { input: "3 4", output: "1 2 3 4\n2 4 6 8\n3 6 9 12" }, // 原始样例
+      { input: "1 1", output: "1" }, // 最小边界
+      { input: "1 5", output: "1 2 3 4 5" }, // 单行
+      { input: "5 1", output: "1\n2\n3\n4\n5" }, // 单列
+      { input: "2 2", output: "1 2\n2 4" }, // 2x2
+      { input: "3 3", output: "1 2 3\n2 4 6\n3 6 9" }, // 3x3
+      { input: "4 4", output: "1 2 3 4\n2 4 6 8\n3 6 9 12\n4 8 12 16" }, // 4x4
+      { input: "5 5", output: "1 2 3 4 5\n2 4 6 8 10\n3 6 9 12 15\n4 8 12 16 20\n5 10 15 20 25" }, // 5x5
+      { input: "2 5", output: "1 2 3 4 5\n2 4 6 8 10" }, // 2行5列
+      { input: "5 2", output: "1 2\n2 4\n3 6\n4 8\n5 10" }, // 5行2列
+      { input: "10 10", output: "1 2 3 4 5 6 7 8 9 10\n2 4 6 8 10 12 14 16 18 20\n3 6 9 12 15 18 21 24 27 30\n4 8 12 16 20 24 28 32 36 40\n5 10 15 20 25 30 35 40 45 50\n6 12 18 24 30 36 42 48 54 60\n7 14 21 28 35 42 49 56 63 70\n8 16 24 32 40 48 56 64 72 80\n9 18 27 36 45 54 63 72 81 90\n10 20 30 40 50 60 70 80 90 100" }, // 10x10
+      { input: "1 10", output: "1 2 3 4 5 6 7 8 9 10" }, // 单行长
+      { input: "10 1", output: "1\n2\n3\n4\n5\n6\n7\n8\n9\n10" }, // 单列长
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于所有测试点，保证 $1\\leq n,m \\leq 50$。`,
@@ -417,6 +699,22 @@ const gesp2Problems = [
     outputFormat: `输出四个正整数，代表 $y', m', d', h'$。`,
     samples: [
       { input: "2008\n2\n28\n23\n1", output: "2008 2 29 0" },
+    ],
+    testCases: [
+      { input: "2008\n2\n28\n23\n1", output: "2008 2 29 0" }, // 原始样例：闰年2月28日跨到29日
+      { input: "2008\n2\n29\n23\n1", output: "2008 3 1 0" }, // 闰年2月29日跨到3月1日
+      { input: "2000\n2\n28\n23\n1", output: "2000 2 29 0" }, // 世纪闰年
+      { input: "2100\n2\n28\n23\n1", output: "2100 3 1 0" }, // 2100不是闰年
+      { input: "2024\n12\n31\n23\n1", output: "2025 1 1 0" }, // 跨年
+      { input: "2024\n1\n1\n0\n1", output: "2024 1 1 1" }, // 同一天内
+      { input: "2024\n1\n31\n23\n1", output: "2024 2 1 0" }, // 1月跨到2月
+      { input: "2024\n3\n31\n23\n1", output: "2024 4 1 0" }, // 3月跨到4月
+      { input: "2024\n4\n30\n23\n1", output: "2024 5 1 0" }, // 4月跨到5月
+      { input: "2024\n6\n30\n23\n24", output: "2024 7 1 23" }, // 加24小时
+      { input: "2024\n7\n15\n12\n12", output: "2024 7 16 0" }, // 中午加12小时
+      { input: "2023\n2\n28\n23\n1", output: "2023 3 1 0" }, // 平年2月28日跨到3月1日
+      { input: "2024\n12\n31\n0\n24", output: "2025 1 1 0" }, // 跨年+24小时
+      { input: "2024\n5\n15\n10\n5", output: "2024 5 15 15" }, // 普通情况
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -446,6 +744,21 @@ const gesp2Problems = [
       { input: "3", output: "3" },
       { input: "5", output: "9" },
     ],
+    testCases: [
+      { input: "3", output: "3" }, // 原始样例：(1,2),(2,2),(2,3)或类似
+      { input: "5", output: "9" }, // 原始样例
+      { input: "1", output: "0" }, // 边界：只有(1,1)，面积0.5不是整数
+      { input: "2", output: "1" }, // (1,2)或(2,2)
+      { input: "4", output: "5" }, // 小规模
+      { input: "6", output: "12" }, // 中等规模
+      { input: "10", output: "30" }, // 中等规模
+      { input: "20", output: "110" }, // 较大规模
+      { input: "50", output: "650" }, // 较大规模
+      { input: "100", output: "2550" }, // 大规模
+      { input: "200", output: "10100" }, // 大规模
+      { input: "500", output: "62750" }, // 大规模
+      { input: "1000", output: "250500" }, // 最大规模
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于所有测试点，保证 $1 \\leq n \\leq 1000$。`,
@@ -464,6 +777,23 @@ const gesp2Problems = [
     samples: [
       { input: "2 8", output: "6" },
       { input: "10 100", output: "20" },
+    ],
+    testCases: [
+      { input: "2 8", output: "6" }, // 原始样例：2,3,4,5,6,8
+      { input: "10 100", output: "20" }, // 原始样例
+      { input: "1 1", output: "0" }, // 1不是幂和数（最小是2=1+1）
+      { input: "2 2", output: "1" }, // 2=1+1
+      { input: "1 2", output: "1" }, // 只有2
+      { input: "3 3", output: "1" }, // 3=1+2
+      { input: "1 10", output: "7" }, // 2,3,4,5,6,8,9,10...
+      { input: "1 100", output: "27" }, // 较大范围
+      { input: "100 200", output: "11" }, // 中间区间
+      { input: "1 1000", output: "45" }, // 大范围
+      { input: "1 10000", output: "91" }, // 最大范围
+      { input: "5000 10000", output: "27" }, // 后半区间
+      { input: "16 16", output: "1" }, // 16=8+8
+      { input: "17 17", output: "1" }, // 17=1+16
+      { input: "7 7", output: "0" }, // 7不是幂和数
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -488,6 +818,23 @@ const gesp2Problems = [
       { input: "6", output: "6" },
       { input: "2025", output: "28" },
     ],
+    testCases: [
+      { input: "6", output: "6" }, // 原始样例：1,2,3,4,5,6
+      { input: "2025", output: "28" }, // 原始样例
+      { input: "1", output: "1" }, // 最小边界：只有1
+      { input: "9", output: "9" }, // 一位数：1-9
+      { input: "10", output: "9" }, // 10不是优美数
+      { input: "11", output: "10" }, // 11是优美数
+      { input: "22", output: "11" }, // 1-9,11,22
+      { input: "99", output: "18" }, // 1-9(9个) + 11,22,...,99(9个)
+      { input: "100", output: "18" }, // 100不是优美数
+      { input: "111", output: "19" }, // 加上111
+      { input: "555", output: "23" }, // 加上111,222,333,444,555
+      { input: "999", output: "27" }, // 1-9(9个) + 11-99(9个) + 111-999(9个)
+      { input: "1000", output: "27" }, // 1000不是优美数
+      { input: "1111", output: "28" }, // 加上1111
+      { input: "2000", output: "28" }, // 2000不是优美数，1111是最大优美数<=2000
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于所有测试点，保证 $1 \\leq n \\leq 2025$。`,
@@ -506,6 +853,18 @@ const gesp2Problems = [
     samples: [
       { input: "3", output: ".#.\n#.#\n.#." },
       { input: "9", output: "....#....\n...#.#...\n..#...#..\n.#.....#.\n#.......#\n.#.....#.\n..#...#..\n...#.#...\n....#...." },
+    ],
+    testCases: [
+      { input: "3", output: ".#.\n#.#\n.#." }, // 原始样例
+      { input: "9", output: "....#....\n...#.#...\n..#...#..\n.#.....#.\n#.......#\n.#.....#.\n..#...#..\n...#.#...\n....#...." }, // 原始样例
+      { input: "5", output: "..#..\n.#.#.\n#...#\n.#.#.\n..#.." }, // 小规模
+      { input: "7", output: "...#...\n..#.#..\n.#...#.\n#.....#\n.#...#.\n..#.#..\n...#..." }, // 中等规模
+      { input: "11", output: ".....#.....\n....#.#....\n...#...#...\n..#.....#..\n.#.......#.\n#.........#\n.#.......#.\n..#.....#..\n...#...#...\n....#.#....\n.....#....." }, // 中等规模
+      { input: "13", output: "......#......\n.....#.#.....\n....#...#....\n...#.....#...\n..#.......#..\n.#.........#.\n#...........#\n.#.........#.\n..#.......#..\n...#.....#...\n....#...#....\n.....#.#.....\n......#......" }, // 较大规模
+      { input: "15", output: ".......#.......\n......#.#......\n.....#...#.....\n....#.....#....\n...#.......#...\n..#.........#..\n.#...........#.\n#.............#\n.#...........#.\n..#.........#..\n...#.......#...\n....#.....#....\n.....#...#.....\n......#.#......\n.......#......." }, // 较大规模
+      { input: "17", output: "........#........\n.......#.#.......\n......#...#......\n.....#.....#.....\n....#.......#....\n...#.........#...\n..#...........#..\n.#.............#.\n#...............#\n.#.............#.\n..#...........#..\n...#.........#...\n....#.......#....\n.....#.....#.....\n......#...#......\n.......#.#.......\n........#........" }, // 较大规模
+      { input: "19", output: ".........#.........\n........#.#........\n.......#...#.......\n......#.....#......\n.....#.......#.....\n....#.........#....\n...#...........#...\n..#.............#..\n.#...............#.\n#.................#\n.#...............#.\n..#.............#..\n...#...........#...\n....#.........#....\n.....#.......#.....\n......#.....#......\n.......#...#.......\n........#.#........\n.........#........." }, // 较大规模
+      { input: "21", output: "..........#..........\n.........#.#.........\n........#...#........\n.......#.....#.......\n......#.......#......\n.....#.........#.....\n....#...........#....\n...#.............#...\n..#...............#..\n.#.................#.\n#...................#\n.#.................#.\n..#...............#..\n...#.............#...\n....#...........#....\n.....#.........#.....\n......#.......#......\n.......#.....#.......\n........#...#........\n.........#.#.........\n..........#.........." }, // 较大规模
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -528,6 +887,21 @@ const gesp2Problems = [
     outputFormat: `对于每组测试数据，输出一个整数，代表小杨获得的环保能量总数。`,
     samples: [
       { input: "3\n5\n2\n10\n3\n2\n5", output: "7\n13\n2" },
+    ],
+    testCases: [
+      { input: "3\n5\n2\n10\n3\n2\n5", output: "7\n13\n2" }, // 原始样例
+      { input: "1\n1\n1", output: "2" }, // 最小边界：1公里，每1公里奖励1次，共1+1=2
+      { input: "1\n1\n2", output: "1" }, // 1公里，每2公里奖励，不够2公里，共1
+      { input: "1\n10\n1", output: "20" }, // 10公里，每1公里奖励，共10+10=20
+      { input: "1\n10\n10", output: "11" }, // 10公里，每10公里奖励1次，共10+1=11
+      { input: "1\n100\n10", output: "110" }, // 100公里，每10公里奖励10次，共100+10=110
+      { input: "1\n1000\n1000", output: "1001" }, // 最大边界
+      { input: "1\n1000\n1", output: "2000" }, // 1000公里，每1公里奖励
+      { input: "1\n15\n5", output: "18" }, // 15公里，每5公里奖励3次，共15+3=18
+      { input: "1\n7\n3", output: "9" }, // 7公里，每3公里奖励2次（3,6），共7+2=9
+      { input: "2\n50\n10\n99\n100", output: "55\n99" }, // 多组数据
+      { input: "1\n999\n1000", output: "999" }, // 不够触发奖励
+      { input: "1\n500\n250", output: "502" }, // 500+2=502
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -555,6 +929,21 @@ const gesp2Problems = [
     samples: [
       { input: "4\n4\n2", output: "4" },
     ],
+    testCases: [
+      { input: "4\n4\n2", output: "4" }, // 原始样例
+      { input: "1\n1\n1", output: "1" }, // 最小边界：1x1地图，(1,1)检查
+      { input: "1\n1\n0", output: "0" }, // x=0时，sqrt(2)>0+1-1=0
+      { input: "5\n5\n5", output: "15" }, // 5x5地图，x=5
+      { input: "10\n10\n10", output: "55" }, // 10x10地图
+      { input: "10\n10\n1", output: "10" }, // x=1，只有第一列满足
+      { input: "3\n3\n3", output: "6" }, // 3x3地图
+      { input: "5\n1\n5", output: "5" }, // 只有一列
+      { input: "1\n5\n5", output: "5" }, // 只有一行
+      { input: "100\n100\n50", output: "2550" }, // 较大规模
+      { input: "10\n5\n3", output: "21" }, // 非正方形
+      { input: "5\n10\n3", output: "13" }, // 非正方形（行少列多）
+      { input: "1000\n1000\n1000", output: "500500" }, // 最大边界
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `样例解释：图中标注为黄色的四个格子是黄金格，坐标分别为 $(1, 1)$，$(2, 1)$，$(3, 1)$，$(4, 1)$。
@@ -574,14 +963,9 @@ async function seedGesp2() {
       }
     });
 
-    // 添加所有题目（testCases 复用 samples）
-    const problemsWithTestCases = gesp2Problems.map(p => ({
-      ...p,
-      testCases: p.samples,
-    }));
-
+    // 添加所有题目（每道题目已包含完整的 testCases）
     const result = await prisma.problem.createMany({
-      data: problemsWithTestCases,
+      data: gesp2Problems,
     });
 
     return NextResponse.json({

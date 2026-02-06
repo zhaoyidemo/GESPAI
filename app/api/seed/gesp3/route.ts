@@ -22,6 +22,29 @@ const gesp3Problems = [
       { input: "3 3\n0 2 1", output: "3" },
       { input: "3 5\n0 0 0 0 0", output: "1 2" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "3 3\n0 2 1", output: "3" },
+      { input: "3 5\n0 0 0 0 0", output: "1 2" },
+      // 边界值测试 - 最小规模
+      { input: "2 2\n0 1", output: "2" },
+      { input: "2 1\n0", output: "1" },
+      // 全部到达
+      { input: "5 5\n0 1 2 3 4", output: "5" },
+      { input: "5 10\n0 1 2 3 4 0 1 2 3 4", output: "5" },
+      // 只有一个人缺席
+      { input: "5 4\n0 1 2 3", output: "4" },
+      { input: "5 4\n1 2 3 4", output: "0" },
+      // 多人缺席
+      { input: "5 2\n0 4", output: "1 2 3" },
+      { input: "6 3\n0 2 4", output: "1 3 5" },
+      // 重复报号测试
+      { input: "4 8\n0 0 1 1 2 2 3 3", output: "4" },
+      { input: "4 6\n0 0 0 1 1 1", output: "2 3" },
+      // 较大规模
+      { input: "10 5\n0 1 2 3 4", output: "5 6 7 8 9" },
+      { input: "10 10\n0 1 2 3 4 5 6 7 8 9", output: "10" },
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -45,6 +68,35 @@ const gesp3Problems = [
     outputFormat: `输出若干行，每行输出一组合规的密码。输出顺序以输入先后为序，即先输入则先输出。`,
     samples: [
       { input: "seHJ12!@,sjdkffH$123,sdf!@#12HDHa!,123&^YUhg@!", output: "seHJ12!@\nsjdkffH$123" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "seHJ12!@,sjdkffH$123,sdf!@#12HDHa!,123&^YUhg@!", output: "seHJ12!@\nsjdkffH$123" },
+      // 边界值测试 - 长度刚好6位
+      { input: "Aa1!ab", output: "Aa1!ab" },
+      // 边界值测试 - 长度刚好12位
+      { input: "Aa1!abcdefgh", output: "Aa1!abcdefgh" },
+      // 长度不足6位
+      { input: "Aa1!a", output: "" },
+      // 长度超过12位
+      { input: "Aa1!abcdefghi", output: "" },
+      // 只有小写和数字（缺大写）
+      { input: "abc123!@", output: "" },
+      // 只有大写和数字（缺小写）
+      { input: "ABC123!@", output: "" },
+      // 只有大写和小写（缺数字和特殊字符）
+      { input: "ABCabc!@", output: "" },
+      // 缺少特殊字符
+      { input: "ABCabc12", output: "" },
+      // 包含非法字符
+      { input: "Aa1!ab%c", output: "" },
+      { input: "Aa1!ab^c", output: "" },
+      // 多个合规密码
+      { input: "Ab12!@,Cd34#$,Ef56!@", output: "Ab12!@\nCd34#$\nEf56!@" },
+      // 全部不合规
+      { input: "abc,ABC,12345,!@#$", output: "" },
+      // 四种特殊字符测试
+      { input: "Aa1!bcde,Bb2@cdef,Cc3#defg,Dd4$efgh", output: "Aa1!bcde\nBb2@cdef\nCc3#defg\nDd4$efgh" },
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -74,6 +126,34 @@ const gesp3Problems = [
     samples: [
       { input: "6\n7 5 9 10 7 4\n30", output: "4" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "6\n7 5 9 10 7 4\n30", output: "4" },
+      // 边界值测试 - 最小规模
+      { input: "1\n5\n10", output: "1" },
+      { input: "1\n5\n4", output: "0" },
+      { input: "1\n5\n5", output: "1" },
+      // 钱刚好够
+      { input: "3\n10 10 10\n30", output: "3" },
+      // 钱不够买任何东西
+      { input: "3\n10 20 30\n5", output: "0" },
+      // 钱为0
+      { input: "3\n1 2 3\n0", output: "0" },
+      // 物品价格为0
+      { input: "3\n0 0 0\n0", output: "3" },
+      // 全部买得起
+      { input: "5\n1 1 1 1 1\n100", output: "5" },
+      // 买到一半没钱
+      { input: "5\n5 5 5 5 5\n12", output: "2" },
+      // 价格递增
+      { input: "4\n1 2 3 4\n10", output: "4" },
+      // 价格递减
+      { input: "4\n4 3 2 1\n10", output: "4" },
+      // 较大金额
+      { input: "3\n100000 100000 100000\n300000", output: "3" },
+      // 混合测试
+      { input: "5\n10 5 8 12 3\n25", output: "3" },
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: `**数据范围：**
@@ -93,6 +173,33 @@ const gesp3Problems = [
     outputFormat: `输出一行，为 $N$ 的 $R$ 进制表示。`,
     samples: [
       { input: "123\n25", output: "4N" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "123\n25", output: "4N" },
+      // 边界值测试 - 最小值
+      { input: "1\n2", output: "1" },
+      { input: "1\n10", output: "1" },
+      { input: "1\n36", output: "1" },
+      // 二进制转换
+      { input: "10\n2", output: "1010" },
+      { input: "255\n2", output: "11111111" },
+      // 八进制转换
+      { input: "64\n8", output: "100" },
+      { input: "100\n8", output: "144" },
+      // 十进制转换
+      { input: "123\n10", output: "123" },
+      // 十六进制转换
+      { input: "255\n16", output: "FF" },
+      { input: "16\n16", output: "10" },
+      { input: "10\n16", output: "A" },
+      // 36进制转换（最大进制）
+      { input: "35\n36", output: "Z" },
+      { input: "36\n36", output: "10" },
+      { input: "1000000\n36", output: "LFLS" },
+      // 较大数值
+      { input: "1000000\n2", output: "11110100001001000000" },
+      { input: "999999\n16", output: "F423F" },
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -114,6 +221,31 @@ const gesp3Problems = [
     samples: [
       { input: "2 3\n0 1 0", output: "4 2" },
       { input: "3 5\n0 0 0 2 0", output: "11 0 4" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "2 3\n0 1 0", output: "4 2" },
+      { input: "3 5\n0 0 0 2 0", output: "11 0 4" },
+      // 边界值测试 - 最小规模
+      { input: "1 1\n0", output: "1" },
+      { input: "1 2\n0 0", output: "3" },
+      // 只存一个罐子
+      { input: "3 3\n0 0 0", output: "6 0 0" },
+      { input: "3 3\n2 2 2", output: "0 0 6" },
+      // 每个罐子存一次
+      { input: "3 3\n0 1 2", output: "1 2 3" },
+      { input: "4 4\n0 1 2 3", output: "1 2 3 4" },
+      // 逆序存
+      { input: "3 3\n2 1 0", output: "3 2 1" },
+      // 交替存
+      { input: "2 4\n0 1 0 1", output: "4 6" },
+      // 较大规模
+      { input: "5 5\n0 1 2 3 4", output: "1 2 3 4 5" },
+      { input: "5 10\n0 0 0 0 0 0 0 0 0 0", output: "55 0 0 0 0" },
+      // 全部存到最后一个罐子
+      { input: "4 5\n3 3 3 3 3", output: "0 0 0 15" },
+      // 复杂模式
+      { input: "3 6\n0 1 2 0 1 2", output: "5 7 9" },
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -140,6 +272,32 @@ const gesp3Problems = [
       { input: "2\n15A6F\n1011", output: "0 0 0 1\n1 1 1 1" },
       { input: "4\n1234567\n12345678\nFF\nGG", output: "0 1 1 1\n0 0 1 1\n0 0 0 1\n0 0 0 0" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "2\n15A6F\n1011", output: "0 0 0 1\n1 1 1 1" },
+      { input: "4\n1234567\n12345678\nFF\nGG", output: "0 1 1 1\n0 0 1 1\n0 0 0 1\n0 0 0 0" },
+      // 纯二进制数
+      { input: "1\n0", output: "1 1 1 1" },
+      { input: "1\n1", output: "1 1 1 1" },
+      { input: "1\n10", output: "1 1 1 1" },
+      { input: "1\n1111", output: "1 1 1 1" },
+      // 八进制边界
+      { input: "1\n7", output: "0 1 1 1" },
+      { input: "1\n8", output: "0 0 1 1" },
+      { input: "1\n77777", output: "0 1 1 1" },
+      // 十进制边界
+      { input: "1\n9", output: "0 0 1 1" },
+      { input: "1\n99999", output: "0 0 1 1" },
+      // 十六进制特有
+      { input: "1\nA", output: "0 0 0 1" },
+      { input: "1\nABCDEF", output: "0 0 0 1" },
+      // 超出十六进制范围
+      { input: "1\nG", output: "0 0 0 0" },
+      { input: "1\nZ", output: "0 0 0 0" },
+      // 前导零
+      { input: "1\n007", output: "0 1 1 1" },
+      { input: "1\n00A", output: "0 0 0 1" },
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -160,6 +318,30 @@ const gesp3Problems = [
     samples: [
       { input: "2\n1", output: "7" },
       { input: "3\n1", output: "25" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "2\n1", output: "7" },
+      { input: "3\n1", output: "25" },
+      // 边界值测试 - N=1（只有1只猫）
+      { input: "1\n0", output: "1" },
+      // N=2的不同i值
+      { input: "2\n0", output: "4" },
+      // N=3的不同i值
+      { input: "3\n0", output: "18" },
+      { input: "3\n2", output: "32" },
+      // N=4的情况
+      { input: "4\n0", output: "81" },
+      { input: "4\n1", output: "93" },
+      { input: "4\n2", output: "105" },
+      { input: "4\n3", output: "117" },
+      // N=5的情况
+      { input: "5\n0", output: "625" },
+      { input: "5\n1", output: "656" },
+      { input: "5\n4", output: "749" },
+      // 较大N值
+      { input: "9\n0", output: "43046721" },
+      { input: "9\n8", output: "51018336" },
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -196,6 +378,30 @@ const gesp3Problems = [
       { input: "2\n1 km = ? mm\n1 m = ? mm", output: "1 km = 1000000 mm\n1 m = 1000 mm" },
       { input: "5\n100 m = ? mm\n1000 km = ? m\n20 kg = ? g\n200 g = ? mg\n0 kg = ? mg", output: "100 m = 100000 mm\n1000 km = 1000000 m\n20 kg = 20000 g\n200 g = 200000 mg\n0 kg = 0 mg" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "2\n1 km = ? mm\n1 m = ? mm", output: "1 km = 1000000 mm\n1 m = 1000 mm" },
+      { input: "5\n100 m = ? mm\n1000 km = ? m\n20 kg = ? g\n200 g = ? mg\n0 kg = ? mg", output: "100 m = 100000 mm\n1000 km = 1000000 m\n20 kg = 20000 g\n200 g = 200000 mg\n0 kg = 0 mg" },
+      // 边界值测试 - 0值
+      { input: "1\n0 km = ? m", output: "0 km = 0 m" },
+      { input: "1\n0 g = ? mg", output: "0 g = 0 mg" },
+      // 长度单位 - km转换
+      { input: "1\n1 km = ? m", output: "1 km = 1000 m" },
+      { input: "1\n1 km = ? mm", output: "1 km = 1000000 mm" },
+      { input: "1\n500 km = ? m", output: "500 km = 500000 m" },
+      // 长度单位 - m转换
+      { input: "1\n1 m = ? mm", output: "1 m = 1000 mm" },
+      { input: "1\n999 m = ? mm", output: "999 m = 999000 mm" },
+      // 重量单位 - kg转换
+      { input: "1\n1 kg = ? g", output: "1 kg = 1000 g" },
+      { input: "1\n1 kg = ? mg", output: "1 kg = 1000000 mg" },
+      { input: "1\n1000 kg = ? g", output: "1000 kg = 1000000 g" },
+      // 重量单位 - g转换
+      { input: "1\n1 g = ? mg", output: "1 g = 1000 mg" },
+      { input: "1\n500 g = ? mg", output: "500 g = 500000 mg" },
+      // 最大值测试
+      { input: "1\n1000 km = ? mm", output: "1000 km = 1000000000 mm" },
+    ],
     timeLimit: 1000,
     memoryLimit: 128,
     hint: ``,
@@ -215,6 +421,31 @@ const gesp3Problems = [
     outputFormat: `输出一行一个整数，代表加密前的整数。`,
     samples: [
       { input: "3\naAc", output: "-61" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "3\naAc", output: "-61" },
+      // 边界值测试 - 单个字符
+      { input: "1\na", output: "1" },
+      { input: "1\nz", output: "26" },
+      { input: "1\nA", output: "-65" },
+      { input: "1\nZ", output: "-90" },
+      // 全小写
+      { input: "5\nabcde", output: "15" },
+      { input: "26\nabcdefghijklmnopqrstuvwxyz", output: "351" },
+      // 全大写
+      { input: "3\nABC", output: "-198" },
+      { input: "5\nABCDE", output: "-335" },
+      // 混合测试
+      { input: "2\naA", output: "-64" },
+      { input: "4\naBcD", output: "-138" },
+      // 相同字符
+      { input: "5\naaaaa", output: "5" },
+      { input: "5\nAAAAA", output: "-325" },
+      // 结果为0的情况（难以构造，跳过）
+      // 较长字符串
+      { input: "10\nabcdeABCDE", output: "-320" },
+      { input: "6\nzZaAyY", output: "-102" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -236,6 +467,32 @@ const gesp3Problems = [
     outputFormat: `输出一行一个整数表示答案。`,
     samples: [
       { input: "5\n1 4 3 3 5", output: "3" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "5\n1 4 3 3 5", output: "3" },
+      // 边界值测试 - 最小规模
+      { input: "2\n0 0", output: "1" },
+      { input: "2\n0 1", output: "1" },
+      { input: "2\n0 4", output: "1" },
+      // 全是0（0+0=0是完全平方数）
+      { input: "3\n0 0 0", output: "3" },
+      // 没有完全平方数对
+      { input: "3\n2 3 5", output: "0" },
+      { input: "4\n2 3 6 7", output: "0" },
+      // 多对完全平方数
+      { input: "4\n0 1 3 4", output: "3" },
+      // 全相同且和为完全平方数
+      { input: "4\n2 2 2 2", output: "6" },
+      // 较大数
+      { input: "3\n100 0 21", output: "1" },
+      // 0和完全平方数
+      { input: "5\n0 1 4 9 16", output: "4" },
+      // 复杂测试
+      { input: "6\n1 3 6 10 15 21", output: "2" },
+      { input: "5\n5 4 11 20 0", output: "2" },
+      // 边界值 - n=1
+      { input: "1\n5", output: "0" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -259,6 +516,29 @@ const gesp3Problems = [
     samples: [
       { input: "3", output: "DEFGHIJKLMNOPQRSTUVWXYZABC" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "3", output: "DEFGHIJKLMNOPQRSTUVWXYZABC" },
+      // 边界值测试 - 最小偏移
+      { input: "1", output: "BCDEFGHIJKLMNOPQRSTUVWXYZA" },
+      // 偏移为26的倍数（回到原位）
+      { input: "26", output: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+      { input: "52", output: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+      // 偏移超过26
+      { input: "27", output: "BCDEFGHIJKLMNOPQRSTUVWXYZA" },
+      { input: "29", output: "DEFGHIJKLMNOPQRSTUVWXYZABC" },
+      // 常见偏移量
+      { input: "13", output: "NOPQRSTUVWXYZABCDEFGHIJKLM" },
+      { input: "25", output: "ZABCDEFGHIJKLMNOPQRSTUVWXY" },
+      // 较大偏移
+      { input: "100", output: "WXYZABCDEFGHIJKLMNOPQRSTUV" },
+      { input: "78", output: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+      // 其他测试
+      { input: "5", output: "FGHIJKLMNOPQRSTUVWXYZABCDE" },
+      { input: "10", output: "KLMNOPQRSTUVWXYZABCDEFGHIJ" },
+      { input: "15", output: "PQRSTUVWXYZABCDEFGHIJKLMNO" },
+      { input: "20", output: "UVWXYZABCDEFGHIJKLMNOPQRST" },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `当偏移量是 $3$ 的时候，大写字母 A 会替换成 D，大写字母 Z 会替换成 C，总体来看，大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 会被替换成 DEFGHIJKLMNOPQRSTUVWXYZABC。
@@ -278,6 +558,32 @@ const gesp3Problems = [
     outputFormat: `对于每组测试用例，如果存在 $i(1\\leq i\\leq n)$ ，满足对于所有 $k(1\\leq k\\leq n)$ $a_i$ 是 $a_k$ 的倍数，输出 \`Yes\`，否则输出 \`No\`。`,
     samples: [
       { input: "2\n3\n1 2 4\n5\n1 2 3 4 5", output: "Yes\nNo" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "2\n3\n1 2 4\n5\n1 2 3 4 5", output: "Yes\nNo" },
+      // 边界值测试 - 只有一个数
+      { input: "1\n1\n5", output: "Yes" },
+      { input: "1\n1\n1", output: "Yes" },
+      // 全相同的数
+      { input: "1\n3\n6 6 6", output: "Yes" },
+      { input: "1\n4\n12 12 12 12", output: "Yes" },
+      // 包含1
+      { input: "1\n3\n1 5 10", output: "Yes" },
+      { input: "1\n4\n1 2 3 6", output: "Yes" },
+      // 互质的数（无公倍数在序列中）
+      { input: "1\n3\n2 3 5", output: "No" },
+      { input: "1\n4\n3 5 7 11", output: "No" },
+      // 最大值是其他所有数的倍数
+      { input: "1\n4\n1 2 3 6", output: "Yes" },
+      { input: "1\n5\n2 4 8 16 32", output: "Yes" },
+      // 最大值不是所有数的倍数
+      { input: "1\n4\n2 3 4 12", output: "Yes" },
+      { input: "1\n4\n2 3 5 30", output: "Yes" },
+      // 多组测试
+      { input: "3\n2\n3 6\n2\n4 5\n3\n2 4 8", output: "Yes\nNo\nYes" },
+      // 较大数值
+      { input: "1\n3\n1000000000 1 1000000000", output: "Yes" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -299,6 +605,32 @@ const gesp3Problems = [
     samples: [
       { input: "3\n3\n1 2 3\n4\n2 3 1 4\n5\n1 2 3 4 5", output: "Yes\nYes\nNo" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "3\n3\n1 2 3\n4\n2 3 1 4\n5\n1 2 3 4 5", output: "Yes\nYes\nNo" },
+      // 边界值测试 - 最小规模（n=2）
+      { input: "1\n2\n1 1", output: "Yes" },
+      { input: "1\n2\n1 2", output: "No" },
+      { input: "1\n2\n5 5", output: "Yes" },
+      // 全相同
+      { input: "1\n4\n2 2 2 2", output: "Yes" },
+      { input: "1\n5\n3 3 3 3 3", output: "No" },
+      // 对称序列
+      { input: "1\n4\n1 2 2 1", output: "Yes" },
+      { input: "1\n6\n1 2 3 3 2 1", output: "Yes" },
+      // 总和为奇数（不可能平衡）
+      { input: "1\n3\n1 1 1", output: "No" },
+      { input: "1\n4\n1 2 3 5", output: "No" },
+      // 较长序列
+      { input: "1\n6\n1 1 1 1 1 1", output: "Yes" },
+      { input: "1\n8\n1 2 3 4 4 3 2 1", output: "Yes" },
+      // 多组测试
+      { input: "2\n3\n5 5 5\n4\n1 3 3 1", output: "No\nYes" },
+      // 第一个位置就平衡
+      { input: "1\n4\n10 5 3 2", output: "Yes" },
+      // 最后一个位置平衡
+      { input: "1\n4\n2 3 5 10", output: "Yes" },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对第一组测试用例，令 $i = 2$，有 $1 + 2 = 3$，因此序列是平衡的。对第二组测试用例，令 $i = 2$，有 $2 + 3 = 1 + 4$，因此序列是平衡的。对第三组测试用例，不存在满足要求的 $i$。数据规模：$1 \\leq t \\leq 100$，$1 \\leq n, a_i \\leq 10000$。`,
@@ -316,6 +648,35 @@ const gesp3Problems = [
     outputFormat: `对于每个字符串输出一行，如果该字符串由两个长度至少为 $2$ 的回文串前后拼接而成则输出 Yes，否则输出 No。`,
     samples: [
       { input: "4\nabcd\naabbb\naaac\nabcdd", output: "No\nYes\nNo\nNo" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "4\nabcd\naabbb\naaac\nabcdd", output: "No\nYes\nNo\nNo" },
+      // 边界值测试 - 最短可能长度（4个字符，2+2）
+      { input: "1\naaaa", output: "Yes" },
+      { input: "1\naabb", output: "Yes" },
+      { input: "1\nabba", output: "No" },
+      { input: "1\nabcd", output: "No" },
+      // 长度不够
+      { input: "1\nabc", output: "No" },
+      { input: "1\naa", output: "No" },
+      // 两个简单回文拼接
+      { input: "1\naaabb", output: "Yes" },
+      { input: "1\nababb", output: "Yes" },
+      { input: "1\ncccddd", output: "Yes" },
+      // 全相同字符
+      { input: "1\naaaaa", output: "Yes" },
+      { input: "1\naaaaaa", output: "Yes" },
+      // 前半部分不是回文
+      { input: "1\nabcaa", output: "No" },
+      { input: "1\nabcdd", output: "No" },
+      // 后半部分不是回文
+      { input: "1\naaabc", output: "No" },
+      // 复杂回文
+      { input: "1\nabacc", output: "Yes" },
+      { input: "1\nabacdc", output: "Yes" },
+      // 多组测试
+      { input: "3\nxxxyy\nxyyx\nabba", output: "Yes\nNo\nNo" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -345,6 +706,32 @@ const gesp3Problems = [
     samples: [
       { input: "5 0\n-2 -1 0 1 2", output: "-2 -2 0 2 2" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "5 0\n-2 -1 0 1 2", output: "-2 -2 0 2 2" },
+      // 边界值测试 - 只有一个数
+      { input: "1 0\n5", output: "5" },
+      { input: "1 5\n5", output: "5" },
+      { input: "1 10\n5", output: "5" },
+      // 全部等于k
+      { input: "3 5\n5 5 5", output: "5 5 5" },
+      // 全部大于k
+      { input: "3 0\n1 2 3", output: "3 3 3" },
+      // 全部小于k
+      { input: "3 10\n1 2 3", output: "1 1 1" },
+      // 负数测试
+      { input: "4 -5\n-10 -5 0 5", output: "-10 -5 5 5" },
+      { input: "3 0\n-3 -2 -1", output: "-3 -3 -3" },
+      // 最大最小值相同
+      { input: "4 5\n10 10 10 10", output: "10 10 10 10" },
+      // 包含k的序列
+      { input: "5 3\n1 2 3 4 5", output: "1 1 3 5 5" },
+      // 极端值
+      { input: "3 0\n-100000 0 100000", output: "-100000 0 100000" },
+      // k不在序列范围内
+      { input: "3 100\n1 2 3", output: "1 1 1" },
+      { input: "3 -100\n1 2 3", output: "3 3 3" },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于全部数据，保证有 $1\\le n\\le 10^5$，$|k|,|a_i|\\le 10^5$。`,
@@ -373,6 +760,26 @@ const gesp3Problems = [
     samples: [
       { input: "12230", output: "****......................\n****.*****.*****...***.\n****...................***.​\n***.*****.*****......***.\n****......................\n" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "12230", output: "****......................\n****.*****.*****...***.\n****...................***.​\n***.*****.*****......***.\n****......................\n" },
+      // 单个数字测试
+      { input: "0", output: ".....\n.***.\n.***.\n.***.\n....." },
+      { input: "1", output: "****.\n****.\n****.\n****.\n****." },
+      { input: "2", output: ".....\n****.\n.....\n.****\n....." },
+      { input: "3", output: ".....\n****.\n.....\n****.\n....." },
+      // 两位数
+      { input: "01", output: "...........\n.***.*****.\n.***.*****.\n.***.*****.\n..........." },
+      { input: "10", output: "...........\n*****.***.\n*****.***.\n*****.***.\n..........." },
+      { input: "23", output: "...........\n*****.****.\n...........\n.*****.****.\n..........." },
+      // 全相同数字
+      { input: "00", output: "...........\n.***..***.\n.***..***.\n.***..***.\n..........." },
+      { input: "11", output: "...........\n*****.****.\n*****.****.\n*****.****.\n..........." },
+      { input: "22", output: "...........\n*****.****.\n...........\n.****.*****\n..........." },
+      { input: "33", output: "...........\n*****.****.\n...........\n*****.****.\n..........." },
+      // 三位数
+      { input: "123", output: "................\n*****.****.*****\n*****..........\n*****.****.*****\n................" },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于全部数据，保证有 $0\\le n\\le 10^6$，且 $n$ 仅由数字 $0,1,2,3$ 组成。`,
@@ -392,6 +799,30 @@ const gesp3Problems = [
     outputFormat: `一行，一个整数，若满足条件的 $y$ 存在则输出 $y$，否则输出 $-1$。`,
     samples: [
       { input: "1025", output: "1000" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "1025", output: "1000" },
+      // 边界值测试
+      { input: "0", output: "1" },
+      { input: "1", output: "1" },
+      { input: "2024", output: "1" },
+      // x+y=2025的情况（and+or = x+y当无重叠位时）
+      { input: "1000", output: "1" },
+      { input: "1012", output: "1" },
+      { input: "1013", output: "1" },
+      // 特殊值
+      { input: "512", output: "1" },
+      { input: "1024", output: "1" },
+      // 中间值
+      { input: "500", output: "1" },
+      { input: "800", output: "1" },
+      // 接近2025的值
+      { input: "2000", output: "1" },
+      { input: "2020", output: "1" },
+      // 小值
+      { input: "10", output: "1" },
+      { input: "100", output: "1" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -416,6 +847,33 @@ const gesp3Problems = [
     outputFormat: `输出一行，包含出现次数最多的单词（输出单词为小写形式）。`,
     samples: [
       { input: "6\nApple\nbanana\napple\nOrange\nbanana\napple", output: "apple" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "6\nApple\nbanana\napple\nOrange\nbanana\napple", output: "apple" },
+      // 边界值测试 - 只有一个单词
+      { input: "1\nHello", output: "hello" },
+      { input: "1\nWORLD", output: "world" },
+      // 全相同（不同大小写）
+      { input: "3\nTest\nTEST\ntest", output: "test" },
+      { input: "4\nABC\nabc\nAbc\naBc", output: "abc" },
+      // 两个单词频率相同（题目保证只有一个最多）
+      // 全不同
+      { input: "3\na\nb\nc", output: "a" },
+      // 大写转小写测试
+      { input: "2\nABCDEFG\nabcdefg", output: "abcdefg" },
+      // 混合大小写
+      { input: "5\nHeLLo\nhEllO\nWorld\nworld\nhello", output: "hello" },
+      // 长单词
+      { input: "3\nProgramming\nprogramming\nPROGRAMMING", output: "programming" },
+      // 多个单词，一个明显最多
+      { input: "7\ncat\ndog\ncat\nbird\ncat\ndog\ncat", output: "cat" },
+      // 全大写输入
+      { input: "4\nTEST\nTEST\nTEST\nOTHER", output: "test" },
+      // 全小写输入
+      { input: "4\nhello\nhello\nworld\nhello", output: "hello" },
+      // 单字符单词
+      { input: "5\na\nA\na\nb\nB", output: "a" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -444,6 +902,34 @@ const gesp3Problems = [
       { input: "4\n71 69 83 80", output: "13 1" },
       { input: "6\n1 2 4 8 16 32", output: "6 0" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "4\n71 69 83 80", output: "13 1" },
+      { input: "6\n1 2 4 8 16 32", output: "6 0" },
+      // 边界值测试 - 只有一个数
+      { input: "1\n0", output: "0 0" },
+      { input: "1\n1", output: "1 1" },
+      { input: "1\n255", output: "8 0" },
+      // 全0
+      { input: "3\n0 0 0", output: "0 0" },
+      // 全是同一个数
+      { input: "3\n7 7 7", output: "9 1" },
+      { input: "4\n15 15 15 15", output: "16 0" },
+      // 2的幂次（只有1个1）
+      { input: "4\n1 2 4 8", output: "4 0" },
+      { input: "5\n1 2 4 8 16", output: "5 1" },
+      // 255（二进制全1，8个1）
+      { input: "1\n255", output: "8 0" },
+      { input: "2\n255 255", output: "16 0" },
+      // 混合测试
+      { input: "3\n1 3 7", output: "6 0" },
+      { input: "4\n0 1 2 3", output: "4 0" },
+      // 奇数个1
+      { input: "3\n1 1 1", output: "3 1" },
+      { input: "5\n1 1 1 1 1", output: "5 1" },
+      // 偶数个1
+      { input: "4\n1 1 1 1", output: "4 0" },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于所有测试点，保证 $1 \\leq n \\leq 100$，$0 \\leq c_i \\leq 255$。`,
@@ -464,6 +950,32 @@ const gesp3Problems = [
     samples: [
       { input: "4\n1 4 3 3", output: "16" },
       { input: "15\n314 15926 53589793 238462643 383279502 8 8 4 1 9 7 1 6 9 3", output: "4508143253" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "4\n1 4 3 3", output: "16" },
+      { input: "15\n314 15926 53589793 238462643 383279502 8 8 4 1 9 7 1 6 9 3", output: "4508143253" },
+      // 边界值测试 - 只有一个小朋友
+      { input: "1\n1", output: "1" },
+      { input: "1\n100", output: "100" },
+      // 递增序列（每个人刚好满足）
+      { input: "3\n1 2 3", output: "6" },
+      { input: "4\n1 2 3 4", output: "10" },
+      // 递减序列（需要调整）
+      { input: "3\n3 2 1", output: "9" },
+      { input: "4\n4 3 2 1", output: "14" },
+      // 全相同
+      { input: "3\n5 5 5", output: "18" },
+      { input: "4\n10 10 10 10", output: "46" },
+      // 需要大幅调整的情况
+      { input: "3\n1 100 1", output: "204" },
+      { input: "4\n100 1 1 1", output: "106" },
+      // 边界：全是1
+      { input: "5\n1 1 1 1 1", output: "15" },
+      // 交替模式
+      { input: "4\n1 10 1 10", output: "35" },
+      // 较大数值
+      { input: "3\n1000000000 1 1", output: "1000000003" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -498,6 +1010,33 @@ $$[2, 3, 4] \\rightarrow [2, 3, 2] \\rightarrow [2, 1, 2] \\rightarrow [2, 1, 1]
       { input: "3\n2 3 4", output: "7" },
       { input: "5\n1 3 2 2 5", output: "13" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "3\n2 3 4", output: "7" },
+      { input: "5\n1 3 2 2 5", output: "13" },
+      // 边界值测试 - 只有一个元素
+      { input: "1\n0", output: "0" },
+      { input: "1\n1", output: "1" },
+      { input: "1\n100", output: "100" },
+      // 全0
+      { input: "3\n0 0 0", output: "0" },
+      // 全相同
+      { input: "3\n5 5 5", output: "9" },
+      { input: "4\n3 3 3 3", output: "10" },
+      // 递增序列
+      { input: "4\n1 2 3 4", output: "7" },
+      { input: "5\n1 2 3 4 5", output: "11" },
+      // 递减序列
+      { input: "4\n4 3 2 1", output: "7" },
+      // 包含0
+      { input: "4\n0 1 2 3", output: "5" },
+      { input: "3\n0 0 5", output: "5" },
+      // 只有两个元素
+      { input: "2\n3 5", output: "5" },
+      { input: "2\n5 3", output: "5" },
+      // 较大值
+      { input: "3\n100 100 100", output: "201" },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `对于所有测试点，保证 $1 \\leq n \\leq 100$，$0 \\leq a_i \\leq 100$。`,
@@ -515,6 +1054,32 @@ $$[2, 3, 4] \\rightarrow [2, 3, 2] \\rightarrow [2, 1, 2] \\rightarrow [2, 1, 1]
     outputFormat: `输出包含若干行，表示 $2025$ 年 $m$ 月的日历。`,
     samples: [
       { input: "9", output: "MON TUE WED THU FRI SAT SUN\n  1   2   3   4   5   6   7\n  8   9  10  11  12  13  14\n 15  16  17  18  19  20  21\n 22  23  24  25  26  27  28\n 29  30" },
+    ],
+    testCases: [
+      // 原始样例
+      { input: "9", output: "MON TUE WED THU FRI SAT SUN\n  1   2   3   4   5   6   7\n  8   9  10  11  12  13  14\n 15  16  17  18  19  20  21\n 22  23  24  25  26  27  28\n 29  30" },
+      // 2025年1月（周三开始，31天）
+      { input: "1", output: "MON TUE WED THU FRI SAT SUN\n          1   2   3   4   5\n  6   7   8   9  10  11  12\n 13  14  15  16  17  18  19\n 20  21  22  23  24  25  26\n 27  28  29  30  31" },
+      // 2025年2月（非闰年，28天，周六开始）
+      { input: "2", output: "MON TUE WED THU FRI SAT SUN\n                      1   2\n  3   4   5   6   7   8   9\n 10  11  12  13  14  15  16\n 17  18  19  20  21  22  23\n 24  25  26  27  28" },
+      // 2025年3月（周六开始，31天）
+      { input: "3", output: "MON TUE WED THU FRI SAT SUN\n                      1   2\n  3   4   5   6   7   8   9\n 10  11  12  13  14  15  16\n 17  18  19  20  21  22  23\n 24  25  26  27  28  29  30\n 31" },
+      // 2025年4月（周二开始，30天）
+      { input: "4", output: "MON TUE WED THU FRI SAT SUN\n      1   2   3   4   5   6\n  7   8   9  10  11  12  13\n 14  15  16  17  18  19  20\n 21  22  23  24  25  26  27\n 28  29  30" },
+      // 2025年5月（周四开始，31天）
+      { input: "5", output: "MON TUE WED THU FRI SAT SUN\n              1   2   3   4\n  5   6   7   8   9  10  11\n 12  13  14  15  16  17  18\n 19  20  21  22  23  24  25\n 26  27  28  29  30  31" },
+      // 2025年6月（周日开始，30天）
+      { input: "6", output: "MON TUE WED THU FRI SAT SUN\n                          1\n  2   3   4   5   6   7   8\n  9  10  11  12  13  14  15\n 16  17  18  19  20  21  22\n 23  24  25  26  27  28  29\n 30" },
+      // 2025年7月（周二开始，31天）
+      { input: "7", output: "MON TUE WED THU FRI SAT SUN\n      1   2   3   4   5   6\n  7   8   9  10  11  12  13\n 14  15  16  17  18  19  20\n 21  22  23  24  25  26  27\n 28  29  30  31" },
+      // 2025年8月（周五开始，31天）
+      { input: "8", output: "MON TUE WED THU FRI SAT SUN\n                  1   2   3\n  4   5   6   7   8   9  10\n 11  12  13  14  15  16  17\n 18  19  20  21  22  23  24\n 25  26  27  28  29  30  31" },
+      // 2025年10月（周三开始，31天）
+      { input: "10", output: "MON TUE WED THU FRI SAT SUN\n          1   2   3   4   5\n  6   7   8   9  10  11  12\n 13  14  15  16  17  18  19\n 20  21  22  23  24  25  26\n 27  28  29  30  31" },
+      // 2025年11月（周六开始，30天）
+      { input: "11", output: "MON TUE WED THU FRI SAT SUN\n                      1   2\n  3   4   5   6   7   8   9\n 10  11  12  13  14  15  16\n 17  18  19  20  21  22  23\n 24  25  26  27  28  29  30" },
+      // 2025年12月（周一开始，31天）
+      { input: "12", output: "MON TUE WED THU FRI SAT SUN\n  1   2   3   4   5   6   7\n  8   9  10  11  12  13  14\n 15  16  17  18  19  20  21\n 22  23  24  25  26  27  28\n 29  30  31" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -549,6 +1114,35 @@ $$[2, 3, 4] \\rightarrow [2, 3, 2] \\rightarrow [2, 1, 2] \\rightarrow [2, 1, 1]
     samples: [
       { input: "6\nPAs1s2an\n1a2bCq13\nPa12bsna\nab1da3cd\nPaabdbcd\nPa2", output: "Y\nY\nY\nN\nN\nN" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "6\nPAs1s2an\n1a2bCq13\nPa12bsna\nab1da3cd\nPaabdbcd\nPa2", output: "Y\nY\nY\nN\nN\nN" },
+      // 边界值测试 - 刚好8位
+      { input: "1\nAa123456", output: "Y" },
+      { input: "1\n1234567A", output: "Y" },
+      // 长度不足8位
+      { input: "1\nAa12345", output: "N" },
+      { input: "1\nAa1", output: "N" },
+      { input: "1\nA", output: "N" },
+      // 缺少大写字母
+      { input: "1\nabcd1234", output: "N" },
+      { input: "1\n12345678a", output: "N" },
+      // 缺少数字
+      { input: "1\nABCDEFGH", output: "N" },
+      { input: "1\nAbcdefgh", output: "N" },
+      // 只有数字
+      { input: "1\n12345678", output: "N" },
+      // 只有小写字母
+      { input: "1\nabcdefgh", output: "N" },
+      // 只有大写字母
+      { input: "1\nABCDEFGH", output: "N" },
+      // 较长密码
+      { input: "1\nAa1234567890abcdefg", output: "Y" },
+      // 多组测试
+      { input: "3\nPassword1\n12345678\nABCDabcd", output: "Y\nN\nN" },
+      // 恰好满足条件
+      { input: "1\naaaaaA1a", output: "Y" },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `### 样例解释
@@ -578,6 +1172,33 @@ $$[2, 3, 4] \\rightarrow [2, 3, 2] \\rightarrow [2, 1, 2] \\rightarrow [2, 1, 1]
     samples: [
       { input: "2 5\n1 1\n1 2\n1 1\n2 3\n2 10", output: "4" },
     ],
+    testCases: [
+      // 原始样例
+      { input: "2 5\n1 1\n1 2\n1 1\n2 3\n2 10", output: "4" },
+      // 边界值测试 - 只有一种文具
+      { input: "1 1\n1 5", output: "5" },
+      { input: "1 3\n1 10\n1 5\n1 8", output: "5" },
+      // 每种文具只有一件
+      { input: "3 3\n1 10\n2 20\n3 30", output: "60" },
+      // 全相同价格
+      { input: "2 4\n1 5\n1 5\n2 5\n2 5", output: "10" },
+      // 价格递增
+      { input: "3 6\n1 1\n1 2\n2 3\n2 4\n3 5\n3 6", output: "9" },
+      // 价格递减
+      { input: "2 4\n1 10\n1 5\n2 20\n2 15", output: "20" },
+      // 大量同类文具
+      { input: "1 5\n1 100\n1 50\n1 30\n1 20\n1 10", output: "10" },
+      // 多种文具
+      { input: "4 8\n1 10\n2 20\n3 30\n4 40\n1 5\n2 15\n3 25\n4 35", output: "80" },
+      // 最小价格为1
+      { input: "3 6\n1 1\n2 1\n3 1\n1 100\n2 100\n3 100", output: "3" },
+      // 较大价格
+      { input: "2 4\n1 1000000000\n1 1\n2 1000000000\n2 2", output: "3" },
+      // 交替种类
+      { input: "2 6\n1 5\n2 10\n1 3\n2 8\n1 4\n2 6", output: "9" },
+      // 只选最便宜
+      { input: "3 9\n1 100\n1 50\n1 1\n2 200\n2 100\n2 2\n3 300\n3 150\n3 3", output: "6" },
+    ],
     timeLimit: 1000,
     memoryLimit: 512,
     hint: `样例解释：文具清单如下：文具 1：种类 1，价格 $1$；文具 2：种类 1，价格 $2$；文具 3：种类 1，价格 $1$；文具 4：种类 2，价格 $3$；文具 5：种类 2，价格 $10$。小杨选择每种文具的最低价格：种类 1 最便宜价格为 $1$，种类 2 最便宜价格为 $3$。总花费为 $1 + 3 = 4$。`,
@@ -595,14 +1216,9 @@ async function seedGesp3() {
       }
     });
 
-    // 添加所有题目（testCases 复用 samples）
-    const problemsWithTestCases = gesp3Problems.map(p => ({
-      ...p,
-      testCases: p.samples,
-    }));
-
+    // 添加所有题目（使用题目中已定义的 testCases）
     const result = await prisma.problem.createMany({
-      data: problemsWithTestCases,
+      data: gesp3Problems,
     });
 
     return NextResponse.json({
