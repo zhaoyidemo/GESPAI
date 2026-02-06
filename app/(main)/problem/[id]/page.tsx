@@ -342,7 +342,7 @@ export default function ProblemPage() {
   const difficultyInfo = getDifficultyLabel(problem.difficulty);
 
   return (
-    <div className="h-[calc(100vh-8rem)]">
+    <div className="h-full flex flex-col">
       {/* 顶部导航 */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-4">
@@ -393,7 +393,7 @@ export default function ProblemPage() {
       </div>
 
       {/* 主体内容 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[calc(100%-4rem)]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0">
         {/* 左侧：题目描述 + AI 对话 */}
         <Card className="flex flex-col overflow-hidden">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
