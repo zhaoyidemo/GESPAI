@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { X, Loader2, Sparkles, MessageCircle, BookX, ArrowRight, Mic, MicOff, Send, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -45,22 +45,49 @@ export function AIDebugDrawer({
   const [addedToErrorBook, setAddedToErrorBook] = useState(false);
   const [inputText, setInputText] = useState("");
   const [sending, setSending] = useState(false);
+  const [voiceErrorDisplay, setVoiceErrorDisplay] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputBeforeVoiceRef = useRef("");
 
-  // 语音识别
+  // 语音识别（不使用 onResult，通过 useEffect 监听 transcript 做整体替换）
   const {
     isListening,
     isSupported: speechSupported,
     transcript,
+    error: voiceError,
+    volume,
     startListening,
     stopListening,
     resetTranscript,
   } = useSpeechRecognition({
     lang: "zh-CN",
-    onResult: (text: string) => {
-      setInputText(prev => prev + addPunctuation(text, false));
-    },
   });
+
+  // 语音识别文本更新时，整体替换输入框（prefix + transcript），避免重复累积
+  useEffect(() => {
+    if (isListening && transcript) {
+      const prefix = inputBeforeVoiceRef.current;
+      const text = prefix ? `${prefix} ${transcript}` : transcript;
+      setInputText(addPunctuation(text, false));
+    }
+  }, [transcript, isListening]);
+
+  // 语音错误 3 秒后自动消失
+  useEffect(() => {
+    if (voiceError) {
+      setVoiceErrorDisplay(voiceError);
+      const timer = setTimeout(() => setVoiceErrorDisplay(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [voiceError]);
+
+  // 关闭抽屉时停止录音，释放麦克风资源
+  useEffect(() => {
+    if (!isOpen && isListening) {
+      stopListening();
+      resetTranscript();
+    }
+  }, [isOpen, isListening, stopListening, resetTranscript]);
 
   // 对话更新时自动滚动到底部
   useEffect(() => {
@@ -69,19 +96,24 @@ export function AIDebugDrawer({
     }
   }, [conversations, isLoading]);
 
+  // 停止录音并添加结尾标点（延迟等待最后的 transcript 更新）
+  const handleStopListening = useCallback(() => {
+    stopListening();
+    setTimeout(() => {
+      setInputText((prev) => {
+        if (!prev.trim()) return prev;
+        return addPunctuation(prev, true);
+      });
+    }, 100);
+  }, [stopListening]);
+
   // 麦克风切换
   const handleMicToggle = () => {
     if (isListening) {
-      stopListening();
-      // 停止时对已有 transcript 做结尾标点
-      if (transcript) {
-        setInputText(prev => {
-          const withPunct = addPunctuation(prev, true);
-          return withPunct;
-        });
-      }
-      resetTranscript();
+      handleStopListening();
     } else {
+      inputBeforeVoiceRef.current = inputText.trim();
+      resetTranscript();
       startListening();
     }
   };
@@ -94,8 +126,9 @@ export function AIDebugDrawer({
     // 如果正在录音先停止
     if (isListening) {
       stopListening();
-      resetTranscript();
     }
+    resetTranscript();
+    inputBeforeVoiceRef.current = "";
 
     setInputText("");
     setSending(true);
@@ -277,7 +310,7 @@ export function AIDebugDrawer({
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="输入你的问题..."
+                placeholder={isListening ? "正在识别语音..." : "输入你的问题..."}
                 disabled={isBusy}
                 className={cn(
                   "flex-1",
@@ -311,15 +344,26 @@ export function AIDebugDrawer({
               </Button>
             </div>
 
-            {/* 录音中指示器 */}
+            {/* 录音中指示器（真实音量） */}
             {isListening && (
               <div className="flex items-center gap-2 text-xs text-red-500">
-                <span className="flex gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse [animation-delay:0.2s]" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse [animation-delay:0.4s]" />
+                <span className="inline-block w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                <span className="flex items-center gap-0.5 mx-1">
+                  {[0, 1, 2].map((i) => (
+                    <span
+                      key={i}
+                      className="inline-block w-1 bg-red-500 rounded-full transition-all duration-75"
+                      style={{ height: `${4 + volume * 12 * (0.7 + 0.3 * Math.sin(Date.now() / 150 + i * 2))}px` }}
+                    />
+                  ))}
                 </span>
-                <span>录音中...</span>
+                <span>录音中，点击麦克风停止...</span>
+              </div>
+            )}
+            {/* 语音错误提示 */}
+            {voiceErrorDisplay && (
+              <div className="text-xs text-red-500 text-center animate-pulse">
+                {voiceErrorDisplay}
               </div>
             )}
 
