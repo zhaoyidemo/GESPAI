@@ -58,8 +58,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 验证是否为错误状态（WA/RE/TLE/MLE）
-    const errorStatuses = ["wrong_answer", "runtime_error", "time_limit", "memory_limit"];
+    // 验证是否为错误状态（WA/RE/TLE/MLE/CE）
+    const errorStatuses = ["wrong_answer", "runtime_error", "time_limit", "memory_limit", "compile_error"];
     if (!errorStatuses.includes(submission.status)) {
       return NextResponse.json(
         { error: "只能对错误的提交请求AI帮助" },
@@ -131,6 +131,7 @@ export async function POST(req: NextRequest) {
       hint: submission.problem.hint || undefined,
       studentCode: submission.code,
       verdict: submission.status,
+      compileOutput: submission.compileOutput || undefined,
       failedTests: failedTests.slice(0, 3), // 最多显示3个失败的测试点
       totalTests,
       passedTests,

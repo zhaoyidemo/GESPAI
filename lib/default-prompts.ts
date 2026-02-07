@@ -192,6 +192,7 @@ export interface DebugContext {
   hint?: string;
   studentCode: string;
   verdict: string;
+  compileOutput?: string;
   failedTests: Array<{
     testIndex: number;
     input: string;
@@ -219,6 +220,7 @@ export function buildDebugMessage(context: DebugContext): string {
     hint,
     studentCode,
     verdict,
+    compileOutput,
     failedTests,
     totalTests,
     passedTests,
@@ -231,6 +233,7 @@ export function buildDebugMessage(context: DebugContext): string {
     runtime_error: "运行时错误（RE - Runtime Error）",
     time_limit: "超时（TLE - Time Limit Exceeded）",
     memory_limit: "内存超限（MLE - Memory Limit Exceeded）",
+    compile_error: "编译错误（CE - Compilation Error）",
   };
 
   let message = `# 题目：${problemTitle}\n\n`;
@@ -266,18 +269,23 @@ export function buildDebugMessage(context: DebugContext): string {
 
   message += `## 测试结果\n`;
   message += `- 错误类型：${verdictMap[verdict] || verdict}\n`;
-  message += `- 通过测试点：${passedTests}/${totalTests}\n`;
-  message += `- 失败测试点：${failedTests.length}个\n\n`;
 
-  if (failedTests && failedTests.length > 0) {
-    message += `## 失败的测试点详情\n`;
-    failedTests.forEach((test) => {
-      message += `\n### 测试点 #${test.testIndex}\n`;
-      message += `**输入：**\n\`\`\`\n${test.input}\n\`\`\`\n`;
-      message += `**预期输出：**\n\`\`\`\n${test.expectedOutput}\n\`\`\`\n`;
-      message += `**实际输出：**\n\`\`\`\n${test.actualOutput}\n\`\`\`\n`;
-    });
-    message += `\n`;
+  if (verdict === "compile_error") {
+    message += `\n## 编译错误信息\n\`\`\`\n${compileOutput || "（无编译输出）"}\n\`\`\`\n\n`;
+  } else {
+    message += `- 通过测试点：${passedTests}/${totalTests}\n`;
+    message += `- 失败测试点：${failedTests.length}个\n\n`;
+
+    if (failedTests && failedTests.length > 0) {
+      message += `## 失败的测试点详情\n`;
+      failedTests.forEach((test) => {
+        message += `\n### 测试点 #${test.testIndex}\n`;
+        message += `**输入：**\n\`\`\`\n${test.input}\n\`\`\`\n`;
+        message += `**预期输出：**\n\`\`\`\n${test.expectedOutput}\n\`\`\`\n`;
+        message += `**实际输出：**\n\`\`\`\n${test.actualOutput}\n\`\`\`\n`;
+      });
+      message += `\n`;
+    }
   }
 
   if (previousConversations && previousConversations.length > 0) {
