@@ -258,6 +258,11 @@ export async function GET(request: NextRequest) {
             title: true,
           },
         },
+        errorCase: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 

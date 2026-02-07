@@ -72,6 +72,7 @@ interface SubmissionRecord {
   testResults: TestResult[] | null;
   createdAt: string;
   problem: { id: string; title: string };
+  errorCase: { id: string } | null;
 }
 
 function formatRelativeTime(dateStr: string): string {
@@ -858,6 +859,12 @@ export default function ProblemPage() {
                             {getJudgeStatusLabel(sub.status).label}
                           </Badge>
                           <span className="font-medium text-sm">{sub.score}/100</span>
+                          {sub.errorCase && (
+                            <Badge variant="outline" className="text-xs text-orange-600 border-orange-300">
+                              <BookX className="h-3 w-3 mr-1" />
+                              已记错题
+                            </Badge>
+                          )}
                         </div>
                         <span className="text-xs text-muted-foreground">
                           {formatRelativeTime(sub.createdAt)}
@@ -867,6 +874,69 @@ export default function ProblemPage() {
                       {/* 展开详情 */}
                       {selectedSubmission?.id === sub.id && (
                         <div className="mt-3 space-y-3">
+                          {/* 错题操作按钮 - 仅非 AC 提交显示 */}
+                          {sub.status !== "accepted" && (
+                            <div>
+                              {sub.errorCase ? (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="w-full text-orange-600"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    window.location.href = `/error-book/${sub.errorCase!.id}`;
+                                  }}
+                                >
+                                  <BookX className="mr-2 h-4 w-4" />
+                                  查看错题复盘
+                                </Button>
+                              ) : (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="w-full"
+                                  disabled={recordingError}
+                                  onClick={async (e) => {
+                                    e.stopPropagation();
+                                    setRecordingError(true);
+                                    try {
+                                      const response = await fetch("/api/error-case", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ submissionId: sub.id }),
+                                      });
+                                      const data = await response.json();
+                                      if (response.ok) {
+                                        toast({
+                                          title: "已记录到错题本",
+                                          description: "可以去错题本进行复盘",
+                                        });
+                                        fetchSubmissions();
+                                        window.location.href = `/error-book/${data.errorCase.id}`;
+                                      } else {
+                                        toast({
+                                          variant: "destructive",
+                                          title: "记录失败",
+                                          description: data.error || "请重试",
+                                        });
+                                      }
+                                    } catch {
+                                      toast({
+                                        variant: "destructive",
+                                        title: "记录失败",
+                                        description: "网络错误",
+                                      });
+                                    } finally {
+                                      setRecordingError(false);
+                                    }
+                                  }}
+                                >
+                                  <BookX className="mr-2 h-4 w-4" />
+                                  {recordingError ? "记录中..." : "记录错题"}
+                                </Button>
+                              )}
+                            </div>
+                          )}
                           <div>
                             <p className="text-sm font-medium mb-1">提交代码</p>
                             <div className="max-h-[200px] overflow-auto rounded border">
