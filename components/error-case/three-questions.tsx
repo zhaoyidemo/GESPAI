@@ -10,6 +10,38 @@ import { cn } from "@/lib/utils";
 import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
 import { addPunctuation } from "@/lib/auto-punctuation";
 
+// 音量指示器组件（自带定时器驱动流畅动画）
+function VolumeIndicator({ volume }: { volume: number }) {
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTick((t) => t + 1);
+    }, 75);
+    return () => clearInterval(timer);
+  }, []);
+
+  const getHeight = (index: number) => {
+    const base = 4;
+    const maxExtra = 12;
+    const phase = ((index * 0.3 + tick * 0.1) % 1);
+    const wave = Math.sin(phase * Math.PI * 2) * 0.3 + 0.7;
+    return base + volume * maxExtra * wave;
+  };
+
+  return (
+    <span className="inline-flex items-center space-x-0.5 mx-1">
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="inline-block w-1 bg-red-500 rounded-full transition-all duration-75"
+          style={{ height: `${getHeight(i)}px` }}
+        />
+      ))}
+    </span>
+  );
+}
+
 interface ThreeQuestionsProps {
   errorCaseId: string;
   q1Answer?: string | null;
@@ -126,18 +158,10 @@ function QuestionCard({
             </div>
             {/* 录音指示器 */}
             {isListening && (
-              <div className="flex items-center gap-2 text-xs text-red-500">
+              <div className="flex items-center justify-center gap-1 text-sm text-red-500">
                 <span className="inline-block w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                <span className="flex items-center gap-0.5 mx-1">
-                  {[0, 1, 2].map((i) => (
-                    <span
-                      key={i}
-                      className="inline-block w-1 bg-red-500 rounded-full transition-all duration-75"
-                      style={{ height: `${4 + volume * 12 * (0.7 + 0.3 * Math.sin(Date.now() / 150 + i * 2))}px` }}
-                    />
-                  ))}
-                </span>
-                <span>录音中，点击麦克风停止...</span>
+                <VolumeIndicator volume={volume} />
+                <span>正在录音，点击麦克风或松开空格键停止...</span>
               </div>
             )}
             {/* 语音错误提示 */}
@@ -284,6 +308,7 @@ export function ThreeQuestions({
     }
   }, [isListening, activeVoiceQuestion, handleStopListening, stopListening, resetTranscript, startListening, localQ1, localQ2, localQ3]);
 
+  // 计算当前活跃问题（空格键快捷录音需要用到，提前计算）
   const isQ1Completed = !!q1Answer;
   const isQ2Completed = !!q2Answer;
   const isQ3Completed = !!q3Answer;
@@ -296,6 +321,38 @@ export function ThreeQuestions({
     : isQ1Completed
     ? 2
     : 1;
+
+  // 空格键快捷录音：按住空格=录音，松开=停止（仅在 Textarea 未聚焦时生效）
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (document.activeElement?.tagName === "TEXTAREA") return;
+      if (!currentQuestion || !speechSupported) return;
+      if (loadingHint || submitting) return;
+
+      if (e.code === "Space" && !e.repeat && !isListening) {
+        e.preventDefault();
+        const answer = currentQuestion === 1 ? localQ1 : currentQuestion === 2 ? localQ2 : localQ3;
+        inputBeforeVoiceRef.current = answer.trim();
+        setActiveVoiceQuestion(currentQuestion as 1 | 2 | 3);
+        resetTranscript();
+        startListening();
+      }
+    };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.code === "Space" && isListening) {
+        e.preventDefault();
+        handleStopListening();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [currentQuestion, speechSupported, isListening, loadingHint, submitting, localQ1, localQ2, localQ3, resetTranscript, startListening, handleStopListening]);
 
   const handleGetHint = async (questionNumber: 1 | 2 | 3) => {
     setLoadingHint(questionNumber);
@@ -319,12 +376,13 @@ export function ThreeQuestions({
   };
 
   const handleSubmitAnswer = async (questionNumber: 1 | 2 | 3) => {
-    // 提交前停止录音
+    // 提交前停止录音并清理语音状态
     if (isListening && activeVoiceQuestion === questionNumber) {
       stopListening();
       resetTranscript();
       setActiveVoiceQuestion(null);
     }
+    inputBeforeVoiceRef.current = "";
 
     setSubmitting(true);
     try {
