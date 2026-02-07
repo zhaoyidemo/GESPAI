@@ -240,7 +240,7 @@ async function generateDailyTasks(userId: string, plan: object) {
       tasks.push({
         type: "feynman",
         targetId: kp.id,
-        title: `费曼验证: ${kp.name}`,
+        title: `GESP AI 私教·验证: ${kp.name}`,
         completed: false,
         xpReward: 25,
       });

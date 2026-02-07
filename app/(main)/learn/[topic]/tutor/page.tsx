@@ -44,7 +44,7 @@ export default function TutorPage() {
         setCompleted(true);
         toast({
           title: "学习完成",
-          description: "建议继续进行费曼验证，巩固理解",
+          description: "建议继续进行 GESP AI 私教·验证，巩固理解",
         });
 
         // 增加XP
@@ -113,7 +113,7 @@ export default function TutorPage() {
           )}
           <Button variant="outline" asChild>
             <Link href={`/learn/${topic}/feynman`}>
-              费曼验证
+              私教·验证
             </Link>
           </Button>
         </div>

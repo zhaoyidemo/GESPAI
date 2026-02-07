@@ -150,7 +150,7 @@ export default function KnowledgePointsPage() {
                               <div className="flex items-center justify-between text-xs text-muted-foreground">
                                 {/* 学习状态指示器 */}
                                 <div className="flex items-center gap-3">
-                                  <div className="flex items-center gap-1" title="AI私教">
+                                  <div className="flex items-center gap-1" title="GESP AI 私教·学习">
                                     {record.tutorCompleted ? (
                                       <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
                                     ) : (
@@ -158,13 +158,13 @@ export default function KnowledgePointsPage() {
                                     )}
                                     <span>学习</span>
                                   </div>
-                                  <div className="flex items-center gap-1" title="费曼验证">
+                                  <div className="flex items-center gap-1" title="GESP AI 私教·验证">
                                     {record.feynmanCompleted ? (
                                       <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
                                     ) : (
                                       <Circle className="h-3.5 w-3.5 text-muted-foreground/50" />
                                     )}
-                                    <span>费曼</span>
+                                    <span>验证</span>
                                   </div>
                                   <div className="flex items-center gap-1" title="练习正确率">
                                     {record.practiceCount > 0 ? (

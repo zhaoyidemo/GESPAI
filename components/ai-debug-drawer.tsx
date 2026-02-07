@@ -210,7 +210,7 @@ export function AIDebugDrawer({
           <div className="flex items-center justify-between p-4 border-b">
             <div className="flex items-center gap-2">
               <Sparkles className="h-5 w-5 text-purple-500" />
-              <h2 className="font-semibold text-lg">AI 学习助手</h2>
+              <h2 className="font-semibold text-lg">GESP AI 私教·调试</h2>
             </div>
             <Button
               variant="ghost"
