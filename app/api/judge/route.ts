@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { problemId, code, language = "cpp" } = body;
+    const { problemId, code, language = "cpp", mode = "submit" } = body;
 
     if (!problemId || !code) {
       return NextResponse.json(
@@ -31,43 +31,54 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "题目不存在" }, { status: 404 });
     }
 
-    // 创建提交记录
-    const submission = await prisma.submission.create({
-      data: {
-        userId: session.user.id,
-        problemId,
-        code,
-        language,
-        status: "pending",
-        score: 0,
-      },
-    });
+    // mode=run 时仅使用 samples，不创建记录
+    // mode=submit 时使用全部 testCases，创建 Submission 记录
+    const isRun = mode === "run";
 
-    // 解析测试用例
-    const testCases = problem.testCases as Array<{
+    // 仅 submit 模式创建提交记录
+    let submission: { id: string } | null = null;
+    if (!isRun) {
+      submission = await prisma.submission.create({
+        data: {
+          userId: session.user.id,
+          problemId,
+          code,
+          language,
+          status: "pending",
+          score: 0,
+        },
+      });
+    }
+
+    // 解析测试用例：run 用 samples，submit 用 testCases
+    const testCases = (isRun ? problem.samples : problem.testCases) as Array<{
       input: string;
       output: string;
     }>;
 
     if (!testCases || testCases.length === 0) {
-      await prisma.submission.update({
-        where: { id: submission.id },
-        data: {
-          status: "runtime_error",
-          errorMessage: "题目没有测试用例",
-        },
-      });
+      const errorMsg = isRun ? "题目没有样例数据" : "题目没有测试用例";
+
+      if (submission) {
+        await prisma.submission.update({
+          where: { id: submission.id },
+          data: {
+            status: "runtime_error",
+            errorMessage: errorMsg,
+          },
+        });
+      }
 
       return NextResponse.json({
-        id: submission.id,
+        ...(submission ? { id: submission.id } : {}),
         status: "runtime_error",
         score: 0,
-        errorMessage: "题目没有测试用例",
+        errorMessage: errorMsg,
       });
     }
 
     // 运行判题
-    console.log(`📝 开始判题: 用户=${session.user.id}, 题目=${problem.title} (${problemId})`);
+    console.log(`📝 开始${isRun ? "运行样例" : "判题"}: 用户=${session.user.id}, 题目=${problem.title} (${problemId})`);
 
     const result = await judgeSubmission(
       code,
@@ -77,11 +88,21 @@ export async function POST(request: NextRequest) {
       problem.memoryLimit
     );
 
-    console.log(`✅ 判题完成: 状态=${result.status}, 分数=${result.score}`);
+    console.log(`✅ ${isRun ? "运行" : "判题"}完成: 状态=${result.status}, 分数=${result.score}`);
 
-    // 更新提交记录
+    // run 模式：直接返回结果，不创建记录、不更新 XP
+    if (isRun) {
+      return NextResponse.json({
+        status: result.status,
+        score: result.score,
+        testResults: result.testResults,
+        compileOutput: result.compileOutput,
+      });
+    }
+
+    // submit 模式：更新提交记录
     await prisma.submission.update({
-      where: { id: submission.id },
+      where: { id: submission!.id },
       data: {
         status: result.status,
         score: result.score,
@@ -103,10 +124,8 @@ export async function POST(request: NextRequest) {
       });
 
       // 更新相关知识点的练习统计
-      // 注意：problem.knowledgePoints 是字符串名称数组，需要先查找对应的 KnowledgePoint
       const knowledgePointNames = problem.knowledgePoints || [];
       for (const kpName of knowledgePointNames) {
-        // 根据名称和级别查找知识点
         const kp = await prisma.knowledgePoint.findFirst({
           where: { name: kpName, level: problem.level },
         });
@@ -137,7 +156,7 @@ export async function POST(request: NextRequest) {
       }
 
       return NextResponse.json({
-        id: submission.id,
+        id: submission!.id,
         ...result,
         xpEarned: xpReward,
       });
@@ -175,7 +194,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({
-      id: submission.id,
+      id: submission!.id,
       ...result,
     });
   } catch (error) {
@@ -230,6 +249,8 @@ export async function GET(request: NextRequest) {
         status: true,
         score: true,
         language: true,
+        code: true,
+        testResults: true,
         createdAt: true,
         problem: {
           select: {
