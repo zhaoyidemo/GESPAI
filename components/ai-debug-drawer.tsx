@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { X, Loader2, Sparkles, MessageCircle, BookX, ArrowRight, Mic, MicOff, Send, User } from "lucide-react";
+import { X, Loader2, Sparkles, MessageCircle, BookX, Mic, MicOff, Send, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
@@ -39,7 +38,6 @@ export function AIDebugDrawer({
   onSendMessage,
   helpCount,
 }: AIDebugDrawerProps) {
-  const router = useRouter();
   const { toast } = useToast();
   const [addingToErrorBook, setAddingToErrorBook] = useState(false);
   const [addedToErrorBook, setAddedToErrorBook] = useState(false);
@@ -165,13 +163,8 @@ export function AIDebugDrawer({
         setAddedToErrorBook(true);
         toast({
           title: "已加入错题本",
-          description: "AI分析已同步，可以开始三问复盘",
+          description: "可以稍后去错题本进行三问复盘",
         });
-
-        // 延迟跳转，让用户看到提示
-        setTimeout(() => {
-          router.push(`/error-book/${data.errorCase.id}`);
-        }, 1000);
       } else {
         if (data.error?.includes("已存在")) {
           toast({
@@ -408,13 +401,12 @@ export function AIDebugDrawer({
                   ) : addedToErrorBook ? (
                     <>
                       <BookX className="mr-2 h-4 w-4" />
-                      已加入，正在跳转...
+                      已加入错题本
                     </>
                   ) : (
                     <>
                       <BookX className="mr-2 h-4 w-4" />
-                      加入错题本，开始三问复盘
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      加入错题本
                     </>
                   )}
                 </Button>

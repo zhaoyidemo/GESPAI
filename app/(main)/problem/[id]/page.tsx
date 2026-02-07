@@ -790,7 +790,7 @@ export default function ProblemPage() {
                                     title: "已记录到错题本",
                                     description: "可以去错题本进行复盘",
                                   });
-                                  window.location.href = `/error-book/${data.errorCase.id}`;
+                                  fetchSubmissions();
                                 } else {
                                   toast({
                                     variant: "destructive",
@@ -960,7 +960,6 @@ export default function ProblemPage() {
                                           description: "可以去错题本进行复盘",
                                         });
                                         fetchSubmissions();
-                                        window.location.href = `/error-book/${data.errorCase.id}`;
                                       } else {
                                         toast({
                                           variant: "destructive",
