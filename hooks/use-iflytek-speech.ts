@@ -26,6 +26,9 @@ const STATUS_FIRST_FRAME = 0;
 const STATUS_CONTINUE_FRAME = 1;
 const STATUS_LAST_FRAME = 2;
 
+// 讯飞要求的目标采样率
+const TARGET_SAMPLE_RATE = 16000;
+
 // 讯飞返回结果接口
 interface IflytekResult {
   code: number;
@@ -46,6 +49,31 @@ interface IflytekResult {
   };
 }
 
+// 降采样：从浏览器原生采样率降到 16kHz（讯飞要求）
+function downsampleBuffer(
+  buffer: Float32Array,
+  inputRate: number,
+  outputRate: number
+): Float32Array {
+  if (inputRate === outputRate) return buffer;
+
+  const ratio = inputRate / outputRate;
+  const newLength = Math.ceil(buffer.length / ratio);
+  const result = new Float32Array(newLength);
+
+  for (let i = 0; i < newLength; i++) {
+    const pos = i * ratio;
+    const index = Math.floor(pos);
+    const frac = pos - index;
+    // 线性插值，比最近邻取样质量更好
+    const a = buffer[index] || 0;
+    const b = buffer[Math.min(index + 1, buffer.length - 1)] || 0;
+    result[i] = a + frac * (b - a);
+  }
+
+  return result;
+}
+
 // Float32 转 Int16 PCM
 function float32ToInt16(float32Array: Float32Array): Int16Array {
   const int16Array = new Int16Array(float32Array.length);
@@ -56,14 +84,16 @@ function float32ToInt16(float32Array: Float32Array): Int16Array {
   return int16Array;
 }
 
-// Int16 ArrayBuffer 转 Base64
+// Int16 ArrayBuffer 转 Base64（分块处理，避免 O(n²) 字符串拼接）
 function int16ToBase64(int16Array: Int16Array): string {
   const bytes = new Uint8Array(int16Array.buffer);
-  let binary = "";
-  for (let i = 0; i < bytes.length; i++) {
-    binary += String.fromCharCode(bytes[i]);
+  const CHUNK_SIZE = 8192;
+  const chunks: string[] = [];
+  for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
+    const chunk = bytes.subarray(i, Math.min(i + CHUNK_SIZE, bytes.length));
+    chunks.push(String.fromCharCode.apply(null, Array.from(chunk)));
   }
-  return btoa(binary);
+  return btoa(chunks.join(""));
 }
 
 export function useIflytekSpeech(
@@ -198,6 +228,9 @@ export function useIflytekSpeech(
         accent: "mandarin",
         ptt: 1,
         dwa: "wpgs",
+        // 语音活动检测（VAD）静默超时：10 秒
+        // 默认仅 ~2 秒，太短会导致用户稍作停顿就断开 session
+        vad_eos: 10000,
       };
     }
 
@@ -225,10 +258,9 @@ export function useIflytekSpeech(
         return;
       }
 
-      // 2. 获取麦克风权限
+      // 2. 获取麦克风权限（不强制 sampleRate，使用设备原生采样率）
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
-          sampleRate: 16000,
           channelCount: 1,
           echoCancellation: true,
           noiseSuppression: true,
@@ -243,9 +275,10 @@ export function useIflytekSpeech(
         return;
       }
 
-      // 3. 初始化音频上下文
-      const audioContext = new AudioContext({ sampleRate: 16000 });
+      // 3. 初始化音频上下文（使用浏览器原生采样率，避免兼容性问题）
+      const audioContext = new AudioContext();
       audioContextRef.current = audioContext;
+      const nativeSampleRate = audioContext.sampleRate;
 
       const source = audioContext.createMediaStreamSource(stream);
 
@@ -262,14 +295,16 @@ export function useIflytekSpeech(
         setVolume(Math.min(average / 128, 1));
       }, 50);
 
-      // 音频采集 (ScriptProcessorNode)
-      const processor = audioContext.createScriptProcessor(4096, 1, 1);
+      // 音频采集（buffer 1024：比旧的 4096 延迟更低，约 21ms@48kHz）
+      const processor = audioContext.createScriptProcessor(1024, 1, 1);
       processorRef.current = processor;
 
       processor.onaudioprocess = (e) => {
         if (isStoppingRef.current) return;
         const inputData = e.inputBuffer.getChannelData(0);
-        const pcmData = float32ToInt16(inputData);
+        // 从浏览器原生采样率降采样到讯飞要求的 16kHz
+        const downsampled = downsampleBuffer(inputData, nativeSampleRate, TARGET_SAMPLE_RATE);
+        const pcmData = float32ToInt16(downsampled);
         audioBufferRef.current.push(pcmData);
       };
 
@@ -283,7 +318,7 @@ export function useIflytekSpeech(
       ws.onopen = () => {
         setIsListening(true);
 
-        // 每 40ms 发送一帧音频
+        // 每 40ms 发送一帧音频（与讯飞推荐的 40ms 帧间隔一致）
         sendIntervalRef.current = window.setInterval(() => {
           const buffer = audioBufferRef.current.shift();
           if (!buffer) return;
