@@ -41,6 +41,7 @@ export function useWebSpeech(
   const analyserRef = useRef<AnalyserNode | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const volumeIntervalRef = useRef<number | null>(null);
+  const shouldBeListeningRef = useRef(false);
 
   useEffect(() => {
     onResultRef.current = onResult;
@@ -81,11 +82,14 @@ export function useWebSpeech(
       };
 
       recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+        // 主动取消，忽略
+        if (event.error === "aborted") return;
+        // 静默超时，非致命错误，onend 会自动重启
+        if (event.error === "no-speech") return;
+
+        // 其他为致命错误，停止录音
         let errorMessage = "语音识别出错";
         switch (event.error) {
-          case "no-speech":
-            errorMessage = "没有检测到语音，请再试一次";
-            break;
           case "audio-capture":
             errorMessage = "没有找到麦克风设备";
             break;
@@ -95,16 +99,28 @@ export function useWebSpeech(
           case "network":
             errorMessage = "网络错误，语音识别需要联网";
             break;
-          case "aborted":
-            return;
         }
+        shouldBeListeningRef.current = false;
         setError(errorMessage);
         setIsListening(false);
         onErrorRef.current?.(errorMessage);
       };
 
       recognition.onend = () => {
-        setIsListening(false);
+        if (shouldBeListeningRef.current) {
+          // 用户未主动停止，自动重启识别（语音暂停/静默超时导致的结束）
+          setTimeout(() => {
+            if (!shouldBeListeningRef.current) return;
+            try {
+              recognitionRef.current?.start();
+            } catch {
+              shouldBeListeningRef.current = false;
+              setIsListening(false);
+            }
+          }, 100);
+        } else {
+          setIsListening(false);
+        }
       };
 
       recognitionRef.current = recognition;
@@ -165,6 +181,7 @@ export function useWebSpeech(
   const startListening = useCallback(() => {
     if (!recognitionRef.current) return;
 
+    shouldBeListeningRef.current = true;
     setError(null);
     setTranscript("");
     finalTranscriptRef.current = "";
@@ -183,6 +200,7 @@ export function useWebSpeech(
 
   const stopListening = useCallback(() => {
     if (!recognitionRef.current) return;
+    shouldBeListeningRef.current = false;
 
     try {
       recognitionRef.current.stop();

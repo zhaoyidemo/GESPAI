@@ -93,6 +93,13 @@ export function useIflytekSpeech(
   const audioBufferRef = useRef<Int16Array[]>([]);
   const frameStatusRef = useRef(STATUS_FIRST_FRAME);
 
+  // 用户意图控制：用户主动停止前保持录音
+  const shouldBeListeningRef = useRef(false);
+  // 跨 session 累积文本（自动重启时保留之前识别的内容）
+  const accumulatedTextRef = useRef("");
+  // doStart 函数引用（用于 ws.onclose 中自动重启）
+  const doStartRef = useRef<() => Promise<void>>();
+
   useEffect(() => {
     onResultRef.current = onResult;
     onErrorRef.current = onError;
@@ -128,7 +135,12 @@ export function useIflytekSpeech(
 
     // 按 sn 顺序拼接所有段
     const sortedKeys = Array.from(map.keys()).sort((a, b) => a - b);
-    const fullText = sortedKeys.map(k => map.get(k)).join("");
+    const sessionText = sortedKeys.map(k => map.get(k)).join("");
+
+    // 加上之前 session 累积的文本
+    const fullText = accumulatedTextRef.current
+      ? accumulatedTextRef.current + sessionText
+      : sessionText;
 
     setTranscript(fullText);
     onResultRef.current?.(fullText);
@@ -192,14 +204,11 @@ export function useIflytekSpeech(
     ws.send(JSON.stringify(frame));
   }, []);
 
-  const startListening = useCallback(async () => {
-    if (isListening) return;
-
-    setError(null);
-    setTranscript("");
-    resultMapRef.current.clear();
+  // 核心 session 启动逻辑（startListening 和自动重启共用）
+  const doStart = useCallback(async () => {
     isStoppingRef.current = false;
     frameStatusRef.current = STATUS_FIRST_FRAME;
+    resultMapRef.current.clear();
 
     try {
       // 1. 获取签名 URL
@@ -209,6 +218,12 @@ export function useIflytekSpeech(
         throw new Error(data.error || "获取签名失败");
       }
       const { url } = await authRes.json();
+
+      // 如果在等待期间用户已停止，放弃启动
+      if (!shouldBeListeningRef.current) {
+        setIsListening(false);
+        return;
+      }
 
       // 2. 获取麦克风权限
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -220,6 +235,13 @@ export function useIflytekSpeech(
         },
       });
       mediaStreamRef.current = stream;
+
+      // 如果在等待期间用户已停止，清理并放弃
+      if (!shouldBeListeningRef.current) {
+        stream.getTracks().forEach(track => track.stop());
+        setIsListening(false);
+        return;
+      }
 
       // 3. 初始化音频上下文
       const audioContext = new AudioContext({ sampleRate: 16000 });
@@ -295,24 +317,60 @@ export function useIflytekSpeech(
         const msg = "语音识别连接异常";
         setError(msg);
         onErrorRef.current?.(msg);
+        shouldBeListeningRef.current = false;
         cleanupAudio();
         setIsListening(false);
       };
 
       ws.onclose = () => {
         cleanupAudio();
-        setIsListening(false);
+
+        if (shouldBeListeningRef.current && !isStoppingRef.current) {
+          // 用户未主动停止，服务端结束了当前 session
+          // 保存当前 session 累积的文本，然后自动重启新 session
+          const map = resultMapRef.current;
+          const sortedKeys = Array.from(map.keys()).sort((a, b) => a - b);
+          const sessionText = sortedKeys.map(k => map.get(k)).join("");
+          if (sessionText) {
+            accumulatedTextRef.current = accumulatedTextRef.current
+              ? accumulatedTextRef.current + sessionText
+              : sessionText;
+          }
+          // 异步重启新 session
+          doStartRef.current?.();
+        } else {
+          setIsListening(false);
+        }
       };
     } catch (err) {
       const msg = err instanceof Error ? err.message : "启动语音识别失败";
       setError(msg);
       onErrorRef.current?.(msg);
+      shouldBeListeningRef.current = false;
       cleanupAudio();
       setIsListening(false);
     }
-  }, [isListening, cleanupAudio, sendAudioFrame, parseResult]);
+  }, [cleanupAudio, sendAudioFrame, parseResult]);
+
+  // 保持 doStartRef 与最新 doStart 同步
+  useEffect(() => {
+    doStartRef.current = doStart;
+  }, [doStart]);
+
+  const startListening = useCallback(async () => {
+    if (isListening) return;
+
+    shouldBeListeningRef.current = true;
+    accumulatedTextRef.current = "";
+    setError(null);
+    setTranscript("");
+    resultMapRef.current.clear();
+
+    await doStart();
+  }, [isListening, doStart]);
 
   const stopListening = useCallback(() => {
+    shouldBeListeningRef.current = false;
     isStoppingRef.current = true;
 
     // 停止音频采集
@@ -353,6 +411,7 @@ export function useIflytekSpeech(
     setTranscript("");
     setError(null);
     resultMapRef.current.clear();
+    accumulatedTextRef.current = "";
   }, []);
 
   const setLang = useCallback((_lang: string) => {
@@ -362,6 +421,7 @@ export function useIflytekSpeech(
   // 组件卸载时清理
   useEffect(() => {
     return () => {
+      shouldBeListeningRef.current = false;
       isStoppingRef.current = true;
       if (wsRef.current) {
         wsRef.current.close();
