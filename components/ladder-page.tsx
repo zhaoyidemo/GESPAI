@@ -22,7 +22,7 @@ function StarRating({ count }: { count: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <span
           key={i}
-          className="text-[10px] leading-none"
+          className="text-[12px] leading-none"
           style={{ color: i < count ? "#fbbf24" : undefined, opacity: i < count ? 1 : 0.3 }}
         >
           ★
@@ -75,7 +75,7 @@ function BossCard({ boss, index }: { boss: LadderBoss; index: number }) {
       <div className="flex items-start gap-3.5 px-5 pt-4">
         {/* LV 徽章 */}
         <div
-          className="shrink-0 w-12 h-12 rounded-lg flex flex-col items-center justify-center gap-[1px]"
+          className="shrink-0 w-[52px] h-[52px] rounded-lg flex flex-col items-center justify-center gap-[1px]"
           style={{
             background: theme.lvBadgeBg,
             border: `1px solid ${theme.lvBadgeBorder}`,
@@ -84,8 +84,8 @@ function BossCard({ boss, index }: { boss: LadderBoss; index: number }) {
             "--glow-bright": theme.glowBright,
           } as React.CSSProperties}
         >
-          <span className="font-mono text-[6px] opacity-60 tracking-[1px]">LV</span>
-          <span className="font-mono text-sm font-bold leading-none" style={{ color: theme.nameColor }}>
+          <span className="font-mono text-[7px] opacity-60 tracking-[1px]">LV</span>
+          <span className="font-mono text-base font-bold leading-none" style={{ color: theme.nameColor }}>
             {boss.level}
           </span>
         </div>
@@ -93,10 +93,10 @@ function BossCard({ boss, index }: { boss: LadderBoss; index: number }) {
         {/* Boss 信息 */}
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline gap-2.5 flex-wrap">
-            <span className="font-mono text-[17px] font-bold" style={{ color: theme.nameColor }}>
+            <span className="font-mono text-xl font-bold" style={{ color: theme.nameColor }}>
               {boss.name}
             </span>
-            <span className="text-[11px] text-[#6b7280] font-light">{boss.subtitle}</span>
+            <span className="text-xs text-[#6b7280] font-light">{boss.subtitle}</span>
           </div>
           <div className="flex gap-1.5 mt-1 flex-wrap">
             {boss.badges.map((badge, i) => {
@@ -104,7 +104,7 @@ function BossCard({ boss, index }: { boss: LadderBoss; index: number }) {
               return (
                 <span
                   key={i}
-                  className="text-[9px] px-[7px] py-[2px] rounded-[3px] font-semibold tracking-[0.5px] whitespace-nowrap uppercase"
+                  className="text-[10px] px-2 py-[2px] rounded font-semibold tracking-[0.5px] whitespace-nowrap uppercase"
                   style={{
                     background: colors.bg,
                     color: colors.text,
@@ -129,18 +129,18 @@ function BossCard({ boss, index }: { boss: LadderBoss; index: number }) {
       >
         {/* 难度星级 */}
         <div className="bg-[#0d1220] px-2.5 py-2 flex flex-col gap-[2px]">
-          <span className="text-[9px] text-[#4a5060] uppercase tracking-[0.8px] font-medium">难度</span>
+          <span className="text-[10px] text-[#4a5060] uppercase tracking-[0.8px] font-medium">难度</span>
           <StarRating count={boss.difficulty} />
         </div>
         {/* 其他数据 */}
         {boss.stats.map((stat, i) => (
           <div key={i} className="bg-[#0d1220] px-2.5 py-2 flex flex-col gap-[2px]">
-            <span className="text-[9px] text-[#4a5060] uppercase tracking-[0.8px] font-medium">{stat.label}</span>
+            <span className="text-[10px] text-[#4a5060] uppercase tracking-[0.8px] font-medium">{stat.label}</span>
             <span
-              className="font-mono text-[13px] font-semibold"
+              className="font-mono text-sm font-semibold"
               style={{
                 color: stat.color || "#e2e5ed",
-                fontSize: stat.small ? "11px" : "13px",
+                fontSize: stat.small ? "12px" : undefined,
               }}
             >
               {stat.value}
@@ -156,14 +156,14 @@ function BossCard({ boss, index }: { boss: LadderBoss; index: number }) {
           return (
             <span
               key={i}
-              className="text-[10px] px-2 py-[3px] rounded flex items-center gap-1 font-medium"
+              className="text-[11px] px-2 py-[3px] rounded flex items-center gap-1 font-medium"
               style={{
                 background: colors.bg,
                 color: colors.text,
                 border: `1px solid ${colors.border}`,
               }}
             >
-              <span className="text-[11px]">{item.icon}</span>
+              <span className="text-xs">{item.icon}</span>
               {item.text}
             </span>
           );
@@ -171,7 +171,7 @@ function BossCard({ boss, index }: { boss: LadderBoss; index: number }) {
       </div>
 
       {/* 说明文字 */}
-      <div className="px-5 py-2.5 pb-3.5 text-[11.5px] text-[#6b7280] leading-[1.7] border-t border-white/[0.06]">
+      <div className="px-5 py-2.5 pb-3.5 text-[13px] text-[#6b7280] leading-[1.7] border-t border-white/[0.06]">
         <FlavorText parts={boss.flavor} />
       </div>
     </div>
@@ -182,8 +182,8 @@ function BossCard({ boss, index }: { boss: LadderBoss; index: number }) {
 function XpBridgeComponent({ bridge }: { bridge: LadderBridge }) {
   return (
     <div>
-      <div className="flex items-center gap-2.5 py-1.5 mx-auto max-w-[420px]">
-        <span className="text-[10px] text-[#4a5060] whitespace-nowrap font-mono min-w-[110px] text-right">
+      <div className="flex items-center gap-2.5 py-1.5 mx-auto max-w-[480px]">
+        <span className="text-[11px] text-[#4a5060] whitespace-nowrap font-mono min-w-[120px] text-right">
           {bridge.label}
         </span>
         <div className="flex-1 h-1.5 bg-white/[0.06] rounded-[3px] overflow-hidden relative">
@@ -200,12 +200,12 @@ function XpBridgeComponent({ bridge }: { bridge: LadderBridge }) {
             />
           </div>
         </div>
-        <span className="text-[10px] font-mono font-semibold min-w-[40px]" style={{ color: bridge.rateColor }}>
+        <span className="text-[11px] font-mono font-semibold min-w-[48px]" style={{ color: bridge.rateColor }}>
           {bridge.rate}
         </span>
       </div>
       {bridge.note && (
-        <div className="max-w-[420px] mx-auto px-0 pb-1 text-[10px] text-[#4a5060] leading-[1.6] text-center">
+        <div className="max-w-[480px] mx-auto px-0 pb-1 text-[11px] text-[#4a5060] leading-[1.6] text-center">
           {bridge.note}
         </div>
       )}
@@ -224,14 +224,14 @@ function SideQuestNode({ quest }: { quest: LadderSideQuest }) {
         >
           {quest.icon}
         </div>
-        <span className="font-mono text-[12px] font-bold" style={{ color: quest.nameColor }}>
+        <span className="font-mono text-[13px] font-bold" style={{ color: quest.nameColor }}>
           {quest.name}
         </span>
-        <span className="font-mono text-[9px] text-[#4a5060] ml-auto uppercase tracking-[0.5px]">
+        <span className="font-mono text-[10px] text-[#4a5060] ml-auto uppercase tracking-[0.5px]">
           {quest.levelTag}
         </span>
       </div>
-      <p className="text-[11px] text-[#6b7280] leading-[1.6]">{quest.description}</p>
+      <p className="text-[12.5px] text-[#6b7280] leading-[1.7]">{quest.description}</p>
     </div>
   );
 }
@@ -291,11 +291,11 @@ export default function LadderPage() {
       <div className="max-w-[900px] mx-auto px-5 pt-28 pb-20 sm:pt-32">
         {/* Header */}
         <header className="text-center mb-14 relative">
-          <div className="inline-block font-mono text-[9px] tracking-[2px] text-amber-400/70 mb-3">
+          <div className="inline-block font-mono text-[10px] tracking-[2px] text-amber-400/70 mb-3">
             ◆ QUEST MAP ◆
           </div>
           <h1
-            className="text-[26px] font-black tracking-[-0.5px] mb-2.5"
+            className="text-[30px] font-black tracking-[-0.5px] mb-2.5"
             style={{
               background: "linear-gradient(135deg, #fff 0%, #7dd3fc 50%, #a78bfa 100%)",
               WebkitBackgroundClip: "text",
@@ -304,7 +304,7 @@ export default function LadderPage() {
           >
             信息学奥赛天梯
           </h1>
-          <div className="text-[12px] text-[#4a5060] font-light">
+          <div className="text-[13px] text-[#4a5060] font-light">
             NOI系列赛事 · CCF主办 · <span className="text-[#6b7280]">Lv.1 GESP → Lv.7 IOI</span> · 数据截至2025年
           </div>
         </header>
@@ -321,7 +321,7 @@ export default function LadderPage() {
         <div className="mt-12 pt-7 border-t border-white/[0.06]">
           <div className="flex items-center gap-2.5 mb-4">
             <span className="text-[16px] opacity-70">🌿</span>
-            <span className="text-[13px] font-bold text-[#6b7280] tracking-[1.5px] uppercase font-mono">
+            <span className="text-sm font-bold text-[#6b7280] tracking-[1.5px] uppercase font-mono">
               支线副本 · Side Quests
             </span>
           </div>
@@ -338,7 +338,7 @@ export default function LadderPage() {
         </div>
 
         {/* ═══ 数据来源 Footer ═══ */}
-        <div className="mt-12 pt-5 border-t border-white/[0.06] text-[10.5px] text-[#4a5060] leading-[1.8]">
+        <div className="mt-12 pt-5 border-t border-white/[0.06] text-[11.5px] text-[#4a5060] leading-[1.8]">
           <p>
             <strong className="text-[#6b7280]">数据来源：</strong>
             CSP-J/S、NOIP、NOI获奖人数均来自NOI.cn官网2025年获奖名单统计。参赛人数为估算值。IOI奖牌比例为历年惯例。
