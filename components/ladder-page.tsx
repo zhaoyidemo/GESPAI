@@ -345,7 +345,7 @@ export default function LadderPage() {
           </p>
           <p className="mt-1">
             <strong className="text-[#6b7280]">关键区分：</strong>
-            GESP为"等级认证"、CSP-J/S为"能力认证"，官方定义均非"竞赛"；NOIP为"联赛"（教育部白名单）；NOI为"竞赛"（国赛）。此区分在政策合规和招生口径中有实际意义。
+            {`GESP为"等级认证"、CSP-J/S为"能力认证"，官方定义均非"竞赛"；NOIP为"联赛"（教育部白名单）；NOI为"竞赛"（国赛）。此区分在政策合规和招生口径中有实际意义。`}
           </p>
           <p className="mt-1">
             <strong className="text-[#6b7280]">编程语言：</strong>
