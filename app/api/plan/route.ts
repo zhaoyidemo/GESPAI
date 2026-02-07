@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
-import { generateStudyPlan } from "@/lib/claude";
+import { generateStudyPlan, PerformanceData } from "@/lib/claude";
 
 // 生成学习计划
 export async function POST(request: NextRequest) {
@@ -23,13 +23,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 获取用户当前的学习进度
+    // 获取用户当前的学习进度（扩展字段）
     const learningRecords = await prisma.learningRecord.findMany({
       where: { userId: session.user.id },
       select: {
         knowledgePointId: true,
         status: true,
         progress: true,
+        practiceCount: true,
+        correctCount: true,
+        masteryLevel: true,
+        tutorCompleted: true,
+        feynmanCompleted: true,
+        feynmanScore: true,
       },
     });
 
@@ -41,12 +47,88 @@ export async function POST(request: NextRequest) {
       {} as Record<string, number>
     );
 
+    // 查询错题统计（按错误类型聚合）
+    const errorCases = await prisma.errorCase.findMany({
+      where: { userId: session.user.id },
+      select: {
+        errorType: true,
+        problem: { select: { knowledgePoints: true, level: true } },
+      },
+    });
+
+    // 查询近30天提交统计
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const recentSubmissions = await prisma.submission.findMany({
+      where: {
+        userId: session.user.id,
+        createdAt: { gte: thirtyDaysAgo },
+      },
+      select: {
+        status: true,
+        problem: { select: { knowledgePoints: true, level: true } },
+      },
+    });
+
+    // 构建做题表现数据
+    let performanceData: PerformanceData | undefined;
+
+    const hasLearningData = learningRecords.some((r) => r.practiceCount > 0);
+
+    if (hasLearningData || errorCases.length > 0 || recentSubmissions.length > 0) {
+      // 各知识点详情
+      const knowledgePoints: PerformanceData["knowledgePoints"] = {};
+      for (const record of learningRecords) {
+        knowledgePoints[record.knowledgePointId] = {
+          progress: record.progress,
+          practiceCount: record.practiceCount,
+          correctCount: record.correctCount,
+          accuracy: record.practiceCount > 0
+            ? record.correctCount / record.practiceCount
+            : 0,
+          masteryLevel: record.masteryLevel,
+          tutorCompleted: record.tutorCompleted,
+          feynmanCompleted: record.feynmanCompleted,
+          feynmanScore: record.feynmanScore,
+        };
+      }
+
+      // 错误类型统计
+      const errorPatterns: Record<string, number> = {};
+      for (const ec of errorCases) {
+        if (ec.errorType) {
+          errorPatterns[ec.errorType] = (errorPatterns[ec.errorType] || 0) + 1;
+        }
+      }
+
+      // 薄弱知识点（正确率 < 50%）
+      const weakKnowledgePoints = Object.entries(knowledgePoints)
+        .filter(([, data]) => data.practiceCount > 0 && data.accuracy < 0.5)
+        .map(([kpId]) => kpId);
+
+      // 近30天整体正确率
+      const totalRecent = recentSubmissions.length;
+      const correctRecent = recentSubmissions.filter(
+        (s) => s.status === "accepted"
+      ).length;
+      const recentAccuracy = totalRecent > 0 ? correctRecent / totalRecent : 0;
+
+      performanceData = {
+        knowledgePoints,
+        errorPatterns,
+        weakKnowledgePoints,
+        recentAccuracy,
+      };
+    }
+
     // 调用 AI 生成学习计划
     const plan = await generateStudyPlan(
       targetLevel,
       new Date(examDate),
       weeklyHours,
-      Object.keys(currentProgress).length > 0 ? currentProgress : undefined
+      Object.keys(currentProgress).length > 0 ? currentProgress : undefined,
+      performanceData
     );
 
     // 保存学习计划

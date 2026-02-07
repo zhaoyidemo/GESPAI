@@ -135,18 +135,72 @@ export async function streamChat(
   }
 }
 
+// 做题表现数据接口
+export interface PerformanceData {
+  knowledgePoints: Record<string, {
+    progress: number;
+    practiceCount: number;
+    correctCount: number;
+    accuracy: number;
+    masteryLevel: number;
+    tutorCompleted: boolean;
+    feynmanCompleted: boolean;
+    feynmanScore: number | null;
+  }>;
+  errorPatterns: Record<string, number>;
+  weakKnowledgePoints: string[];
+  recentAccuracy: number;
+}
+
 // 生成学习计划
 export async function generateStudyPlan(
   targetLevel: number,
   examDate: Date,
   weeklyHours: number,
-  currentProgress?: Record<string, number>
+  currentProgress?: Record<string, number>,
+  performanceData?: PerformanceData
 ): Promise<object> {
   const daysUntilExam = Math.ceil(
     (examDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
   );
 
   const systemPrompt = await getSystemPrompt("plan-generate");
+
+  let performanceSection = "";
+  if (performanceData) {
+    const errorPatternsStr = Object.entries(performanceData.errorPatterns)
+      .map(([type, count]) => `${type}(${count}次)`)
+      .join("、");
+
+    const weakKPsStr = performanceData.weakKnowledgePoints
+      .map((kpId) => {
+        const kpData = performanceData.knowledgePoints[kpId];
+        return kpData ? `${kpId}(${Math.round(kpData.accuracy * 100)}%)` : kpId;
+      })
+      .join("、");
+
+    const kpDetailsRows = Object.entries(performanceData.knowledgePoints)
+      .map(([kpId, data]) => {
+        const accuracy = data.practiceCount > 0
+          ? `${Math.round(data.accuracy * 100)}%`
+          : "无数据";
+        return `| ${kpId} | ${data.practiceCount} | ${accuracy} | ${data.masteryLevel} | ${data.tutorCompleted ? "✓" : "✗"} | ${data.feynmanCompleted ? "✓" : "✗"} |`;
+      })
+      .join("\n");
+
+    performanceSection = `
+**做题表现分析**
+- 近30天整体正确率：${Math.round(performanceData.recentAccuracy * 100)}%
+- 薄弱知识点（正确率<50%）：${weakKPsStr || "无"}
+- 常见错误类型：${errorPatternsStr || "无"}
+
+**各知识点详情**
+| 知识点 | 练习数 | 正确率 | 掌握度 | 学习完成 | 验证完成 |
+|--------|--------|--------|--------|----------|----------|
+${kpDetailsRows}
+
+请根据以上数据，重点安排薄弱知识点的强化练习，对已掌握的知识点降低优先级。`;
+  }
 
   const userMessage = `请为我制定GESP ${targetLevel}级考试的学习计划。
 
@@ -157,6 +211,7 @@ export async function generateStudyPlan(
 - 每周可用学习时间：${weeklyHours}小时
 
 ${currentProgress ? `**当前进度**\n${JSON.stringify(currentProgress, null, 2)}` : "这是新学生，尚无学习记录。"}
+${performanceSection}
 
 请制定合理的学习计划，确保能在考试前完成所有${targetLevel}级知识点的学习和练习。`;
 
