@@ -411,6 +411,7 @@ export default function LandingPage() {
           <div className="hidden sm:flex items-center gap-8">
             <a href="#features" className="text-sm text-white/40 hover:text-white/80 transition-colors">为什么选我们</a>
             <a href="#pricing" className="text-sm text-white/40 hover:text-white/80 transition-colors">定价</a>
+            <Link href="/ladder" className="text-sm text-white/40 hover:text-white/80 transition-colors">天梯</Link>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/login" className="text-sm text-white/50 hover:text-white transition-colors px-3 py-1.5">
@@ -715,6 +716,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-6">
             <a href="#features" className="text-xs text-white/20 hover:text-white/40 transition-colors">功能</a>
             <a href="#pricing" className="text-xs text-white/20 hover:text-white/40 transition-colors">定价</a>
+            <Link href="/ladder" className="text-xs text-white/20 hover:text-white/40 transition-colors">天梯</Link>
             <Link href="/login" className="text-xs text-white/20 hover:text-white/40 transition-colors">登录</Link>
           </div>
         </div>
