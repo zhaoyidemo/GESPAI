@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { submissionId } = body;
+    const { submissionId, userMessage } = body;
 
     if (!submissionId) {
       return NextResponse.json(
@@ -94,9 +94,23 @@ export async function POST(req: NextRequest) {
         actualOutput: test.actualOutput || test.error || "（无输出）",
       })) || [];
 
-    // 获取之前的对话历史
-    const previousConversations = (submission.aiConversations as any[]) || [];
-    const helpCount = submission.aiHelpCount + 1;
+    // 获取之前的对话历史，并向后兼容旧格式
+    const rawConversations = (submission.aiConversations as any[]) || [];
+    const previousConversations = rawConversations.map((conv: any) => {
+      // 向后兼容：旧格式有 aiResponse 但没有 role
+      if (conv.aiResponse && !conv.role) {
+        return {
+          role: "ai" as const,
+          content: conv.aiResponse,
+          promptLevel: conv.promptLevel,
+          timestamp: conv.timestamp,
+        };
+      }
+      return conv;
+    });
+
+    const isFollowUp = !!userMessage?.trim();
+    const helpCount = isFollowUp ? submission.aiHelpCount : submission.aiHelpCount + 1;
 
     // 解析题目的样例（如果有）
     const samples = submission.problem.samples
@@ -107,7 +121,7 @@ export async function POST(req: NextRequest) {
         }))
       : undefined;
 
-    // 构建调试上下文
+    // 构建调试上下文（用于递进提示 或 自由对话的上下文消息）
     const debugContext: DebugContext = {
       problemTitle: submission.problem.title,
       problemDescription: submission.problem.description,
@@ -121,56 +135,115 @@ export async function POST(req: NextRequest) {
       totalTests,
       passedTests,
       helpCount,
-      previousConversations,
+      previousConversations: isFollowUp ? [] : previousConversations, // 自由对话用 messages 数组传历史
     };
 
-    const userMessage = buildDebugMessage(debugContext);
+    const debugContextMessage = buildDebugMessage(debugContext);
 
-    console.log(`🤖 AI调试助手：用户=${session.user.id}, 题目=${submission.problem.title}, 第${helpCount}次请求`);
+    let aiResponse: string;
 
-    // 调用Claude API
-    const message = await anthropic.messages.create({
-      model: "claude-opus-4-20250514", // Claude Opus 4.5
-      max_tokens: 1500, // 增加token限制，允许更详细的回复
-      system: systemPrompt,
-      messages: [
-        {
-          role: "user",
-          content: userMessage,
+    if (isFollowUp) {
+      // === 自由对话模式 ===
+      console.log(`💬 AI自由对话：用户=${session.user.id}, 题目=${submission.problem.title}`);
+
+      // 构建多轮对话 messages 数组
+      const messages: Array<{ role: "user" | "assistant"; content: string }> = [
+        { role: "user", content: debugContextMessage },  // 题目+代码上下文
+      ];
+
+      // 追加之前的对话历史
+      for (const conv of previousConversations) {
+        messages.push({
+          role: conv.role === "ai" ? "assistant" : "user",
+          content: conv.content,
+        });
+      }
+
+      // 本次用户追问
+      messages.push({ role: "user", content: userMessage.trim() });
+
+      const message = await anthropic.messages.create({
+        model: "claude-opus-4-20250514",
+        max_tokens: 1500,
+        system: systemPrompt,
+        messages,
+      });
+
+      aiResponse = message.content[0].type === "text"
+        ? message.content[0].text
+        : "无法生成回复";
+
+      // 追加用户消息和 AI 回复到对话历史
+      const now = new Date().toISOString();
+      const updatedConversations = [
+        ...previousConversations,
+        { role: "user", content: userMessage.trim(), timestamp: now },
+        { role: "ai", content: aiResponse, timestamp: now },
+      ];
+
+      await prisma.submission.update({
+        where: { id: submissionId },
+        data: {
+          aiConversations: updatedConversations,
         },
-      ],
-    });
+      });
 
-    console.log(`✅ AI分析完成：帮助次数=${helpCount}, 提示级别=${helpCount <= 3 ? helpCount : 3}`);
+      console.log(`✅ 自由对话完成`);
 
-    const aiResponse = message.content[0].type === "text"
-      ? message.content[0].text
-      : "无法生成回复";
+      return NextResponse.json({
+        success: true,
+        aiResponse,
+        helpCount,
+        isFollowUp: true,
+      });
+    } else {
+      // === 递进提示模式（原有逻辑） ===
+      console.log(`🤖 AI调试助手：用户=${session.user.id}, 题目=${submission.problem.title}, 第${helpCount}次请求`);
 
-    // 更新提交记录：增加帮助次数和对话历史
-    const newConversation = {
-      promptLevel: helpCount,
-      aiResponse,
-      timestamp: new Date().toISOString(),
-    };
-
-    await prisma.submission.update({
-      where: { id: submissionId },
-      data: {
-        aiHelpCount: helpCount,
-        aiConversations: [
-          ...previousConversations,
-          newConversation,
+      const message = await anthropic.messages.create({
+        model: "claude-opus-4-20250514",
+        max_tokens: 1500,
+        system: systemPrompt,
+        messages: [
+          {
+            role: "user",
+            content: debugContextMessage,
+          },
         ],
-      },
-    });
+      });
 
-    return NextResponse.json({
-      success: true,
-      aiResponse,
-      helpCount,
-      promptLevel: helpCount <= 3 ? helpCount : 3, // 提示级别（1轻/2中/3详细）
-    });
+      console.log(`✅ AI分析完成：帮助次数=${helpCount}, 提示级别=${helpCount <= 3 ? helpCount : 3}`);
+
+      aiResponse = message.content[0].type === "text"
+        ? message.content[0].text
+        : "无法生成回复";
+
+      // 更新提交记录：增加帮助次数和对话历史
+      const newConversation = {
+        role: "ai" as const,
+        content: aiResponse,
+        promptLevel: helpCount,
+        timestamp: new Date().toISOString(),
+      };
+
+      await prisma.submission.update({
+        where: { id: submissionId },
+        data: {
+          aiHelpCount: helpCount,
+          aiConversations: [
+            ...previousConversations,
+            newConversation,
+          ],
+        },
+      });
+
+      return NextResponse.json({
+        success: true,
+        aiResponse,
+        helpCount,
+        promptLevel: helpCount <= 3 ? helpCount : 3,
+      });
+    }
   } catch (error: any) {
     console.error("AI debug help error:", error);
 

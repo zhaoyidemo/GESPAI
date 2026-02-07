@@ -202,8 +202,9 @@ export interface DebugContext {
   passedTests: number;
   helpCount: number;
   previousConversations?: Array<{
-    promptLevel: number;
-    aiResponse: string;
+    role: "ai" | "user";
+    content: string;
+    promptLevel?: number;  // 仅 role=ai 时有值
     timestamp: string;
   }>;
 }
@@ -283,7 +284,12 @@ export function buildDebugMessage(context: DebugContext): string {
     message += `---\n\n`;
     message += `## 之前的对话历史\n`;
     previousConversations.forEach((conv) => {
-      message += `\n**第${conv.promptLevel}次提示（${new Date(conv.timestamp).toLocaleString('zh-CN')}）：**\n${conv.aiResponse}\n`;
+      if (conv.role === "user") {
+        message += `\n**学生追问（${new Date(conv.timestamp).toLocaleString('zh-CN')}）：**\n${conv.content}\n`;
+      } else {
+        const levelLabel = conv.promptLevel ? `第${conv.promptLevel}次提示` : "AI回复";
+        message += `\n**${levelLabel}（${new Date(conv.timestamp).toLocaleString('zh-CN')}）：**\n${conv.content}\n`;
+      }
     });
     message += `\n`;
   }

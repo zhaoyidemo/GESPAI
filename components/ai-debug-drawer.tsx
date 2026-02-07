@@ -1,16 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { X, Loader2, Sparkles, MessageCircle, BookX, ArrowRight } from "lucide-react";
+import { X, Loader2, Sparkles, MessageCircle, BookX, ArrowRight, Mic, MicOff, Send, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
+import { addPunctuation } from "@/lib/auto-punctuation";
 
 export interface AIConversation {
-  promptLevel: number;
-  aiResponse: string;
+  role: "ai" | "user";
+  content: string;
+  promptLevel?: number;  // 仅 AI 递进提示时有值
   timestamp: string;
 }
 
@@ -21,6 +25,7 @@ export interface AIDebugDrawerProps {
   conversations: AIConversation[];
   isLoading: boolean;
   onRequestHelp: () => void;
+  onSendMessage: (message: string) => Promise<void>;
   helpCount: number;
 }
 
@@ -31,12 +36,83 @@ export function AIDebugDrawer({
   conversations,
   isLoading,
   onRequestHelp,
+  onSendMessage,
   helpCount,
 }: AIDebugDrawerProps) {
   const router = useRouter();
   const { toast } = useToast();
   const [addingToErrorBook, setAddingToErrorBook] = useState(false);
   const [addedToErrorBook, setAddedToErrorBook] = useState(false);
+  const [inputText, setInputText] = useState("");
+  const [sending, setSending] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // 语音识别
+  const {
+    isListening,
+    isSupported: speechSupported,
+    transcript,
+    startListening,
+    stopListening,
+    resetTranscript,
+  } = useSpeechRecognition({
+    lang: "zh-CN",
+    onResult: (text: string) => {
+      setInputText(prev => prev + addPunctuation(text, false));
+    },
+  });
+
+  // 对话更新时自动滚动到底部
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [conversations, isLoading]);
+
+  // 麦克风切换
+  const handleMicToggle = () => {
+    if (isListening) {
+      stopListening();
+      // 停止时对已有 transcript 做结尾标点
+      if (transcript) {
+        setInputText(prev => {
+          const withPunct = addPunctuation(prev, true);
+          return withPunct;
+        });
+      }
+      resetTranscript();
+    } else {
+      startListening();
+    }
+  };
+
+  // 发送消息
+  const handleSend = async () => {
+    const text = inputText.trim();
+    if (!text || sending || isLoading) return;
+
+    // 如果正在录音先停止
+    if (isListening) {
+      stopListening();
+      resetTranscript();
+    }
+
+    setInputText("");
+    setSending(true);
+    try {
+      await onSendMessage(text);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  // 回车发送
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
   // 添加到错题本
   const handleAddToErrorBook = async () => {
@@ -84,6 +160,8 @@ export function AIDebugDrawer({
     }
   };
 
+  const isBusy = isLoading || sending;
+
   return (
     <>
       {/* 遮罩层 */}
@@ -120,57 +198,135 @@ export function AIDebugDrawer({
 
           {/* 对话历史 */}
           <ScrollArea className="flex-1 p-4">
-            {conversations.length === 0 && !isLoading ? (
+            {conversations.length === 0 && !isBusy ? (
               <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground">
                 <MessageCircle className="h-12 w-12 mb-3 opacity-50" />
                 <p className="text-sm">还没有AI分析</p>
-                <p className="text-xs mt-1">点击下方按钮开始分析</p>
+                <p className="text-xs mt-1">点击下方按钮开始分析，或直接提问</p>
               </div>
             ) : (
               <div className="space-y-4">
                 {conversations.map((conv, index) => (
-                  <div
-                    key={index}
-                    className="bg-muted/50 rounded-lg p-4 space-y-2"
-                  >
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Sparkles className="h-3 w-3" />
-                      <span>
-                        第{conv.promptLevel}次提示
-                        {conv.promptLevel === 1 && " · 轻提示"}
-                        {conv.promptLevel === 2 && " · 中等提示"}
-                        {conv.promptLevel >= 3 && " · 详细提示"}
-                      </span>
-                      <span className="ml-auto">
-                        {new Date(conv.timestamp).toLocaleTimeString("zh-CN", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </span>
+                  conv.role === "user" ? (
+                    // 用户消息 - 右侧对齐
+                    <div key={index} className="flex justify-end">
+                      <div className="max-w-[85%] space-y-1">
+                        <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground">
+                          <span>
+                            {new Date(conv.timestamp).toLocaleTimeString("zh-CN", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </span>
+                          <User className="h-3 w-3" />
+                        </div>
+                        <div className="bg-primary text-primary-foreground rounded-lg p-3 text-sm whitespace-pre-wrap leading-relaxed">
+                          {conv.content}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-sm whitespace-pre-wrap leading-relaxed">
-                      {conv.aiResponse}
+                  ) : (
+                    // AI 消息 - 左侧对齐
+                    <div key={index} className="bg-muted/50 rounded-lg p-4 space-y-2">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Sparkles className="h-3 w-3" />
+                        {conv.promptLevel ? (
+                          <span>
+                            第{conv.promptLevel}次提示
+                            {conv.promptLevel === 1 && " · 轻提示"}
+                            {conv.promptLevel === 2 && " · 中等提示"}
+                            {conv.promptLevel >= 3 && " · 详细提示"}
+                          </span>
+                        ) : (
+                          <span>AI 回复</span>
+                        )}
+                        <span className="ml-auto">
+                          {new Date(conv.timestamp).toLocaleTimeString("zh-CN", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                      <div className="text-sm whitespace-pre-wrap leading-relaxed">
+                        {conv.content}
+                      </div>
                     </div>
-                  </div>
+                  )
                 ))}
 
-                {isLoading && (
+                {isBusy && (
                   <div className="bg-muted/50 rounded-lg p-4 flex items-center gap-3">
                     <Loader2 className="h-4 w-4 animate-spin text-purple-500" />
                     <span className="text-sm text-muted-foreground">
-                      AI正在分析你的代码...
+                      {sending ? "AI正在回复..." : "AI正在分析你的代码..."}
                     </span>
                   </div>
                 )}
+
+                {/* 滚动锚点 */}
+                <div ref={scrollRef} />
               </div>
             )}
           </ScrollArea>
 
           {/* 底部操作 */}
           <div className="p-4 border-t space-y-3">
+            {/* 输入区域：输入框 + 麦克风 + 发送 */}
+            <div className="flex items-center gap-2">
+              <Input
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="输入你的问题..."
+                disabled={isBusy}
+                className={cn(
+                  "flex-1",
+                  isListening && "border-red-400 ring-1 ring-red-400"
+                )}
+              />
+              {speechSupported && (
+                <Button
+                  variant={isListening ? "destructive" : "outline"}
+                  size="icon"
+                  onClick={handleMicToggle}
+                  disabled={isBusy}
+                  className="h-9 w-9 flex-shrink-0"
+                  title={isListening ? "停止录音" : "语音输入"}
+                >
+                  {isListening ? (
+                    <MicOff className="h-4 w-4" />
+                  ) : (
+                    <Mic className="h-4 w-4" />
+                  )}
+                </Button>
+              )}
+              <Button
+                size="icon"
+                onClick={handleSend}
+                disabled={!inputText.trim() || isBusy}
+                className="h-9 w-9 flex-shrink-0"
+                title="发送"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* 录音中指示器 */}
+            {isListening && (
+              <div className="flex items-center gap-2 text-xs text-red-500">
+                <span className="flex gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse [animation-delay:0.2s]" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse [animation-delay:0.4s]" />
+                </span>
+                <span>录音中...</span>
+              </div>
+            )}
+
+            {/* 继续分析按钮 */}
             <Button
               onClick={onRequestHelp}
-              disabled={isLoading}
+              disabled={isBusy}
               className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
             >
               {isLoading ? (
@@ -191,7 +347,7 @@ export function AIDebugDrawer({
             {conversations.length > 0 && submissionId && (
               <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
                 <p className="text-sm text-orange-800 mb-2">
-                  💡 建议将这道题加入错题本，通过三问复盘避免再犯
+                  建议将这道题加入错题本，通过三问复盘避免再犯
                 </p>
                 <Button
                   variant="outline"
@@ -223,7 +379,7 @@ export function AIDebugDrawer({
 
             {helpCount >= 3 && (
               <p className="text-xs text-center text-muted-foreground">
-                💡 已经是详细提示级别了，继续努力！
+                已经是详细提示级别了，继续努力！
               </p>
             )}
           </div>

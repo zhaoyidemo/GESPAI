@@ -262,8 +262,9 @@ export default function ProblemPage() {
 
       if (response.ok) {
         const newConversation: AIConversation = {
+          role: "ai",
+          content: data.aiResponse,
           promptLevel: data.promptLevel,
-          aiResponse: data.aiResponse,
           timestamp: new Date().toISOString(),
         };
 
@@ -291,6 +292,53 @@ export default function ProblemPage() {
       setAiDrawerOpen(false);
     } finally {
       setAiLoading(false);
+    }
+  };
+
+  // AI调试助手 - 自由对话
+  const handleSendDebugMessage = async (message: string) => {
+    if (!judgeResult?.id) return;
+
+    // 先把用户消息加入对话列表
+    const userConv: AIConversation = {
+      role: "user",
+      content: message,
+      timestamp: new Date().toISOString(),
+    };
+    setAiConversations((prev) => [...prev, userConv]);
+
+    try {
+      const response = await fetch("/api/ai/debug-help", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          submissionId: judgeResult.id,
+          userMessage: message,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const aiConv: AIConversation = {
+          role: "ai",
+          content: data.aiResponse,
+          timestamp: new Date().toISOString(),
+        };
+        setAiConversations((prev) => [...prev, aiConv]);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "AI回复失败",
+          description: data.error || "请稍后重试",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "AI回复失败",
+        description: error instanceof Error ? error.message : "网络错误",
+      });
     }
   };
 
@@ -1006,6 +1054,7 @@ export default function ProblemPage() {
         conversations={aiConversations}
         isLoading={aiLoading}
         onRequestHelp={handleAIHelp}
+        onSendMessage={handleSendDebugMessage}
         helpCount={aiHelpCount}
       />
 
