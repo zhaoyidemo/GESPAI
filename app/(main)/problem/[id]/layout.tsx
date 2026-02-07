@@ -3,7 +3,6 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Navbar } from "@/components/navbar";
 import { Sparkles } from "lucide-react";
 
 /**
@@ -47,14 +46,8 @@ export default function ProblemDetailLayout({
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-gray-50">
-      {/* 导航栏 */}
-      <Navbar />
-
-      {/* 主内容区 - 固定高度，不滚动 */}
-      <main className="flex-1 container-responsive py-4 overflow-hidden">
-        {children}
-      </main>
+    <div className="flex-1 overflow-hidden">
+      {children}
     </div>
   );
 }
