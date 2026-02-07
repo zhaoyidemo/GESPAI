@@ -13,10 +13,10 @@ import { PromptType, PROMPT_LABELS, PROMPT_DESCRIPTIONS } from "@/lib/default-pr
 
 // Tab 图标
 const PROMPT_ICONS: Record<PromptType, React.ReactNode> = {
-  tutor: <GraduationCap className="h-4 w-4" />,
-  problem: <Code className="h-4 w-4" />,
-  debug: <Bug className="h-4 w-4" />,
-  feynman: <MessageCircle className="h-4 w-4" />,
+  "learn-chat": <GraduationCap className="h-4 w-4" />,
+  "problem-chat": <Code className="h-4 w-4" />,
+  "problem-debug": <Bug className="h-4 w-4" />,
+  "feynman-chat": <MessageCircle className="h-4 w-4" />,
 };
 
 interface PromptConfig {
@@ -30,13 +30,13 @@ export default function AIConfigPage() {
   const { status } = useSession();
   const { toast } = useToast();
 
-  const [activeTab, setActiveTab] = useState<PromptType>("tutor");
+  const [activeTab, setActiveTab] = useState<PromptType>("learn-chat");
   const [prompts, setPrompts] = useState<PromptsState | null>(null);
   const [editedPrompts, setEditedPrompts] = useState<Record<PromptType, string>>({
-    tutor: "",
-    problem: "",
-    debug: "",
-    feynman: "",
+    "learn-chat": "",
+    "problem-chat": "",
+    "problem-debug": "",
+    "feynman-chat": "",
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -59,10 +59,10 @@ export default function AIConfigPage() {
         setPrompts(data.prompts);
         // 初始化编辑状态
         setEditedPrompts({
-          tutor: data.prompts.tutor.value,
-          problem: data.prompts.problem.value,
-          debug: data.prompts.debug.value,
-          feynman: data.prompts.feynman.value,
+          "learn-chat": data.prompts["learn-chat"].value,
+          "problem-chat": data.prompts["problem-chat"].value,
+          "problem-debug": data.prompts["problem-debug"].value,
+          "feynman-chat": data.prompts["feynman-chat"].value,
         });
       } else {
         toast({

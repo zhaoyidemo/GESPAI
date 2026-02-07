@@ -7,10 +7,10 @@ import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 
 // 数据库字段映射
 const PROMPT_FIELDS: Record<PromptType, string> = {
-  tutor: "aiTutorPrompt",
-  problem: "aiProblemPrompt",
-  debug: "aiDebugPrompt",
-  feynman: "aiFeynmanPrompt",
+  "learn-chat": "aiTutorPrompt",
+  "problem-chat": "aiProblemPrompt",
+  "problem-debug": "aiDebugPrompt",
+  "feynman-chat": "aiFeynmanPrompt",
 };
 
 /**
@@ -47,28 +47,28 @@ export async function GET(req: NextRequest) {
 
     // 获取系统默认提示词（数据库优先，硬编码兜底）
     const [defaultTutor, defaultProblem, defaultDebug, defaultFeynman] = await Promise.all([
-      getSystemPrompt("tutor"),
-      getSystemPrompt("problem"),
-      getSystemPrompt("debug"),
-      getSystemPrompt("feynman"),
+      getSystemPrompt("learn-chat"),
+      getSystemPrompt("problem-chat"),
+      getSystemPrompt("problem-debug"),
+      getSystemPrompt("feynman-chat"),
     ]);
 
     // 返回所有提示词配置
     return NextResponse.json({
       prompts: {
-        tutor: {
+        "learn-chat": {
           value: user.aiTutorPrompt || defaultTutor,
           isCustom: !!user.aiTutorPrompt,
         },
-        problem: {
+        "problem-chat": {
           value: user.aiProblemPrompt || defaultProblem,
           isCustom: !!user.aiProblemPrompt,
         },
-        debug: {
+        "problem-debug": {
           value: user.aiDebugPrompt || defaultDebug,
           isCustom: !!user.aiDebugPrompt,
         },
-        feynman: {
+        "feynman-chat": {
           value: user.aiFeynmanPrompt || defaultFeynman,
           isCustom: !!user.aiFeynmanPrompt,
         },

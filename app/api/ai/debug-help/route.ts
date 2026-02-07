@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
       select: { aiDebugPrompt: true },
     });
 
-    const systemPrompt = await getUserPrompt("debug", user?.aiDebugPrompt);
+    const systemPrompt = await getUserPrompt("problem-debug", user?.aiDebugPrompt);
 
     // 解析测试结果
     const testResults = submission.testResults as any[];

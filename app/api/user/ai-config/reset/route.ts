@@ -7,10 +7,10 @@ import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 
 // 数据库字段映射
 const PROMPT_FIELDS: Record<PromptType, string> = {
-  tutor: "aiTutorPrompt",
-  problem: "aiProblemPrompt",
-  debug: "aiDebugPrompt",
-  feynman: "aiFeynmanPrompt",
+  "learn-chat": "aiTutorPrompt",
+  "problem-chat": "aiProblemPrompt",
+  "problem-debug": "aiDebugPrompt",
+  "feynman-chat": "aiFeynmanPrompt",
 };
 
 /**

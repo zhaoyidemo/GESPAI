@@ -4,22 +4,22 @@
  */
 
 // 提示词类型
-export type PromptType = "tutor" | "problem" | "debug" | "feynman";
+export type PromptType = "learn-chat" | "problem-chat" | "problem-debug" | "feynman-chat";
 
 // 所有提示词类型的标签
 export const PROMPT_LABELS: Record<PromptType, string> = {
-  tutor: "AI 私教",
-  problem: "题目辅导",
-  debug: "调试助手",
-  feynman: "费曼学习",
+  "learn-chat": "GESP AI 私教·学习（赵老师）",
+  "problem-chat": "GESP AI 私教·解题（钱老师）",
+  "problem-debug": "GESP AI 私教·调试（孙老师）",
+  "feynman-chat": "GESP AI 私教·验证（李老师）",
 };
 
 // 所有提示词类型的描述
 export const PROMPT_DESCRIPTIONS: Record<PromptType, string> = {
-  tutor: "针对知识点学习时，AI 作为老师的角色设定",
-  problem: "做题时，AI 作为教练引导解题的角色设定",
-  debug: "代码调试时，AI 帮助分析错误的角色设定",
-  feynman: "费曼学习法中，AI 作为提问学生的角色设定",
+  "learn-chat": "赵老师 — 针对知识点学习时，AI 作为老师的角色设定",
+  "problem-chat": "钱老师 — 做题时，AI 作为教练引导解题的角色设定",
+  "problem-debug": "孙老师 — 代码调试时，AI 帮助分析错误的角色设定",
+  "feynman-chat": "李老师 — 费曼学习法中，AI 作为提问学生的角色设定",
 };
 
 /**
@@ -160,13 +160,13 @@ export const DEFAULT_FEYNMAN_PROMPT = `你是一个正在学习编程的学生�
  */
 export function getDefaultPrompt(type: PromptType): string {
   switch (type) {
-    case "tutor":
+    case "learn-chat":
       return DEFAULT_TUTOR_PROMPT;
-    case "problem":
+    case "problem-chat":
       return DEFAULT_PROBLEM_PROMPT;
-    case "debug":
+    case "problem-debug":
       return DEFAULT_DEBUG_PROMPT;
-    case "feynman":
+    case "feynman-chat":
       return DEFAULT_FEYNMAN_PROMPT;
     default:
       return "";

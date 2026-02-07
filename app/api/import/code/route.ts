@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 调用 AI 分析代码
-    const systemPrompt = await getSystemPrompt("code-import");
+    const systemPrompt = await getSystemPrompt("review-import");
 
     const response = await chat(
       [

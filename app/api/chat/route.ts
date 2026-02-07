@@ -47,14 +47,14 @@ export async function POST(request: NextRequest) {
 
     if (context === "learn" && knowledgePoint) {
       // AI 私教模式 - 使用用户自定义或默认提示词
-      const basePrompt = await getUserPrompt("tutor", user?.aiTutorPrompt);
+      const basePrompt = await getUserPrompt("learn-chat", user?.aiTutorPrompt);
       systemPrompt = `${basePrompt}
 
 当前正在学习的知识点：${knowledgePoint}
 目标级别：GESP ${user?.targetLevel || 5}级`;
     } else if (context === "feynman" && knowledgePoint) {
       // 费曼学习模式 - 用户作为老师讲解
-      let basePrompt = await getUserPrompt("feynman", user?.aiFeynmanPrompt);
+      let basePrompt = await getUserPrompt("feynman-chat", user?.aiFeynmanPrompt);
 
       // 如果请求评估，添加评估指令
       if (requestEvaluation) {
@@ -86,14 +86,14 @@ export async function POST(request: NextRequest) {
       }
 
       // 使用用户自定义或默认的题目辅导提示词
-      const basePrompt = await getUserPrompt("problem", user?.aiProblemPrompt);
+      const basePrompt = await getUserPrompt("problem-chat", user?.aiProblemPrompt);
       systemPrompt = `${basePrompt}
 
 当前题目：${problem.title}
 题目描述：${problem.description}`;
     } else {
       // 通用对话
-      systemPrompt = await getSystemPrompt("tutor");
+      systemPrompt = await getSystemPrompt("learn-chat");
     }
 
     // 调用 Claude API

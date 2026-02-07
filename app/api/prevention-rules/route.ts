@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
 
       const [errorBase, errorGenRule] = await Promise.all([
         getSystemPrompt("error-base"),
-        getSystemPrompt("error-generate-rule"),
+        getSystemPrompt("error-gen-rule"),
       ]);
       finalRule = await chat(
         [{ role: "user", content: contextInfo }],

@@ -146,7 +146,7 @@ export async function generateStudyPlan(
     (examDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
   );
 
-  const systemPrompt = await getSystemPrompt("study-plan");
+  const systemPrompt = await getSystemPrompt("plan-generate");
 
   const userMessage = `请为我制定GESP ${targetLevel}级考试的学习计划。
 
@@ -185,7 +185,7 @@ export async function analyzeCodeError(
   error: string,
   problemDescription: string
 ): Promise<string> {
-  const systemPrompt = await getSystemPrompt("code-error-analysis");
+  const systemPrompt = await getSystemPrompt("problem-error-analysis");
 
   const userMessage = `**题目描述**
 ${problemDescription}

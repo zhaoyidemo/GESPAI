@@ -102,7 +102,7 @@ export const DEFAULT_PREVENTION_CHECK_PROMPT = `你是一位代码检查助手�
 // ===== 分类标签 =====
 
 export const CATEGORY_LABELS: Record<string, string> = {
-  core: "核心对话",
+  core: "GESP AI 私教",
   "error-diagnosis": "错题诊断",
   tool: "工具类",
 };
@@ -120,33 +120,33 @@ export interface PromptRegistryEntry {
 // ===== 注册表 =====
 
 export const PROMPT_REGISTRY: PromptRegistryEntry[] = [
-  // --- 核心对话 (4) ---
+  // --- GESP AI 私教 (4) ---
   {
-    key: "tutor",
+    key: "learn-chat",
     category: "core",
-    name: "AI 私教",
-    description: "针对知识点学习时，AI 作为老师的角色设定",
+    name: "GESP AI 私教·学习",
+    description: "赵老师 — 针对知识点学习时，AI 作为老师的角色设定",
     defaultContent: DEFAULT_TUTOR_PROMPT,
   },
   {
-    key: "problem",
+    key: "problem-chat",
     category: "core",
-    name: "题目辅导",
-    description: "做题时，AI 作为教练引导解题的角色设定",
+    name: "GESP AI 私教·解题",
+    description: "钱老师 — 做题时，AI 作为教练引导解题的角色设定",
     defaultContent: DEFAULT_PROBLEM_PROMPT,
   },
   {
-    key: "debug",
+    key: "problem-debug",
     category: "core",
-    name: "调试助手",
-    description: "代码调试时，AI 帮助分析错误的角色设定",
+    name: "GESP AI 私教·调试",
+    description: "孙老师 — 代码调试时，AI 帮助分析错误的角色设定",
     defaultContent: DEFAULT_DEBUG_PROMPT,
   },
   {
-    key: "feynman",
+    key: "feynman-chat",
     category: "core",
-    name: "费曼学习",
-    description: "费曼学习法中，AI 作为提问学生的角色设定",
+    name: "GESP AI 私教·验证",
+    description: "李老师 — 费曼学习法中，AI 作为提问学生的角色设定",
     defaultContent: DEFAULT_FEYNMAN_PROMPT,
   },
 
@@ -154,49 +154,49 @@ export const PROMPT_REGISTRY: PromptRegistryEntry[] = [
   {
     key: "error-classify",
     category: "error-diagnosis",
-    name: "错误分类",
+    name: "错误类型分类",
     description: "AI 分析代码错误类型的提示词",
     defaultContent: classifyErrorPrompt,
   },
   {
     key: "error-guide-q1",
     category: "error-diagnosis",
-    name: "引导：错了哪？",
+    name: "三问·错了哪",
     description: "引导学生自己定位问题所在的提示词",
     defaultContent: guideQ1Prompt,
   },
   {
     key: "error-guide-q2",
     category: "error-diagnosis",
-    name: "引导：为什么错？",
+    name: "三问·为什么错",
     description: "引导学生分析错误根本原因的提示词",
     defaultContent: guideQ2Prompt,
   },
   {
     key: "error-guide-q3",
     category: "error-diagnosis",
-    name: "引导：怎么避免？",
+    name: "三问·怎么避免",
     description: "引导学生总结防错规则的提示词",
     defaultContent: guideQ3Prompt,
   },
   {
-    key: "error-generate-rule",
+    key: "error-gen-rule",
     category: "error-diagnosis",
-    name: "规则生成",
+    name: "防错规则生成",
     description: "根据三问回答自动生成防错规则的提示词",
     defaultContent: generateRulePrompt,
   },
   {
     key: "error-base",
     category: "error-diagnosis",
-    name: "基础系统提示词",
+    name: "错题诊断基础提示词",
     description: "错题诊断模块的基础系统提示词",
     defaultContent: baseSystemPrompt,
   },
 
   // --- 工具类 (5) ---
   {
-    key: "code-error-analysis",
+    key: "problem-error-analysis",
     category: "tool",
     name: "代码错误分析",
     description: "分析学生代码错误并给出解释的提示词",
@@ -205,26 +205,26 @@ export const PROMPT_REGISTRY: PromptRegistryEntry[] = [
   {
     key: "feynman-question",
     category: "tool",
-    name: "费曼验证问题",
+    name: "费曼验证出题",
     description: "生成验证学生理解程度问题的提示词",
     defaultContent: DEFAULT_FEYNMAN_QUESTION_PROMPT,
   },
   {
-    key: "study-plan",
+    key: "plan-generate",
     category: "tool",
     name: "学习计划生成",
     description: "生成 GESP 考试学习计划的提示词",
     defaultContent: DEFAULT_STUDY_PLAN_PROMPT,
   },
   {
-    key: "code-import",
+    key: "review-import",
     category: "tool",
     name: "代码导入分析",
     description: "分析导入代码并评估编程水平的提示词",
     defaultContent: DEFAULT_CODE_IMPORT_PROMPT,
   },
   {
-    key: "prevention-check",
+    key: "review-prevention",
     category: "tool",
     name: "防错规则检查",
     description: "检查代码是否违反防错规则的提示词",

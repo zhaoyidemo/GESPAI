@@ -35,7 +35,7 @@ export async function getSystemPrompt(key: string): Promise<string> {
 
 /**
  * 获取用户提示词（用户自定义 > 数据库 > 硬编码）
- * 适用于 4 个核心提示词（tutor, problem, debug, feynman）
+ * 适用于 4 个核心提示词（learn-chat, problem-chat, problem-debug, feynman-chat）
  */
 export async function getUserPrompt(
   key: string,

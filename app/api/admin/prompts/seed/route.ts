@@ -4,9 +4,23 @@ import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { PROMPT_REGISTRY } from "@/lib/prompts/registry";
 
+// 旧 key → 新 key 的迁移映射
+const KEY_MIGRATION_MAP: Record<string, string> = {
+  tutor: "learn-chat",
+  problem: "problem-chat",
+  debug: "problem-debug",
+  feynman: "feynman-chat",
+  "error-generate-rule": "error-gen-rule",
+  "code-error-analysis": "problem-error-analysis",
+  "study-plan": "plan-generate",
+  "code-import": "review-import",
+  "prevention-check": "review-prevention",
+};
+
 /**
  * POST /api/admin/prompts/seed
  * 初始化：将 15 个硬编码提示词写入数据库
+ * 包含旧 key 到新 key 的一次性迁移逻辑
  */
 export async function POST() {
   try {
@@ -15,7 +29,28 @@ export async function POST() {
       return NextResponse.json({ error: "请先登录" }, { status: 401 });
     }
 
-    // 检查数据库中已有记录
+    // === 迁移阶段：将旧 key 更新为新 key ===
+    let migrated = 0;
+    for (const [oldKey, newKey] of Object.entries(KEY_MIGRATION_MAP)) {
+      const oldRecord = await prisma.systemPrompt.findUnique({
+        where: { key: oldKey },
+      });
+      if (oldRecord) {
+        // 检查新 key 是否已存在，避免冲突
+        const newRecord = await prisma.systemPrompt.findUnique({
+          where: { key: newKey },
+        });
+        if (!newRecord) {
+          await prisma.systemPrompt.update({
+            where: { key: oldKey },
+            data: { key: newKey },
+          });
+          migrated++;
+        }
+      }
+    }
+
+    // === Seed 阶段：创建缺失的提示词记录 ===
     const existingCount = await prisma.systemPrompt.count();
 
     let created = 0;
@@ -27,6 +62,15 @@ export async function POST() {
       });
 
       if (existing) {
+        // 同步更新 name/description/category（key 不变）
+        await prisma.systemPrompt.update({
+          where: { key: entry.key },
+          data: {
+            name: entry.name,
+            description: entry.description,
+            category: entry.category,
+          },
+        });
         skipped++;
         continue;
       }
@@ -46,7 +90,8 @@ export async function POST() {
 
     return NextResponse.json({
       success: true,
-      message: `初始化完成：新建 ${created} 条，跳过 ${skipped} 条已有记录`,
+      message: `初始化完成：迁移 ${migrated} 条旧 key，新建 ${created} 条，更新 ${skipped} 条已有记录`,
+      migrated,
       created,
       skipped,
       total: PROMPT_REGISTRY.length,
