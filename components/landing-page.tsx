@@ -137,7 +137,7 @@ function HeroTerminal() {
             <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
             <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
           </div>
-          <span className="text-[10px] text-white/25 font-mono ml-2">AI 私教 · DFS 深度优先搜索</span>
+          <span className="text-[10px] text-white/25 font-mono ml-2">GESP AI 私教 · DFS 深度优先搜索</span>
         </div>
         <div className="p-4 space-y-3 min-h-[240px]">
           {lines.slice(0, visibleLines).map((line, i) => (
@@ -650,10 +650,10 @@ export default function LandingPage() {
               subtitle="≈ 线下一节课的价格"
               features={[
                 "无限刷题 + 在线评测",
-                "AI 私教不限次对话",
+                "GESP AI 私教不限次对话",
                 "AI 自动规划每日任务",
                 "错题三问复盘 + 防错规则",
-                "费曼学习法训练",
+                "GESP AI 私教·验证训练",
                 "XP 经验值与成就徽章",
               ]}
               cta="免费试用"
@@ -691,7 +691,7 @@ export default function LandingPage() {
             别让孩子在备考路上孤军奋战
           </h2>
           <p className="text-lg text-white/35 mb-10">
-            一个好的 AI 私教，可能就是通过考试的关键
+            一个好的 GESP AI 私教，可能就是通过考试的关键
           </p>
           <Link
             href="/register"

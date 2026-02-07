@@ -50,14 +50,14 @@ export default function LearnTopicPage() {
 
       {/* 学习模式选择 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* AI 私教 */}
+        {/* GESP AI 私教·学习 */}
         <Link href={`/learn/${topic}/tutor`}>
           <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all cursor-pointer group">
             <CardHeader className="text-center pb-2">
               <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-blue-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <GraduationCap className="h-8 w-8 text-blue-600" />
               </div>
-              <CardTitle className="text-xl">AI 私教</CardTitle>
+              <CardTitle className="text-xl">GESP AI 私教·学习</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-muted-foreground mb-4">
@@ -84,14 +84,14 @@ export default function LearnTopicPage() {
           </Card>
         </Link>
 
-        {/* 费曼学习 */}
+        {/* GESP AI 私教·验证 */}
         <Link href={`/learn/${topic}/feynman`}>
           <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all cursor-pointer group">
             <CardHeader className="text-center pb-2">
               <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-green-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <MessageCircle className="h-8 w-8 text-green-600" />
               </div>
-              <CardTitle className="text-xl">费曼学习</CardTitle>
+              <CardTitle className="text-xl">GESP AI 私教·验证</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-muted-foreground mb-4">

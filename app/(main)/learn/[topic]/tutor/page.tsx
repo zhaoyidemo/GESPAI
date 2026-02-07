@@ -79,7 +79,7 @@ export default function TutorPage() {
           <div>
             <h1 className="text-xl font-bold flex items-center space-x-2">
               <GraduationCap className="h-5 w-5 text-blue-600" />
-              <span>AI 私教 - {displayPoint.name}</span>
+              <span>GESP AI 私教·学习 - {displayPoint.name}</span>
             </h1>
             <p className="text-sm text-muted-foreground">
               GESP {displayPoint.level} 级 · {displayPoint.category}
@@ -157,7 +157,7 @@ export default function TutorPage() {
         {/* AI 对话 */}
         <Card className="lg:col-span-2 flex flex-col overflow-hidden">
           <CardHeader className="flex-shrink-0">
-            <CardTitle className="text-base">AI 私教</CardTitle>
+            <CardTitle className="text-base">GESP AI 私教·学习</CardTitle>
           </CardHeader>
           <CardContent className="flex-1 overflow-hidden p-0">
             <ChatInterface

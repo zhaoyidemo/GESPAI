@@ -43,7 +43,7 @@ export default function FeynmanPage() {
           <div>
             <h1 className="text-xl font-bold flex items-center space-x-2">
               <MessageCircle className="h-5 w-5 text-green-600" />
-              <span>费曼学习 - {displayPoint.name}</span>
+              <span>GESP AI 私教·验证 - {displayPoint.name}</span>
             </h1>
             <p className="text-sm text-muted-foreground">
               GESP {displayPoint.level} 级 · {displayPoint.category}
@@ -57,7 +57,7 @@ export default function FeynmanPage() {
         {/* 左侧说明 */}
         <Card className="lg:col-span-1 overflow-auto">
           <CardHeader>
-            <CardTitle className="text-base">费曼学习法</CardTitle>
+            <CardTitle className="text-base">GESP AI 私教·验证</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="bg-green-50 p-4 rounded-lg">
