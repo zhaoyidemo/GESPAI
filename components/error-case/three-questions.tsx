@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Mic, MicOff } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
+import { addPunctuation } from "@/lib/auto-punctuation";
 
 interface ThreeQuestionsProps {
   errorCaseId: string;
@@ -36,6 +39,12 @@ interface QuestionCardProps {
   onGetHint: () => void;
   isLoading: boolean;
   hint: string | null;
+  // 语音相关
+  isListening: boolean;
+  speechSupported: boolean;
+  volume: number;
+  onMicToggle: () => void;
+  voiceErrorDisplay: string | null;
 }
 
 function QuestionCard({
@@ -51,6 +60,11 @@ function QuestionCard({
   onGetHint,
   isLoading,
   hint,
+  isListening,
+  speechSupported,
+  volume,
+  onMicToggle,
+  voiceErrorDisplay,
 }: QuestionCardProps) {
   return (
     <Card
@@ -67,7 +81,7 @@ function QuestionCard({
           <span>第{number}问：{title}</span>
           {isCompleted && (
             <Badge variant="outline" className="ml-auto bg-green-100 text-green-700">
-              ✅ 已完成
+              已完成
             </Badge>
           )}
         </CardTitle>
@@ -80,13 +94,58 @@ function QuestionCard({
           </div>
         ) : isActive ? (
           <>
-            <Textarea
-              placeholder="请写下你的思考..."
-              value={answer || ""}
-              onChange={(e) => onAnswerChange(e.target.value)}
-              className="min-h-[100px]"
-              disabled={isLoading}
-            />
+            <div className="relative">
+              <Textarea
+                placeholder={isListening ? "正在识别语音..." : "请写下你的思考..."}
+                value={answer || ""}
+                onChange={(e) => onAnswerChange(e.target.value)}
+                className={cn(
+                  "min-h-[100px] pr-10",
+                  isListening && "border-red-400 ring-1 ring-red-400"
+                )}
+                disabled={isLoading}
+              />
+              {/* 麦克风按钮（嵌在 Textarea 右上角） */}
+              {speechSupported && (
+                <Button
+                  type="button"
+                  variant={isListening ? "destructive" : "ghost"}
+                  size="icon"
+                  onClick={onMicToggle}
+                  disabled={isLoading}
+                  className="absolute top-2 right-2 h-7 w-7"
+                  title={isListening ? "停止录音" : "语音输入"}
+                >
+                  {isListening ? (
+                    <MicOff className="h-3.5 w-3.5" />
+                  ) : (
+                    <Mic className="h-3.5 w-3.5" />
+                  )}
+                </Button>
+              )}
+            </div>
+            {/* 录音指示器 */}
+            {isListening && (
+              <div className="flex items-center gap-2 text-xs text-red-500">
+                <span className="inline-block w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                <span className="flex items-center gap-0.5 mx-1">
+                  {[0, 1, 2].map((i) => (
+                    <span
+                      key={i}
+                      className="inline-block w-1 bg-red-500 rounded-full transition-all duration-75"
+                      style={{ height: `${4 + volume * 12 * (0.7 + 0.3 * Math.sin(Date.now() / 150 + i * 2))}px` }}
+                    />
+                  ))}
+                </span>
+                <span>录音中，点击麦克风停止...</span>
+              </div>
+            )}
+            {/* 语音错误提示 */}
+            {voiceErrorDisplay && (
+              <div className="text-xs text-red-500 animate-pulse">
+                {voiceErrorDisplay}
+              </div>
+            )}
             {hint && (
               <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                 <p className="text-sm text-blue-800 flex items-start gap-2">
@@ -110,7 +169,7 @@ function QuestionCard({
                 disabled={!answer?.trim() || isLoading}
                 className="ml-auto"
               >
-                ✅ 确认回答
+                确认回答
               </Button>
             </div>
           </>
@@ -144,6 +203,86 @@ export function ThreeQuestions({
   }>({ q1: null, q2: null, q3: null });
   const [loadingHint, setLoadingHint] = useState<1 | 2 | 3 | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // 语音识别状态
+  const [voiceErrorDisplay, setVoiceErrorDisplay] = useState<string | null>(null);
+  const [activeVoiceQuestion, setActiveVoiceQuestion] = useState<1 | 2 | 3 | null>(null);
+  const inputBeforeVoiceRef = useRef("");
+
+  const {
+    isListening,
+    isSupported: speechSupported,
+    transcript,
+    error: voiceError,
+    volume,
+    startListening,
+    stopListening,
+    resetTranscript,
+  } = useSpeechRecognition({
+    lang: "zh-CN",
+  });
+
+  // 获取当前录音问题的 setter
+  const getActiveAnswerSetter = useCallback(() => {
+    switch (activeVoiceQuestion) {
+      case 1: return setLocalQ1;
+      case 2: return setLocalQ2;
+      case 3: return setLocalQ3;
+      default: return null;
+    }
+  }, [activeVoiceQuestion]);
+
+  // 语音识别文本更新时，整体替换对应输入框
+  useEffect(() => {
+    if (isListening && transcript) {
+      const setter = getActiveAnswerSetter();
+      if (!setter) return;
+      const prefix = inputBeforeVoiceRef.current;
+      const text = prefix ? `${prefix} ${transcript}` : transcript;
+      setter(addPunctuation(text, false));
+    }
+  }, [transcript, isListening, getActiveAnswerSetter]);
+
+  // 语音错误 3 秒后自动消失
+  useEffect(() => {
+    if (voiceError) {
+      setVoiceErrorDisplay(voiceError);
+      const timer = setTimeout(() => setVoiceErrorDisplay(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [voiceError]);
+
+  // 停止录音并添加结尾标点
+  const handleStopListening = useCallback(() => {
+    const setter = getActiveAnswerSetter();
+    stopListening();
+    setTimeout(() => {
+      setter?.((prev: string) => {
+        if (!prev.trim()) return prev;
+        return addPunctuation(prev, true);
+      });
+    }, 100);
+    setActiveVoiceQuestion(null);
+  }, [stopListening, getActiveAnswerSetter]);
+
+  // 切换麦克风（指定问题编号）
+  const handleMicToggle = useCallback((questionNumber: 1 | 2 | 3) => {
+    if (isListening && activeVoiceQuestion === questionNumber) {
+      // 停止当前问题的录音
+      handleStopListening();
+    } else {
+      // 如果在另一个问题上录音，先停止
+      if (isListening) {
+        stopListening();
+      }
+      // 开始新问题的录音
+      const currentAnswer = questionNumber === 1 ? localQ1 : questionNumber === 2 ? localQ2 : localQ3;
+      inputBeforeVoiceRef.current = currentAnswer.trim();
+      setActiveVoiceQuestion(questionNumber);
+      resetTranscript();
+      startListening();
+    }
+  }, [isListening, activeVoiceQuestion, handleStopListening, stopListening, resetTranscript, startListening, localQ1, localQ2, localQ3]);
 
   const isQ1Completed = !!q1Answer;
   const isQ2Completed = !!q2Answer;
@@ -180,6 +319,13 @@ export function ThreeQuestions({
   };
 
   const handleSubmitAnswer = async (questionNumber: 1 | 2 | 3) => {
+    // 提交前停止录音
+    if (isListening && activeVoiceQuestion === questionNumber) {
+      stopListening();
+      resetTranscript();
+      setActiveVoiceQuestion(null);
+    }
+
     setSubmitting(true);
     try {
       const answer =
@@ -232,6 +378,11 @@ export function ThreeQuestions({
           onGetHint={() => handleGetHint(1)}
           isLoading={loadingHint === 1 || submitting}
           hint={hints.q1}
+          isListening={isListening && activeVoiceQuestion === 1}
+          speechSupported={speechSupported}
+          volume={volume}
+          onMicToggle={() => handleMicToggle(1)}
+          voiceErrorDisplay={activeVoiceQuestion === 1 ? voiceErrorDisplay : null}
         />
 
         <QuestionCard
@@ -247,6 +398,11 @@ export function ThreeQuestions({
           onGetHint={() => handleGetHint(2)}
           isLoading={loadingHint === 2 || submitting}
           hint={hints.q2}
+          isListening={isListening && activeVoiceQuestion === 2}
+          speechSupported={speechSupported}
+          volume={volume}
+          onMicToggle={() => handleMicToggle(2)}
+          voiceErrorDisplay={activeVoiceQuestion === 2 ? voiceErrorDisplay : null}
         />
 
         <QuestionCard
@@ -262,6 +418,11 @@ export function ThreeQuestions({
           onGetHint={() => handleGetHint(3)}
           isLoading={loadingHint === 3 || submitting}
           hint={hints.q3}
+          isListening={isListening && activeVoiceQuestion === 3}
+          speechSupported={speechSupported}
+          volume={volume}
+          onMicToggle={() => handleMicToggle(3)}
+          voiceErrorDisplay={activeVoiceQuestion === 3 ? voiceErrorDisplay : null}
         />
       </div>
 
@@ -275,7 +436,7 @@ export function ThreeQuestions({
                 现在可以生成一条防错规则，帮助你以后避免类似错误
               </p>
               <Button onClick={onGenerateRule}>
-                ✨ 生成防错规则
+                生成防错规则
               </Button>
             </div>
           </CardContent>
