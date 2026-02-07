@@ -147,7 +147,7 @@ export default function AdminPromptsPage() {
   };
 
   const handleSeed = async () => {
-    if (!confirm("将把 15 个硬编码提示词写入数据库。已有记录不会被覆盖。继续？")) return;
+    if (!confirm("将迁移旧 key 并同步 15 个提示词到数据库。已有提示词内容不会被覆盖。继续？")) return;
     setSeeding(true);
     try {
       const res = await fetch("/api/admin/prompts/seed", { method: "POST" });
@@ -193,16 +193,14 @@ export default function AdminPromptsPage() {
             数据库已有 {data.dbCount}/{data.totalCount} 条记录
           </p>
         </div>
-        {data.dbCount < data.totalCount && (
-          <Button onClick={handleSeed} disabled={seeding} variant="outline">
-            {seeding ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Database className="mr-2 h-4 w-4" />
-            )}
-            初始化到数据库
-          </Button>
-        )}
+        <Button onClick={handleSeed} disabled={seeding} variant="outline">
+          {seeding ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Database className="mr-2 h-4 w-4" />
+          )}
+          同步到数据库
+        </Button>
       </div>
 
       {/* 消息提示 */}
