@@ -77,8 +77,86 @@ npx prisma db push       # 同步 schema 到数据库
 - 种子文件位于 `app/api/seed/gesp{1-8}/route.ts`，每级一个文件
 - 支持 GET/POST 触发，使用 upsert 模式（按 sourceId 匹配）
 - 批量同步：`GET /api/seed` 一次性更新所有级别
-- 题目来源：GESP 官方真题（洛谷题号 P*），1-8 级共 184 道
+- 题目来源：GESP 官方真题（洛谷题号 B*/P*），1-8 级共 184 道
 - testCases 格式：`[{ input: string, output: string }]`，存储为 JSON 字段
+
+### 题库录入规范（强制）
+
+题库是本项目最核心的资产。以下规则具有最高优先级，**任何情况下不得违反**。
+
+#### 一、数据来源
+
+所有题目内容必须 100% 来自洛谷原题页面（`https://www.luogu.com.cn/problem/{sourceId}`）。
+
+**严禁以下行为：**
+- 严禁使用 WebFetch 摘要或 AI 改写代替原文
+- 严禁修改、删减、合并、润色原文的任何部分
+- 严禁"规范化"原文措辞（如把"分解成"改成"表示成"、把"质因数"改成"素数"）
+- 严禁删除原文中的句子（如"你能帮帮他们吗？"之类的收尾句）
+
+#### 二、字段要求（逐字段规范）
+
+每道题必须包含以下字段，内容**逐字**复制自洛谷原题：
+
+| 字段 | 来源 | 要求 |
+|------|------|------|
+| `title` | 洛谷页面标题 | 完整复制，如 `[GESP202309 五级] 因数分解` |
+| `description` | 题目描述区域 | 逐字复制，保留原文所有段落、换行（`\n\n`）、标点 |
+| `inputFormat` | 输入格式区域 | 逐字复制 |
+| `outputFormat` | 输出格式区域 | 逐字复制 |
+| `samples` | 样例输入/输出 | 所有样例完整复制，input/output 值精确匹配 |
+| `hint` | 说明/提示区域 | 完整复制，包含样例解释、数据范围、子任务表格等全部内容 |
+| `knowledgePoints` | 自行标注 | 根据题目考察的实际算法/知识点标注，务必准确 |
+| `testCases` | 自行构造 | 包含原始样例 + 自构造的边界测试用例，答案必须经过验证 |
+
+#### 三、LaTeX 格式规范
+
+- 保留原文的 LaTeX 写法，不做"美化"或"统一"
+- 如果原文写 `$(111)_2$`，就写 `$(111)_2$`，不要简化为 `$111$`
+- 如果原文写 `$6=2\\times 3$`（等号无空格），就保持无空格，不要加空格
+- 如果原文写 `…`（Unicode 省略号），就写 `…`，不要替换为 `\\ldots`
+- 在 JS 模板字符串中，`\` 需要转义为 `\\`（如 `\\times`、`\\le`、`\\texttt`）
+- `\n\n` 表示段落分隔，必须与原文段落结构一致
+
+#### 四、获取原文的正确方法
+
+由于 WebFetch 返回的是 AI 摘要（不可靠），获取洛谷原题必须从页面 HTML 中提取嵌入的 JSON 数据：
+
+```bash
+# 第一步：下载页面 HTML（含嵌入的 JSON 数据）
+curl -s "https://www.luogu.com.cn/problem/B3871?_contentOnly=1" -o luogu_raw.html
+
+# 第二步：用 node 提取 <script id="lentille-context"> 中的 JSON
+```
+
+页面 HTML 中包含 `<script id="lentille-context" type="application/json">` 标签，内含完整的题目数据 JSON。
+
+**JSON 字段映射：**
+
+| 源路径 | → 种子字段 | 说明 |
+|--------|-----------|------|
+| `data.problem.contenu.name` | `title` | 完整标题，如 `[GESP202309 五级] 因数分解` |
+| `data.problem.contenu.description` | `description` | 题目描述原文（Markdown） |
+| `data.problem.contenu.formatI` | `inputFormat` | 输入格式原文 |
+| `data.problem.contenu.formatO` | `outputFormat` | 输出格式原文 |
+| `data.problem.samples` | `samples` | 样例数组，格式 `[[input, output], ...]` |
+| `data.problem.contenu.hint` | `hint` | 提示/说明（含样例解释、数据范围） |
+| `data.problem.contenu.background` | （忽略） | 选择判断题链接，不录入种子 |
+
+**JS 模板字符串转义注意事项：**
+- 原文中的 `\times` → 种子文件中写 `\\times`
+- 原文中的 `\le` → 种子文件中写 `\\le`
+- 原文中的 `\texttt` → 种子文件中写 `\\texttt`
+- 原文中的 `\n` 换行 → 种子文件中写 `\n`（模板字符串原生支持）
+- 原文中的反引号 `` ` `` → 种子文件中写 `` \` ``（模板字符串中需转义）
+
+#### 五、验证清单
+
+录入或修改题目后，必须完成以下检查：
+1. `npx tsc --noEmit` 类型检查通过
+2. 逐字段与洛谷 API 返回的原文对比，确认无差异
+3. samples 的 input/output 与洛谷完全一致
+4. testCases 中的自构造用例答案经过手动验证或程序验证
 
 ## 代码规范
 
