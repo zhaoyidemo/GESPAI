@@ -164,7 +164,7 @@ export async function POST(req: NextRequest) {
       messages.push({ role: "user", content: userMessage.trim() });
 
       const message = await anthropic.messages.create({
-        model: "claude-opus-4-20250514",
+        model: "claude-opus-4-6",
         max_tokens: 1500,
         system: systemPrompt,
         messages,
@@ -202,7 +202,7 @@ export async function POST(req: NextRequest) {
       console.log(`🤖 AI调试助手：用户=${session.user.id}, 题目=${submission.problem.title}, 第${helpCount}次请求`);
 
       const message = await anthropic.messages.create({
-        model: "claude-opus-4-20250514",
+        model: "claude-opus-4-6",
         max_tokens: 1500,
         system: systemPrompt,
         messages: [

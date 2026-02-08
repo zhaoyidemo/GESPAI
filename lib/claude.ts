@@ -85,7 +85,7 @@ export async function chat(
   maxTokens: number = 2048
 ): Promise<string> {
   const response = await anthropic.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-opus-4-6",
     max_tokens: maxTokens,
     system: systemPrompt,
     messages: messages.map((m) => ({
@@ -107,7 +107,7 @@ export async function streamChat(
 ): Promise<void> {
   try {
     const stream = await anthropic.messages.stream({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-opus-4-6",
       max_tokens: maxTokens,
       system: systemPrompt,
       messages: messages.map((m) => ({
