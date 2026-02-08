@@ -80,12 +80,12 @@ const gesp3Problems = [
       { input: "Aa1!a", output: "" },
       // 长度超过12位
       { input: "Aa1!abcdefghi", output: "" },
-      // 只有小写和数字（缺大写）
-      { input: "abc123!@", output: "" },
-      // 只有大写和数字（缺小写）
-      { input: "ABC123!@", output: "" },
-      // 只有大写和小写（缺数字和特殊字符）
-      { input: "ABCabc!@", output: "" },
+      // 小写和数字+特殊字符（满足至少两种+特殊字符）
+      { input: "abc123!@", output: "abc123!@" },
+      // 大写和数字+特殊字符（满足至少两种+特殊字符）
+      { input: "ABC123!@", output: "ABC123!@" },
+      // 大写和小写+特殊字符（满足至少两种+特殊字符）
+      { input: "ABCabc!@", output: "ABCabc!@" },
       // 缺少特殊字符
       { input: "ABCabc12", output: "" },
       // 包含非法字符
@@ -328,20 +328,20 @@ const gesp3Problems = [
       // N=2的不同i值
       { input: "2\n0", output: "4" },
       // N=3的不同i值
-      { input: "3\n0", output: "18" },
-      { input: "3\n2", output: "32" },
+      { input: "3\n0", output: "27" },
+      { input: "3\n2", output: "23" },
       // N=4的情况
-      { input: "4\n0", output: "81" },
-      { input: "4\n1", output: "93" },
-      { input: "4\n2", output: "105" },
-      { input: "4\n3", output: "117" },
+      { input: "4\n0", output: "256" },
+      { input: "4\n1", output: "253" },
+      { input: "4\n2", output: "250" },
+      { input: "4\n3", output: "247" },
       // N=5的情况
-      { input: "5\n0", output: "625" },
-      { input: "5\n1", output: "656" },
-      { input: "5\n4", output: "749" },
+      { input: "5\n0", output: "3125" },
+      { input: "5\n1", output: "3121" },
+      { input: "5\n4", output: "3109" },
       // 较大N值
-      { input: "9\n0", output: "43046721" },
-      { input: "9\n8", output: "51018336" },
+      { input: "9\n0", output: "387420489" },
+      { input: "9\n8", output: "387420425" },
     ],
     timeLimit: 1000,
     memoryLimit: 128,
@@ -438,14 +438,14 @@ const gesp3Problems = [
       { input: "5\nABCDE", output: "-335" },
       // 混合测试
       { input: "2\naA", output: "-64" },
-      { input: "4\naBcD", output: "-138" },
+      { input: "4\naBcD", output: "-130" },
       // 相同字符
       { input: "5\naaaaa", output: "5" },
       { input: "5\nAAAAA", output: "-325" },
       // 结果为0的情况（难以构造，跳过）
       // 较长字符串
       { input: "10\nabcdeABCDE", output: "-320" },
-      { input: "6\nzZaAyY", output: "-102" },
+      { input: "6\nzZaAyY", output: "-192" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -479,18 +479,18 @@ const gesp3Problems = [
       { input: "3\n0 0 0", output: "3" },
       // 没有完全平方数对
       { input: "3\n2 3 5", output: "0" },
-      { input: "4\n2 3 6 7", output: "0" },
+      { input: "4\n2 3 6 7", output: "2" },
       // 多对完全平方数
       { input: "4\n0 1 3 4", output: "3" },
       // 全相同且和为完全平方数
       { input: "4\n2 2 2 2", output: "6" },
       // 较大数
-      { input: "3\n100 0 21", output: "1" },
+      { input: "3\n100 0 21", output: "2" },
       // 0和完全平方数
-      { input: "5\n0 1 4 9 16", output: "4" },
+      { input: "5\n0 1 4 9 16", output: "5" },
       // 复杂测试
-      { input: "6\n1 3 6 10 15 21", output: "2" },
-      { input: "5\n5 4 11 20 0", output: "2" },
+      { input: "6\n1 3 6 10 15 21", output: "6" },
+      { input: "5\n5 4 11 20 0", output: "4" },
       // 边界值 - n=1
       { input: "1\n5", output: "0" },
     ],
@@ -758,27 +758,27 @@ const gesp3Problems = [
     inputFormat: `第一行包含一个非负整数代表 $n$。`,
     outputFormat: `输出对应的表示形式。`,
     samples: [
-      { input: "12230", output: "****......................\n****.*****.*****...***.\n****...................***.​\n***.*****.*****......***.\n****......................\n" },
+      { input: "12230", output: "****.....................\n****.****.****.****..***.\n****.................***.\n****..****.********..***.\n****....................." },
     ],
     testCases: [
       // 原始样例
-      { input: "12230", output: "****......................\n****.*****.*****...***.\n****...................***.​\n***.*****.*****......***.\n****......................\n" },
+      { input: "12230", output: "****.....................\n****.****.****.****..***.\n****.................***.\n****..****.********..***.\n****....................." },
       // 单个数字测试
       { input: "0", output: ".....\n.***.\n.***.\n.***.\n....." },
       { input: "1", output: "****.\n****.\n****.\n****.\n****." },
       { input: "2", output: ".....\n****.\n.....\n.****\n....." },
       { input: "3", output: ".....\n****.\n.....\n****.\n....." },
       // 两位数
-      { input: "01", output: "...........\n.***.*****.\n.***.*****.\n.***.*****.\n..........." },
-      { input: "10", output: "...........\n*****.***.\n*****.***.\n*****.***.\n..........." },
-      { input: "23", output: "...........\n*****.****.\n...........\n.*****.****.\n..........." },
+      { input: "01", output: ".....****.\n.***.****.\n.***.****.\n.***.****.\n.....****." },
+      { input: "10", output: "****......\n****..***.\n****..***.\n****..***.\n****......" },
+      { input: "23", output: "..........\n****.****.\n..........\n.********.\n.........." },
       // 全相同数字
-      { input: "00", output: "...........\n.***..***.\n.***..***.\n.***..***.\n..........." },
-      { input: "11", output: "...........\n*****.****.\n*****.****.\n*****.****.\n..........." },
-      { input: "22", output: "...........\n*****.****.\n...........\n.****.*****\n..........." },
-      { input: "33", output: "...........\n*****.****.\n...........\n*****.****.\n..........." },
+      { input: "00", output: "..........\n.***..***.\n.***..***.\n.***..***.\n.........." },
+      { input: "11", output: "****.****.\n****.****.\n****.****.\n****.****.\n****.****." },
+      { input: "22", output: "..........\n****.****.\n..........\n.****.****\n.........." },
+      { input: "33", output: "..........\n****.****.\n..........\n****.****.\n.........." },
       // 三位数
-      { input: "123", output: "................\n*****.****.*****\n*****..........\n*****.****.*****\n................" },
+      { input: "123", output: "****...........\n****.****.****.\n****...........\n****..********.\n****..........." },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -804,25 +804,25 @@ const gesp3Problems = [
       // 原始样例
       { input: "1025", output: "1000" },
       // 边界值测试
-      { input: "0", output: "1" },
-      { input: "1", output: "1" },
+      { input: "0", output: "2025" },
+      { input: "1", output: "2024" },
       { input: "2024", output: "1" },
-      // x+y=2025的情况（and+or = x+y当无重叠位时）
-      { input: "1000", output: "1" },
-      { input: "1012", output: "1" },
-      { input: "1013", output: "1" },
+      // x+y=2025的情况（(x AND y) + (x OR y) = x + y）
+      { input: "1000", output: "1025" },
+      { input: "1012", output: "1013" },
+      { input: "1013", output: "1012" },
       // 特殊值
-      { input: "512", output: "1" },
-      { input: "1024", output: "1" },
+      { input: "512", output: "1513" },
+      { input: "1024", output: "1001" },
       // 中间值
-      { input: "500", output: "1" },
-      { input: "800", output: "1" },
+      { input: "500", output: "1525" },
+      { input: "800", output: "1225" },
       // 接近2025的值
-      { input: "2000", output: "1" },
-      { input: "2020", output: "1" },
+      { input: "2000", output: "25" },
+      { input: "2020", output: "5" },
       // 小值
-      { input: "10", output: "1" },
-      { input: "100", output: "1" },
+      { input: "10", output: "2015" },
+      { input: "100", output: "1925" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -857,9 +857,8 @@ const gesp3Problems = [
       // 全相同（不同大小写）
       { input: "3\nTest\nTEST\ntest", output: "test" },
       { input: "4\nABC\nabc\nAbc\naBc", output: "abc" },
-      // 两个单词频率相同（题目保证只有一个最多）
-      // 全不同
-      { input: "3\na\nb\nc", output: "a" },
+      // 大部分不同，只有一个出现两次
+      { input: "4\na\nb\nc\na", output: "a" },
       // 大写转小写测试
       { input: "2\nABCDEFG\nabcdefg", output: "abcdefg" },
       // 混合大小写
@@ -962,20 +961,20 @@ const gesp3Problems = [
       { input: "3\n1 2 3", output: "6" },
       { input: "4\n1 2 3 4", output: "10" },
       // 递减序列（需要调整）
-      { input: "3\n3 2 1", output: "9" },
-      { input: "4\n4 3 2 1", output: "14" },
+      { input: "3\n3 2 1", output: "12" },
+      { input: "4\n4 3 2 1", output: "22" },
       // 全相同
       { input: "3\n5 5 5", output: "18" },
       { input: "4\n10 10 10 10", output: "46" },
       // 需要大幅调整的情况
-      { input: "3\n1 100 1", output: "204" },
-      { input: "4\n100 1 1 1", output: "106" },
+      { input: "3\n1 100 1", output: "202" },
+      { input: "4\n100 1 1 1", output: "303" },
       // 边界：全是1
       { input: "5\n1 1 1 1 1", output: "15" },
       // 交替模式
-      { input: "4\n1 10 1 10", output: "35" },
+      { input: "4\n1 10 1 10", output: "34" },
       // 较大数值
-      { input: "3\n1000000000 1 1", output: "1000000003" },
+      { input: "3\n1000000000 1 1", output: "3000000003" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
@@ -1017,25 +1016,25 @@ $$[2, 3, 4] \\rightarrow [2, 3, 2] \\rightarrow [2, 1, 2] \\rightarrow [2, 1, 1]
       // 边界值测试 - 只有一个元素
       { input: "1\n0", output: "0" },
       { input: "1\n1", output: "1" },
-      { input: "1\n100", output: "100" },
+      { input: "1\n100", output: "1" },
       // 全0
       { input: "3\n0 0 0", output: "0" },
       // 全相同
-      { input: "3\n5 5 5", output: "9" },
-      { input: "4\n3 3 3 3", output: "10" },
+      { input: "3\n5 5 5", output: "3" },
+      { input: "4\n3 3 3 3", output: "4" },
       // 递增序列
-      { input: "4\n1 2 3 4", output: "7" },
-      { input: "5\n1 2 3 4 5", output: "11" },
+      { input: "4\n1 2 3 4", output: "10" },
+      { input: "5\n1 2 3 4 5", output: "15" },
       // 递减序列
-      { input: "4\n4 3 2 1", output: "7" },
+      { input: "4\n4 3 2 1", output: "10" },
       // 包含0
-      { input: "4\n0 1 2 3", output: "5" },
-      { input: "3\n0 0 5", output: "5" },
+      { input: "4\n0 1 2 3", output: "6" },
+      { input: "3\n0 0 5", output: "1" },
       // 只有两个元素
       { input: "2\n3 5", output: "5" },
       { input: "2\n5 3", output: "5" },
       // 较大值
-      { input: "3\n100 100 100", output: "201" },
+      { input: "3\n100 100 100", output: "3" },
     ],
     timeLimit: 1000,
     memoryLimit: 512,
