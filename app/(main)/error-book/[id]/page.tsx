@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ThreeQuestions, ErrorTypeInfo } from "@/components/error-case";
 import { useToast } from "@/components/ui/use-toast";
-import { ArrowLeft, Code, FileText, Sparkles, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, Code, FileText, Sparkles, CheckCircle, XCircle, MessageCircle } from "lucide-react";
 
 interface TestResult {
   passed: boolean;
@@ -55,6 +55,13 @@ interface ErrorCaseDetail {
     compileOutput: string | null;
     errorMessage: string | null;
     createdAt: string;
+    aiHelpCount?: number;
+    aiConversations?: Array<{
+      role: "ai" | "user";
+      content: string;
+      promptLevel?: number;
+      timestamp: string;
+    }> | null;
   };
   preventionRule: {
     id: string;
@@ -256,6 +263,8 @@ export default function ErrorCaseDetailPage({
   const testResults = submission.testResults || [];
   const failedTests = testResults.filter((t) => !t.passed);
   const passedTests = testResults.filter((t) => t.passed);
+  const aiConversations = submission.aiConversations;
+  const hasAiConversations = Array.isArray(aiConversations) && aiConversations.length > 0;
 
   return (
     <div className="space-y-6">
@@ -318,7 +327,7 @@ export default function ErrorCaseDetailPage({
         {/* 左侧：题目和代码 */}
         <div className="space-y-4">
           <Tabs defaultValue="code">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className={`grid w-full ${hasAiConversations ? 'grid-cols-4' : 'grid-cols-3'}`}>
               <TabsTrigger value="code">
                 <Code className="h-4 w-4 mr-2" />
                 代码
@@ -330,6 +339,12 @@ export default function ErrorCaseDetailPage({
               <TabsTrigger value="results">
                 测试结果
               </TabsTrigger>
+              {hasAiConversations && (
+                <TabsTrigger value="ai-debug">
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  AI 调试
+                </TabsTrigger>
+              )}
             </TabsList>
 
             <TabsContent value="code" className="mt-4">
@@ -493,6 +508,72 @@ export default function ErrorCaseDetailPage({
                 </CardContent>
               </Card>
             </TabsContent>
+
+            {hasAiConversations && (
+              <TabsContent value="ai-debug" className="mt-4">
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center gap-2">
+                      <MessageCircle className="h-4 w-4" />
+                      AI 调试记录
+                      <Badge variant="outline">
+                        共 {submission.aiHelpCount || aiConversations.filter(c => c.role === "ai" && c.promptLevel).length} 次 AI 调试帮助
+                      </Badge>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ScrollArea className="h-[400px]">
+                      <div className="space-y-4">
+                        {aiConversations.map((conv, index) => (
+                          conv.role === "user" ? (
+                            <div key={index} className="flex justify-end">
+                              <div className="max-w-[85%] space-y-1">
+                                <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground">
+                                  <span>
+                                    {new Date(conv.timestamp).toLocaleTimeString("zh-CN", {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })}
+                                  </span>
+                                </div>
+                                <div className="bg-primary text-primary-foreground rounded-lg p-3 text-sm whitespace-pre-wrap leading-relaxed">
+                                  {conv.content}
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div key={index} className="bg-muted/50 rounded-lg p-4 space-y-2">
+                              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                <Sparkles className="h-3 w-3" />
+                                {conv.promptLevel ? (
+                                  <span>
+                                    第{conv.promptLevel}次提示
+                                    {conv.promptLevel === 1 && " · 轻提示"}
+                                    {conv.promptLevel === 2 && " · 中等提示"}
+                                    {conv.promptLevel >= 3 && " · 详细提示"}
+                                  </span>
+                                ) : (
+                                  <span>AI 回复</span>
+                                )}
+                                <span className="ml-auto">
+                                  {new Date(conv.timestamp).toLocaleTimeString("zh-CN", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
+                              </div>
+                              <div className="text-sm whitespace-pre-wrap leading-relaxed">
+                                {conv.content}
+                              </div>
+                            </div>
+                          )
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            )}
           </Tabs>
         </div>
 
