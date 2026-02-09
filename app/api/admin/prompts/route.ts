@@ -1,23 +1,20 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import {
   PROMPT_REGISTRY,
   PROMPT_REGISTRY_MAP,
   CATEGORY_LABELS,
 } from "@/lib/prompts/registry";
+import { requireAdmin } from "@/lib/require-admin";
 
 /**
  * GET /api/admin/prompts
  * 获取全部提示词（按分类分组），合并数据库记录和注册表元数据
  */
 export async function GET() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
 
     // 查询数据库中已有的提示词
     const dbPrompts = await prisma.systemPrompt.findMany();

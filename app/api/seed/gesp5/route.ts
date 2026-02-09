@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { requireAdmin } from "@/lib/require-admin";
 
 // GESP 5级完整题库 - 来源：洛谷 CCF GESP C++ 五级上机题
 // 官方题单：https://www.luogu.com.cn/training/555
@@ -1702,9 +1703,13 @@ async function seedGesp5() {
 }
 
 export async function GET() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return seedGesp5();
 }
 
 export async function POST() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return seedGesp5();
 }

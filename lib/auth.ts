@@ -37,6 +37,7 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           username: user.username,
           email: user.email,
+          role: user.role,
         };
       },
     }),
@@ -54,6 +55,15 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.username = user.username;
+        token.role = user.role;
+      }
+      // 旧 JWT 兼容：已登录用户的 token 中可能没有 role
+      if (!token.role) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { role: true },
+        });
+        token.role = dbUser?.role || "user";
       }
       return token;
     },
@@ -61,6 +71,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.username = token.username as string;
+        session.user.role = token.role as string;
       }
       return session;
     },
@@ -73,6 +84,7 @@ declare module "next-auth" {
     id: string;
     username: string;
     email?: string | null;
+    role: string;
   }
 
   interface Session {
@@ -80,6 +92,7 @@ declare module "next-auth" {
       id: string;
       username: string;
       email?: string | null;
+      role: string;
     };
   }
 }
@@ -88,5 +101,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     username: string;
+    role: string;
   }
 }

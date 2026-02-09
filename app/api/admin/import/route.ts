@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { mapDifficulty } from "@/lib/luogu-sync";
+import { requireAdmin } from "@/lib/require-admin";
 
 /**
  * POST: 批量导入洛谷题目数据
  * 接收从浏览器脚本获取的原始洛谷数据
  */
 export async function POST(request: NextRequest) {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   try {
     const body = await request.json();
     const { problems, level } = body;
@@ -147,6 +150,8 @@ export async function POST(request: NextRequest) {
  * 用户在洛谷运行此脚本来获取题目数据
  */
 export async function GET(request: NextRequest) {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   const searchParams = request.nextUrl.searchParams;
   const level = searchParams.get("level") || "5";
 

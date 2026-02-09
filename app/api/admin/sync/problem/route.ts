@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { fetchLuoguProblem, mapDifficulty } from "@/lib/luogu-sync";
+import { requireAdmin } from "@/lib/require-admin";
 
 /**
  * GET: 测试接口是否可用
  */
 export async function GET() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return NextResponse.json({
     status: "ok",
     message: "使用 POST 方法同步题目",
@@ -18,6 +21,8 @@ export async function GET() {
  * body: { problemId: "B4051", level: 5 }
  */
 export async function POST(request: NextRequest) {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   try {
     const body = await request.json();
     const { problemId, level } = body;

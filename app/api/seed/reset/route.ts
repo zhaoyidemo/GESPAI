@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { requireAdmin } from "@/lib/require-admin";
 
 // 重置并重新初始化题库数据
 // 警告：这会删除所有现有题目和知识点！
@@ -406,10 +407,14 @@ async function resetAndSeed() {
 
 // 支持 GET 请求 - 直接在浏览器访问 /api/seed/reset 即可重置数据
 export async function GET() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return resetAndSeed();
 }
 
 // 支持 POST 请求
 export async function POST() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return resetAndSeed();
 }

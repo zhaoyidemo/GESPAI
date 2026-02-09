@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { PROMPT_REGISTRY_MAP } from "@/lib/prompts/registry";
+import { requireAdmin } from "@/lib/require-admin";
 
 interface RouteParams {
   params: Promise<{ key: string }>;
@@ -13,11 +12,9 @@ interface RouteParams {
  * 获取单个提示词详情（含硬编码默认值对比）
  */
 export async function GET(request: NextRequest, { params }: RouteParams) {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
 
     const { key } = await params;
     const registryEntry = PROMPT_REGISTRY_MAP.get(key);
@@ -57,11 +54,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
  * 更新提示词内容
  */
 export async function PUT(request: NextRequest, { params }: RouteParams) {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
 
     const { key } = await params;
     const registryEntry = PROMPT_REGISTRY_MAP.get(key);

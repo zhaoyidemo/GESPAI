@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { requireAdmin } from "@/lib/require-admin";
 
 // 清理数据库中 1-3 级和 7-8 级的题目和知识点
 // 只保留 4-6 级的数据
@@ -46,9 +47,13 @@ async function cleanupLevels() {
 }
 
 export async function GET() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return cleanupLevels();
 }
 
 export async function POST() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return cleanupLevels();
 }

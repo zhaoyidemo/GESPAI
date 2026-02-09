@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { PROMPT_REGISTRY } from "@/lib/prompts/registry";
+import { requireAdmin } from "@/lib/require-admin";
 
 // 旧 key → 新 key 的迁移映射
 const KEY_MIGRATION_MAP: Record<string, string> = {
@@ -23,11 +22,10 @@ const KEY_MIGRATION_MAP: Record<string, string> = {
  * 包含旧 key 到新 key 的一次性迁移逻辑
  */
 export async function POST() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
+  const session = auth;
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
 
     // === 迁移阶段：将旧 key 更新为新 key ===
     let migrated = 0;

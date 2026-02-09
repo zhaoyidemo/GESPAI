@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { requireAdmin } from "@/lib/require-admin";
 
 /**
  * 一次性导入所有 GESP 1-8 级题库
@@ -8,6 +10,10 @@ async function seedAllData() {
   try {
     const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
     const results = [];
+
+    // 获取 cookie 以转发给子请求
+    const cookieStore = await cookies();
+    const cookieHeader = cookieStore.getAll().map(c => `${c.name}=${c.value}`).join('; ');
 
     // 导入顺序：GESP 1-8 级
     const levels = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -21,6 +27,7 @@ async function seedAllData() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Cookie: cookieHeader,
           },
         });
 
@@ -74,10 +81,14 @@ async function seedAllData() {
 
 // 支持 GET 请求 - 直接在浏览器访问 /api/seed 即可初始化数据
 export async function GET() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return seedAllData();
 }
 
 // 支持 POST 请求
 export async function POST() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return seedAllData();
 }

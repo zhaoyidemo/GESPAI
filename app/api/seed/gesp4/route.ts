@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { requireAdmin } from "@/lib/require-admin";
 
 // GESP 4级完整题库 - 来源：洛谷 CCF GESP C++ 四级上机题
 // 共24道题目，内容100%来自洛谷原文
@@ -1223,9 +1224,13 @@ async function seedGesp4() {
 }
 
 export async function GET() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return seedGesp4();
 }
 
 export async function POST() {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   return seedGesp4();
 }

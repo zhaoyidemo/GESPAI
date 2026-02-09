@@ -8,6 +8,7 @@ import {
   mapDifficulty,
   LuoguProblem,
 } from "@/lib/luogu-sync";
+import { requireAdmin } from "@/lib/require-admin";
 
 /**
  * GET: 检查题库同步状态
@@ -15,6 +16,8 @@ import {
  * - ?problemId=B4051 检查单个题目
  */
 export async function GET(request: NextRequest) {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   const searchParams = request.nextUrl.searchParams;
   const level = searchParams.get("level");
   const problemId = searchParams.get("problemId");
@@ -48,6 +51,8 @@ export async function GET(request: NextRequest) {
  * - body: { level: 5, force: true } 强制重新同步（删除后重建）
  */
 export async function POST(request: NextRequest) {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   try {
     const body = await request.json();
     const { level, problemId, force } = body;

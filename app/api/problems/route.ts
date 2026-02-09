@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/db";
+import { requireAdmin } from "@/lib/require-admin";
 
 // 获取题目列表
 export async function GET(request: NextRequest) {
@@ -102,15 +103,9 @@ export async function GET(request: NextRequest) {
 
 // 创建题目（管理员功能）
 export async function POST(request: NextRequest) {
+  const auth = await requireAdmin();
+  if (auth instanceof NextResponse) return auth;
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
-
-    // TODO: 添加管理员权限检查
-
     const body = await request.json();
     const {
       title,
