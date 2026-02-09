@@ -62,7 +62,7 @@ const gesp6Problems = [
 输入的第二行，包含一个长为 $L$ 的数字串 $S$。约定 $1 \\leq L \\leq 10^6$。`,
     outputFormat: `输出一行一个整数表示答案。`,
     samples: [
-      { input: "2\n102", output: "5\n" },
+      { input: "2\n102", output: "5" },
       { input: "2\n12342", output: "11" },
     ],
     testCases: [
@@ -434,8 +434,8 @@ $0$ 号同学进入教室，此时教室里有 $1,2,3$ 号同学。$0$ 号同学
 第三行 $n$ 个正整数 $b_1, b_2, \\dots b_n$。`,
     outputFormat: `输出一行一个整数表示答案。`,
     samples: [
-      { input: "2\n1 2\n1 2\n", output: "4" },
-      { input: "3\n1 2 3\n3 2 1\n", output: "7" },
+      { input: "2\n1 2\n1 2", output: "4" },
+      { input: "3\n1 2 3\n3 2 1", output: "7" },
     ],
     testCases: [
       // 原始样例
@@ -498,7 +498,7 @@ $0$ 号同学进入教室，此时教室里有 $1,2,3$ 号同学。$0$ 号同学
 - 第四行包含一个由 $m$ 个小写字母组成的字符串。`,
     outputFormat: `输出一个整数，代表给定字符串的最大总得分。`,
     samples: [
-      { input: "3\n3 1 2\n13\ndabcabcabcabz\n", output: "9" },
+      { input: "3\n3 1 2\n13\ndabcabcabcabz", output: "9" },
     ],
     testCases: [
       // 原始样例
@@ -618,7 +618,7 @@ $3$|$40\\%$|$\\le 20$|$\\le 10^5$|$\\le 1000$|
     inputFormat: `输入只有一行一个正整数 $n$。`,
     outputFormat: `输出一行一个整数表示答案。`,
     samples: [
-      { input: "18\n", output: "2" },
+      { input: "18", output: "2" },
     ],
     testCases: [
       // 原始样例
@@ -844,7 +844,7 @@ $3$|$40\\%$|$\\le 20$|$\\le 10^5$|$\\le 1000$|
 现在小 A 想知道，对于树上的每个结点，从这个结点出发开始漫步，经过偶数步能结束漫步的结点有多少个（可以经过重复的节点）。`,
     inputFormat: `第一行，一个正整数 $n$。
 
-接下来 $n-1$ 行，每行两个整数 $u_i,v_i$，表示树上有⼀条连接结点 $u_i$ 和结点 $v_i$ 的边。`,
+接下来 $n-1$ 行，每行两个整数 $u_i,v_i$，表示树上有一条连接结点 $u_i$ 和结点 $v_i$ 的边。`,
     outputFormat: `一行，$n$ 个整数。第 $i$ 个整数表示从结点 $i$ 出发开始漫步，能结束漫步的结点数量。`,
     samples: [
       { input: "3\n1 3\n2 3", output: "2 2 1" },
