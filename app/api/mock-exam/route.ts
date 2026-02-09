@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireAuth } from "@/lib/require-auth";
 import prisma from "@/lib/db";
 
 // 获取模拟考试历史
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get("limit") || "10");
@@ -19,6 +15,20 @@ export async function GET(request: NextRequest) {
       where: { userId: session.user.id },
       orderBy: { createdAt: "desc" },
       take: limit,
+      select: {
+        id: true,
+        targetLevel: true,
+        totalScore: true,
+        passScore: true,
+        passed: true,
+        choiceScore: true,
+        choiceTotal: true,
+        programmingScore: true,
+        programmingTotal: true,
+        timeTaken: true,
+        timeLimit: true,
+        createdAt: true,
+      },
     });
 
     // 计算统计数据
@@ -47,11 +57,8 @@ export async function GET(request: NextRequest) {
 // 保存模拟考试结果
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     const body = await request.json();
     const {
@@ -122,11 +129,8 @@ export async function POST(request: NextRequest) {
 // 清空模拟考试记录
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     await prisma.mockExamResult.deleteMany({
       where: { userId: session.user.id },

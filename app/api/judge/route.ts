@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireAuth } from "@/lib/require-auth";
 import prisma from "@/lib/db";
 import { judgeSubmission } from "@/lib/judge";
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     const body = await request.json();
     const { problemId, code, language = "cpp", mode = "submit" } = body;
@@ -123,35 +119,39 @@ export async function POST(request: NextRequest) {
         },
       });
 
-      // 更新相关知识点的练习统计
+      // 批量更新相关知识点的练习统计
       const knowledgePointNames = problem.knowledgePoints || [];
-      for (const kpName of knowledgePointNames) {
-        const kp = await prisma.knowledgePoint.findFirst({
-          where: { name: kpName, level: problem.level },
+      if (knowledgePointNames.length > 0) {
+        const knowledgePoints = await prisma.knowledgePoint.findMany({
+          where: { name: { in: knowledgePointNames }, level: problem.level },
+          select: { id: true, name: true },
         });
-
-        if (kp) {
-          await prisma.learningRecord.upsert({
-            where: {
-              userId_knowledgePointId: {
-                userId: session.user.id,
-                knowledgePointId: kp.id,
-              },
-            },
-            create: {
-              userId: session.user.id,
-              knowledgePointId: kp.id,
-              status: "in_progress",
-              practiceCount: 1,
-              correctCount: 1,
-              lastStudiedAt: new Date(),
-            },
-            update: {
-              practiceCount: { increment: 1 },
-              correctCount: { increment: 1 },
-              lastStudiedAt: new Date(),
-            },
-          });
+        if (knowledgePoints.length > 0) {
+          await prisma.$transaction(
+            knowledgePoints.map((kp) =>
+              prisma.learningRecord.upsert({
+                where: {
+                  userId_knowledgePointId: {
+                    userId: session.user.id,
+                    knowledgePointId: kp.id,
+                  },
+                },
+                create: {
+                  userId: session.user.id,
+                  knowledgePointId: kp.id,
+                  status: "in_progress",
+                  practiceCount: 1,
+                  correctCount: 1,
+                  lastStudiedAt: new Date(),
+                },
+                update: {
+                  practiceCount: { increment: 1 },
+                  correctCount: { increment: 1 },
+                  lastStudiedAt: new Date(),
+                },
+              })
+            )
+          );
         }
       }
 
@@ -162,34 +162,38 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // 非 AC 的情况也更新练习次数
+    // 非 AC 的情况也批量更新练习次数
     const knowledgePointNames = problem.knowledgePoints || [];
-    for (const kpName of knowledgePointNames) {
-      const kp = await prisma.knowledgePoint.findFirst({
-        where: { name: kpName, level: problem.level },
+    if (knowledgePointNames.length > 0) {
+      const knowledgePoints = await prisma.knowledgePoint.findMany({
+        where: { name: { in: knowledgePointNames }, level: problem.level },
+        select: { id: true, name: true },
       });
-
-      if (kp) {
-        await prisma.learningRecord.upsert({
-          where: {
-            userId_knowledgePointId: {
-              userId: session.user.id,
-              knowledgePointId: kp.id,
-            },
-          },
-          create: {
-            userId: session.user.id,
-            knowledgePointId: kp.id,
-            status: "in_progress",
-            practiceCount: 1,
-            correctCount: 0,
-            lastStudiedAt: new Date(),
-          },
-          update: {
-            practiceCount: { increment: 1 },
-            lastStudiedAt: new Date(),
-          },
-        });
+      if (knowledgePoints.length > 0) {
+        await prisma.$transaction(
+          knowledgePoints.map((kp) =>
+            prisma.learningRecord.upsert({
+              where: {
+                userId_knowledgePointId: {
+                  userId: session.user.id,
+                  knowledgePointId: kp.id,
+                },
+              },
+              create: {
+                userId: session.user.id,
+                knowledgePointId: kp.id,
+                status: "in_progress",
+                practiceCount: 1,
+                correctCount: 0,
+                lastStudiedAt: new Date(),
+              },
+              update: {
+                practiceCount: { increment: 1 },
+                lastStudiedAt: new Date(),
+              },
+            })
+          )
+        );
       }
     }
 
@@ -222,11 +226,8 @@ export async function POST(request: NextRequest) {
 // 获取提交历史
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     const { searchParams } = new URL(request.url);
     const problemId = searchParams.get("problemId");

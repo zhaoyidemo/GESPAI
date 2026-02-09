@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireAuth } from "@/lib/require-auth";
 import prisma from "@/lib/db";
 
 // 计算综合掌握度
@@ -35,11 +34,8 @@ function calculateMasteryLevel(record: {
 // 获取用户的学习记录
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     const { searchParams } = new URL(request.url);
     const level = searchParams.get("level");
@@ -107,11 +103,8 @@ export async function GET(request: NextRequest) {
 // 更新学习记录
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     const body = await request.json();
     const { knowledgePointId, tutorCompleted, feynmanCompleted, feynmanScore } = body;

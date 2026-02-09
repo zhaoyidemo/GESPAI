@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChatInterface } from "@/components/chat/chat-interface";
 import { CodeEditor } from "@/components/editor/code-editor";
 import { useToast } from "@/components/ui/use-toast";
-import { AIDebugDrawer, type AIConversation } from "@/components/ai-debug-drawer";
+import { AIDebugDrawer } from "@/components/ai-debug-drawer";
 import {
   ArrowLeft,
   Play,
@@ -30,50 +30,10 @@ import { getDifficultyLabel, getJudgeStatusLabel } from "@/lib/utils";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { PreventionRuleAlert } from "@/components/prevention-rule-alert";
 
-interface Problem {
-  id: string;
-  title: string;
-  level: number;
-  difficulty: string;
-  knowledgePoints: string[];
-  description: string;
-  inputFormat: string | null;
-  outputFormat: string | null;
-  samples: Array<{ input: string; output: string; explanation?: string }>;
-  timeLimit: number;
-  memoryLimit: number;
-  hint: string | null;
-}
-
-interface TestResult {
-  passed: boolean;
-  input: string;
-  expectedOutput: string;
-  actualOutput: string;
-  time: number | null;
-  memory: number | null;
-  status: string;
-}
-
-interface JudgeResult {
-  id?: string;
-  status: string;
-  score: number;
-  testResults: TestResult[];
-  xpEarned?: number;
-}
-
-interface SubmissionRecord {
-  id: string;
-  status: string;
-  score: number;
-  language: string;
-  code: string;
-  testResults: TestResult[] | null;
-  createdAt: string;
-  problem: { id: string; title: string };
-  errorCase: { id: string } | null;
-}
+import { useProblemStore } from "@/stores/problem-store";
+import { useAIDebugStore } from "@/stores/ai-debug-store";
+import { usePreventionStore } from "@/stores/prevention-store";
+import { useProblemActions } from "@/hooks/use-problem-actions";
 
 function formatRelativeTime(dateStr: string): string {
   const now = Date.now();
@@ -87,56 +47,48 @@ function formatRelativeTime(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("zh-CN");
 }
 
-const DEFAULT_CODE = `#include <iostream>
-using namespace std;
-
-int main() {
-    // 在这里编写你的代码
-
-    return 0;
-}
-`;
-
 export default function ProblemPage() {
   const params = useParams();
   const id = params.id as string;
   const { toast } = useToast();
-  const [problem, setProblem] = useState<Problem | null>(null);
-  const [code, setCode] = useState(DEFAULT_CODE);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [running, setRunning] = useState(false);
-  const [judgeResult, setJudgeResult] = useState<JudgeResult | null>(null);
-  const [runResult, setRunResult] = useState<JudgeResult | null>(null);
-  const [activeResultType, setActiveResultType] = useState<"run" | "submit">("submit");
-  const [submissions, setSubmissions] = useState<SubmissionRecord[]>([]);
-  const [selectedSubmission, setSelectedSubmission] = useState<SubmissionRecord | null>(null);
-  const [activeTab, setActiveTab] = useState("description");
 
-  // AI调试助手状态
-  const [aiDrawerOpen, setAiDrawerOpen] = useState(false);
-  const [aiConversations, setAiConversations] = useState<AIConversation[]>([]);
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiHelpCount, setAiHelpCount] = useState(0);
+  // Stores
+  const {
+    problem,
+    code,
+    loading,
+    submitting,
+    running,
+    judgeResult,
+    runResult,
+    activeResultType,
+    submissions,
+    selectedSubmission,
+    activeTab,
+    recordingError,
+    setProblem,
+    setCode,
+    setLoading,
+    setActiveResultType,
+    setSubmissions,
+    setSelectedSubmission,
+    setActiveTab,
+  } = useProblemStore();
 
-  // 错题记录状态
-  const [recordingError, setRecordingError] = useState(false);
+  const aiDebug = useAIDebugStore();
+  const prevention = usePreventionStore();
 
-  // 防错规则检查状态
-  const [ruleAlertOpen, setRuleAlertOpen] = useState(false);
-  const [triggeredRules, setTriggeredRules] = useState<Array<{
-    id: string;
-    errorType: string;
-    rule: string;
-    hitCount: number;
-  }>>([]);
-  const [ruleWarnings, setRuleWarnings] = useState<Array<{
-    ruleIndex: number;
-    issue: string;
-    suggestion: string;
-    rule: string;
-  }>>([]);
-  const [skipRuleCheck, setSkipRuleCheck] = useState(false);
+  // Actions
+  const {
+    fetchSubmissions,
+    handleRun,
+    handleSubmit,
+    handleConfirmSubmit,
+    handleCancelSubmit,
+    handleAIHelp,
+    handleSendDebugMessage,
+    handleRecordError,
+  } = useProblemActions(id);
 
   const fetchProblem = useCallback(async () => {
     try {
@@ -160,316 +112,15 @@ export default function ProblemPage() {
     } finally {
       setLoading(false);
     }
-  }, [id, toast]);
+  }, [id, toast, setProblem, setCode, setLoading]);
 
   useEffect(() => {
+    // Reset stores on mount
+    useProblemStore.getState().reset();
+    useAIDebugStore.getState().reset();
+    usePreventionStore.getState().reset();
     fetchProblem();
   }, [fetchProblem]);
-
-  const fetchSubmissions = useCallback(async () => {
-    try {
-      const response = await fetch(`/api/judge?problemId=${id}&limit=20`);
-      const data = await response.json();
-      if (response.ok) {
-        setSubmissions(data.submissions);
-      }
-    } catch (error) {
-      console.error("Fetch submissions error:", error);
-    }
-  }, [id]);
-
-  const handleRun = async () => {
-    if (!code.trim()) {
-      toast({
-        variant: "destructive",
-        title: "运行失败",
-        description: "代码不能为空",
-      });
-      return;
-    }
-
-    setRunning(true);
-    setRunResult(null);
-
-    try {
-      const response = await fetch("/api/judge", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          problemId: id,
-          code,
-          language: "cpp",
-          mode: "run",
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setRunResult(data);
-        setActiveResultType("run");
-        setActiveTab("result");
-
-        if (data.status === "accepted") {
-          toast({
-            title: "样例测试通过！",
-            description: "所有样例均通过，可以尝试提交",
-          });
-        } else {
-          toast({
-            variant: "destructive",
-            title: "样例测试未通过",
-            description: `得分：${data.score}/100`,
-          });
-        }
-      } else {
-        throw new Error(data.error || "运行失败");
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "运行失败",
-        description: error instanceof Error ? error.message : "请稍后重试",
-      });
-    } finally {
-      setRunning(false);
-    }
-  };
-
-  const handleAIHelp = async () => {
-    if (!judgeResult?.id) {
-      toast({
-        variant: "destructive",
-        title: "无法请求帮助",
-        description: "请先提交代码",
-      });
-      return;
-    }
-
-    setAiLoading(true);
-    setAiDrawerOpen(true);
-
-    try {
-      const response = await fetch("/api/ai/debug-help", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          submissionId: judgeResult.id,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        const newConversation: AIConversation = {
-          role: "ai",
-          content: data.aiResponse,
-          promptLevel: data.promptLevel,
-          timestamp: new Date().toISOString(),
-        };
-
-        setAiConversations((prev) => [...prev, newConversation]);
-        setAiHelpCount(data.helpCount);
-
-        toast({
-          title: "AI分析完成",
-          description: `第${data.helpCount}次提示`,
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "AI分析失败",
-          description: data.error || "请稍后重试",
-        });
-        setAiDrawerOpen(false);
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "AI分析失败",
-        description: error instanceof Error ? error.message : "网络错误",
-      });
-      setAiDrawerOpen(false);
-    } finally {
-      setAiLoading(false);
-    }
-  };
-
-  // AI调试助手 - 自由对话
-  const handleSendDebugMessage = async (message: string) => {
-    if (!judgeResult?.id) return;
-
-    // 先把用户消息加入对话列表
-    const userConv: AIConversation = {
-      role: "user",
-      content: message,
-      timestamp: new Date().toISOString(),
-    };
-    setAiConversations((prev) => [...prev, userConv]);
-
-    try {
-      const response = await fetch("/api/ai/debug-help", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          submissionId: judgeResult.id,
-          userMessage: message,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        const aiConv: AIConversation = {
-          role: "ai",
-          content: data.aiResponse,
-          timestamp: new Date().toISOString(),
-        };
-        setAiConversations((prev) => [...prev, aiConv]);
-      } else {
-        toast({
-          variant: "destructive",
-          title: "AI回复失败",
-          description: data.error || "请稍后重试",
-        });
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "AI回复失败",
-        description: error instanceof Error ? error.message : "网络错误",
-      });
-    }
-  };
-
-  // 检查防错规则
-  const checkPreventionRules = async (): Promise<boolean> => {
-    try {
-      const response = await fetch("/api/prevention-rules/check", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          code,
-          problemId: id,
-          problemDescription: problem?.description,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.triggered && data.triggeredRules?.length > 0) {
-        setTriggeredRules(data.triggeredRules);
-        setRuleWarnings(data.warnings || []);
-        setRuleAlertOpen(true);
-        return true; // 触发了规则
-      }
-    } catch (error) {
-      console.error("Check prevention rules error:", error);
-      // 检查失败不阻止提交
-    }
-    return false; // 没有触发规则
-  };
-
-  // 实际执行提交的函数
-  const executeSubmit = async () => {
-    setSubmitting(true);
-    setJudgeResult(null);
-    // 重置AI助手状态（新的提交）
-    setAiConversations([]);
-    setAiHelpCount(0);
-    setAiDrawerOpen(false);
-
-    try {
-      const response = await fetch("/api/judge", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          problemId: id,
-          code,
-          language: "cpp",
-          mode: "submit",
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setJudgeResult(data);
-        setActiveResultType("submit");
-        setActiveTab("result");
-        fetchSubmissions();
-        // 提交后重置跳过检查状态
-        setSkipRuleCheck(false);
-
-        if (data.status === "accepted") {
-          toast({
-            title: "通过！",
-            description: `恭喜你！获得 ${data.xpEarned || 0} XP`,
-          });
-        } else {
-          const statusInfo = getJudgeStatusLabel(data.status);
-          toast({
-            variant: "destructive",
-            title: statusInfo.label,
-            description: `得分：${data.score}/100`,
-          });
-        }
-      } else {
-        throw new Error(data.error || "提交失败");
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "提交失败",
-        description: error instanceof Error ? error.message : "请稍后重试",
-      });
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (!code.trim()) {
-      toast({
-        variant: "destructive",
-        title: "提交失败",
-        description: "代码不能为空",
-      });
-      return;
-    }
-
-    // 如果已经确认过跳过检查，直接提交
-    if (skipRuleCheck) {
-      await executeSubmit();
-      return;
-    }
-
-    // 先检查防错规则
-    setSubmitting(true);
-    const hasTriggeredRules = await checkPreventionRules();
-
-    if (hasTriggeredRules) {
-      // 触发了规则，显示对话框，等待用户确认
-      setSubmitting(false);
-      return;
-    }
-
-    // 没有触发规则，直接提交
-    await executeSubmit();
-  };
-
-  // 用户确认继续提交
-  const handleConfirmSubmit = async () => {
-    setRuleAlertOpen(false);
-    setSkipRuleCheck(true);
-    await executeSubmit();
-  };
-
-  // 用户取消提交
-  const handleCancelSubmit = () => {
-    setRuleAlertOpen(false);
-    setSubmitting(false);
-  };
 
   if (loading) {
     return (
@@ -758,10 +409,10 @@ export default function ProblemPage() {
                         <div className="flex gap-2">
                           <Button
                             onClick={handleAIHelp}
-                            disabled={aiLoading}
+                            disabled={aiDebug.loading}
                             className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
                           >
-                            {aiLoading ? (
+                            {aiDebug.loading ? (
                               <>
                                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                                 AI分析中...
@@ -770,44 +421,13 @@ export default function ProblemPage() {
                               <>
                                 <Sparkles className="mr-2 h-4 w-4" />
                                 AI帮我看看
-                                {aiHelpCount > 0 && ` (${aiHelpCount})`}
+                                {aiDebug.helpCount > 0 && ` (${aiDebug.helpCount})`}
                               </>
                             )}
                           </Button>
                           <Button
                             variant="outline"
-                            onClick={async () => {
-                              setRecordingError(true);
-                              try {
-                                const response = await fetch("/api/error-case", {
-                                  method: "POST",
-                                  headers: { "Content-Type": "application/json" },
-                                  body: JSON.stringify({ submissionId: currentResult.id }),
-                                });
-                                const data = await response.json();
-                                if (response.ok) {
-                                  toast({
-                                    title: "已记录到错题本",
-                                    description: "可以去错题本进行复盘",
-                                  });
-                                  fetchSubmissions();
-                                } else {
-                                  toast({
-                                    variant: "destructive",
-                                    title: "记录失败",
-                                    description: data.error || "请重试",
-                                  });
-                                }
-                              } catch (error) {
-                                toast({
-                                  variant: "destructive",
-                                  title: "记录失败",
-                                  description: "网络错误",
-                                });
-                              } finally {
-                                setRecordingError(false);
-                              }
-                            }}
+                            onClick={() => handleRecordError(currentResult.id!)}
                             disabled={recordingError}
                           >
                             <BookX className="mr-2 h-4 w-4" />
@@ -946,36 +566,7 @@ export default function ProblemPage() {
                                   disabled={recordingError}
                                   onClick={async (e) => {
                                     e.stopPropagation();
-                                    setRecordingError(true);
-                                    try {
-                                      const response = await fetch("/api/error-case", {
-                                        method: "POST",
-                                        headers: { "Content-Type": "application/json" },
-                                        body: JSON.stringify({ submissionId: sub.id }),
-                                      });
-                                      const data = await response.json();
-                                      if (response.ok) {
-                                        toast({
-                                          title: "已记录到错题本",
-                                          description: "可以去错题本进行复盘",
-                                        });
-                                        fetchSubmissions();
-                                      } else {
-                                        toast({
-                                          variant: "destructive",
-                                          title: "记录失败",
-                                          description: data.error || "请重试",
-                                        });
-                                      }
-                                    } catch {
-                                      toast({
-                                        variant: "destructive",
-                                        title: "记录失败",
-                                        description: "网络错误",
-                                      });
-                                    } finally {
-                                      setRecordingError(false);
-                                    }
+                                    await handleRecordError(sub.id);
                                   }}
                                 >
                                   <BookX className="mr-2 h-4 w-4" />
@@ -1047,22 +638,22 @@ export default function ProblemPage() {
 
       {/* AI调试助手侧边栏 */}
       <AIDebugDrawer
-        isOpen={aiDrawerOpen}
-        onClose={() => setAiDrawerOpen(false)}
+        isOpen={aiDebug.drawerOpen}
+        onClose={() => aiDebug.setDrawerOpen(false)}
         submissionId={judgeResult?.id || ""}
-        conversations={aiConversations}
-        isLoading={aiLoading}
+        conversations={aiDebug.conversations}
+        isLoading={aiDebug.loading}
         onRequestHelp={handleAIHelp}
         onSendMessage={handleSendDebugMessage}
-        helpCount={aiHelpCount}
+        helpCount={aiDebug.helpCount}
       />
 
       {/* 防错规则提醒对话框 */}
       <PreventionRuleAlert
-        open={ruleAlertOpen}
-        onOpenChange={setRuleAlertOpen}
-        triggeredRules={triggeredRules}
-        warnings={ruleWarnings}
+        open={prevention.alertOpen}
+        onOpenChange={prevention.setAlertOpen}
+        triggeredRules={prevention.triggeredRules}
+        warnings={prevention.warnings}
         onConfirm={handleConfirmSubmit}
         onCancel={handleCancelSubmit}
       />

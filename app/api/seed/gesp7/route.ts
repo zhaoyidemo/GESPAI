@@ -1,12 +1,10 @@
-import { NextResponse } from "next/server";
-import prisma from "@/lib/db";
-import { requireAdmin } from "@/lib/require-admin";
+import { createSeedHandler, type SeedProblem } from "@/lib/seed-problems";
 
 // GESP 7级完整题库 - 来源：洛谷 CCF GESP C++ 七级上机题
 // 官方题单：https://www.luogu.com.cn/training/557
 // 所有内容与洛谷100%一致
 
-const gesp7Problems = [
+const gesp7Problems: SeedProblem[] = [
   // ========== 样题 ==========
   {
     title: "[GESP样题 七级] 迷宫统计",
@@ -1225,51 +1223,4 @@ $3$|$40\\%$|$\\leq 10^5$|$1\\leq a_i\\leq 30$`,
   },
 ];
 
-async function seedGesp7() {
-  try {
-    let addedCount = 0;
-    let updatedCount = 0;
-
-    for (const problem of gesp7Problems) {
-      const existing = await prisma.problem.findFirst({
-        where: { sourceId: problem.sourceId }
-      });
-
-      if (existing) {
-        await prisma.problem.update({
-          where: { id: existing.id },
-          data: problem
-        });
-        updatedCount++;
-      } else {
-        await prisma.problem.create({
-          data: problem
-        });
-        addedCount++;
-      }
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: `GESP 7级：新增 ${addedCount} 道，更新 ${updatedCount} 道`,
-      addedCount,
-      updatedCount,
-      totalCount: gesp7Problems.length
-    });
-  } catch (error) {
-    console.error("Seed GESP7 error:", error);
-    return NextResponse.json({ error: "添加题目失败", details: String(error) }, { status: 500 });
-  }
-}
-
-export async function GET() {
-  const auth = await requireAdmin();
-  if (auth instanceof NextResponse) return auth;
-  return seedGesp7();
-}
-
-export async function POST() {
-  const auth = await requireAdmin();
-  if (auth instanceof NextResponse) return auth;
-  return seedGesp7();
-}
+export const { GET, POST } = createSeedHandler(gesp7Problems, "GESP 7级");

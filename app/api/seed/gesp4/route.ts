@@ -1,6 +1,4 @@
-import { NextResponse } from "next/server";
-import prisma from "@/lib/db";
-import { requireAdmin } from "@/lib/require-admin";
+import { createSeedHandler, type SeedProblem } from "@/lib/seed-problems";
 
 // GESP 4级完整题库 - 来源：洛谷 CCF GESP C++ 四级上机题
 // 共24道题目，内容100%来自洛谷原文
@@ -11,7 +9,7 @@ import { requireAdmin } from "@/lib/require-admin";
 // - "普及+/提高" = 洛谷难度4
 // - "提高+/省选-" = 洛谷难度5及以上
 
-const gesp4Problems = [
+const gesp4Problems: SeedProblem[] = [
   // ========== GESP 样卷 ==========
   {
     title: "[GESP样题 四级] 绝对素数",
@@ -1186,51 +1184,4 @@ $$[4], [0], [1], [2], [4, 0], [0, 1], [1, 2], [4, 0, 1], [0, 1, 2], [4, 0, 1, 2]
 
 ];
 
-async function seedGesp4() {
-  try {
-    let addedCount = 0;
-    let updatedCount = 0;
-
-    for (const problem of gesp4Problems) {
-      const existing = await prisma.problem.findFirst({
-        where: { sourceId: problem.sourceId }
-      });
-
-      if (existing) {
-        await prisma.problem.update({
-          where: { id: existing.id },
-          data: problem
-        });
-        updatedCount++;
-      } else {
-        await prisma.problem.create({
-          data: problem
-        });
-        addedCount++;
-      }
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: `GESP 4级：新增 ${addedCount} 道，更新 ${updatedCount} 道`,
-      addedCount,
-      updatedCount,
-      totalCount: gesp4Problems.length
-    });
-  } catch (error) {
-    console.error("Seed GESP4 error:", error);
-    return NextResponse.json({ error: "添加题目失败", details: String(error) }, { status: 500 });
-  }
-}
-
-export async function GET() {
-  const auth = await requireAdmin();
-  if (auth instanceof NextResponse) return auth;
-  return seedGesp4();
-}
-
-export async function POST() {
-  const auth = await requireAdmin();
-  if (auth instanceof NextResponse) return auth;
-  return seedGesp4();
-}
+export const { GET, POST } = createSeedHandler(gesp4Problems, "GESP 4级");

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireAuth } from "@/lib/require-auth";
 import prisma from "@/lib/db";
 import { buildDebugMessage, type DebugContext } from "@/lib/default-prompts";
 import { getUserPrompt } from "@/lib/prompts/get-system-prompt";
@@ -16,14 +15,8 @@ const anthropic = new Anthropic({
  */
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user?.id) {
-      return NextResponse.json(
-        { error: "未登录" },
-        { status: 401 }
-      );
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     const body = await req.json();
     const { submissionId, userMessage } = body;

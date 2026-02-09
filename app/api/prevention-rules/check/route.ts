@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireAuth } from "@/lib/require-auth";
 import prisma from "@/lib/db";
 import { chat } from "@/lib/claude";
 import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
@@ -8,11 +7,8 @@ import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 // 检查是否触发已有规则
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     const body = await request.json();
     const { code, problemId, problemDescription } = body;
@@ -29,6 +25,12 @@ export async function POST(request: NextRequest) {
       where: {
         userId: session.user.id,
         isActive: true,
+      },
+      select: {
+        id: true,
+        errorType: true,
+        rule: true,
+        hitCount: true,
       },
       orderBy: { hitCount: "desc" },
     });

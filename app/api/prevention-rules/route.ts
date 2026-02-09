@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { requireAuth } from "@/lib/require-auth";
 import prisma from "@/lib/db";
 import { chat } from "@/lib/claude";
 import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
@@ -8,11 +7,8 @@ import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 // 获取防错规则列表
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     const { searchParams } = new URL(request.url);
     const errorType = searchParams.get("errorType");
@@ -79,11 +75,8 @@ export async function GET(request: NextRequest) {
 // 创建防错规则
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user) {
-      return NextResponse.json({ error: "请先登录" }, { status: 401 });
-    }
+    const session = await requireAuth();
+    if (session instanceof NextResponse) return session;
 
     const body = await request.json();
     const { errorCaseId, rule, errorType, autoGenerate } = body;

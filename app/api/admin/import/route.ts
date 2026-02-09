@@ -35,6 +35,18 @@ export async function POST(request: NextRequest) {
       error?: string;
     }> = [];
 
+    // 预查询所有已存在的题目，避免循环内逐条查询
+    const sourceIds = problems
+      .map((p: { pid?: string }) => p.pid)
+      .filter(Boolean) as string[];
+    const existingProblems = await prisma.problem.findMany({
+      where: { sourceId: { in: sourceIds } },
+      select: { id: true, sourceId: true },
+    });
+    const existingMap = new Map(
+      existingProblems.map((p) => [p.sourceId, p.id])
+    );
+
     for (const p of problems) {
       try {
         // 验证必要字段
@@ -72,7 +84,6 @@ export async function POST(request: NextRequest) {
           sourceId: p.pid,
           sourceUrl: `https://www.luogu.com.cn/problem/${p.pid}`,
           level: level,
-          // background 已移除
           description: p.description || "",
           inputFormat: p.inputFormat || "",
           outputFormat: p.outputFormat || "",
@@ -87,15 +98,12 @@ export async function POST(request: NextRequest) {
           memoryLimit: Math.floor((p.limits?.memory?.[0] || 262144) / 1024), // 转换为 MB
         };
 
-        // 检查是否存在
-        const existing = await prisma.problem.findFirst({
-          where: { sourceId: p.pid },
-        });
+        const existingId = existingMap.get(p.pid);
 
-        if (existing) {
+        if (existingId) {
           // 更新现有题目
           await prisma.problem.update({
-            where: { id: existing.id },
+            where: { id: existingId },
             data: problemData,
           });
           results.push({
