@@ -67,13 +67,12 @@ export function Navbar({ scrolled }: { scrolled: boolean }) {
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16">
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+    <section className="relative min-h-screen flex flex-col justify-end pb-28 pt-16">
+      <div className="relative z-10 text-center px-4">
         <h1
-          className="landing-hero-title text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter leading-none mb-12 bg-clip-text text-transparent"
+          className="landing-hero-title text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight leading-none mb-6 bg-clip-text text-transparent"
           style={{
             backgroundImage: "linear-gradient(135deg, #fff 0%, #c8ceff 50%, #a5b4fc 100%)",
-            filter: "drop-shadow(0 0 40px rgba(91,106,240,0.4))",
           }}
         >
           GESP AI私教
