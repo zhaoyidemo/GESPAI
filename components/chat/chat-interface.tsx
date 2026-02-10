@@ -232,6 +232,9 @@ export function ChatInterface({
     setMessages(newMessages);
     setLoading(true);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
+
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -242,6 +245,7 @@ export function ChatInterface({
           knowledgePoint,
           requestEvaluation: true,
         }),
+        signal: controller.signal,
       });
 
       const data = await response.json();
@@ -252,15 +256,26 @@ export function ChatInterface({
 
       setMessages([...newMessages, { role: "assistant", content: data.response }]);
     } catch (error) {
-      console.error("Evaluation error:", error);
-      setMessages([
-        ...newMessages,
-        {
-          role: "assistant",
-          content: "抱歉，获取评估时遇到问题。请稍后再试。",
-        },
-      ]);
+      if (error instanceof Error && error.name === "AbortError") {
+        setMessages([
+          ...newMessages,
+          {
+            role: "assistant",
+            content: "抱歉，AI 思考时间太长了，请稍后再试一次。如果问题持续，可以尝试简化你的问题。",
+          },
+        ]);
+      } else {
+        console.error("Evaluation error:", error);
+        setMessages([
+          ...newMessages,
+          {
+            role: "assistant",
+            content: "抱歉，获取评估时遇到问题。请稍后再试。",
+          },
+        ]);
+      }
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
     }
   }, [loading, context, messages, knowledgePoint]);
@@ -292,6 +307,9 @@ export function ChatInterface({
     setMessages(newMessages);
     setLoading(true);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
+
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -302,6 +320,7 @@ export function ChatInterface({
           knowledgePoint,
           problemId,
         }),
+        signal: controller.signal,
       });
 
       const data = await response.json();
@@ -314,15 +333,26 @@ export function ChatInterface({
       setMessages([...newMessages, { role: "assistant", content: data.response }]);
       onMessageSent?.();
     } catch (error) {
-      console.error("Chat error:", error);
-      setMessages([
-        ...newMessages,
-        {
-          role: "assistant",
-          content: "抱歉，我遇到了一些问题。请稍后再试。",
-        },
-      ]);
+      if (error instanceof Error && error.name === "AbortError") {
+        setMessages([
+          ...newMessages,
+          {
+            role: "assistant",
+            content: "抱歉，AI 思考时间太长了，请稍后再试一次。如果问题持续，可以尝试简化你的问题。",
+          },
+        ]);
+      } else {
+        console.error("Chat error:", error);
+        setMessages([
+          ...newMessages,
+          {
+            role: "assistant",
+            content: "抱歉，我遇到了一些问题。请稍后再试。",
+          },
+        ]);
+      }
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
     }
   };

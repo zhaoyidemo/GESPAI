@@ -5,23 +5,9 @@
 
 ---
 
-## 待办事项（4 项）
+## 待办事项（0 项）
 
-### 功能
-
-- [ ] 创建 `app/(main)/admin/prompts/page.tsx` — 管理员提示词管理页面
-
-### 性能
-
-- [ ] 拆分 `problem/[id]` 为子组件：`ProblemDescription`、`CodeEditor`、`AIChat`、`SubmissionPanel`
-
-### 用户体验
-
-- [ ] AI 对话添加超时友好提示 + 代码提交添加评测进度指示
-
-### 测试
-
-- [ ] 为关键用户流程添加 E2E 测试（注册→做题→提交→查看结果）
+所有待办事项已完成。
 
 ---
 
@@ -43,10 +29,12 @@
 - [x] 修复 judge/route.ts 和 admin/import/route.ts 的 N+1 查询
 
 ### 性能
+- [x] 拆分 `problem/[id]` 为子组件：`ProblemHeader`、`ProblemDescription`、`JudgeResultPanel`、`SubmissionHistory`
 - [x] Monaco Editor `dynamic import` 懒加载
 - [x] Zustand Store + useCallback actions hook 优化重渲染
 
 ### 功能
+- [x] 创建 `app/(main)/admin/prompts/page.tsx` — 管理员提示词管理页面
 - [x] Profile 页面连接真实 API 数据
 - [x] Navbar 从 API 动态获取连胜和 XP
 - [x] Navbar 添加模拟考试导航入口
@@ -54,7 +42,11 @@
 - [x] 错题详情复盘页面（经复查：完整可用）
 
 ### 用户体验
+- [x] AI 对话添加超时友好提示 + 代码提交添加评测进度指示
 - [x] 全局 ErrorBoundary 组件
+
+### 测试
+- [x] 为关键用户流程添加 E2E 测试（Playwright：做题流程 + 错题流程）
 
 ### 开发流程
 - [x] 配置 pre-commit hook（`npx tsc --noEmit`）
