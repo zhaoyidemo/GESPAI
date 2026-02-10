@@ -6,10 +6,7 @@ import {
   Sparkles,
   Check,
   ChevronRight,
-  MessageCircle,
   Clock,
-  SearchCode,
-  BarChart3,
   Brain,
   ArrowRight,
   Globe,
@@ -96,75 +93,58 @@ export function HeroSection() {
 }
 
 // ══════════════════════════════════════════
-// 痛点（2x2 卡片）
+// 场景区（一屏一个场景）
 // ══════════════════════════════════════════
-const PAIN_POINTS = [
+const SCENARIOS = [
   {
-    icon: MessageCircle,
-    pain: "晚上 10 点，孩子做题卡住了",
-    solution: "AI 私教 24 小时在线",
-    color: "#60a5fa",
+    title: "晚上十点，孩子卡住了，你帮不了",
+    scene: "孩子在刷 GESP 四级真题，卡在一道链表题上。离考试还有 3 周，他急得快哭了。你坐过去看——满屏的指针和地址，你一个字也看不懂。",
+    response: "凌晨两点也能问。AI 先问「你卡在哪一步？」，再用「火车车厢挂钩」类比讲链表操作，一步步引导。你不用懂 C++，孩子不用等天亮。",
   },
   {
-    icon: Clock,
-    pain: "每天学什么？练什么？毫无头绪",
-    solution: "AI 自动规划每日任务",
-    color: "#8b5cf6",
+    title: "用了 ChatGPT，反而更糟了",
+    scene: "你让孩子用 ChatGPT 辅导。它给了一段代码，用了 STL 的 reverse——那是六级内容。孩子照抄，AC 了，以为自己会了。但四级考试不让用 STL，他根本不会手写。",
+    response: "AI 知道你孩子目标是几级。四级的孩子问到六级内容，AI 会说「这个是六级的，等你过了四级我们再学」。而且永远不给完整代码，逼孩子自己写。",
   },
   {
-    icon: SearchCode,
-    pain: "同一个坑，掉了三次",
-    solution: "三问复盘 + 智能防错规则",
-    color: "#c084fc",
+    title: "「会了」——考场上一个字写不出来",
+    scene: "看完 DFS 的讲解视频，孩子说「懂了」。你让他关掉视频自己写一遍。20 分钟，一行代码没敲出来。GESP 考试要求从空白编辑器手写，看懂和写出来之间差了十万八千里。",
+    response: "AI 不信「懂了」两个字。它装成不会 DFS 的同学：「你能给我讲讲 vis 数组什么时候标记吗？如果要找所有路径呢？」——讲不出来的地方，就是上考场会卡住的地方。",
   },
   {
-    icon: BarChart3,
-    pain: "花了几千块，到底有没有用？",
-    solution: "数据全透明，一目了然",
-    color: "#f59e0b",
+    title: "数组越界，上周错了，这周又错了",
+    scene: "洛谷真题，数据范围 n ≤ 1000，孩子开了 a[100]。Runtime Error。你说「上次不是讲过了吗？」他说「我忘了」。你很崩溃。",
+    response: "第三次犯同样的错时，系统里已经有了一条规则：「数组大小要比数据范围多开 1」。以后每次提交前自动扫描，踩到就弹窗拦住。错得越多，铠甲越厚。",
+  },
+  {
+    title: "报了冲刺班，进度不是你家的进度",
+    scene: "GESP 冲刺班，8 个孩子一个班，800 块一节。老师讲到图论了，你家孩子排序还没搞明白。但课不能停，停了就跟不上了。",
+    response: "AI 看的是你孩子自己的数据：哪些知识点正确率低、哪种错误犯得多、费曼验证哪里卡住了。每天自动推任务，只补他的短板。每天不到 2 块钱。",
   },
 ];
 
-export function PainPointsSection() {
+export function ScenarioSections() {
   return (
-    <section id="pain" className="relative py-20 sm:py-28">
-      {/* 顶部渐变分割线 */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            这些场景，是不是你家的
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>日常？</span>
-          </h2>
-        </div>
-
-        <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
-          {PAIN_POINTS.map((point, i) => (
-            <div
-              key={i}
-              className="group relative rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent p-5 sm:p-6 transition-all duration-300 hover:bg-white/[0.04]"
-            >
-              <div className="flex items-start gap-4">
-                <div
-                  className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5 shadow-lg transition-shadow duration-300 group-hover:shadow-xl"
-                  style={{
-                    background: `${point.color}15`,
-                    border: `1px solid ${point.color}25`,
-                    boxShadow: `0 4px 12px ${point.color}10`,
-                  }}
-                >
-                  <point.icon className="w-4 h-4" style={{ color: point.color }} />
-                </div>
-                <div>
-                  <p className="text-sm text-white/30 mb-1.5">{point.pain}</p>
-                  <h3 className="text-base sm:text-lg font-semibold text-white">{point.solution}</h3>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+    <>
+      {SCENARIOS.map((s, i) => (
+        <section key={i} className="relative py-16 sm:py-24">
+          {i === 0 && (
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+          )}
+          <div className="max-w-xl mx-auto px-4 sm:px-6">
+            <h2 className="text-lg sm:text-xl font-bold text-white/90 mb-4 tracking-tight">
+              {s.title}
+            </h2>
+            <p className="text-sm sm:text-base text-white/30 leading-relaxed mb-6">
+              {s.scene}
+            </p>
+            <p className="text-sm sm:text-base text-white/60 leading-relaxed pl-4 border-l-2 border-l-[#5b6af0]/40">
+              {s.response}
+            </p>
+          </div>
+        </section>
+      ))}
+    </>
   );
 }
 
@@ -378,6 +358,13 @@ export function TrustSection() {
       }}
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            不是花架子，是
+            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>真材实料</span>
+          </h2>
+        </div>
+
         <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {TRUST_DATA.map((item, i) => (
             <TrustItem key={i} {...item} visible={visible} delay={i * 150} />
@@ -453,7 +440,8 @@ function TrustItem({
       </div>
       {/* 渐变短横线装饰 */}
       <div className="w-8 h-0.5 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] opacity-40" />
-      <p className="text-sm font-medium text-white/60">{label}</p>
+      <p className="text-sm font-medium text-white/60 mb-1">{label}</p>
+      <p className="text-xs text-white/25">{sub}</p>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import {
   Navbar,
   HeroSection,
-  PainPointsSection,
+  ScenarioSections,
   AIPreviewSection,
   TrustSection,
   PricingSection,
@@ -72,7 +72,7 @@ export default function LandingPage() {
 
       {/* ── 下方内容：普通布局，暗色背景遮盖 3D ── */}
       <div className="relative z-10 bg-[#06060f]">
-        <PainPointsSection />
+        <ScenarioSections />
         <AIPreviewSection />
         <TrustSection />
         <PricingSection />
