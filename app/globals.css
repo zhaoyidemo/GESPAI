@@ -498,3 +498,70 @@
     display: none !important;
   }
 }
+
+/* ============================================
+   Landing Page — 沉浸式着陆页专用样式
+   ============================================ */
+
+/* Hero 大标题：mix-blend-mode exclusion 与 3D 背景融合 */
+.landing-exclusion-text {
+  mix-blend-mode: exclusion;
+  color: white;
+}
+
+.landing-hero-title {
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.landing-subtitle {
+  mix-blend-mode: difference;
+}
+
+/* Scroll indicator pulse */
+.landing-scroll-indicator {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Pricing card glass background */
+.landing-pricing-card {
+  background: rgba(10, 10, 26, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Landing page root: ensure smooth scroll behavior for gsap */
+.landing-page-root {
+  scroll-behavior: auto !important;
+}
+
+/* Mobile fallback animations */
+@keyframes mobileParticleFloat {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-10px) translateX(-10px);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translateY(-30px) translateX(5px);
+    opacity: 0.5;
+  }
+}
+
+@keyframes mobileGlow {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 1;
+  }
+}
