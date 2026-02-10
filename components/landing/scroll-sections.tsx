@@ -10,9 +10,7 @@ import {
   Clock,
   SearchCode,
   BarChart3,
-  Zap,
   Brain,
-  Target,
   ArrowRight,
   Globe,
   ShieldCheck,
@@ -105,28 +103,24 @@ const PAIN_POINTS = [
     icon: MessageCircle,
     pain: "晚上 10 点，孩子做题卡住了",
     solution: "AI 私教 24 小时在线",
-    detail: "凌晨两点也能问。AI 用孩子听得懂的比喻讲解，一步步引导思考——而不是直接给答案。",
     color: "#60a5fa",
   },
   {
     icon: Clock,
     pain: "每天学什么？练什么？毫无头绪",
     solution: "AI 自动规划每日任务",
-    detail: "输入目标级别和考试日期，AI 分析薄弱点，每天自动推送「今天学什么 + 练哪题」。",
     color: "#8b5cf6",
   },
   {
     icon: SearchCode,
     pain: "同一个坑，掉了三次",
     solution: "三问复盘 + 智能防错规则",
-    detail: "错了哪？为什么错？怎么防？AI 自动生成防错规则，下次提交前主动提醒。",
     color: "#c084fc",
   },
   {
     icon: BarChart3,
     pain: "花了几千块，到底有没有用？",
     solution: "数据全透明，一目了然",
-    detail: "知识点掌握度、任务完成率、模拟考通过率——所有学习数据实时可见。",
     color: "#f59e0b",
   },
 ];
@@ -163,62 +157,13 @@ export function PainPointsSection() {
                 </div>
                 <div>
                   <p className="text-sm text-white/30 mb-1.5">{point.pain}</p>
-                  <h3 className="text-base sm:text-lg font-semibold text-white mb-1.5">{point.solution}</h3>
-                  <p className="text-xs sm:text-sm text-white/35 leading-relaxed">{point.detail}</p>
+                  <h3 className="text-base sm:text-lg font-semibold text-white">{point.solution}</h3>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
-    </section>
-  );
-}
-
-// ══════════════════════════════════════════
-// 三步上手
-// ══════════════════════════════════════════
-const STEPS = [
-  { step: "01", title: "注册 & 设定目标", desc: "选择目标 GESP 级别和考试日期，30 秒完成", icon: Target },
-  { step: "02", title: "AI 生成专属计划", desc: "AI 分析知识点缺口，自动排出每日学习 + 练题任务", icon: Brain },
-  { step: "03", title: "学、练、问、纠", desc: "跟着计划走：看讲解、做题、随时提问、错题自动复盘", icon: Zap },
-];
-
-export function HowItWorksSection() {
-  return (
-    <section className="relative py-20 sm:py-28">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            三步，让 AI 接管备考规划
-          </h2>
-        </div>
-
-        <div className="relative grid sm:grid-cols-3 gap-6 sm:gap-10">
-          {/* 桌面端步骤间虚线连接线 */}
-          <div className="hidden sm:block absolute top-6 left-[calc(33.33%+8px)] right-[calc(33.33%+8px)] border-t-2 border-dashed border-white/[0.06]" />
-          {STEPS.map((s, i) => (
-            <div key={i} className="relative text-center">
-              <div
-                className="text-5xl font-bold absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 select-none pointer-events-none bg-clip-text text-transparent"
-                style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #8b5cf6)", opacity: 0.1 }}
-              >
-                {s.step}
-              </div>
-              <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#5b6af0]/10 to-[#8b5cf6]/5 border border-white/[0.06] flex items-center justify-center mx-auto mb-4">
-                  <s.icon className="w-5 h-5 text-white/50" />
-                </div>
-                <h3 className="text-base font-semibold text-white mb-2">{s.title}</h3>
-                <p className="text-sm text-white/35 leading-relaxed">{s.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* 底部渐变分割线 */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
     </section>
   );
 }
@@ -309,14 +254,13 @@ export function AIPreviewSection() {
     <section className="py-20 sm:py-28">
       <div className="max-w-2xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
             孩子和{" "}
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>
               GESP.AI
             </span>{" "}
             私教对话的样子
           </h2>
-          <p className="text-sm text-white/30">不是冷冰冰的答案输出，是引导思考的教学对话</p>
         </div>
 
         {/* Tab buttons */}
@@ -434,13 +378,6 @@ export function TrustSection() {
       }}
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            不是花架子，是
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>真材实料</span>
-          </h2>
-        </div>
-
         <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {TRUST_DATA.map((item, i) => (
             <TrustItem key={i} {...item} visible={visible} delay={i * 150} />
@@ -516,8 +453,7 @@ function TrustItem({
       </div>
       {/* 渐变短横线装饰 */}
       <div className="w-8 h-0.5 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] opacity-40" />
-      <p className="text-sm font-medium text-white/60 mb-1">{label}</p>
-      <p className="text-xs text-white/25">{sub}</p>
+      <p className="text-sm font-medium text-white/60">{label}</p>
     </div>
   );
 }
@@ -554,9 +490,6 @@ export function PricingSection() {
               ，用一整个月
             </span>
           </h2>
-          <p className="text-white/30 max-w-lg mx-auto text-sm sm:text-base">
-            线下 C++ 培训 300-800 元/小时。GESP.AI 每天不到 2 块钱，不满意随时取消。
-          </p>
         </div>
 
         {/* Comparison table */}
@@ -698,17 +631,9 @@ export function CTASection() {
       {/* 大面积径向渐变光晕背景 */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(91,106,240,0.06)_0%,transparent_60%)] pointer-events-none" />
       <div className="relative text-center max-w-2xl mx-auto px-4 sm:px-6">
-        <p className="text-sm text-white/20 mb-4">还在犹豫？</p>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-white leading-tight">
-          别让孩子在备考路上<br />
-          <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>
-            孤军奋战
-          </span>
-        </h2>
-
         {/* 考试倒计时 */}
         {daysToExam !== null && (
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] mb-8">
             <Clock className="w-3 h-3 text-amber-400" />
             <span className="text-xs text-white/40">
               距离下一场 GESP 考试还有{" "}
@@ -723,15 +648,10 @@ export function CTASection() {
           </div>
         )}
 
-        <p className="text-base sm:text-lg text-white/30 mb-10 leading-relaxed">
-          下一场 GESP 考试不会等人。<br />
-          今天注册，AI 今天就开始帮孩子规划。
-        </p>
         <Link
           href="/register"
           className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] text-white font-medium text-lg hover:opacity-90 transition-all shadow-2xl shadow-[#5b6af0]/25 hover:shadow-[#5b6af0]/40"
         >
-          {/* 脉冲动画光圈 — 慢速 3s */}
           <span
             className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6]"
             style={{ animation: "pulse-slow 3s ease-in-out infinite" }}
@@ -739,7 +659,6 @@ export function CTASection() {
           <span className="relative">免费试用，立即开始</span>
           <ChevronRight className="relative w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
         </Link>
-        <p className="mt-4 text-xs text-white/15">无需付费 · 30 秒注册 · 随时取消</p>
       </div>
     </section>
   );

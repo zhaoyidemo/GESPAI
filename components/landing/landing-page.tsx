@@ -6,7 +6,6 @@ import {
   Navbar,
   HeroSection,
   PainPointsSection,
-  HowItWorksSection,
   AIPreviewSection,
   TrustSection,
   PricingSection,
@@ -75,7 +74,6 @@ export default function LandingPage() {
       <div className="relative z-10 bg-[#06060f]">
         <PainPointsSection />
         <AIPreviewSection />
-        <HowItWorksSection />
         <TrustSection />
         <PricingSection />
         <CTASection />
