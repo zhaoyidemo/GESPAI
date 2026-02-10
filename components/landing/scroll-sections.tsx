@@ -108,7 +108,7 @@ export function HeroSection() {
         </h1>
 
         {/* Subtitle with rotating word */}
-        <p className="text-xl sm:text-2xl lg:text-3xl text-white/60 font-light max-w-2xl mx-auto mb-3 leading-relaxed">
+        <p className="text-xl sm:text-2xl lg:text-3xl text-white/50 font-light max-w-2xl mx-auto mb-10 leading-relaxed">
           24 小时在线，随时
           <span
             className="inline-block min-w-[3em] text-transparent bg-clip-text font-medium transition-all duration-300"
@@ -121,34 +121,17 @@ export function HeroSection() {
             {ROTATING_WORDS[wordIdx]}
           </span>
         </p>
-        <p className="text-base sm:text-lg text-white/40 max-w-xl mx-auto mb-8 leading-relaxed font-medium">
-          别的家长花 ¥300-800/小时请老师。<br />
-          你的孩子有 ¥49/月的私教——永远耐心，从不下线。
-        </p>
-
-        {/* Price anchor + trust row */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.06]">
-            <span className="text-[11px] text-white/25 line-through">线下 1v1：¥300+/h</span>
-            <span className="text-[11px] text-white/15">→</span>
-            <span className="text-[11px] text-emerald-400/80 font-medium">GESP.AI：¥49/月</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.06]">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400/70" />
-            <span className="text-[11px] text-white/40">已有家长正在使用</span>
-          </div>
-        </div>
 
         {/* CTA */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex flex-col items-center gap-4">
           <Link
             href="/register"
-            className="group flex items-center gap-2 px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] text-white font-medium hover:opacity-90 transition-all shadow-xl shadow-[#5b6af0]/25 hover:shadow-[#5b6af0]/40"
+            className="group flex items-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] text-white font-medium hover:opacity-90 transition-all shadow-xl shadow-[#5b6af0]/25 hover:shadow-[#5b6af0]/40"
           >
-            免费试用，30 秒注册
+            免费体验
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </Link>
-          <span className="text-xs text-white/15">无需付费 · 无需绑卡</span>
+          <span className="text-xs text-white/20">无需付费 · 无需绑卡</span>
         </div>
       </div>
 
