@@ -7,7 +7,6 @@ import {
   HeroSection,
   ScenarioSections,
   AIPreviewSection,
-  TrustSection,
   PricingSection,
   CTASection,
   Footer,
@@ -74,7 +73,6 @@ export default function LandingPage() {
       <div className="relative z-10 bg-[#06060f]">
         <ScenarioSections />
         <AIPreviewSection />
-        <TrustSection />
         <PricingSection />
         <CTASection />
         <Footer />

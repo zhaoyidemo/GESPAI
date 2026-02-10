@@ -7,10 +7,7 @@ import {
   Check,
   ChevronRight,
   Clock,
-  Brain,
   ArrowRight,
-  Globe,
-  ShieldCheck,
 } from "lucide-react";
 
 // ══════════════════════════════════════════
@@ -485,133 +482,6 @@ export function AIPreviewSection() {
   );
 }
 
-// ══════════════════════════════════════════
-// 信任数据
-// ══════════════════════════════════════════
-const TRUST_DATA = [
-  { value: "1-8 级", label: "GESP 全级别覆盖", sub: "知识点逐条对齐官方大纲" },
-  { value: "184+", label: "洛谷真题在线练", sub: "题目与洛谷原题逐字一致" },
-  { value: "24h", label: "私教永不下线", sub: "凌晨两点也能问、也能练" },
-  { value: "¥2", label: "每天不到一瓶水", sub: "线下培训 1/6 的价格" },
-];
-
-const TECH_STRIP = [
-  { icon: Brain, text: "Claude AI 大模型驱动" },
-  { icon: Globe, text: "洛谷题库实时同步" },
-  { icon: ShieldCheck, text: "Judge0 在线评测" },
-];
-
-export function TrustSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.3 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <section
-      className="relative py-20 sm:py-28"
-      style={{
-        backgroundImage: "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
-        backgroundSize: "40px 40px",
-      }}
-    >
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-            不是花架子，是
-            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>真材实料</span>
-          </h2>
-        </div>
-
-        <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-          {TRUST_DATA.map((item, i) => (
-            <TrustItem key={i} {...item} visible={visible} delay={i * 150} />
-          ))}
-        </div>
-
-        {/* 技术保障条带 */}
-        <div className="mt-12 pt-8 border-t border-white/[0.04] flex flex-wrap items-center justify-center gap-8 sm:gap-12">
-          {TECH_STRIP.map((item, i) => (
-            <div key={i} className="flex items-center gap-2.5">
-              <item.icon className="w-4 h-4 text-white/20" />
-              <span className="text-xs text-white/25">{item.text}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function TrustItem({
-  value,
-  label,
-  sub,
-  visible,
-  delay,
-}: {
-  value: string;
-  label: string;
-  sub: string;
-  visible: boolean;
-  delay: number;
-}) {
-  const numRef = useRef<HTMLDivElement>(null);
-  const animatedRef = useRef(false);
-
-  useEffect(() => {
-    if (!visible || animatedRef.current || !numRef.current) return;
-    animatedRef.current = true;
-
-    const el = numRef.current;
-    const numericMatch = value.match(/(\d+)/);
-
-    if (numericMatch) {
-      const target = parseInt(numericMatch[1]);
-      const prefix = value.substring(0, value.indexOf(numericMatch[1]));
-      const suffix = value.substring(value.indexOf(numericMatch[1]) + numericMatch[1].length);
-      const duration = 1500;
-      const startTime = performance.now() + delay;
-
-      const step = (now: number) => {
-        const elapsed = now - startTime;
-        if (elapsed < 0) { requestAnimationFrame(step); return; }
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = `${prefix}${Math.round(eased * target)}${suffix}`;
-        if (progress < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    } else {
-      setTimeout(() => { el.textContent = value; }, delay);
-    }
-  }, [visible, value, delay]);
-
-  return (
-    <div className="text-center rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 sm:p-6">
-      <div
-        ref={numRef}
-        className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-2 bg-clip-text text-transparent"
-        style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #8b5cf6)" }}
-      >
-        &nbsp;
-      </div>
-      {/* 渐变短横线装饰 */}
-      <div className="w-8 h-0.5 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] opacity-40" />
-      <p className="text-sm font-medium text-white/60 mb-1">{label}</p>
-      <p className="text-xs text-white/25">{sub}</p>
-    </div>
-  );
-}
 
 // ══════════════════════════════════════════
 // 定价
