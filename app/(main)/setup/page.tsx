@@ -16,7 +16,7 @@ export default function SetupPage() {
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    targetLevel: "4",
+    targetLevel: "1",
     examDate: "2026-03-14",
     weeklyHours: "10",
   });
@@ -123,6 +123,9 @@ export default function SetupPage() {
                   <SelectValue placeholder="选择级别" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="1">GESP 1 级（入门）</SelectItem>
+                  <SelectItem value="2">GESP 2 级（基础）</SelectItem>
+                  <SelectItem value="3">GESP 3 级（初级）</SelectItem>
                   <SelectItem value="4">GESP 4 级（中级）</SelectItem>
                   <SelectItem value="5">GESP 5 级（进阶）</SelectItem>
                   <SelectItem value="6">GESP 6 级（高级）</SelectItem>
@@ -136,12 +139,22 @@ export default function SetupPage() {
                   GESP {formData.targetLevel} 级主要内容
                 </h4>
                 <p className="text-sm text-blue-700">
+                  {formData.targetLevel === "1" &&
+                    "顺序结构、分支结构、循环结构、基本数据类型、算术/逻辑/关系运算"}
+                  {formData.targetLevel === "2" &&
+                    "多层分支循环、数据类型转换、ASCII编码、数学函数"}
+                  {formData.targetLevel === "3" &&
+                    "进制转换、位运算、一维数组、字符串处理、枚举/模拟算法"}
                   {formData.targetLevel === "4" &&
                     "指针、二维数组、结构体、函数、递推算法、排序算法"}
                   {formData.targetLevel === "5" &&
                     "初等数论、高精度运算、链表、二分算法、递归、分治、贪心算法"}
                   {formData.targetLevel === "6" &&
                     "树、搜索算法(DFS/BFS)、简单动态规划、面向对象、栈和队列"}
+                  {formData.targetLevel === "7" &&
+                    "复杂动态规划(LIS/LCS/区间DP)、图的遍历、泛洪算法、哈希表"}
+                  {formData.targetLevel === "8" &&
+                    "排列组合、杨辉三角、最短路径、最小生成树、算法优化"}
                 </p>
               </div>
             </div>
