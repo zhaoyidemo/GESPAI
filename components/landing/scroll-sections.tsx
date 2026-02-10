@@ -65,68 +65,27 @@ export function Navbar({ scrolled }: { scrolled: boolean }) {
 // Hero（首屏，3D 背景）
 // ══════════════════════════════════════════
 
-const ROTATING_WORDS = ["答疑", "规划", "纠错", "陪练", "冲刺"];
-
 export function HeroSection() {
-  const [wordIdx, setWordIdx] = useState(0);
-  const [fadeIn, setFadeIn] = useState(true);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFadeIn(false);
-      setTimeout(() => {
-        setWordIdx((prev) => (prev + 1) % ROTATING_WORDS.length);
-        setFadeIn(true);
-      }, 300);
-    }, 2200);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16">
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        {/* Main title — two-line structure */}
-        <h1 className="landing-hero-title font-bold tracking-tighter leading-none mb-6">
-          <span className="block text-4xl sm:text-5xl lg:text-6xl text-white mb-2">
-            GESP 备考
-          </span>
-          <span
-            className="block text-5xl sm:text-6xl lg:text-7xl xl:text-8xl bg-clip-text text-transparent"
-            style={{
-              backgroundImage: "linear-gradient(135deg, #fff 0%, #c8ceff 50%, #a5b4fc 100%)",
-              filter: "drop-shadow(0 0 40px rgba(91,106,240,0.4))",
-            }}
-          >
-            你的 AI 编程私教
-          </span>
+        <h1
+          className="landing-hero-title text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter leading-none mb-12 bg-clip-text text-transparent"
+          style={{
+            backgroundImage: "linear-gradient(135deg, #fff 0%, #c8ceff 50%, #a5b4fc 100%)",
+            filter: "drop-shadow(0 0 40px rgba(91,106,240,0.4))",
+          }}
+        >
+          GESP AI私教
         </h1>
 
-        {/* Subtitle with rotating word */}
-        <p className="text-xl sm:text-2xl lg:text-3xl text-white/50 font-light max-w-2xl mx-auto mb-10 leading-relaxed">
-          24 小时在线，随时
-          <span
-            className="inline-block min-w-[3em] text-transparent bg-clip-text font-medium transition-all duration-300"
-            style={{
-              backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)",
-              opacity: fadeIn ? 1 : 0,
-              transform: fadeIn ? "translateY(0)" : "translateY(8px)",
-            }}
-          >
-            {ROTATING_WORDS[wordIdx]}
-          </span>
-        </p>
-
-        {/* CTA */}
-        <div className="flex flex-col items-center gap-4">
-          <Link
-            href="/register"
-            className="group flex items-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] text-white font-medium hover:opacity-90 transition-all shadow-xl shadow-[#5b6af0]/25 hover:shadow-[#5b6af0]/40"
-          >
-            免费体验
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
-          <span className="text-xs text-white/20">无需付费 · 无需绑卡</span>
-        </div>
+        <Link
+          href="/register"
+          className="group inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] text-white font-medium hover:opacity-90 transition-all shadow-xl shadow-[#5b6af0]/25 hover:shadow-[#5b6af0]/40"
+        >
+          免费体验
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+        </Link>
       </div>
 
       {/* Scroll indicator */}
