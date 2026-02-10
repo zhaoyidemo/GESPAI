@@ -123,26 +123,193 @@ const SCENARIOS = [
   },
 ];
 
+function ScenarioVisual({ index }: { index: number }) {
+  if (index === 0) return (
+    <div className="relative">
+      <div className="absolute -inset-16 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.06)_0%,transparent_70%)] pointer-events-none" />
+      <div className="relative rounded-2xl border border-white/[0.06] bg-[#0a0a1a] overflow-hidden shadow-2xl shadow-black/40">
+        <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-white/[0.04] bg-white/[0.02]">
+          <div className="flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]/60" /><div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]/60" /><div className="w-2.5 h-2.5 rounded-full bg-[#28c840]/60" /></div>
+          <span className="text-[10px] text-white/15 ml-2 font-mono">linked_list.cpp</span>
+          <span className="text-[10px] text-amber-400/40 ml-auto font-mono">22:47</span>
+        </div>
+        <div className="p-4 font-mono text-[11px] sm:text-xs leading-6">
+          <div><span className="text-purple-400/50">struct</span> <span className="text-blue-300/50">Node</span> <span className="text-white/20">{"{"}</span></div>
+          <div className="pl-4"><span className="text-blue-300/50">int</span> <span className="text-white/25">data;</span></div>
+          <div className="pl-4"><span className="text-blue-300/50">Node</span><span className="text-white/15">*</span> <span className="text-white/25">next;</span></div>
+          <div><span className="text-white/20">{"};"}</span></div>
+          <div className="h-3" />
+          <div><span className="text-white/25">p</span><span className="text-white/15">{"->"}</span><span className="text-white/25">next</span> <span className="text-white/15">=</span> <span className="text-white/25">q</span><span className="text-white/15">{"->"}</span><span className="text-white/25">next</span><span className="text-white/15">;</span></div>
+          <div><span className="text-white/25">q</span><span className="text-white/15">{"->"}</span><span className="text-white/25">next</span> <span className="text-white/15">=</span> <span className="text-white/25">p</span><span className="text-white/15">;</span></div>
+          <div className="mt-1"><span className="text-red-400/50">{"// 为什么输出还是错的？？"}</span></div>
+          <div className="mt-1 inline-block w-1.5 h-4 bg-white/25 animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
+
+  if (index === 1) return (
+    <div className="relative">
+      <div className="absolute -inset-16 bg-[radial-gradient(ellipse_at_center,rgba(239,68,68,0.05)_0%,transparent_70%)] pointer-events-none" />
+      <div className="relative space-y-3">
+        <div className="rounded-2xl border border-white/[0.06] bg-[#0a0a1a] p-4 shadow-2xl shadow-black/40">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-5 h-5 rounded-full bg-[#10a37f]/20 flex items-center justify-center"><span className="text-[9px] text-[#10a37f]/80">G</span></div>
+            <span className="text-[10px] text-white/20">ChatGPT</span>
+          </div>
+          <div className="font-mono text-[11px] leading-5">
+            <div className="text-green-400/30">#include &lt;algorithm&gt;</div>
+            <div className="text-white/20 mt-0.5">reverse(a, a + n);</div>
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20">
+            <span className="text-red-400 text-xs">&#9888;</span>
+            <span className="text-[11px] text-red-400/80 font-medium">超纲：六级内容</span>
+          </div>
+        </div>
+        <div className="rounded-xl border border-emerald-500/10 bg-emerald-500/[0.03] px-4 py-2.5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] text-emerald-400/50 font-mono">Accepted &#10003;</span>
+            <span className="text-[10px] text-white/15">但他真的会了吗？</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (index === 2) return (
+    <div className="relative">
+      <div className="absolute -inset-16 bg-[radial-gradient(ellipse_at_center,rgba(91,106,240,0.05)_0%,transparent_70%)] pointer-events-none" />
+      <div className="relative rounded-2xl border border-white/[0.06] bg-[#0a0a1a] overflow-hidden shadow-2xl shadow-black/40">
+        <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-white/[0.04] bg-white/[0.02]">
+          <div className="flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]/60" /><div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]/60" /><div className="w-2.5 h-2.5 rounded-full bg-[#28c840]/60" /></div>
+          <span className="text-[10px] text-white/15 ml-2 font-mono">dfs_solution.cpp</span>
+          <span className="text-[10px] text-white/10 ml-auto font-mono">GESP 考试模式</span>
+        </div>
+        <div className="p-4 min-h-[140px] flex items-start">
+          <div className="font-mono text-xs">
+            <span className="text-white/10 select-none mr-3">1</span>
+            <span className="inline-block w-1.5 h-4 bg-white/30 animate-pulse" />
+          </div>
+        </div>
+        <div className="px-4 py-3 border-t border-white/[0.04] bg-white/[0.01]">
+          <span className="text-[10px] text-white/10 font-mono">已过 20:00 &middot; 0 行代码</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (index === 3) return (
+    <div className="relative">
+      <div className="absolute -inset-16 bg-[radial-gradient(ellipse_at_center,rgba(239,68,68,0.06)_0%,transparent_70%)] pointer-events-none" />
+      <div className="relative rounded-2xl border border-white/[0.06] bg-[#0a0a1a] overflow-hidden shadow-2xl shadow-black/40">
+        <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-white/[0.04] bg-white/[0.02]">
+          <span className="text-[10px] text-white/15 font-mono">提交记录</span>
+        </div>
+        <div className="p-3 space-y-2 font-mono text-[11px]">
+          {["3 月 5 日", "3 月 12 日", "3 月 19 日"].map((d) => (
+            <div key={d} className="flex items-center justify-between px-3 py-2 rounded-lg bg-red-500/[0.05] border border-red-500/10">
+              <span className="text-red-400/60">Runtime Error</span>
+              <span className="text-white/10">{d}</span>
+            </div>
+          ))}
+          <div className="mt-1 px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+            <div className="text-white/20 text-[10px]">原因：a[100]，数据范围 n &#8804; 1000</div>
+            <div className="text-amber-400/40 text-[10px] mt-1">同一个错误，第 3 次了</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="relative">
+      <div className="absolute -inset-16 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.06)_0%,transparent_70%)] pointer-events-none" />
+      <div className="relative rounded-2xl border border-white/[0.06] bg-[#0a0a1a] overflow-hidden shadow-2xl shadow-black/40">
+        <div className="flex items-center gap-1.5 px-4 py-2.5 border-b border-white/[0.04] bg-white/[0.02]">
+          <span className="text-[10px] text-white/15 font-mono">GESP 冲刺班进度</span>
+        </div>
+        <div className="p-4 space-y-4">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] text-white/25">班级进度</span>
+              <span className="text-[10px] text-white/15 font-mono">图论 &middot; DFS / BFS</span>
+            </div>
+            <div className="h-1.5 rounded-full bg-white/[0.04]"><div className="h-full rounded-full bg-white/15 w-[75%]" /></div>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[10px] text-amber-400/50">你家孩子</span>
+              <span className="text-[10px] text-amber-400/30 font-mono">排序 &middot; 还没搞明白</span>
+            </div>
+            <div className="h-1.5 rounded-full bg-white/[0.04]"><div className="h-full rounded-full bg-amber-400/30 w-[30%]" /></div>
+          </div>
+          <div className="h-px bg-white/[0.04]" />
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] text-white/15">&#165;800 / 节 &middot; 8 人班</span>
+            <span className="text-[10px] text-white/10">课不能停</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ScenarioBlock({ scenario, index }: { scenario: typeof SCENARIOS[number]; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const isEven = index % 2 === 0;
+
+  return (
+    <section ref={ref} className="relative min-h-screen flex items-center overflow-hidden py-20">
+      {/* Large background number */}
+      <div className={`absolute ${isEven ? "left-4 sm:left-12" : "right-4 sm:right-12"} top-1/2 -translate-y-1/2 text-[10rem] sm:text-[14rem] lg:text-[18rem] font-black text-white/[0.02] leading-none select-none pointer-events-none`}>
+        {String(index + 1).padStart(2, "0")}
+      </div>
+
+      <div className={`relative max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center transition-all duration-700 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
+        <div className={isEven ? "lg:order-1" : "lg:order-2"}>
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-xs font-mono tracking-widest text-white/15">{String(index + 1).padStart(2, "0")}</span>
+            <div className="h-px w-12 bg-gradient-to-r from-[#5b6af0]/30 to-transparent" />
+          </div>
+          <h2 className="text-2xl sm:text-3xl lg:text-[2rem] font-bold text-white/90 mb-6 tracking-tight leading-snug">
+            {scenario.title}
+          </h2>
+          <p className="text-base sm:text-lg text-white/30 leading-relaxed mb-8">
+            {scenario.scene}
+          </p>
+          <p className="text-base sm:text-lg text-white/60 leading-relaxed pl-5 border-l-2 border-l-[#5b6af0]/40">
+            {scenario.response}
+          </p>
+        </div>
+
+        <div className={`${isEven ? "lg:order-2" : "lg:order-1"} hidden sm:block`}>
+          <ScenarioVisual index={index} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function ScenarioSections() {
   return (
     <>
       {SCENARIOS.map((s, i) => (
-        <section key={i} className="relative py-16 sm:py-24">
-          {i === 0 && (
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-          )}
-          <div className="max-w-xl mx-auto px-4 sm:px-6">
-            <h2 className="text-lg sm:text-xl font-bold text-white/90 mb-4 tracking-tight">
-              {s.title}
-            </h2>
-            <p className="text-sm sm:text-base text-white/30 leading-relaxed mb-6">
-              {s.scene}
-            </p>
-            <p className="text-sm sm:text-base text-white/60 leading-relaxed pl-4 border-l-2 border-l-[#5b6af0]/40">
-              {s.response}
-            </p>
-          </div>
-        </section>
+        <ScenarioBlock key={i} scenario={s} index={i} />
       ))}
     </>
   );
