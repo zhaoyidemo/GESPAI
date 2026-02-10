@@ -85,12 +85,6 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16">
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        {/* Top badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm mb-8">
-          <Zap className="w-3 h-3 text-amber-400" />
-          <span className="text-xs text-white/50">GESP.AI · GESP C++ 1-8 级 · 184+ 洛谷真题</span>
-        </div>
-
         {/* Main title — two-line structure */}
         <h1 className="landing-hero-title font-bold tracking-tighter leading-none mb-6">
           <span className="block text-4xl sm:text-5xl lg:text-6xl text-white mb-2">
@@ -186,7 +180,6 @@ export function PainPointsSection() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <p className="text-xs tracking-widest uppercase text-white/25 mb-3">这些烦恼，你一定不陌生</p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
             这些场景，是不是你家的
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>日常？</span>
@@ -239,7 +232,6 @@ export function HowItWorksSection() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <p className="text-xs tracking-widest uppercase text-white/25 mb-3">如何开始</p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
             三步，让 AI 接管备考规划
           </h2>
@@ -359,7 +351,6 @@ export function AIPreviewSection() {
     <section className="py-20 sm:py-28">
       <div className="max-w-2xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-10">
-          <p className="text-xs tracking-widest uppercase text-white/25 mb-3">真实体验</p>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">
             孩子和{" "}
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>
@@ -486,7 +477,6 @@ export function TrustSection() {
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <p className="text-xs tracking-widest uppercase text-white/25 mb-3">硬实力</p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
             不是花架子，是
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>真材实料</span>
@@ -600,7 +590,6 @@ export function PricingSection() {
     <section id="pricing" className="py-20 sm:py-28">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <p className="text-xs tracking-widest uppercase text-white/25 mb-3">简单透明</p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3 text-white">
             一节线下课的钱
             <span className="bg-clip-text text-transparent ml-1" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #8b5cf6)" }}>
