@@ -192,37 +192,36 @@ const PAIN_POINTS = [
 
 export function PainPointsSection() {
   return (
-    <section id="pain" className="landing-section relative py-16 sm:py-24">
+    <section id="pain" className="landing-section relative py-12 sm:py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section header */}
-        <SectionReveal>
-          <div className="text-center mb-8 sm:mb-16">
-            <p className="text-xs tracking-widest uppercase text-white/25 mb-3">为什么选择 GESP.AI</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4">
-              这些场景，是不是你家的
-              <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>
-                日常？
-              </span>
-            </h2>
-          </div>
-        </SectionReveal>
+        <div className="text-center mb-8 sm:mb-10">
+          <p className="text-xs tracking-widest uppercase text-white/25 mb-3">为什么选择 GESP.AI</p>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+            这些场景，是不是你家的
+            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>
+              日常？
+            </span>
+          </h2>
+        </div>
 
-        {PAIN_POINTS.map((point, i) => (
-          <PainPointItem key={i} {...point} index={i} />
-        ))}
+        {/* 2x2 compact grid */}
+        <div className="grid sm:grid-cols-2 gap-4 sm:gap-5">
+          {PAIN_POINTS.map((point, i) => (
+            <PainPointCard key={i} {...point} />
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-function PainPointItem({
+function PainPointCard({
   icon: Icon,
   pain,
-  scene,
   solution,
   detail,
   color,
-  index,
 }: {
   icon: React.ElementType;
   pain: string;
@@ -230,70 +229,21 @@ function PainPointItem({
   solution: string;
   detail: string;
   color: string;
-  index: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  const isLeft = index % 2 === 0;
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setVisible(true);
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={ref}
-      className={`flex flex-col ${
-        isLeft ? "lg:flex-row" : "lg:flex-row-reverse"
-      } items-start lg:items-center gap-8 lg:gap-16 py-12 sm:py-20`}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible
-          ? "translateY(0)"
-          : `translateY(40px) translateX(${isLeft ? "-20px" : "20px"})`,
-        transition: "all 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
-      }}
-    >
-      {/* Pain side */}
-      <div className={`flex-1 ${isLeft ? "lg:text-right" : "lg:text-left"}`}>
-        <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white/40 leading-snug mb-3">
-          {pain}
-        </p>
-        <p className="text-sm sm:text-base text-white/20 leading-relaxed max-w-md" style={{ marginLeft: isLeft ? "auto" : undefined }}>
-          {scene}
-        </p>
-      </div>
-
-      {/* Divider */}
-      <div className="hidden lg:flex flex-col items-center gap-1 shrink-0">
-        <div className="w-px h-8 bg-gradient-to-b from-transparent" style={{ background: `linear-gradient(to bottom, transparent, ${color}40)` }} />
-        <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: `${color}15`, border: `1px solid ${color}30` }}>
+    <div className="group relative rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-5 sm:p-6 transition-all duration-300 hover:bg-white/[0.04] hover:border-white/[0.1]">
+      <div className="flex items-start gap-4">
+        <div
+          className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+          style={{ background: `${color}15`, border: `1px solid ${color}25` }}
+        >
           <Icon className="w-4 h-4" style={{ color }} />
         </div>
-        <div className="w-px h-8" style={{ background: `linear-gradient(to bottom, ${color}40, transparent)` }} />
-      </div>
-
-      {/* Solution side */}
-      <div className={`flex-1 ${isLeft ? "lg:text-left" : "lg:text-right"}`}>
-        <div className="lg:hidden flex items-center gap-2 mb-3">
-          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: `${color}15` }}>
-            <Icon className="w-3 h-3" style={{ color }} />
-          </div>
-          <ArrowRight className="w-3 h-3 text-white/20" />
+        <div className="flex-1 min-w-0">
+          <p className="text-sm text-white/30 mb-1.5 leading-snug">{pain}</p>
+          <h3 className="text-base sm:text-lg font-semibold text-white mb-1.5">{solution}</h3>
+          <p className="text-xs sm:text-sm text-white/35 leading-relaxed">{detail}</p>
         </div>
-        <h3 className="text-xl sm:text-2xl font-semibold text-white mb-2">{solution}</h3>
-        <p className="text-sm sm:text-base text-white/40 leading-relaxed max-w-md" style={{ marginRight: !isLeft ? "auto" : undefined }}>
-          {detail}
-        </p>
       </div>
     </div>
   );
