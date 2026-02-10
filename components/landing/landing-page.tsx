@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import {
   Navbar,
   HeroSection,
   PainPointsSection,
+  HowItWorksSection,
+  AIPreviewSection,
   TrustSection,
   PricingSection,
   CTASection,
@@ -13,7 +15,6 @@ import {
 } from "./scroll-sections";
 import { useMouseParallax } from "./use-mouse-parallax";
 
-// Dynamic import for Three.js scene (SSR disabled)
 const BrainScene = dynamic(() => import("./brain-scene"), { ssr: false });
 const MobileFallback = dynamic(() => import("./mobile-fallback"), { ssr: false });
 
@@ -40,7 +41,7 @@ export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const { mouseRef } = useMouseParallax(0.03);
+  useMouseParallax(0.03);
 
   // Scroll tracking with gsap ScrollTrigger
   useEffect(() => {
@@ -78,18 +79,11 @@ export default function LandingPage() {
     };
   }, []);
 
-  // Hero parallax offset
-  const heroParallaxStyle = !isMobile
-    ? {
-        transform: `translate(${mouseRef.current.x * -8}px, ${mouseRef.current.y * -8}px)`,
-      }
-    : undefined;
-
   return (
     <div
       ref={containerRef}
       className="landing-page-root min-h-screen bg-[#06060f] text-white overflow-x-hidden"
-      style={{ height: "550vh" }}
+      style={{ height: "600vh" }}
     >
       {/* 3D Background */}
       {isMobile ? <MobileFallback /> : <BrainScene scrollProgress={scrollProgress} />}
@@ -99,56 +93,78 @@ export default function LandingPage() {
 
       {/* Scroll-driven HTML overlay sections */}
       <div className="relative z-10">
-        {/* Hero (0-15%) */}
+        {/* Hero (0-12%) */}
         <div
           className="min-h-screen flex items-center justify-center sticky top-0"
           style={{
-            opacity: scrollProgress < 0.15 ? 1 - scrollProgress / 0.15 * 0.3 : Math.max(0, 1 - (scrollProgress - 0.15) / 0.05),
-            pointerEvents: scrollProgress > 0.2 ? "none" : "auto",
+            opacity: scrollProgress < 0.10 ? 1 : Math.max(0, 1 - (scrollProgress - 0.10) / 0.04),
+            pointerEvents: scrollProgress > 0.15 ? "none" : "auto",
           }}
         >
           <HeroSection />
         </div>
 
-        {/* Pain Points (20-50%) */}
+        {/* Pain Points (15-42%) */}
         <div
           style={{
-            opacity: scrollProgress >= 0.18 && scrollProgress <= 0.55 ? 1 : 0,
+            opacity: scrollProgress >= 0.13 && scrollProgress <= 0.48 ? 1 : 0,
             transition: "opacity 0.3s ease",
-            pointerEvents: scrollProgress >= 0.18 && scrollProgress <= 0.55 ? "auto" : "none",
+            pointerEvents: scrollProgress >= 0.13 && scrollProgress <= 0.48 ? "auto" : "none",
           }}
         >
           <PainPointsSection />
         </div>
 
-        {/* Trust Data (60-75%) */}
+        {/* How It Works (42-52%) */}
         <div
           style={{
-            opacity: scrollProgress >= 0.55 && scrollProgress <= 0.80 ? 1 : 0,
+            opacity: scrollProgress >= 0.40 && scrollProgress <= 0.56 ? 1 : 0,
             transition: "opacity 0.3s ease",
-            pointerEvents: scrollProgress >= 0.55 && scrollProgress <= 0.80 ? "auto" : "none",
+            pointerEvents: scrollProgress >= 0.40 && scrollProgress <= 0.56 ? "auto" : "none",
+          }}
+        >
+          <HowItWorksSection />
+        </div>
+
+        {/* AI Preview (50-62%) */}
+        <div
+          style={{
+            opacity: scrollProgress >= 0.50 && scrollProgress <= 0.65 ? 1 : 0,
+            transition: "opacity 0.3s ease",
+            pointerEvents: scrollProgress >= 0.50 && scrollProgress <= 0.65 ? "auto" : "none",
+          }}
+        >
+          <AIPreviewSection />
+        </div>
+
+        {/* Trust Data (60-74%) */}
+        <div
+          style={{
+            opacity: scrollProgress >= 0.60 && scrollProgress <= 0.78 ? 1 : 0,
+            transition: "opacity 0.3s ease",
+            pointerEvents: scrollProgress >= 0.60 && scrollProgress <= 0.78 ? "auto" : "none",
           }}
         >
           <TrustSection />
         </div>
 
-        {/* Pricing (85-95%) */}
+        {/* Pricing (76-92%) */}
         <div
           style={{
-            opacity: scrollProgress >= 0.80 && scrollProgress <= 0.97 ? 1 : 0,
+            opacity: scrollProgress >= 0.74 && scrollProgress <= 0.94 ? 1 : 0,
             transition: "opacity 0.3s ease",
-            pointerEvents: scrollProgress >= 0.80 && scrollProgress <= 0.97 ? "auto" : "none",
+            pointerEvents: scrollProgress >= 0.74 && scrollProgress <= 0.94 ? "auto" : "none",
           }}
         >
           <PricingSection />
         </div>
 
-        {/* CTA + Footer (95-100%) */}
+        {/* CTA + Footer (90-100%) */}
         <div
           style={{
-            opacity: scrollProgress >= 0.92 ? 1 : 0,
+            opacity: scrollProgress >= 0.90 ? 1 : 0,
             transition: "opacity 0.3s ease",
-            pointerEvents: scrollProgress >= 0.92 ? "auto" : "none",
+            pointerEvents: scrollProgress >= 0.90 ? "auto" : "none",
           }}
         >
           <CTASection />
