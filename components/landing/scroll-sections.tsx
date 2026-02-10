@@ -37,11 +37,8 @@ export function Navbar({ scrolled }: { scrolled: boolean }) {
         </Link>
         <div className="hidden sm:flex items-center gap-8">
           <Link href="/ladder" className="text-sm text-white/40 hover:text-white/80 transition-colors">
-            天梯排行
+            天梯
           </Link>
-          <a href="#pain" className="text-sm text-white/40 hover:text-white/80 transition-colors">
-            为什么选我们
-          </a>
           <a href="#pricing" className="text-sm text-white/40 hover:text-white/80 transition-colors">
             定价
           </a>
@@ -94,11 +91,17 @@ export function HeroSection() {
 
         {/* Main title */}
         <h1 className="landing-hero-title text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter leading-none mb-6">
-          <span className="landing-exclusion-text">GESP.AI</span>
+          <span
+            className="bg-clip-text text-transparent"
+            style={{
+              backgroundImage: "linear-gradient(135deg, #fff 0%, #c8ceff 50%, #a5b4fc 100%)",
+              filter: "drop-shadow(0 0 40px rgba(91,106,240,0.4))",
+            }}
+          >GESP.AI</span>
         </h1>
 
         {/* Subtitle with rotating word */}
-        <p className="text-xl sm:text-2xl lg:text-3xl text-white/60 font-light max-w-2xl mx-auto mb-3 landing-subtitle leading-relaxed">
+        <p className="text-xl sm:text-2xl lg:text-3xl text-white/60 font-light max-w-2xl mx-auto mb-3 leading-relaxed">
           超算大脑，24 小时
           <span
             className="inline-block min-w-[3em] text-transparent bg-clip-text font-medium transition-all duration-300"
@@ -188,7 +191,9 @@ const PAIN_POINTS = [
 
 export function PainPointsSection() {
   return (
-    <section id="pain" className="py-20 sm:py-28">
+    <section id="pain" className="relative py-20 sm:py-28">
+      {/* 顶部渐变分割线 */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <p className="text-xs tracking-widest uppercase text-white/25 mb-3">为什么选择 GESP.AI</p>
@@ -202,12 +207,16 @@ export function PainPointsSection() {
           {PAIN_POINTS.map((point, i) => (
             <div
               key={i}
-              className="group relative rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 sm:p-6 transition-colors duration-200 hover:bg-white/[0.04]"
+              className="group relative rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-transparent p-5 sm:p-6 transition-all duration-300 hover:bg-white/[0.04]"
             >
               <div className="flex items-start gap-4">
                 <div
-                  className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
-                  style={{ background: `${point.color}15`, border: `1px solid ${point.color}25` }}
+                  className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 mt-0.5 shadow-lg transition-shadow duration-300 group-hover:shadow-xl"
+                  style={{
+                    background: `${point.color}15`,
+                    border: `1px solid ${point.color}25`,
+                    boxShadow: `0 4px 12px ${point.color}10`,
+                  }}
                 >
                   <point.icon className="w-4 h-4" style={{ color: point.color }} />
                 </div>
@@ -236,8 +245,8 @@ const STEPS = [
 
 export function HowItWorksSection() {
   return (
-    <section className="py-20 sm:py-28">
-      <div className="absolute left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+    <section className="relative py-20 sm:py-28">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <p className="text-xs tracking-widest uppercase text-white/25 mb-3">如何开始</p>
@@ -246,14 +255,19 @@ export function HowItWorksSection() {
           </h2>
         </div>
 
-        <div className="grid sm:grid-cols-3 gap-6 sm:gap-10">
+        <div className="relative grid sm:grid-cols-3 gap-6 sm:gap-10">
+          {/* 桌面端步骤间虚线连接线 */}
+          <div className="hidden sm:block absolute top-6 left-[calc(33.33%+8px)] right-[calc(33.33%+8px)] border-t-2 border-dashed border-white/[0.06]" />
           {STEPS.map((s, i) => (
             <div key={i} className="relative text-center">
-              <div className="text-5xl font-bold text-white/[0.04] absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 select-none pointer-events-none">
+              <div
+                className="text-5xl font-bold absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 select-none pointer-events-none bg-clip-text text-transparent"
+                style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #8b5cf6)", opacity: 0.1 }}
+              >
                 {s.step}
               </div>
               <div className="relative">
-                <div className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.06] flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#5b6af0]/10 to-[#8b5cf6]/5 border border-white/[0.06] flex items-center justify-center mx-auto mb-4">
                   <s.icon className="w-5 h-5 text-white/50" />
                 </div>
                 <h3 className="text-base font-semibold text-white mb-2">{s.title}</h3>
@@ -263,6 +277,8 @@ export function HowItWorksSection() {
           ))}
         </div>
       </div>
+      {/* 底部渐变分割线 */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
     </section>
   );
 }
@@ -316,12 +332,15 @@ export function AIPreviewSection() {
         </div>
 
         {/* Chat mockup */}
-        <div ref={ref} className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
+        <div className="relative">
+          {/* 外围径向渐变光晕 */}
+          <div className="absolute -inset-20 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(91,106,240,0.08)_0%,transparent_70%)] pointer-events-none" />
+          <div ref={ref} className="relative rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
           <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.04]">
             <div className="flex gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-white/[0.08]" />
-              <div className="w-2.5 h-2.5 rounded-full bg-white/[0.08]" />
-              <div className="w-2.5 h-2.5 rounded-full bg-white/[0.08]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]/70" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]/70" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]/70" />
             </div>
             <span className="text-[10px] text-white/20 font-mono ml-2">GESP.AI 私教 · DFS 深度优先搜索</span>
           </div>
@@ -341,8 +360,8 @@ export function AIPreviewSection() {
                 <div
                   className={`text-xs sm:text-sm leading-relaxed px-3 py-2.5 rounded-2xl max-w-[85%] ${
                     line.role === "ai"
-                      ? "bg-white/[0.04] text-white/60"
-                      : "bg-[#5b6af0]/15 text-white/70"
+                      ? "bg-white/[0.04] text-white/60 border-l-2 border-l-[#5b6af0]/50"
+                      : "bg-[#5b6af0]/15 text-white/70 border-r-2 border-r-[#5b6af0]/40"
                   }`}
                 >
                   {line.text}
@@ -363,6 +382,7 @@ export function AIPreviewSection() {
               </div>
             )}
           </div>
+        </div>
         </div>
       </div>
     </section>
@@ -395,7 +415,13 @@ export function TrustSection() {
   }, []);
 
   return (
-    <section className="py-20 sm:py-28">
+    <section
+      className="relative py-20 sm:py-28"
+      style={{
+        backgroundImage: "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+        backgroundSize: "40px 40px",
+      }}
+    >
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <p className="text-xs tracking-widest uppercase text-white/25 mb-3">硬实力</p>
@@ -405,7 +431,7 @@ export function TrustSection() {
           </h2>
         </div>
 
-        <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+        <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {TRUST_DATA.map((item, i) => (
             <TrustItem key={i} {...item} visible={visible} delay={i * 150} />
           ))}
@@ -460,7 +486,7 @@ function TrustItem({
   }, [visible, value, delay]);
 
   return (
-    <div className="text-center">
+    <div className="text-center rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 sm:p-6">
       <div
         ref={numRef}
         className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-2 bg-clip-text text-transparent"
@@ -468,6 +494,8 @@ function TrustItem({
       >
         &nbsp;
       </div>
+      {/* 渐变短横线装饰 */}
+      <div className="w-8 h-0.5 mx-auto mb-3 rounded-full bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] opacity-40" />
       <p className="text-sm font-medium text-white/60 mb-1">{label}</p>
       <p className="text-xs text-white/25">{sub}</p>
     </div>
@@ -513,22 +541,26 @@ export function PricingSection() {
         </div>
 
         {/* Price comparison bar */}
-        <div className="flex items-center justify-center gap-4 mb-10">
-          <div className="flex items-center gap-2 text-xs">
-            <div className="h-2 w-32 sm:w-48 rounded-full bg-white/[0.06] overflow-hidden">
-              <div className="h-full w-full rounded-full bg-gradient-to-r from-red-500/50 to-red-500/30" />
+        <div className="flex flex-col items-center gap-3 mb-10 max-w-md mx-auto">
+          <div className="w-full flex items-center gap-3">
+            <span className="text-xs text-white/25 w-20 text-right shrink-0">线下 1v1</span>
+            <div className="flex-1 h-3 rounded-full bg-white/[0.04] overflow-hidden">
+              <div className="h-full w-full rounded-full bg-gradient-to-r from-white/[0.08] to-white/[0.04]" />
             </div>
-            <span className="text-white/25">线下 ¥300+/h</span>
+            <span className="text-xs text-white/30 font-medium w-20 shrink-0">¥300+/h</span>
           </div>
-          <div className="flex items-center gap-2 text-xs">
-            <div className="h-2 w-4 sm:w-6 rounded-full bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6]" />
-            <span className="text-white/50 font-medium">GESP.AI ¥49/月</span>
+          <div className="w-full flex items-center gap-3">
+            <span className="text-xs text-white/50 w-20 text-right shrink-0 font-medium">GESP.AI</span>
+            <div className="flex-1 h-3 rounded-full bg-white/[0.04] overflow-hidden">
+              <div className="h-full w-[16%] rounded-full bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6]" />
+            </div>
+            <span className="text-xs text-emerald-400/80 font-semibold w-20 shrink-0">¥49/月</span>
           </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-5 items-start">
           {PRICING_PLANS.map((plan, i) => (
-            <div key={i} className={`relative ${plan.popular ? "lg:-mt-4" : ""}`}>
+            <div key={i} className={`group relative ${plan.popular ? "lg:-mt-4" : ""}`}>
               {plan.popular && (
                 <div
                   className="absolute -inset-[1px] rounded-2xl"
@@ -539,7 +571,7 @@ export function PricingSection() {
                   }}
                 />
               )}
-              {!plan.popular && <div className="absolute -inset-[1px] rounded-2xl border border-white/[0.06]" />}
+              {!plan.popular && <div className="absolute -inset-[1px] rounded-2xl border border-white/[0.06] transition-colors duration-300 group-hover:border-white/[0.12]" />}
               <div className="landing-pricing-card relative rounded-2xl p-6 sm:p-8 h-full flex flex-col">
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
@@ -556,7 +588,7 @@ export function PricingSection() {
                   </div>
                   <p className="text-xs text-emerald-400/70 mt-2">{plan.subtitle}</p>
                 </div>
-                <ul className="space-y-3 mb-8 flex-1">
+                <ul className="space-y-3.5 mb-8 flex-1">
                   {plan.features.map((f, j) => (
                     <li key={j} className="flex items-start gap-2.5 text-sm text-white/60">
                       <Check className="w-4 h-4 text-emerald-400/70 shrink-0 mt-0.5" strokeWidth={2.5} />
@@ -588,8 +620,10 @@ export function PricingSection() {
 // ══════════════════════════════════════════
 export function CTASection() {
   return (
-    <section className="py-24 sm:py-32">
-      <div className="text-center max-w-2xl mx-auto px-4 sm:px-6">
+    <section className="relative py-24 sm:py-32 overflow-hidden">
+      {/* 大面积径向渐变光晕背景 */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(91,106,240,0.06)_0%,transparent_60%)] pointer-events-none" />
+      <div className="relative text-center max-w-2xl mx-auto px-4 sm:px-6">
         <p className="text-sm text-white/20 mb-4">还在犹豫？</p>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4 text-white leading-tight">
           别让孩子在备考路上<br />
@@ -603,10 +637,12 @@ export function CTASection() {
         </p>
         <Link
           href="/register"
-          className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] text-white font-medium text-lg hover:opacity-90 transition-all shadow-2xl shadow-[#5b6af0]/25 hover:shadow-[#5b6af0]/40"
+          className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] text-white font-medium text-lg hover:opacity-90 transition-all shadow-2xl shadow-[#5b6af0]/25 hover:shadow-[#5b6af0]/40"
         >
-          免费试用，立即开始
-          <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+          {/* 脉冲动画光圈 */}
+          <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] animate-ping opacity-20" />
+          <span className="relative">免费试用，立即开始</span>
+          <ChevronRight className="relative w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
         </Link>
         <p className="mt-4 text-xs text-white/15">无需付费 · 30 秒注册 · 随时取消</p>
       </div>
@@ -625,7 +661,7 @@ export function Footer() {
           <span className="text-xs text-white/25">&copy; 2025 GESP.AI. All rights reserved.</span>
         </div>
         <div className="flex items-center gap-6">
-          <Link href="/ladder" className="text-xs text-white/20 hover:text-white/40 transition-colors">天梯排行</Link>
+          <Link href="/ladder" className="text-xs text-white/20 hover:text-white/40 transition-colors">天梯</Link>
           <Link href="/login" className="text-xs text-white/20 hover:text-white/40 transition-colors">登录</Link>
           <Link href="/register" className="text-xs text-white/20 hover:text-white/40 transition-colors">注册</Link>
         </div>
