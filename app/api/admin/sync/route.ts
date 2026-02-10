@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
     }
   } catch (error) {
     console.error("Sync check error:", error);
-    return NextResponse.json({ error: String(error) }, { status: 500 });
+    return NextResponse.json({ error: "同步检查失败" }, { status: 500 });
   }
 }
 
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     }
   } catch (error) {
     console.error("Sync error:", error);
-    return NextResponse.json({ error: String(error) }, { status: 500 });
+    return NextResponse.json({ error: "同步执行失败" }, { status: 500 });
   }
 }
 

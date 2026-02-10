@@ -1,6 +1,15 @@
 "use client";
 
-import Editor from "@monaco-editor/react";
+import dynamic from "next/dynamic";
+
+const Editor = dynamic(() => import("@monaco-editor/react"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-full w-full flex items-center justify-center bg-[#1e1e1e] text-gray-400 text-sm">
+      编辑器加载中...
+    </div>
+  ),
+});
 
 interface CodeEditorProps {
   value: string;

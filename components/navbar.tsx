@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +27,7 @@ import {
   Database,
   BookX,
   MessageSquareCode,
+  ClipboardList,
 } from "lucide-react";
 
 const navItems = [
@@ -33,11 +35,32 @@ const navItems = [
   { href: "/map", label: "知识点", icon: BookOpen },
   { href: "/problem", label: "题库", icon: Code },
   { href: "/error-book", label: "错题本", icon: BookX },
+  { href: "/mock-exam", label: "模拟考试", icon: ClipboardList },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const [streakDays, setStreakDays] = useState(0);
+  const [totalXp, setTotalXp] = useState(0);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const res = await fetch("/api/user/stats");
+        if (res.ok) {
+          const data = await res.json();
+          setStreakDays(data.streakDays ?? 0);
+          setTotalXp(data.totalXp ?? 0);
+        }
+      } catch {
+        // 静默失败，保持默认值
+      }
+    }
+    if (session?.user) {
+      fetchStats();
+    }
+  }, [session?.user]);
 
   return (
     <header className="sticky top-0 z-50 w-full glass-navbar">
@@ -93,13 +116,13 @@ export function Navbar() {
             <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-orange-500/10">
               <Flame className="h-4 w-4 text-orange-500" />
               <span className="text-sm font-semibold text-orange-600 stat-number">
-                0
+                {streakDays}
               </span>
             </div>
             <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-amber-500/10">
               <Star className="h-4 w-4 text-amber-500" />
               <span className="text-sm font-semibold text-amber-600 stat-number">
-                0
+                {totalXp}
               </span>
             </div>
           </div>
@@ -147,6 +170,13 @@ export function Navbar() {
                   学习设置
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/mock-exam" className="cursor-pointer">
+                  <ClipboardList className="mr-2 h-4 w-4" />
+                  模拟考试
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/admin/problems" className="cursor-pointer">
                   <Database className="mr-2 h-4 w-4" />

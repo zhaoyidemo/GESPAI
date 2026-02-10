@@ -1,9 +1,9 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   User,
@@ -14,37 +14,63 @@ import {
   Target,
   Code,
   BookOpen,
-  Clock
+  Clock,
+  Loader2
 } from "lucide-react";
 
-// 徽章数据
 const badgesList = [
-  { code: "first_ac", name: "首次通过", icon: "🎯", description: "第一次 AC 题目", earned: false },
-  { code: "streak_7", name: "连胜一周", icon: "🔥", description: "连续学习 7 天", earned: false },
-  { code: "streak_30", name: "月度坚持", icon: "💪", description: "连续学习 30 天", earned: false },
-  { code: "problem_10", name: "小试牛刀", icon: "⚔️", description: "完成 10 道题目", earned: false },
-  { code: "problem_50", name: "渐入佳境", icon: "🚀", description: "完成 50 道题目", earned: false },
-  { code: "level_up", name: "突破自我", icon: "⬆️", description: "升级成功", earned: false },
-  { code: "perfect", name: "完美表现", icon: "✨", description: "一次性 AC", earned: false },
+  { code: "first_ac", name: "首次通过", icon: "🎯", description: "第一次 AC 题目" },
+  { code: "streak_7", name: "连胜一周", icon: "🔥", description: "连续学习 7 天" },
+  { code: "streak_30", name: "月度坚持", icon: "💪", description: "连续学习 30 天" },
+  { code: "problem_10", name: "小试牛刀", icon: "⚔️", description: "完成 10 道题目" },
+  { code: "problem_50", name: "渐入佳境", icon: "🚀", description: "完成 50 道题目" },
+  { code: "level_up", name: "突破自我", icon: "⬆️", description: "升级成功" },
+  { code: "perfect", name: "完美表现", icon: "✨", description: "一次性 AC" },
 ];
+
+interface UserStats {
+  streakDays: number;
+  totalXp: number;
+  targetLevel: number;
+  examDate: string | null;
+  badges: string[];
+  problemsSolved: number;
+  totalSubmissions: number;
+}
 
 export default function ProfilePage() {
   const { data: session } = useSession();
+  const [stats, setStats] = useState<UserStats | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // 模拟用户数据
-  const userStats = {
-    streakDays: 0,
-    totalXp: 0,
-    targetLevel: 5,
-    examDate: "2026-03-14",
-    problemsSolved: 0,
-    totalSubmissions: 0,
-    studyTime: 0,
-    joinDate: new Date().toISOString(),
-  };
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const res = await fetch("/api/user/stats");
+        if (res.ok) {
+          const data = await res.json();
+          setStats(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchStats();
+  }, []);
 
-  const earnedBadges = badgesList.filter(b => b.earned);
-  const lockedBadges = badgesList.filter(b => !b.earned);
+  const earnedBadgeCodes = new Set(stats?.badges || []);
+  const earnedBadges = badgesList.filter(b => earnedBadgeCodes.has(b.code));
+  const lockedBadges = badgesList.filter(b => !earnedBadgeCodes.has(b.code));
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -64,11 +90,11 @@ export default function ProfilePage() {
                 <div className="flex items-center space-x-4 mt-2">
                   <div className="flex items-center space-x-1 text-orange-500">
                     <Flame className="h-4 w-4" />
-                    <span className="font-medium">{userStats.streakDays} 天连胜</span>
+                    <span className="font-medium">{stats?.streakDays ?? 0} 天连胜</span>
                   </div>
                   <div className="flex items-center space-x-1 text-yellow-500">
                     <Star className="h-4 w-4" />
-                    <span className="font-medium">{userStats.totalXp} XP</span>
+                    <span className="font-medium">{stats?.totalXp ?? 0} XP</span>
                   </div>
                 </div>
               </div>
@@ -77,11 +103,13 @@ export default function ProfilePage() {
             <div className="mt-4 md:mt-0 text-center md:text-right">
               <div className="flex items-center justify-center md:justify-end space-x-1">
                 <Target className="h-5 w-5 text-primary" />
-                <span className="text-lg font-bold">GESP {userStats.targetLevel} 级</span>
+                <span className="text-lg font-bold">GESP {stats?.targetLevel ?? "?"} 级</span>
               </div>
-              <p className="text-sm text-muted-foreground">
-                考试日期：{userStats.examDate}
-              </p>
+              {stats?.examDate && (
+                <p className="text-sm text-muted-foreground">
+                  考试日期：{new Date(stats.examDate).toLocaleDateString("zh-CN")}
+                </p>
+              )}
             </div>
           </div>
         </CardContent>
@@ -92,29 +120,29 @@ export default function ProfilePage() {
         <Card>
           <CardContent className="pt-6 text-center">
             <Code className="h-8 w-8 mx-auto mb-2 text-primary" />
-            <p className="text-2xl font-bold">{userStats.problemsSolved}</p>
+            <p className="text-2xl font-bold">{stats?.problemsSolved ?? 0}</p>
             <p className="text-sm text-muted-foreground">已解决题目</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6 text-center">
             <BookOpen className="h-8 w-8 mx-auto mb-2 text-green-500" />
-            <p className="text-2xl font-bold">{userStats.totalSubmissions}</p>
+            <p className="text-2xl font-bold">{stats?.totalSubmissions ?? 0}</p>
             <p className="text-sm text-muted-foreground">提交次数</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6 text-center">
-            <Clock className="h-8 w-8 mx-auto mb-2 text-blue-500" />
-            <p className="text-2xl font-bold">{userStats.studyTime}</p>
-            <p className="text-sm text-muted-foreground">学习时长（分钟）</p>
+            <Star className="h-8 w-8 mx-auto mb-2 text-amber-500" />
+            <p className="text-2xl font-bold">{stats?.totalXp ?? 0}</p>
+            <p className="text-sm text-muted-foreground">经验值 XP</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6 text-center">
             <Calendar className="h-8 w-8 mx-auto mb-2 text-purple-500" />
-            <p className="text-2xl font-bold">{userStats.streakDays}</p>
-            <p className="text-sm text-muted-foreground">最长连胜</p>
+            <p className="text-2xl font-bold">{stats?.streakDays ?? 0}</p>
+            <p className="text-sm text-muted-foreground">连胜天数</p>
           </CardContent>
         </Card>
       </div>
@@ -164,41 +192,6 @@ export default function ProfilePage() {
                 <span className="text-xs text-muted-foreground">{badge.description}</span>
               </div>
             ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* 学习进度 */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <BookOpen className="h-5 w-5" />
-            <span>学习进度</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium">GESP 5 级知识点</span>
-                <span className="text-sm text-muted-foreground">0/6</span>
-              </div>
-              <Progress value={0} className="h-2" />
-            </div>
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium">GESP 4 级知识点</span>
-                <span className="text-sm text-muted-foreground">0/3</span>
-              </div>
-              <Progress value={0} className="h-2" />
-            </div>
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium">练习题完成度</span>
-                <span className="text-sm text-muted-foreground">0%</span>
-              </div>
-              <Progress value={0} className="h-2" />
-            </div>
           </div>
         </CardContent>
       </Card>
