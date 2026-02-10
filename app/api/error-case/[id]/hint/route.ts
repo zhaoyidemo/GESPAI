@@ -3,7 +3,7 @@ import { requireAuth } from "@/lib/require-auth";
 import prisma from "@/lib/db";
 import { chat } from "@/lib/claude";
 import { ERROR_TYPES } from "@/lib/prompts/error-diagnosis";
-import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
+import { getSystemPrompt, getStudentLevelContext } from "@/lib/prompts/get-system-prompt";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -128,11 +128,18 @@ ${currentAnswer ? `**学生对"下次怎么避免"的当前回答**: ${currentAn
         break;
     }
 
+    // 获取用户目标级别
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { targetLevel: true },
+    });
+
     // 调用 Claude API
     const errorBase = await getSystemPrompt("error-base");
+    const levelContext = getStudentLevelContext(user?.targetLevel || 5);
     const response = await chat(
       [{ role: "user", content: contextInfo }],
-      `${errorBase}\n\n${guidePrompt}`,
+      `${errorBase}${levelContext}\n\n${guidePrompt}`,
       512
     );
 

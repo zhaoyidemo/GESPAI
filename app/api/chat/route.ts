@@ -7,7 +7,7 @@ import {
   ChatMessage,
 } from "@/lib/claude";
 import prisma from "@/lib/db";
-import { getUserPrompt, getSystemPrompt } from "@/lib/prompts/get-system-prompt";
+import { getUserPrompt, getSystemPrompt, getStudentLevelContext } from "@/lib/prompts/get-system-prompt";
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,13 +41,14 @@ export async function POST(request: NextRequest) {
     // 根据上下文确定系统提示词
     let systemPrompt: string;
 
+    const levelContext = getStudentLevelContext(user?.targetLevel || 5);
+
     if (context === "learn" && knowledgePoint) {
       // AI 私教模式 - 使用用户自定义或默认提示词
       const basePrompt = await getUserPrompt("learn-chat", user?.aiTutorPrompt);
-      systemPrompt = `${basePrompt}
+      systemPrompt = `${basePrompt}${levelContext}
 
-当前正在学习的知识点：${knowledgePoint}
-目标级别：GESP ${user?.targetLevel || 5}级`;
+当前正在学习的知识点：${knowledgePoint}`;
     } else if (context === "feynman" && knowledgePoint) {
       // 费曼学习模式 - 用户作为老师讲解
       let basePrompt = await getUserPrompt("feynman-chat", user?.aiFeynmanPrompt);
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
 请用友好、鼓励的语气给出评估，格式清晰，使用emoji增加亲和力。`;
       }
 
-      systemPrompt = `${basePrompt}
+      systemPrompt = `${basePrompt}${levelContext}
 
 当前要讲解的知识点：${knowledgePoint}`;
     } else if (context === "problem" && problemId) {
@@ -83,7 +84,7 @@ export async function POST(request: NextRequest) {
 
       // 使用用户自定义或默认的题目辅导提示词
       const basePrompt = await getUserPrompt("problem-chat", user?.aiProblemPrompt);
-      systemPrompt = `${basePrompt}
+      systemPrompt = `${basePrompt}${levelContext}
 
 当前题目：${problem.title}
 题目描述：${problem.description}`;

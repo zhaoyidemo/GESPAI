@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/require-auth";
 import prisma from "@/lib/db";
 import { chat } from "@/lib/claude";
-import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
+import { getSystemPrompt, getStudentLevelContext } from "@/lib/prompts/get-system-prompt";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -85,14 +85,21 @@ ${failedTestsInfo ? `**失败的测试用例**\n${failedTestsInfo}` : ""}
 
 请分析这个代码的错误类型。`;
 
+    // 获取用户目标级别
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { targetLevel: true },
+    });
+
     // 调用 Claude API 分析
     const [errorBase, errorClassify] = await Promise.all([
       getSystemPrompt("error-base"),
       getSystemPrompt("error-classify"),
     ]);
+    const levelContext = getStudentLevelContext(user?.targetLevel || 5);
     const response = await chat(
       [{ role: "user", content: userMessage }],
-      `${errorBase}\n\n${errorClassify}`,
+      `${errorBase}${levelContext}\n\n${errorClassify}`,
       1024
     );
 

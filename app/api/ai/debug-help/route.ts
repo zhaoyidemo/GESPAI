@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/require-auth";
 import prisma from "@/lib/db";
 import { buildDebugMessage, type DebugContext } from "@/lib/default-prompts";
-import { getUserPrompt } from "@/lib/prompts/get-system-prompt";
+import { getUserPrompt, getStudentLevelContext } from "@/lib/prompts/get-system-prompt";
 import Anthropic from "@anthropic-ai/sdk";
 
 const anthropic = new Anthropic({
@@ -60,13 +60,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 获取用户的AI配置
+    // 获取用户的AI配置和目标级别
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { aiDebugPrompt: true },
+      select: { aiDebugPrompt: true, targetLevel: true },
     });
 
-    const systemPrompt = await getUserPrompt("problem-debug", user?.aiDebugPrompt);
+    const basePrompt = await getUserPrompt("problem-debug", user?.aiDebugPrompt);
+    const systemPrompt = `${basePrompt}${getStudentLevelContext(user?.targetLevel || 5)}`;
 
     // 解析测试结果
     const testResults = submission.testResults as any[];
