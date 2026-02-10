@@ -1,105 +1,67 @@
 # GESP AI 产品复盘与优化清单
 
 > 生成日期：2026-02-09
-> 基于 PRD v2.0、前端代码审计、后端代码审计、Claude Code 使用报告综合分析
-> 最后更新：2026-02-10（逐项评审精简，最终保留 12 项待办）
+> 最后更新：2026-02-10
 
 ---
 
-## 一、安全问题（Security） ✅ 已修复 + 1 项待办
+## 待办事项（4 项）
 
-### 1.1 API 路由鉴权缺失 ✅ 已修复
-
-- [x] 创建 `lib/require-admin.ts` 中间件
-- [x] 为 11 个 seed 路由添加鉴权
-- [x] 为 6 个 admin 路由添加管理员权限检查
-
-### 1.2 管理员路由授权 ✅ 已修复
-
-- [x] 为 `admin/prompts` 路由添加管理员权限检查
-- [x] 为 `problems` POST 路由添加管理员权限检查
-
-### 1.3 错误信息泄露
-
-- [ ] `admin/sync` 路由统一错误处理，避免返回 `String(error)` 泄露敏感信息
-
----
-
-## 二、功能缺口（Feature Gaps）— 5 项待办
-
-### 2.1 缺失的页面
+### 功能
 
 - [ ] 创建 `app/(main)/admin/prompts/page.tsx` — 管理员提示词管理页面
 
-### 2.2 部分实现的页面
+### 性能
 
-- [ ] 完成 Tutor 学习模式的对话实现（`/learn/[topic]/tutor`）
-- [ ] 完成错题详情复盘页面（`/error-book/[id]`）
+- [ ] 拆分 `problem/[id]` 为子组件：`ProblemDescription`、`CodeEditor`、`AIChat`、`SubmissionPanel`
 
-### 2.3 占位符功能
+### 用户体验
 
-- [ ] Profile 页面连接真实 API 数据（替换硬编码统计）
-- [ ] Navbar 从 API 动态获取连胜和 XP（替换硬编码 "0"）
+- [ ] AI 对话添加超时友好提示 + 代码提交添加评测进度指示
 
----
+### 测试
 
-## 三、性能问题（Performance）— 2 项待办
-
-### 3.1 巨型组件
-
-| 文件 | 优化前 | 优化后 |
-|------|--------|--------|
-| `app/(main)/problem/[id]/page.tsx` | 1071 行 / 21 个 useState | ~663 行 / 3 个 Zustand Store |
-
-- [ ] 拆分为子组件：`ProblemDescription`、`CodeEditor`、`AIChat`、`SubmissionPanel`
-- [x] 使用 Zustand Store + useCallback actions hook 优化重渲染
-
-### 3.2 N+1 查询 ✅ 已修复
-
-- [x] 改为 `findMany` 批量查询 + 批量 upsert
-
-### 3.3 前端加载优化
-
-- [ ] Monaco Editor 使用 `dynamic import` 懒加载
+- [ ] 为关键用户流程添加 E2E 测试（注册→做题→提交→查看结果）
 
 ---
 
-## 四、用户体验（UX）— 4 项待办
+## 已完成
 
-### 4.1 导航入口
+### 安全（P0）
+- [x] 创建 `lib/require-admin.ts` 中间件
+- [x] 为 11 个 seed 路由添加鉴权
+- [x] 为 6 个 admin 路由添加管理员权限检查
+- [x] 为 `admin/prompts` 路由添加管理员权限检查
+- [x] 为 `problems` POST 路由添加管理员权限检查
+- [x] `admin/sync` 错误处理修复，不再泄露 `String(error)`
 
-- [ ] 在 Navbar 或用户菜单中添加模拟考试和设置入口
-
-### 4.2 错误体验
-
-- [ ] 添加全局 ErrorBoundary 组件
-- [ ] AI 对话添加超时友好提示
-- [ ] 代码提交添加评测进度指示
-
----
-
-## 五、架构优化（Architecture） ✅ 已完成 + 1 项待办
-
-### 已完成
-
-- [x] 抽取通用 `seedProblems` 函数，消除 8 个 seed 路由重复
+### 架构优化
+- [x] 抽取通用 `seedProblems` 工厂函数，消除 8 个 seed 路由重复
 - [x] 抽取鉴权中间件（`requireAuth()` / `requireAdmin()`）
 - [x] 引入 Zustand 状态管理（3 个 Store + actions hook）
 - [x] 为核心 API 添加单元测试（vitest + 11 个测试用例）
+- [x] 修复 judge/route.ts 和 admin/import/route.ts 的 N+1 查询
 
-### 待办
+### 性能
+- [x] Monaco Editor `dynamic import` 懒加载
+- [x] Zustand Store + useCallback actions hook 优化重渲染
 
-- [ ] 为关键用户流程添加 E2E 测试
+### 功能
+- [x] Profile 页面连接真实 API 数据
+- [x] Navbar 从 API 动态获取连胜和 XP
+- [x] Navbar 添加模拟考试导航入口
+- [x] Tutor 学习模式（经复查：完整可用）
+- [x] 错题详情复盘页面（经复查：完整可用）
+
+### 用户体验
+- [x] 全局 ErrorBoundary 组件
+
+### 开发流程
+- [x] 配置 pre-commit hook（`npx tsc --noEmit`）
 
 ---
 
-## 六、开发流程（DevOps）— 1 项待办
-
-- [ ] 配置 pre-commit hook 自动拦截 TypeScript 编译错误
-
----
-
-## 七、PRD 路线图（Roadmap）
+## PRD 路线图
 
 ### V2.1（近期）
 - [ ] 错题重做
@@ -118,40 +80,14 @@
 
 ---
 
-## 八、优先行动清单
-
-| 优先级 | 行动项 | 工作量 | 状态 |
-|--------|--------|--------|------|
-| **P0** | 为 seed/admin 路由添加鉴权 | 小 | ✅ 已完成 |
-| **P0** | 实现管理员角色校验 | 小 | ✅ 已完成 |
-| **P0** | 修复提示词管理权限漏洞 | 小 | ✅ 已完成 |
-| **P1** | admin/sync 错误处理修复 | 小 | 待实现 |
-| **P1** | Monaco Editor 动态导入 | 小 | 待实现 |
-| **P1** | Profile/Navbar 连接真实数据 | 小 | 待实现 |
-| **P1** | Navbar 添加导航入口 | 小 | 待实现 |
-| **P1** | 全局 ErrorBoundary | 小 | 待实现 |
-| **P1** | 配置 pre-commit hook | 小 | 待实现 |
-| **P2** | 创建 admin/prompts 页面 | 中 | 待实现 |
-| **P2** | 完成 Tutor 对话模式 | 中 | 待实现 |
-| **P2** | 完成错题复盘页面 | 中 | 待实现 |
-| **P2** | 拆分 problem/[id] 子组件 | 中 | 待实现 |
-| **P2** | AI 超时提示 + 评测进度 | 小 | 待实现 |
-| **P3** | E2E 测试 | 大 | 待实现 |
-| **P1** | 修复 N+1 查询 | 小 | ✅ 已完成 |
-| **P2** | 抽取 seed 函数消除重复 | 小 | ✅ 已完成 |
-| **P3** | Zustand 状态管理 | 中 | ✅ 已完成 |
-| **P3** | 核心 API 单元测试 | 中 | ✅ 已完成 |
-
----
-
-## 九、代码质量指标
+## 代码质量指标
 
 | 维度 | 优化前 | 优化后 |
 |------|--------|--------|
 | 总 API 路由 | 42 个 | 42 个 |
 | 有完整认证 | 25 个（59.5%） | 42 个（100%） |
 | 有管理员权限检查 | 0 个（0%） | 18 个 |
-| 总页面数 | 17 个（11 完整、4 部分、2 缺失） | 17 个（11 完整、2 部分、2 缺失） |
+| 总页面数 | 17 个（11 完整、4 部分、2 缺失） | 17 个（15 完整、1 缺失） |
 | 测试覆盖 | 0% | 11 个测试用例 |
 | 做题页面 useState | 21 个 | 0 个（3 个 Zustand Store） |
 | 做题页面行数 | 1071 行 | ~663 行 |
