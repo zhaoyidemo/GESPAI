@@ -20,12 +20,15 @@ const KEY_MIGRATION_MAP: Record<string, string> = {
  * POST /api/admin/prompts/seed
  * 初始化：将 15 个硬编码提示词写入数据库
  * 包含旧 key 到新 key 的一次性迁移逻辑
+ * body: { force?: boolean } — force=true 时用硬编码默认值覆盖所有已有内容
  */
-export async function POST() {
+export async function POST(request: Request) {
   const auth = await requireAdmin();
   if (auth instanceof NextResponse) return auth;
   const session = auth;
   try {
+    const body = await request.json().catch(() => ({}));
+    const force = body.force === true;
 
     // === 迁移阶段：将旧 key 更新为新 key ===
     let migrated = 0;
@@ -48,10 +51,11 @@ export async function POST() {
       }
     }
 
-    // === Seed 阶段：创建缺失的提示词记录 ===
+    // === Seed 阶段 ===
     const existingCount = await prisma.systemPrompt.count();
 
     let created = 0;
+    let updated = 0;
     let skipped = 0;
 
     for (const entry of PROMPT_REGISTRY) {
@@ -60,16 +64,31 @@ export async function POST() {
       });
 
       if (existing) {
-        // 同步更新 name/description/category（key 不变）
-        await prisma.systemPrompt.update({
-          where: { key: entry.key },
-          data: {
-            name: entry.name,
-            description: entry.description,
-            category: entry.category,
-          },
-        });
-        skipped++;
+        if (force) {
+          // 强制模式：用硬编码默认值覆盖全部字段（含 content）
+          await prisma.systemPrompt.update({
+            where: { key: entry.key },
+            data: {
+              name: entry.name,
+              description: entry.description,
+              category: entry.category,
+              content: entry.defaultContent,
+              updatedBy: session.user.id,
+            },
+          });
+          updated++;
+        } else {
+          // 普通模式：仅更新元数据，不动 content
+          await prisma.systemPrompt.update({
+            where: { key: entry.key },
+            data: {
+              name: entry.name,
+              description: entry.description,
+              category: entry.category,
+            },
+          });
+          skipped++;
+        }
         continue;
       }
 
@@ -86,12 +105,18 @@ export async function POST() {
       created++;
     }
 
+    const msg = force
+      ? `强制同步完成：迁移 ${migrated} 条旧 key，新建 ${created} 条，覆盖更新 ${updated} 条`
+      : `初始化完成：迁移 ${migrated} 条旧 key，新建 ${created} 条，更新 ${skipped} 条已有记录`;
+
     return NextResponse.json({
       success: true,
-      message: `初始化完成：迁移 ${migrated} 条旧 key，新建 ${created} 条，更新 ${skipped} 条已有记录`,
+      message: msg,
       migrated,
       created,
+      updated,
       skipped,
+      force,
       total: PROMPT_REGISTRY.length,
       previousCount: existingCount,
     });

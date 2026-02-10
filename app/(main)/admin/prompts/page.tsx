@@ -21,6 +21,7 @@ import {
   Bug,
   Wrench,
   Loader2,
+  RefreshCw,
 } from "lucide-react";
 
 interface PromptItem {
@@ -146,11 +147,18 @@ export default function AdminPromptsPage() {
     }
   };
 
-  const handleSeed = async () => {
-    if (!confirm("将迁移旧 key 并同步 15 个提示词到数据库。已有提示词内容不会被覆盖。继续？")) return;
+  const handleSeed = async (force = false) => {
+    const confirmMsg = force
+      ? "⚠️ 强制同步将用代码中的默认值覆盖数据库中所有提示词内容！之前的自定义编辑将丢失。确定继续？"
+      : "将迁移旧 key 并同步 15 个提示词到数据库。已有提示词内容不会被覆盖。继续？";
+    if (!confirm(confirmMsg)) return;
     setSeeding(true);
     try {
-      const res = await fetch("/api/admin/prompts/seed", { method: "POST" });
+      const res = await fetch("/api/admin/prompts/seed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ force }),
+      });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error);
       setMessage({ type: "success", text: json.message });
@@ -193,14 +201,24 @@ export default function AdminPromptsPage() {
             数据库已有 {data.dbCount}/{data.totalCount} 条记录
           </p>
         </div>
-        <Button onClick={handleSeed} disabled={seeding} variant="outline">
-          {seeding ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <Database className="mr-2 h-4 w-4" />
-          )}
-          同步到数据库
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button onClick={() => handleSeed(false)} disabled={seeding} variant="outline">
+            {seeding ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Database className="mr-2 h-4 w-4" />
+            )}
+            同步到数据库
+          </Button>
+          <Button onClick={() => handleSeed(true)} disabled={seeding} variant="destructive">
+            {seeding ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <RefreshCw className="mr-2 h-4 w-4" />
+            )}
+            强制覆盖同步
+          </Button>
+        </div>
       </div>
 
       {/* 消息提示 */}
