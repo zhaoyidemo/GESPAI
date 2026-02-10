@@ -176,19 +176,23 @@ export function Navbar() {
                   模拟考试
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/admin/problems" className="cursor-pointer">
-                  <Database className="mr-2 h-4 w-4" />
-                  题库管理
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/admin/prompts" className="cursor-pointer">
-                  <MessageSquareCode className="mr-2 h-4 w-4" />
-                  提示词管理
-                </Link>
-              </DropdownMenuItem>
+              {session?.user?.role === "admin" && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/problems" className="cursor-pointer">
+                      <Database className="mr-2 h-4 w-4" />
+                      题库管理
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin/prompts" className="cursor-pointer">
+                      <MessageSquareCode className="mr-2 h-4 w-4" />
+                      提示词管理
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="cursor-pointer text-destructive focus:text-destructive"
