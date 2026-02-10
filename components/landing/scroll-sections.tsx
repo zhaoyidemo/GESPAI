@@ -14,6 +14,8 @@ import {
   Brain,
   Target,
   ArrowRight,
+  Globe,
+  ShieldCheck,
 } from "lucide-react";
 
 // ══════════════════════════════════════════
@@ -86,23 +88,28 @@ export function HeroSection() {
         {/* Top badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm mb-8">
           <Zap className="w-3 h-3 text-amber-400" />
-          <span className="text-xs text-white/50">专为 GESP C++ 1-8 级设计 · 184+ 真题 · AI 驱动</span>
+          <span className="text-xs text-white/50">GESP.AI · GESP C++ 1-8 级 · 184+ 洛谷真题</span>
         </div>
 
-        {/* Main title */}
-        <h1 className="landing-hero-title text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter leading-none mb-6">
+        {/* Main title — two-line structure */}
+        <h1 className="landing-hero-title font-bold tracking-tighter leading-none mb-6">
+          <span className="block text-4xl sm:text-5xl lg:text-6xl text-white mb-2">
+            GESP 备考
+          </span>
           <span
-            className="bg-clip-text text-transparent"
+            className="block text-5xl sm:text-6xl lg:text-7xl xl:text-8xl bg-clip-text text-transparent"
             style={{
               backgroundImage: "linear-gradient(135deg, #fff 0%, #c8ceff 50%, #a5b4fc 100%)",
               filter: "drop-shadow(0 0 40px rgba(91,106,240,0.4))",
             }}
-          >GESP.AI</span>
+          >
+            你的 AI 编程私教
+          </span>
         </h1>
 
         {/* Subtitle with rotating word */}
         <p className="text-xl sm:text-2xl lg:text-3xl text-white/60 font-light max-w-2xl mx-auto mb-3 leading-relaxed">
-          超算大脑，24 小时
+          24 小时在线，随时
           <span
             className="inline-block min-w-[3em] text-transparent bg-clip-text font-medium transition-all duration-300"
             style={{
@@ -114,9 +121,9 @@ export function HeroSection() {
             {ROTATING_WORDS[wordIdx]}
           </span>
         </p>
-        <p className="text-sm sm:text-base text-white/30 max-w-lg mx-auto mb-8 leading-relaxed">
-          别的家长花 300-800 元/小时请线下老师。<br />
-          你的孩子有一个 ¥49/月的 AI 编程私教，永远不累、永远耐心。
+        <p className="text-base sm:text-lg text-white/40 max-w-xl mx-auto mb-8 leading-relaxed font-medium">
+          别的家长花 ¥300-800/小时请老师。<br />
+          你的孩子有 ¥49/月的私教——永远耐心，从不下线。
         </p>
 
         {/* Price anchor + trust row */}
@@ -196,7 +203,7 @@ export function PainPointsSection() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <p className="text-xs tracking-widest uppercase text-white/25 mb-3">为什么选择 GESP.AI</p>
+          <p className="text-xs tracking-widest uppercase text-white/25 mb-3">这些烦恼，你一定不陌生</p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
             这些场景，是不是你家的
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}>日常？</span>
@@ -284,19 +291,57 @@ export function HowItWorksSection() {
 }
 
 // ══════════════════════════════════════════
-// AI 对话预览
+// AI 对话预览（多场景 Tab）
 // ══════════════════════════════════════════
-const AI_LINES = [
-  { role: "student" as const, text: "老师，DFS 的 vis 数组要在哪里标记？" },
-  { role: "ai" as const, text: "好问题！想象你在走迷宫——走到一个路口就放一块石头，这样回头时就知道来过了。vis[i] = true 就是「放石头」，要在进入节点的那一刻做。" },
-  { role: "student" as const, text: "那回溯的时候要把石头捡回来吗？" },
-  { role: "ai" as const, text: "看情况！如果你要找「所有路径」，石头要捡回来（回溯）；如果只是判断能不能到终点，石头留着就好。你先试试写一版？我帮你看。" },
+const AI_SCENARIOS = [
+  {
+    tab: "概念讲解",
+    title: "DFS 深度优先搜索",
+    lines: [
+      { role: "student" as const, text: "老师，DFS 的 vis 数组要在哪里标记？" },
+      { role: "ai" as const, text: "好问题！想象你在走迷宫——走到一个路口就放一块石头，这样回头时就知道来过了。vis[i] = true 就是「放石头」，要在进入节点的那一刻做。" },
+      { role: "student" as const, text: "那回溯的时候要把石头捡回来吗？" },
+      { role: "ai" as const, text: "看情况！如果你要找「所有路径」，石头要捡回来（回溯）；如果只是判断能不能到终点，石头留着就好。你先试试写一版？我帮你看。" },
+    ],
+  },
+  {
+    tab: "调试纠错",
+    title: "调试 · 数组越界排查",
+    lines: [
+      { role: "student" as const, text: "老师，我的代码提交报 Runtime Error，但本地运行没问题" },
+      { role: "ai" as const, text: "别急！RE 最常见的原因是数组越界。你的数组开了多大？题目数据范围是多少？" },
+      { role: "student" as const, text: "数组开了 a[100]，数据范围 n ≤ 1000..." },
+      { role: "ai" as const, text: "找到了！数组只有 100 个位置，但数据最大有 1000 个。把 a[100] 改成 a[1001] 试试——多开 1 个是好习惯，防止边界问题。" },
+    ],
+  },
+  {
+    tab: "学习规划",
+    title: "学习规划 · GESP 三级",
+    lines: [
+      { role: "student" as const, text: "老师，我想考 GESP 三级，还有两个月，该怎么准备？" },
+      { role: "ai" as const, text: "两个月完全来得及！GESP 三级重点考排序、字符串处理和简单递推。我看你排序掌握得不错，字符串还需要加强。" },
+      { role: "student" as const, text: "那我每天要学多久？" },
+      { role: "ai" as const, text: "建议每天 40-60 分钟：前 30 天主攻知识点 + 配套练题，后 30 天做真题 + 查漏补缺。我来帮你生成每日任务表？" },
+    ],
+  },
 ];
 
 export function AIPreviewSection() {
   const ref = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState(0);
   const [visibleLines, setVisibleLines] = useState(0);
   const triggeredRef = useRef(false);
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const startAnimation = (tabIdx: number) => {
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current = [];
+    setVisibleLines(0);
+    AI_SCENARIOS[tabIdx].lines.forEach((_, i) => {
+      const t = setTimeout(() => setVisibleLines(i + 1), 400 + i * 900);
+      timersRef.current.push(t);
+    });
+  };
 
   useEffect(() => {
     const el = ref.current;
@@ -305,16 +350,27 @@ export function AIPreviewSection() {
       ([entry]) => {
         if (entry.isIntersecting && !triggeredRef.current) {
           triggeredRef.current = true;
-          AI_LINES.forEach((_, i) => {
-            setTimeout(() => setVisibleLines(i + 1), 400 + i * 900);
-          });
+          startAnimation(0);
         }
       },
       { threshold: 0.3 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      timersRef.current.forEach(clearTimeout);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleTabChange = (idx: number) => {
+    if (idx === activeTab) return;
+    setActiveTab(idx);
+    startAnimation(idx);
+  };
+
+  const scenario = AI_SCENARIOS[activeTab];
+  const lines = scenario.lines;
 
   return (
     <section className="py-20 sm:py-28">
@@ -331,6 +387,23 @@ export function AIPreviewSection() {
           <p className="text-sm text-white/30">不是冷冰冰的答案输出，是引导思考的教学对话</p>
         </div>
 
+        {/* Tab buttons */}
+        <div className="flex items-center justify-center gap-2 mb-6">
+          {AI_SCENARIOS.map((s, i) => (
+            <button
+              key={i}
+              onClick={() => handleTabChange(i)}
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+                activeTab === i
+                  ? "bg-[#5b6af0]/20 text-white border border-[#5b6af0]/40"
+                  : "bg-white/[0.03] text-white/30 border border-white/[0.06] hover:text-white/50"
+              }`}
+            >
+              {s.tab}
+            </button>
+          ))}
+        </div>
+
         {/* Chat mockup */}
         <div className="relative">
           {/* 外围径向渐变光晕 */}
@@ -342,13 +415,13 @@ export function AIPreviewSection() {
               <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]/70" />
               <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]/70" />
             </div>
-            <span className="text-[10px] text-white/20 font-mono ml-2">GESP.AI 私教 · DFS 深度优先搜索</span>
+            <span className="text-[10px] text-white/20 font-mono ml-2">GESP.AI 私教 · {scenario.title}</span>
           </div>
 
           <div className="p-4 sm:p-5 space-y-4 min-h-[200px]">
-            {AI_LINES.slice(0, visibleLines).map((line, i) => (
+            {lines.slice(0, visibleLines).map((line, i) => (
               <div
-                key={i}
+                key={`${activeTab}-${i}`}
                 className={`flex gap-2.5 ${line.role === "student" ? "justify-end" : ""}`}
                 style={{ animation: "fadeIn 0.3s ease-out forwards" }}
               >
@@ -369,7 +442,7 @@ export function AIPreviewSection() {
               </div>
             ))}
 
-            {visibleLines > 0 && visibleLines < AI_LINES.length && (
+            {visibleLines > 0 && visibleLines < lines.length && (
               <div className="flex gap-2.5">
                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#5b6af0] to-[#8b5cf6] flex items-center justify-center shrink-0">
                   <Sparkles className="w-3 h-3 text-white" />
@@ -393,10 +466,16 @@ export function AIPreviewSection() {
 // 信任数据
 // ══════════════════════════════════════════
 const TRUST_DATA = [
-  { value: "1-8 级", label: "覆盖 GESP 全部级别", sub: "知识点完整对齐官方大纲" },
-  { value: "184+", label: "洛谷真题实时同步", sub: "题目内容逐字复制自洛谷" },
-  { value: "24h", label: "AI 从不下线", sub: "凌晨两点也能问、也能练" },
-  { value: "10 种", label: "错误类型精准诊断", sub: "从语法错误到算法错误全覆盖" },
+  { value: "1-8 级", label: "GESP 全级别覆盖", sub: "知识点逐条对齐官方大纲" },
+  { value: "184+", label: "洛谷真题在线练", sub: "题目与洛谷原题逐字一致" },
+  { value: "24h", label: "私教永不下线", sub: "凌晨两点也能问、也能练" },
+  { value: "¥2", label: "每天不到一瓶水", sub: "线下培训 1/6 的价格" },
+];
+
+const TECH_STRIP = [
+  { icon: Brain, text: "Claude AI 大模型驱动" },
+  { icon: Globe, text: "洛谷题库实时同步" },
+  { icon: ShieldCheck, text: "Judge0 在线评测" },
 ];
 
 export function TrustSection() {
@@ -434,6 +513,16 @@ export function TrustSection() {
         <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {TRUST_DATA.map((item, i) => (
             <TrustItem key={i} {...item} visible={visible} delay={i * 150} />
+          ))}
+        </div>
+
+        {/* 技术保障条带 */}
+        <div className="mt-12 pt-8 border-t border-white/[0.04] flex flex-wrap items-center justify-center gap-8 sm:gap-12">
+          {TECH_STRIP.map((item, i) => (
+            <div key={i} className="flex items-center gap-2.5">
+              <item.icon className="w-4 h-4 text-white/20" />
+              <span className="text-xs text-white/25">{item.text}</span>
+            </div>
           ))}
         </div>
       </div>
@@ -540,22 +629,47 @@ export function PricingSection() {
           </p>
         </div>
 
-        {/* Price comparison bar */}
-        <div className="flex flex-col items-center gap-3 mb-10 max-w-md mx-auto">
-          <div className="w-full flex items-center gap-3">
-            <span className="text-xs text-white/25 w-20 text-right shrink-0">线下 1v1</span>
-            <div className="flex-1 h-3 rounded-full bg-white/[0.04] overflow-hidden">
-              <div className="h-full w-full rounded-full bg-gradient-to-r from-white/[0.08] to-white/[0.04]" />
-            </div>
-            <span className="text-xs text-white/30 font-medium w-20 shrink-0">¥300+/h</span>
-          </div>
-          <div className="w-full flex items-center gap-3">
-            <span className="text-xs text-white/50 w-20 text-right shrink-0 font-medium">GESP.AI</span>
-            <div className="flex-1 h-3 rounded-full bg-white/[0.04] overflow-hidden">
-              <div className="h-full w-[16%] rounded-full bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6]" />
-            </div>
-            <span className="text-xs text-emerald-400/80 font-semibold w-20 shrink-0">¥49/月</span>
-          </div>
+        {/* Comparison table */}
+        <div className="mb-10 overflow-x-auto">
+          <table className="w-full max-w-2xl mx-auto text-sm">
+            <thead>
+              <tr className="border-b border-white/[0.06]">
+                <th className="py-3 px-4 text-left text-white/30 font-normal"></th>
+                <th className="py-3 px-4 text-center text-white/40 font-normal">线下 1v1</th>
+                <th className="py-3 px-4 text-center text-white/40 font-normal">网课大班</th>
+                <th className="py-3 px-4 text-center font-medium text-white relative">
+                  <span className="absolute top-0 left-2 right-2 h-0.5 rounded-full bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6]" />
+                  GESP.AI
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-white/[0.04]">
+                <td className="py-3 px-4 text-white/40">月费</td>
+                <td className="py-3 px-4 text-center text-white/30">¥1,200-3,200</td>
+                <td className="py-3 px-4 text-center text-white/30">¥200-500</td>
+                <td className="py-3 px-4 text-center text-emerald-400 font-medium">¥49</td>
+              </tr>
+              <tr className="border-b border-white/[0.04]">
+                <td className="py-3 px-4 text-white/40">答疑时间</td>
+                <td className="py-3 px-4 text-center text-white/30">上课时间</td>
+                <td className="py-3 px-4 text-center text-white/30">有限</td>
+                <td className="py-3 px-4 text-center text-emerald-400 font-medium">24 小时</td>
+              </tr>
+              <tr className="border-b border-white/[0.04]">
+                <td className="py-3 px-4 text-white/40">个性化</td>
+                <td className="py-3 px-4 text-center text-white/50">&#10003; 老师面授</td>
+                <td className="py-3 px-4 text-center text-white/20">&#10007; 统一进度</td>
+                <td className="py-3 px-4 text-center text-emerald-400 font-medium">&#10003; AI 自适应</td>
+              </tr>
+              <tr>
+                <td className="py-3 px-4 text-white/40">错题管理</td>
+                <td className="py-3 px-4 text-center text-white/20">&#10007; 靠自觉</td>
+                <td className="py-3 px-4 text-center text-white/20">&#10007; 无</td>
+                <td className="py-3 px-4 text-center text-emerald-400 font-medium">&#10003; 自动复盘</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-5 items-start">
@@ -618,9 +732,39 @@ export function PricingSection() {
 // ══════════════════════════════════════════
 // CTA + Footer
 // ══════════════════════════════════════════
+
+function getNextGESPExam(): number {
+  const now = new Date();
+  const year = now.getFullYear();
+  const examMonths = [3, 6, 9, 12];
+
+  for (const month of examMonths) {
+    const examDate = new Date(year, month - 1, 15);
+    if (examDate > now) {
+      return Math.ceil((examDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    }
+  }
+  const nextExam = new Date(year + 1, 2, 15);
+  return Math.ceil((nextExam.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+}
+
 export function CTASection() {
+  const [daysToExam, setDaysToExam] = useState<number | null>(null);
+
+  useEffect(() => {
+    setDaysToExam(getNextGESPExam());
+  }, []);
+
   return (
     <section className="relative py-24 sm:py-32 overflow-hidden">
+      {/* 慢速脉冲动画 keyframes */}
+      <style>{`
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0; transform: scale(1); }
+          50% { opacity: 0.2; transform: scale(1.05); }
+        }
+      `}</style>
+
       {/* 大面积径向渐变光晕背景 */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(91,106,240,0.06)_0%,transparent_60%)] pointer-events-none" />
       <div className="relative text-center max-w-2xl mx-auto px-4 sm:px-6">
@@ -631,6 +775,24 @@ export function CTASection() {
             孤军奋战
           </span>
         </h2>
+
+        {/* 考试倒计时 */}
+        {daysToExam !== null && (
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] mb-6">
+            <Clock className="w-3 h-3 text-amber-400" />
+            <span className="text-xs text-white/40">
+              距离下一场 GESP 考试还有{" "}
+              <span
+                className="font-bold bg-clip-text text-transparent"
+                style={{ backgroundImage: "linear-gradient(135deg, #5b6af0, #c084fc)" }}
+              >
+                {daysToExam}
+              </span>{" "}
+              天
+            </span>
+          </div>
+        )}
+
         <p className="text-base sm:text-lg text-white/30 mb-10 leading-relaxed">
           下一场 GESP 考试不会等人。<br />
           今天注册，AI 今天就开始帮孩子规划。
@@ -639,8 +801,11 @@ export function CTASection() {
           href="/register"
           className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] text-white font-medium text-lg hover:opacity-90 transition-all shadow-2xl shadow-[#5b6af0]/25 hover:shadow-[#5b6af0]/40"
         >
-          {/* 脉冲动画光圈 */}
-          <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6] animate-ping opacity-20" />
+          {/* 脉冲动画光圈 — 慢速 3s */}
+          <span
+            className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#5b6af0] to-[#8b5cf6]"
+            style={{ animation: "pulse-slow 3s ease-in-out infinite" }}
+          />
           <span className="relative">免费试用，立即开始</span>
           <ChevronRight className="relative w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
         </Link>
