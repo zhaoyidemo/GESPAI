@@ -19,6 +19,8 @@ import {
   baseSystemPrompt,
 } from "@/lib/prompts/error-diagnosis";
 
+import { DEFAULT_VIBE_MARKETING_PROMPT } from "@/lib/prompts/vibe-marketing";
+
 // ===== 从 lib/claude.ts 提取的工具类提示词 =====
 
 export const DEFAULT_CODE_ERROR_ANALYSIS_PROMPT = `你是 GESP AI 的代码错误分析工具，用于快速分析学生 C++ 代码中的错误。
@@ -333,6 +335,13 @@ export const PROMPT_REGISTRY: PromptRegistryEntry[] = [
     name: "防错规则检查",
     description: "检查代码是否违反防错规则的提示词",
     defaultContent: DEFAULT_PREVENTION_CHECK_PROMPT,
+  },
+  {
+    key: "vibe-generate",
+    category: "tool",
+    name: "Vibe 文案生成",
+    description: "将开发活动或学习记录转化为小红书风格文案",
+    defaultContent: DEFAULT_VIBE_MARKETING_PROMPT,
   },
 ];
 

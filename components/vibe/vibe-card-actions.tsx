@@ -1,0 +1,103 @@
+"use client";
+
+import { RefObject, useCallback, useState } from "react";
+import { toPng } from "html-to-image";
+import { Button } from "@/components/ui/button";
+import { Copy, Download, Check, Palette } from "lucide-react";
+import { useVibeStore, type CardStyle } from "@/stores/vibe-store";
+
+interface VibeCardActionsProps {
+  cardRef: RefObject<HTMLDivElement | null>;
+}
+
+const STYLES: { value: CardStyle; label: string }[] = [
+  { value: "dark", label: "Dark Code" },
+  { value: "gradient", label: "Gradient" },
+  { value: "light", label: "Minimal" },
+];
+
+export function VibeCardActions({ cardRef }: VibeCardActionsProps) {
+  const { result, cardStyle, setCardStyle } = useVibeStore();
+  const [copied, setCopied] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    if (!result) return;
+    const text = `${result.title}\n\n${result.body}\n\n${result.hashtags.join(" ")}`;
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [result]);
+
+  const handleExport = useCallback(async () => {
+    if (!cardRef.current) return;
+    setExporting(true);
+    try {
+      const dataUrl = await toPng(cardRef.current, {
+        pixelRatio: 3,
+        width: 360,
+        height: 480,
+      });
+      const link = document.createElement("a");
+      link.download = `vibe-${Date.now()}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Export failed:", err);
+    } finally {
+      setExporting(false);
+    }
+  }, [cardRef]);
+
+  return (
+    <div className="flex flex-col gap-3">
+      {/* 风格切换 */}
+      <div className="flex items-center gap-2">
+        <Palette className="h-4 w-4 text-muted-foreground" />
+        <div className="flex gap-1">
+          {STYLES.map((s) => (
+            <button
+              key={s.value}
+              onClick={() => setCardStyle(s.value)}
+              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                cardStyle === s.value
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-secondary text-muted-foreground hover:bg-secondary/80"
+              }`}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 操作按钮 */}
+      <div className="flex gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleCopy}
+          disabled={!result}
+          className="flex-1"
+        >
+          {copied ? (
+            <Check className="h-4 w-4 mr-1.5 text-green-500" />
+          ) : (
+            <Copy className="h-4 w-4 mr-1.5" />
+          )}
+          {copied ? "已复制" : "复制文案"}
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleExport}
+          disabled={!result || exporting}
+          className="flex-1"
+        >
+          <Download className="h-4 w-4 mr-1.5" />
+          {exporting ? "导出中..." : "导出图片"}
+        </Button>
+      </div>
+    </div>
+  );
+}

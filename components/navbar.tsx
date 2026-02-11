@@ -28,6 +28,7 @@ import {
   BookX,
   MessageSquareCode,
   ClipboardList,
+  Megaphone,
 } from "lucide-react";
 
 const navItems = [
@@ -36,6 +37,7 @@ const navItems = [
   { href: "/problem", label: "题库", icon: Code },
   { href: "/error-book", label: "错题本", icon: BookX },
   { href: "/mock-exam", label: "模拟考试", icon: ClipboardList },
+  { href: "/vibe", label: "Vibe", icon: Megaphone },
 ];
 
 export function Navbar() {
