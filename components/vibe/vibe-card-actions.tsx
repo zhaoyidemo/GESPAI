@@ -3,7 +3,7 @@
 import { RefObject, useCallback, useState } from "react";
 import { toPng } from "html-to-image";
 import { Button } from "@/components/ui/button";
-import { Copy, Download, Check, Palette } from "lucide-react";
+import { Copy, Download, Check, Palette, Share } from "lucide-react";
 import { useVibeStore, type CardStyle } from "@/stores/vibe-store";
 
 interface VibeCardActionsProps {
@@ -20,6 +20,8 @@ export function VibeCardActions({ cardRef }: VibeCardActionsProps) {
   const { results, selectedIndex, cardStyle, setCardStyle } = useVibeStore();
   const [copied, setCopied] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [publishing, setPublishing] = useState(false);
+  const [published, setPublished] = useState(false);
 
   const currentResult = results[selectedIndex] ?? null;
 
@@ -41,7 +43,7 @@ export function VibeCardActions({ cardRef }: VibeCardActionsProps) {
         height: 480,
       });
       const link = document.createElement("a");
-      link.download = `vibe-${Date.now()}.png`;
+      link.download = `xiaohongshu-${Date.now()}.png`;
       link.href = dataUrl;
       link.click();
     } catch (err) {
@@ -50,6 +52,35 @@ export function VibeCardActions({ cardRef }: VibeCardActionsProps) {
       setExporting(false);
     }
   }, [cardRef]);
+
+  const handlePublish = useCallback(async () => {
+    if (!currentResult || !cardRef.current) return;
+    setPublishing(true);
+    try {
+      // 同时复制文案 + 下载图片
+      const text = `${currentResult.title}\n\n${currentResult.body}\n\n${currentResult.hashtags.join(" ")}`;
+      const copyPromise = navigator.clipboard.writeText(text);
+
+      const exportPromise = toPng(cardRef.current, {
+        pixelRatio: 3,
+        width: 360,
+        height: 480,
+      }).then((dataUrl) => {
+        const link = document.createElement("a");
+        link.download = `xiaohongshu-${Date.now()}.png`;
+        link.href = dataUrl;
+        link.click();
+      });
+
+      await Promise.all([copyPromise, exportPromise]);
+      setPublished(true);
+      setTimeout(() => setPublished(false), 3000);
+    } catch (err) {
+      console.error("Publish prep failed:", err);
+    } finally {
+      setPublishing(false);
+    }
+  }, [currentResult, cardRef]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -73,7 +104,28 @@ export function VibeCardActions({ cardRef }: VibeCardActionsProps) {
         </div>
       </div>
 
-      {/* 操作按钮 */}
+      {/* 一键准备发布 */}
+      <Button
+        onClick={handlePublish}
+        disabled={!currentResult || publishing}
+        className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white"
+      >
+        {published ? (
+          <>
+            <Check className="h-4 w-4 mr-1.5 text-white" />
+            文案已复制 + 图片已下载，去小红书粘贴发布吧！
+          </>
+        ) : publishing ? (
+          "准备中..."
+        ) : (
+          <>
+            <Share className="h-4 w-4 mr-1.5" />
+            一键准备发布
+          </>
+        )}
+      </Button>
+
+      {/* 单独操作按钮 */}
       <div className="flex gap-2">
         <Button
           variant="outline"

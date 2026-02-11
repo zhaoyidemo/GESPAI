@@ -23,10 +23,10 @@ export function VibePage() {
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-1">
           <Megaphone className="h-5 w-5 text-primary" />
-          <h1 className="text-2xl font-bold">Vibe Marketing</h1>
+          <h1 className="text-2xl font-bold">小红书发帖助手</h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Build in Public, Learn in Public —— 把真实的开发和学习活动，转化为可分享的视觉卡片
+          一键生成小红书图文帖 —— AI 把你的学习成就变成好看的卡片，复制粘贴就能发
         </p>
       </div>
 

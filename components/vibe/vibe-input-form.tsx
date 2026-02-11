@@ -70,7 +70,7 @@ export function VibeInputForm() {
       <div>
         <h2 className="text-lg font-semibold mb-1">素材输入</h2>
         <p className="text-sm text-muted-foreground">
-          选择内容方向，粘贴原始素材，AI 帮你生成小红书文案
+          选择内容方向，粘贴素材，AI 一键生成小红书帖子
         </p>
       </div>
 
