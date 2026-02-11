@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Loader2 } from "lucide-react";
 import { useVibeStore, type ContentType } from "@/stores/vibe-store";
@@ -20,6 +20,8 @@ const TABS: { value: ContentType; label: string; placeholder: string }[] = [
   },
 ];
 
+const VARIANT_OPTIONS = [1, 2, 3] as const;
+
 export function VibeInputForm() {
   const {
     contentType,
@@ -28,10 +30,11 @@ export function VibeInputForm() {
     setContentType,
     setRawInput,
     setGenerating,
-    setResult,
+    setResults,
     setError,
   } = useVibeStore();
 
+  const [variants, setVariants] = useState(1);
   const currentTab = TABS.find((t) => t.value === contentType) || TABS[0];
 
   const handleGenerate = useCallback(async () => {
@@ -44,7 +47,7 @@ export function VibeInputForm() {
       const res = await fetch("/api/vibe/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contentType, rawInput }),
+        body: JSON.stringify({ contentType, rawInput, variants }),
       });
 
       const data = await res.json();
@@ -54,13 +57,13 @@ export function VibeInputForm() {
         return;
       }
 
-      setResult(data);
+      setResults(data.results || []);
     } catch {
       setError("网络错误，请重试");
     } finally {
       setGenerating(false);
     }
-  }, [rawInput, generating, contentType, setGenerating, setError, setResult]);
+  }, [rawInput, generating, contentType, variants, setGenerating, setError, setResults]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -88,6 +91,31 @@ export function VibeInputForm() {
         ))}
       </div>
 
+      {/* 变体数量选择 */}
+      <div className="flex items-center gap-3">
+        <span className="text-sm text-muted-foreground">生成方案数</span>
+        <div className="flex gap-1">
+          {VARIANT_OPTIONS.map((n) => (
+            <button
+              key={n}
+              onClick={() => setVariants(n)}
+              className={`w-8 h-8 rounded-md text-sm font-medium transition-all ${
+                variants === n
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-secondary text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+        {variants > 1 && (
+          <span className="text-xs text-muted-foreground">
+            AI 将从不同角度生成 {variants} 个文案
+          </span>
+        )}
+      </div>
+
       {/* 文本输入 */}
       <textarea
         value={rawInput}
@@ -111,7 +139,7 @@ export function VibeInputForm() {
         ) : (
           <>
             <Sparkles className="h-4 w-4 mr-2" />
-            生成文案
+            生成文案{variants > 1 ? ` (${variants} 个方案)` : ""}
           </>
         )}
       </Button>

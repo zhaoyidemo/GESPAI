@@ -234,6 +234,7 @@ export default function ProblemPage() {
                   aiLoading={aiDebug.loading}
                   helpCount={aiDebug.helpCount}
                   recordingError={recordingError}
+                  problemTitle={problem?.title}
                 />
               </TabsContent>
             )}

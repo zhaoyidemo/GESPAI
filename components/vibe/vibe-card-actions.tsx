@@ -17,17 +17,19 @@ const STYLES: { value: CardStyle; label: string }[] = [
 ];
 
 export function VibeCardActions({ cardRef }: VibeCardActionsProps) {
-  const { result, cardStyle, setCardStyle } = useVibeStore();
+  const { results, selectedIndex, cardStyle, setCardStyle } = useVibeStore();
   const [copied, setCopied] = useState(false);
   const [exporting, setExporting] = useState(false);
 
+  const currentResult = results[selectedIndex] ?? null;
+
   const handleCopy = useCallback(async () => {
-    if (!result) return;
-    const text = `${result.title}\n\n${result.body}\n\n${result.hashtags.join(" ")}`;
+    if (!currentResult) return;
+    const text = `${currentResult.title}\n\n${currentResult.body}\n\n${currentResult.hashtags.join(" ")}`;
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [result]);
+  }, [currentResult]);
 
   const handleExport = useCallback(async () => {
     if (!cardRef.current) return;
@@ -77,7 +79,7 @@ export function VibeCardActions({ cardRef }: VibeCardActionsProps) {
           variant="outline"
           size="sm"
           onClick={handleCopy}
-          disabled={!result}
+          disabled={!currentResult}
           className="flex-1"
         >
           {copied ? (
@@ -91,7 +93,7 @@ export function VibeCardActions({ cardRef }: VibeCardActionsProps) {
           variant="outline"
           size="sm"
           onClick={handleExport}
-          disabled={!result || exporting}
+          disabled={!currentResult || exporting}
           className="flex-1"
         >
           <Download className="h-4 w-4 mr-1.5" />

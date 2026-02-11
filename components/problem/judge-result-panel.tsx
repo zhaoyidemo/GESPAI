@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, Sparkles, BookX } from "lucide-react";
 import { getJudgeStatusLabel } from "@/lib/utils";
+import { VibeQuickButton } from "@/components/vibe/vibe-quick-button";
 import type { JudgeResult } from "@/stores/problem-store";
 
 interface JudgeResultPanelProps {
@@ -15,6 +16,7 @@ interface JudgeResultPanelProps {
   aiLoading: boolean;
   helpCount: number;
   recordingError: boolean;
+  problemTitle?: string;
 }
 
 export function JudgeResultPanel({
@@ -27,6 +29,7 @@ export function JudgeResultPanel({
   aiLoading,
   helpCount,
   recordingError,
+  problemTitle,
 }: JudgeResultPanelProps) {
   const currentResult = activeResultType === "run" ? runResult : judgeResult;
   const isRunMode = activeResultType === "run";
@@ -87,6 +90,17 @@ export function JudgeResultPanel({
           </div>
         </div>
       </div>
+
+      {/* AC 时显示分享按钮 */}
+      {!isRunMode && currentResult.status === "accepted" && (
+        <div className="flex justify-end">
+          <VibeQuickButton
+            contentType="build"
+            rawInput={`成功通过了 GESP 题目「${problemTitle || "编程题"}」，得分 ${currentResult.score}/100 分！`}
+            label="分享成就"
+          />
+        </div>
+      )}
 
       {/* AI帮助按钮和错题记录按钮 */}
       {!isRunMode && currentResult.status !== "accepted" && currentResult.id && (

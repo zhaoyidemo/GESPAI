@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { getDaysUntil, formatDate } from "@/lib/utils";
 import { Celebration, TaskCompletionToast } from "@/components/celebration";
+import { VibeQuickButton } from "@/components/vibe/vibe-quick-button";
 
 interface DailyTask {
   tasks: Array<{
@@ -304,6 +305,13 @@ export default function HomePage() {
                               <span className="font-medium text-green-700">
                                 今日任务全部完成！连胜 +1
                               </span>
+                              <VibeQuickButton
+                                contentType="learn"
+                                rawInput={`今日学习任务全部完成！完成 ${dailyTask.tasks.length} 个任务，获得 ${dailyTask.completedXp} XP，连胜 ${userStats?.streakDays || 0} 天！`}
+                                label="分享打卡"
+                                variant="outline"
+                                size="sm"
+                              />
                             </>
                           ) : (
                             <>

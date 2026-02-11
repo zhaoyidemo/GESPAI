@@ -2,14 +2,20 @@
 
 import { useRef } from "react";
 import { VibeInputForm } from "@/components/vibe/vibe-input-form";
+import { VibeSuggestions } from "@/components/vibe/vibe-suggestions";
 import { VibeCard } from "@/components/vibe/vibe-card";
 import { VibeCardActions } from "@/components/vibe/vibe-card-actions";
 import { useVibeStore } from "@/stores/vibe-store";
 import { Megaphone } from "lucide-react";
 
+const VARIANT_LABELS = ["A", "B", "C"];
+
 export function VibePage() {
-  const { result, cardStyle, error } = useVibeStore();
+  const { results, selectedIndex, setSelectedIndex, cardStyle, error } =
+    useVibeStore();
   const cardRef = useRef<HTMLDivElement>(null);
+
+  const currentResult = results[selectedIndex] ?? null;
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -26,8 +32,9 @@ export function VibePage() {
 
       {/* 左右两栏布局 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* 左：输入表单 */}
+        {/* 左：建议区 + 输入表单 */}
         <div className="space-y-4">
+          <VibeSuggestions />
           <VibeInputForm />
           {error && (
             <div className="px-4 py-3 rounded-xl bg-destructive/10 text-destructive text-sm">
@@ -36,11 +43,30 @@ export function VibePage() {
           )}
         </div>
 
-        {/* 右：卡片预览 + 操作栏 */}
+        {/* 右：多变体导航 + 卡片预览 + 操作栏 */}
         <div className="flex flex-col items-center gap-4">
-          {result ? (
+          {/* 多变体导航 */}
+          {results.length > 1 && (
+            <div className="flex gap-2">
+              {results.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSelectedIndex(i)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                    selectedIndex === i
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "bg-secondary text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  方案 {VARIANT_LABELS[i]}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {currentResult ? (
             <>
-              <VibeCard ref={cardRef} result={result} style={cardStyle} />
+              <VibeCard ref={cardRef} result={currentResult} style={cardStyle} />
               <VibeCardActions cardRef={cardRef} />
             </>
           ) : (

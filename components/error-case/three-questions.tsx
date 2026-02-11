@@ -9,6 +9,7 @@ import { Mic, MicOff } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
 import { addPunctuation } from "@/lib/auto-punctuation";
+import { VibeQuickButton } from "@/components/vibe/vibe-quick-button";
 
 // 音量指示器组件（自带定时器驱动流畅动画）
 function VolumeIndicator({ volume }: { volume: number }) {
@@ -493,9 +494,17 @@ export function ThreeQuestions({
               <p className="text-sm text-muted-foreground">
                 现在可以生成一条防错规则，帮助你以后避免类似错误
               </p>
-              <Button onClick={onGenerateRule}>
-                生成防错规则
-              </Button>
+              <div className="flex items-center gap-2 justify-center">
+                <Button onClick={onGenerateRule}>
+                  生成防错规则
+                </Button>
+                <VibeQuickButton
+                  contentType="learn"
+                  rawInput={`完成了错题三问复盘：\n1. 错了哪：${q1Answer || ""}\n2. 为什么错：${q2Answer || ""}\n3. 怎么避免：${q3Answer || ""}`}
+                  label="分享复盘"
+                  variant="outline"
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
