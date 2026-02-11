@@ -1,21 +1,33 @@
 "use client";
 
 import { useRef } from "react";
+import { useSession } from "next-auth/react";
 import { VibeInputForm } from "@/components/vibe/vibe-input-form";
 import { VibeSuggestions } from "@/components/vibe/vibe-suggestions";
 import { VibeCard } from "@/components/vibe/vibe-card";
 import { VibeCardActions } from "@/components/vibe/vibe-card-actions";
+import { VibeHistory } from "@/components/vibe/vibe-history";
 import { useVibeStore } from "@/stores/vibe-store";
 import { Megaphone } from "lucide-react";
 
 const VARIANT_LABELS = ["A", "B", "C"];
 
 export function VibePage() {
-  const { results, selectedIndex, setSelectedIndex, cardStyle, error } =
-    useVibeStore();
+  const { data: session } = useSession();
+  const {
+    results,
+    selectedIndex,
+    setSelectedIndex,
+    cardStyle,
+    cardSize,
+    editMode,
+    updateCurrentResult,
+    error,
+  } = useVibeStore();
   const cardRef = useRef<HTMLDivElement>(null);
 
   const currentResult = results[selectedIndex] ?? null;
+  const username = session?.user?.username || "User";
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -41,9 +53,10 @@ export function VibePage() {
               {error}
             </div>
           )}
+          <VibeHistory />
         </div>
 
-        {/* 右：多变体导航 + 卡片预览 + 操作栏 */}
+        {/* 右：多变体导航 + 卡片预览 + 内联编辑 + 操作栏 */}
         <div className="flex flex-col items-center gap-4">
           {/* 多变体导航 */}
           {results.length > 1 && (
@@ -66,7 +79,48 @@ export function VibePage() {
 
           {currentResult ? (
             <>
-              <VibeCard ref={cardRef} result={currentResult} style={cardStyle} />
+              <VibeCard
+                ref={cardRef}
+                result={currentResult}
+                style={cardStyle}
+                size={cardSize}
+                username={username}
+              />
+
+              {/* 内联编辑区 */}
+              {editMode && (
+                <div className="w-full max-w-[360px] space-y-2">
+                  <input
+                    value={currentResult.title}
+                    onChange={(e) =>
+                      updateCurrentResult({ title: e.target.value })
+                    }
+                    className="w-full px-3 py-2 rounded-lg border border-input bg-background text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    placeholder="标题"
+                  />
+                  <textarea
+                    value={currentResult.body}
+                    onChange={(e) =>
+                      updateCurrentResult({ body: e.target.value })
+                    }
+                    className="w-full h-32 px-3 py-2 rounded-lg border border-input bg-background text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    placeholder="正文"
+                  />
+                  <input
+                    value={currentResult.hashtags.join(" ")}
+                    onChange={(e) =>
+                      updateCurrentResult({
+                        hashtags: e.target.value
+                          .split(/\s+/)
+                          .filter(Boolean),
+                      })
+                    }
+                    className="w-full px-3 py-2 rounded-lg border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    placeholder="标签（空格分隔）"
+                  />
+                </div>
+              )}
+
               <VibeCardActions cardRef={cardRef} />
             </>
           ) : (

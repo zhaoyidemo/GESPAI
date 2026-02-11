@@ -42,6 +42,7 @@ model User {
   errorCases      ErrorCase[]
   preventionRules PreventionRule[]
   mockExamResults MockExamResult[]
+  vibePosts       VibePost[]
 
   @@map("users")
 }
@@ -330,4 +331,29 @@ model MockExamResult {
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("mock_exam_results")
+}
+
+// 小红书帖子生成历史
+model VibePost {
+  id            String   @id @default(uuid())
+  userId        String
+
+  contentType   String   // 'build' | 'learn' | 'weekly'
+  tone          String?  // 'inspirational' | 'technical' | 'humble-brag' | 'casual'
+  rawInput      String   @db.Text
+  title         String
+  body          String   @db.Text
+  hashtags      String[]
+  codeSnippet   String?  @db.Text
+  cardStyle     String   @default("dark")
+  cardSize      String   @default("3:4")
+
+  shared        Boolean  @default(false)
+  xpAwarded     Boolean  @default(false)
+
+  createdAt     DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("vibe_posts")
 }

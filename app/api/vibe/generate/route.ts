@@ -4,11 +4,26 @@ import { getSystemPrompt } from "@/lib/prompts/get-system-prompt";
 import { chat } from "@/lib/claude";
 import type { VibeResult } from "@/stores/vibe-store";
 
+const HOT_HASHTAGS = ["#GESP", "#少儿编程", "#C++", "#编程学习"];
+
+const TONE_LABELS: Record<string, string> = {
+  inspirational: "励志激励风格，突出努力和成长",
+  technical: "技术干货风格，侧重具体方法和知识点",
+  "humble-brag": "凡尔赛风格，看似谦虚实则炫耀",
+  casual: "轻松日常风格，像朋友聊天一样自然",
+};
+
 function parseVibeResult(obj: Record<string, unknown>): VibeResult {
+  const hashtags = (obj.hashtags as string[]) || [];
+  // 自动补充热门标签（去重）
+  const merged = [...hashtags];
+  for (const tag of HOT_HASHTAGS) {
+    if (!merged.includes(tag)) merged.push(tag);
+  }
   return {
     title: (obj.title as string) || "",
     body: (obj.body as string) || "",
-    hashtags: (obj.hashtags as string[]) || [],
+    hashtags: merged,
     codeSnippet: (obj.codeSnippet as string) || null,
   };
 }
@@ -20,7 +35,12 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { contentType, rawInput, variants = 1 } = await request.json();
+    const {
+      contentType,
+      rawInput,
+      variants = 1,
+      tone = "inspirational",
+    } = await request.json();
 
     if (!rawInput || !rawInput.trim()) {
       return NextResponse.json(
@@ -29,7 +49,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!["build", "learn"].includes(contentType)) {
+    if (!["build", "learn", "weekly"].includes(contentType)) {
       return NextResponse.json(
         { error: "内容类型必须是 build 或 learn" },
         { status: 400 }
@@ -39,11 +59,17 @@ export async function POST(request: Request) {
     const variantCount = Math.min(Math.max(1, Number(variants) || 1), 3);
     const systemPrompt = await getSystemPrompt("vibe-generate");
     const typeLabel =
-      contentType === "build" ? "Build（开发活动）" : "Learn（学习活动）";
+      contentType === "build"
+        ? "Build（开发活动）"
+        : contentType === "weekly"
+        ? "Weekly（一周学习总结）"
+        : "Learn（学习活动）";
+    const toneInstruction = TONE_LABELS[tone] || TONE_LABELS.inspirational;
 
     if (variantCount === 1) {
       // 单变体：行为不变
       const userMessage = `内容方向：${typeLabel}
+文案风格要求：${toneInstruction}
 
 原始素材：
 ${rawInput.trim()}
@@ -79,6 +105,7 @@ ${rawInput.trim()}
 
     // 多变体：要求 AI 返回 JSON 数组
     const userMessage = `内容方向：${typeLabel}
+文案风格要求：${toneInstruction}
 
 原始素材：
 ${rawInput.trim()}
