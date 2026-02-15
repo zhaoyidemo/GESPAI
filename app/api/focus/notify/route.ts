@@ -31,61 +31,54 @@ export async function POST(request: NextRequest) {
     const { awaySec, focusSeconds, totalSeconds, blurCount } = await request.json();
     const distractSeconds = Math.max(0, totalSeconds - focusSeconds);
     const username = session.user.username || "孩子";
+    const timeStr = new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" });
 
-    const card = {
-      msg_type: "interactive",
-      card: {
-        header: {
-          title: { tag: "plain_text", content: "专注度提醒" },
-          template: "red",
-        },
-        elements: [
-          {
-            tag: "div",
-            text: {
-              tag: "lark_md",
-              content: `**${username}** 已离开 GESP AI 超过 **${formatMin(awaySec)}**`,
-            },
-          },
-          { tag: "hr" },
-          {
-            tag: "div",
-            text: {
-              tag: "lark_md",
-              content: [
-                `**今日数据**`,
-                `专注时长：${formatMin(focusSeconds)}`,
-                `分心时长：${formatMin(distractSeconds)}`,
-                `切出次数：${blurCount} 次`,
-              ].join("\n"),
-            },
-          },
-          {
-            tag: "note",
-            elements: [
-              {
-                tag: "plain_text",
-                content: `来自 GESP AI · ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`,
-              },
+    // 使用 post 富文本格式（支持关键词校验 + 排版美观）
+    const message = {
+      msg_type: "post",
+      content: {
+        post: {
+          zh_cn: {
+            title: "专注度提醒",
+            content: [
+              [
+                { tag: "text", text: `${username} 已离开 GESP AI 超过 ` },
+                { tag: "text", text: formatMin(awaySec) },
+              ],
+              [{ tag: "text", text: "" }],
+              [
+                { tag: "text", text: `📗 专注时长：${formatMin(focusSeconds)}` },
+              ],
+              [
+                { tag: "text", text: `📕 分心时长：${formatMin(distractSeconds)}` },
+              ],
+              [
+                { tag: "text", text: `↗ 切出次数：${blurCount} 次` },
+              ],
+              [{ tag: "text", text: "" }],
+              [
+                { tag: "text", text: `来自 GESP AI · ${timeStr}` },
+              ],
             ],
           },
-        ],
+        },
       },
     };
 
     const res = await fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(card),
+      body: JSON.stringify(message),
     });
 
-    if (res.ok) {
+    const result = await res.json();
+
+    if (result.code === 0) {
       lastNotifyMap.set(userId, now);
       return NextResponse.json({ sent: true });
     }
 
-    const err = await res.text();
-    console.error("Feishu webhook error:", err);
+    console.error("Feishu webhook error:", result);
     return NextResponse.json({ error: "飞书发送失败" }, { status: 502 });
   } catch (error) {
     console.error("Notify error:", error);
