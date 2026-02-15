@@ -30,19 +30,11 @@ import { useProblemStore } from "@/stores/problem-store";
 import { useAIDebugStore } from "@/stores/ai-debug-store";
 import { usePreventionStore } from "@/stores/prevention-store";
 import { useProblemActions } from "@/hooks/use-problem-actions";
-import { useFocusTracker } from "@/hooks/use-focus-tracker";
-import { FocusReminder } from "@/components/focus/focus-reminder";
 
 export default function ProblemPage() {
   const params = useParams();
   const id = params.id as string;
   const { toast } = useToast();
-
-  // 专注度追踪
-  const { showReminder, awayDuration, dismissReminder } = useFocusTracker({
-    pageType: "problem",
-    pageId: id,
-  });
 
   // Stores
   const {
@@ -312,12 +304,6 @@ export default function ProblemPage() {
         onCancel={handleCancelSubmit}
       />
 
-      {/* 专注度提醒 */}
-      <FocusReminder
-        open={showReminder}
-        awayDuration={awayDuration}
-        onDismiss={dismissReminder}
-      />
     </div>
   );
 }

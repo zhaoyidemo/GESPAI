@@ -9,8 +9,6 @@ import { GraduationCap, ArrowLeft, CheckCircle2, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/components/ui/use-toast";
 import { getKnowledgePointById } from "@/lib/gesp-knowledge";
-import { useFocusTracker } from "@/hooks/use-focus-tracker";
-import { FocusReminder } from "@/components/focus/focus-reminder";
 
 export default function TutorPage() {
   const params = useParams();
@@ -20,11 +18,6 @@ export default function TutorPage() {
   const knowledgePoint = getKnowledgePointById(topic);
   const [completing, setCompleting] = useState(false);
   const [completed, setCompleted] = useState(false);
-
-  const { showReminder, awayDuration, dismissReminder } = useFocusTracker({
-    pageType: "tutor",
-    pageId: topic,
-  });
 
   const displayPoint = knowledgePoint || {
     id: topic,
@@ -182,12 +175,6 @@ export default function TutorPage() {
           </CardContent>
         </Card>
       </div>
-
-      <FocusReminder
-        open={showReminder}
-        awayDuration={awayDuration}
-        onDismiss={dismissReminder}
-      />
     </div>
   );
 }

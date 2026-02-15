@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Navbar } from "@/components/navbar";
+import { FocusTrackerGlobal } from "@/components/focus/focus-tracker-global";
 import { Sparkles } from "lucide-react";
 
 export default function MainLayout({
@@ -48,6 +49,9 @@ export default function MainLayout({
     <div className="min-h-screen bg-gray-50">
       {/* 导航栏 */}
       <Navbar />
+
+      {/* 全局专注度追踪 */}
+      <FocusTrackerGlobal />
 
       {/* 主内容区 */}
       <main className="container-responsive py-6 pb-20 relative z-10">
