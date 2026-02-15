@@ -28,6 +28,7 @@ import {
 import { getDaysUntil, formatDate } from "@/lib/utils";
 import { Celebration, TaskCompletionToast } from "@/components/celebration";
 import { VibeQuickButton } from "@/components/vibe/vibe-quick-button";
+import { FocusReportCard } from "@/components/focus/focus-report-card";
 
 interface DailyTask {
   tasks: Array<{
@@ -456,6 +457,9 @@ export default function HomePage() {
               </div>
             </div>
           )}
+
+          {/* 今日专注 */}
+          <FocusReportCard range="today" compact />
 
           {/* 徽章展示 */}
           <div className="glass-card rounded-2xl p-6 animate-slide-up stagger-3" style={{ opacity: 0 }}>

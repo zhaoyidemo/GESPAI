@@ -8,12 +8,19 @@ import { ChatInterface } from "@/components/chat/chat-interface";
 import { MessageCircle, ArrowLeft, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { getKnowledgePointById } from "@/lib/gesp-knowledge";
+import { useFocusTracker } from "@/hooks/use-focus-tracker";
+import { FocusReminder } from "@/components/focus/focus-reminder";
 
 export default function FeynmanPage() {
   const params = useParams();
   const topic = params.topic as string;
   const knowledgePoint = getKnowledgePointById(topic);
   const [showEndButton, setShowEndButton] = useState(true);
+
+  const { showReminder, awayDuration, dismissReminder } = useFocusTracker({
+    pageType: "feynman",
+    pageId: topic,
+  });
 
   const displayPoint = knowledgePoint || {
     id: topic,
@@ -145,6 +152,12 @@ export default function FeynmanPage() {
           </CardContent>
         </Card>
       </div>
+
+      <FocusReminder
+        open={showReminder}
+        awayDuration={awayDuration}
+        onDismiss={dismissReminder}
+      />
     </div>
   );
 }
