@@ -5,8 +5,8 @@ import { useFocusStore } from "@/stores/focus-store";
 
 const HEARTBEAT_INTERVAL = 30_000; // 30 秒心跳保存到服务端
 const TICK_INTERVAL = 1_000; // 1 秒刷新 UI
-const NOTIFY_THRESHOLD = 60; // 持续分心 60 秒触发通知
-const NOTIFY_COOLDOWN = 5 * 60 * 1000; // 通知冷却 5 分钟
+const NOTIFY_THRESHOLD = 120; // 持续分心 2 分钟触发通知
+const NOTIFY_COOLDOWN = 3 * 60 * 1000; // 通知冷却 3 分钟
 
 // 判断用户是否真正在看 GESP AI：标签页可见 + 窗口聚焦
 function isUserActive() {

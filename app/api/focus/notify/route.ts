@@ -3,7 +3,7 @@ import { requireAuth } from "@/lib/require-auth";
 
 // 内存级防刷：每个用户 5 分钟内最多通知一次
 const lastNotifyMap = new Map<string, number>();
-const COOLDOWN_MS = 5 * 60 * 1000;
+const COOLDOWN_MS = 3 * 60 * 1000;
 
 function formatMin(seconds: number) {
   if (seconds < 60) return `${seconds}秒`;
