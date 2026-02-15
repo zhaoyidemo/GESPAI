@@ -7,38 +7,36 @@ export async function GET() {
     const session = await requireAuth();
     if (session instanceof NextResponse) return session;
 
-    // 获取用户基本信息
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: {
-        streakDays: true,
-        totalXp: true,
-        targetLevel: true,
-        examDate: true,
-        badges: true,
-        lastActiveDate: true,
-      },
-    });
+    // 并行获取用户信息、解题数和提交次数
+    const [user, solvedProblems, totalSubmissions] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: session.user.id },
+        select: {
+          streakDays: true,
+          totalXp: true,
+          targetLevel: true,
+          examDate: true,
+          badges: true,
+          lastActiveDate: true,
+        },
+      }),
+      prisma.submission.groupBy({
+        by: ["problemId"],
+        where: {
+          userId: session.user.id,
+          status: "accepted",
+        },
+      }),
+      prisma.submission.count({
+        where: {
+          userId: session.user.id,
+        },
+      }),
+    ]);
 
     if (!user) {
       return NextResponse.json({ error: "用户不存在" }, { status: 404 });
     }
-
-    // 获取用户解决的题目数
-    const solvedProblems = await prisma.submission.groupBy({
-      by: ["problemId"],
-      where: {
-        userId: session.user.id,
-        status: "accepted",
-      },
-    });
-
-    // 获取总提交次数
-    const totalSubmissions = await prisma.submission.count({
-      where: {
-        userId: session.user.id,
-      },
-    });
 
     // 检查并更新连胜天数
     const today = new Date();

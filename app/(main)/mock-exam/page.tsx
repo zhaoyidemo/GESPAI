@@ -59,9 +59,17 @@ export default function MockExamPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 获取用户统计
-        const statsResponse = await fetch("/api/user/stats");
-        const statsData = await statsResponse.json();
+        // 并行获取用户统计和模拟考试历史
+        const [statsResponse, examResponse] = await Promise.all([
+          fetch("/api/user/stats"),
+          fetch("/api/mock-exam?limit=10"),
+        ]);
+
+        const [statsData, examData] = await Promise.all([
+          statsResponse.json(),
+          examResponse.json(),
+        ]);
+
         if (statsResponse.ok) {
           setUserStats({
             targetLevel: statsData.targetLevel || 5,
@@ -70,9 +78,6 @@ export default function MockExamPage() {
           });
         }
 
-        // 从数据库获取模拟考试历史
-        const examResponse = await fetch("/api/mock-exam?limit=10");
-        const examData = await examResponse.json();
         if (examResponse.ok && examData.results) {
           setExamHistory(examData.results);
         }

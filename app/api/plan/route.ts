@@ -19,21 +19,43 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 获取用户当前的学习进度（扩展字段）
-    const learningRecords = await prisma.learningRecord.findMany({
-      where: { userId: session.user.id },
-      select: {
-        knowledgePointId: true,
-        status: true,
-        progress: true,
-        practiceCount: true,
-        correctCount: true,
-        masteryLevel: true,
-        tutorCompleted: true,
-        feynmanCompleted: true,
-        feynmanScore: true,
-      },
-    });
+    // 并行获取学习进度、错题统计和近30天提交
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const [learningRecords, errorCases, recentSubmissions] = await Promise.all([
+      prisma.learningRecord.findMany({
+        where: { userId: session.user.id },
+        select: {
+          knowledgePointId: true,
+          status: true,
+          progress: true,
+          practiceCount: true,
+          correctCount: true,
+          masteryLevel: true,
+          tutorCompleted: true,
+          feynmanCompleted: true,
+          feynmanScore: true,
+        },
+      }),
+      prisma.errorCase.findMany({
+        where: { userId: session.user.id },
+        select: {
+          errorType: true,
+          problem: { select: { knowledgePoints: true, level: true } },
+        },
+      }),
+      prisma.submission.findMany({
+        where: {
+          userId: session.user.id,
+          createdAt: { gte: thirtyDaysAgo },
+        },
+        select: {
+          status: true,
+          problem: { select: { knowledgePoints: true, level: true } },
+        },
+      }),
+    ]);
 
     const currentProgress = learningRecords.reduce(
       (acc, record) => {
@@ -42,30 +64,6 @@ export async function POST(request: NextRequest) {
       },
       {} as Record<string, number>
     );
-
-    // 查询错题统计（按错误类型聚合）
-    const errorCases = await prisma.errorCase.findMany({
-      where: { userId: session.user.id },
-      select: {
-        errorType: true,
-        problem: { select: { knowledgePoints: true, level: true } },
-      },
-    });
-
-    // 查询近30天提交统计
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-    const recentSubmissions = await prisma.submission.findMany({
-      where: {
-        userId: session.user.id,
-        createdAt: { gte: thirtyDaysAgo },
-      },
-      select: {
-        status: true,
-        problem: { select: { knowledgePoints: true, level: true } },
-      },
-    });
 
     // 构建做题表现数据
     let performanceData: PerformanceData | undefined;
