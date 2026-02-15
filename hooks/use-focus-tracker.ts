@@ -5,6 +5,8 @@ import { useFocusStore } from "@/stores/focus-store";
 
 const HEARTBEAT_INTERVAL = 30_000; // 30 秒心跳保存到服务端
 const TICK_INTERVAL = 1_000; // 1 秒刷新 UI
+const NOTIFY_THRESHOLD = 60; // 持续分心 60 秒触发通知
+const NOTIFY_COOLDOWN = 5 * 60 * 1000; // 通知冷却 5 分钟
 
 // 判断用户是否真正在看 GESP AI：标签页可见 + 窗口聚焦
 function isUserActive() {
@@ -28,6 +30,9 @@ export function useFocusTracker() {
   const isActiveRef = useRef(true);
   const sessionDateRef = useRef<string>(new Date().toDateString());
   const rollingOverRef = useRef(false); // 防止午夜翻转重入
+  const distractStartRef = useRef<number | null>(null); // 本次分心开始时间
+  const notifiedThisBlurRef = useRef(false); // 本次分心是否已通知
+  const lastNotifyAtRef = useRef(0); // 上次通知时间戳
 
   // 获取当前数据快照
   const getSnapshot = useCallback(() => {
@@ -148,11 +153,15 @@ export function useFocusTracker() {
       // 专注 → 分心：暂停专注计时
       focusAccRef.current += now - focusStartRef.current;
       blurCountRef.current += 1;
+      distractStartRef.current = now;
+      notifiedThisBlurRef.current = false;
       store.setIsActive(false);
       store.setBlurCount(blurCountRef.current);
     } else {
       // 分心 → 专注：恢复专注计时
       focusStartRef.current = now;
+      distractStartRef.current = null;
+      notifiedThisBlurRef.current = false;
       store.setIsActive(true);
     }
   }, [store]);
@@ -170,7 +179,7 @@ export function useFocusTracker() {
 
         initFromServer(data);
 
-        // 1 秒 UI 刷新 + 午夜检测
+        // 1 秒 UI 刷新 + 午夜检测 + 分心通知
         tickTimer = setInterval(() => {
           const todayStr = new Date().toDateString();
           if (sessionDateRef.current !== todayStr) {
@@ -181,6 +190,32 @@ export function useFocusTracker() {
           const snapshot = getSnapshot();
           store.setFocusSeconds(snapshot.focusSeconds);
           store.setTotalSeconds(snapshot.totalSeconds);
+
+          // 分心超过 60 秒 → 飞书通知家长
+          if (
+            !isActiveRef.current &&
+            distractStartRef.current &&
+            !notifiedThisBlurRef.current
+          ) {
+            const awaySec = Math.round((Date.now() - distractStartRef.current) / 1000);
+            if (
+              awaySec >= NOTIFY_THRESHOLD &&
+              Date.now() - lastNotifyAtRef.current >= NOTIFY_COOLDOWN
+            ) {
+              notifiedThisBlurRef.current = true;
+              lastNotifyAtRef.current = Date.now();
+              fetch("/api/focus/notify", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  awaySec,
+                  focusSeconds: snapshot.focusSeconds,
+                  totalSeconds: snapshot.totalSeconds,
+                  blurCount: snapshot.blurCount,
+                }),
+              }).catch(() => {});
+            }
+          }
         }, TICK_INTERVAL);
 
         // 30 秒心跳保存
