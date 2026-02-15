@@ -1,32 +1,7 @@
 "use client";
 
-import { useMemo } from "react";
-import { usePathname } from "next/navigation";
 import { useFocusTracker } from "@/hooks/use-focus-tracker";
 import { Eye, EyeOff, LogOut } from "lucide-react";
-
-function parsePageInfo(pathname: string): { pageType: string; pageId?: string } {
-  const problemMatch = pathname.match(/^\/problem\/([^/]+)$/);
-  if (problemMatch) return { pageType: "problem", pageId: problemMatch[1] };
-
-  const tutorMatch = pathname.match(/^\/learn\/([^/]+)\/tutor$/);
-  if (tutorMatch) return { pageType: "tutor", pageId: tutorMatch[1] };
-
-  const feynmanMatch = pathname.match(/^\/learn\/([^/]+)\/feynman$/);
-  if (feynmanMatch) return { pageType: "feynman", pageId: feynmanMatch[1] };
-
-  const learnMatch = pathname.match(/^\/learn\/([^/]+)$/);
-  if (learnMatch) return { pageType: "learn", pageId: learnMatch[1] };
-
-  if (pathname.startsWith("/mock-exam")) return { pageType: "mock-exam" };
-  if (pathname.startsWith("/error-book")) return { pageType: "error-book" };
-  if (pathname.startsWith("/map")) return { pageType: "map" };
-  if (pathname === "/dashboard") return { pageType: "dashboard" };
-  if (pathname.startsWith("/vibe")) return { pageType: "vibe" };
-  if (pathname.startsWith("/profile")) return { pageType: "profile" };
-
-  return { pageType: "other" };
-}
 
 function formatDuration(seconds: number) {
   if (seconds < 0) seconds = 0;
@@ -44,11 +19,7 @@ function formatDuration(seconds: number) {
 }
 
 export function FocusTrackerGlobal() {
-  const pathname = usePathname();
-  const { pageType, pageId } = useMemo(() => parsePageInfo(pathname), [pathname]);
-
-  const { isActive, focusSeconds, totalSeconds, blurCount } =
-    useFocusTracker({ pageType, pageId });
+  const { isActive, focusSeconds, totalSeconds, blurCount } = useFocusTracker();
 
   const distractSeconds = Math.max(0, totalSeconds - focusSeconds);
 

@@ -3,11 +3,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useFocusStore } from "@/stores/focus-store";
 
-interface UseFocusTrackerOptions {
-  pageType: string;
-  pageId?: string;
-}
-
 const HEARTBEAT_INTERVAL = 30_000; // 30 秒心跳保存到服务端
 const TICK_INTERVAL = 1_000; // 1 秒刷新 UI
 
@@ -16,16 +11,23 @@ function isUserActive() {
   return !document.hidden && document.hasFocus();
 }
 
-export function useFocusTracker({ pageType, pageId }: UseFocusTrackerOptions) {
+// 获取今日零点的 ISO 字符串（客户端本地时区）
+function getTodayStart() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+}
+
+export function useFocusTracker() {
   const store = useFocusStore();
 
-  // 用 ref 追踪计时数据，避免闭包陈旧问题
   const sessionIdRef = useRef<string | null>(null);
   const focusStartRef = useRef<number>(Date.now());
   const focusAccRef = useRef(0); // 累计专注时间（毫秒）
   const totalStartRef = useRef<number>(Date.now());
   const blurCountRef = useRef(0);
   const isActiveRef = useRef(true);
+  const sessionDateRef = useRef<string>(new Date().toDateString());
+  const rollingOverRef = useRef(false); // 防止午夜翻转重入
 
   // 获取当前数据快照
   const getSnapshot = useCallback(() => {
@@ -72,19 +74,73 @@ export function useFocusTracker({ pageType, pageId }: UseFocusTrackerOptions) {
     navigator.sendBeacon(
       "/api/focus",
       new Blob(
-        [JSON.stringify({ ...snapshot, end: true })],
+        [JSON.stringify({ ...snapshot, end: false })],
         { type: "application/json" }
       )
     );
   }, [getSnapshot]);
 
-  // 统一处理焦点状态变化（visibilitychange / window blur / window focus）
+  // 创建或恢复今日会话
+  const createSession = useCallback(async () => {
+    const response = await fetch("/api/focus", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ dayStart: getTodayStart() }),
+    });
+
+    if (!response.ok) return null;
+    return await response.json();
+  }, []);
+
+  // 用服务端返回的累计数据初始化 refs
+  const initFromServer = useCallback(
+    (data: { id: string; focusSeconds: number; totalSeconds: number; blurCount: number }) => {
+      sessionIdRef.current = data.id;
+      // totalStart 倒推：让 Date.now() - totalStart = 已有的 totalSeconds
+      totalStartRef.current = Date.now() - data.totalSeconds * 1000;
+      // focus 累计器初始化为服务端保存的值
+      focusAccRef.current = data.focusSeconds * 1000;
+      focusStartRef.current = Date.now();
+      blurCountRef.current = data.blurCount;
+      isActiveRef.current = isUserActive();
+      sessionDateRef.current = new Date().toDateString();
+
+      store.setSessionId(data.id);
+      store.setIsTracking(true);
+      store.setIsActive(isActiveRef.current);
+      store.setFocusSeconds(data.focusSeconds);
+      store.setTotalSeconds(data.totalSeconds);
+      store.setBlurCount(data.blurCount);
+    },
+    [store]
+  );
+
+  // 午夜翻转：结束旧会话，创建新会话
+  const rolloverDay = useCallback(async () => {
+    if (rollingOverRef.current) return;
+    rollingOverRef.current = true;
+
+    try {
+      // 结束旧会话
+      await syncToServer(true);
+
+      // 创建新会话
+      const data = await createSession();
+      if (data) {
+        initFromServer(data);
+      }
+    } finally {
+      rollingOverRef.current = false;
+    }
+  }, [syncToServer, createSession, initFromServer]);
+
+  // 统一处理焦点状态变化
   const handleFocusChange = useCallback(() => {
     const now = Date.now();
     const wasActive = isActiveRef.current;
     const nowActive = isUserActive();
 
-    if (wasActive === nowActive) return; // 状态没变，忽略
+    if (wasActive === nowActive) return;
 
     isActiveRef.current = nowActive;
 
@@ -101,7 +157,7 @@ export function useFocusTracker({ pageType, pageId }: UseFocusTrackerOptions) {
     }
   }, [store]);
 
-  // 初始化：创建会话 + 注册事件 + 启动定时器
+  // 初始化：一次性挂载，不依赖 URL 变化
   useEffect(() => {
     let heartbeatTimer: ReturnType<typeof setInterval>;
     let tickTimer: ReturnType<typeof setInterval>;
@@ -109,35 +165,19 @@ export function useFocusTracker({ pageType, pageId }: UseFocusTrackerOptions) {
 
     const init = async () => {
       try {
-        const response = await fetch("/api/focus", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pageType, pageId }),
-        });
+        const data = await createSession();
+        if (!data || !mounted) return;
 
-        if (!response.ok) return;
-        const data = await response.json();
+        initFromServer(data);
 
-        if (!mounted) return;
-
-        sessionIdRef.current = data.id;
-        focusStartRef.current = Date.now();
-        totalStartRef.current = Date.now();
-        focusAccRef.current = 0;
-        blurCountRef.current = 0;
-        isActiveRef.current = isUserActive();
-
-        store.setSessionId(data.id);
-        store.setIsTracking(true);
-        store.setIsActive(isActiveRef.current);
-
-        // 如果初始就不在前台，记录一下
-        if (!isActiveRef.current) {
-          focusStartRef.current = 0; // 不累加
-        }
-
-        // 1 秒 UI 刷新
+        // 1 秒 UI 刷新 + 午夜检测
         tickTimer = setInterval(() => {
+          const todayStr = new Date().toDateString();
+          if (sessionDateRef.current !== todayStr) {
+            rolloverDay();
+            return;
+          }
+
           const snapshot = getSnapshot();
           store.setFocusSeconds(snapshot.focusSeconds);
           store.setTotalSeconds(snapshot.totalSeconds);
@@ -148,7 +188,7 @@ export function useFocusTracker({ pageType, pageId }: UseFocusTrackerOptions) {
           syncToServer(false);
         }, HEARTBEAT_INTERVAL);
 
-        // 注册三个事件，全面覆盖焦点丢失场景
+        // 注册三个事件
         document.addEventListener("visibilitychange", handleFocusChange);
         window.addEventListener("blur", handleFocusChange);
         window.addEventListener("focus", handleFocusChange);
@@ -169,15 +209,14 @@ export function useFocusTracker({ pageType, pageId }: UseFocusTrackerOptions) {
       window.removeEventListener("focus", handleFocusChange);
       window.removeEventListener("beforeunload", beaconSync);
 
-      // 组件卸载时结束会话
       if (sessionIdRef.current) {
-        syncToServer(true);
+        syncToServer(false);
       }
 
       store.reset();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageType, pageId]);
+  }, []);
 
   return {
     isActive: store.isActive,

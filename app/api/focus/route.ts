@@ -2,35 +2,53 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAuth } from "@/lib/require-auth";
 import prisma from "@/lib/db";
 
-// POST — 创建新的专注会话
+// POST — 获取或创建今日会话（一天一个）
 export async function POST(request: NextRequest) {
   const session = await requireAuth();
   if (session instanceof NextResponse) return session;
 
   try {
-    const { pageType, pageId } = await request.json();
+    const { dayStart } = await request.json();
+    const dayStartDate = new Date(dayStart);
 
-    // 关闭该用户所有活跃的旧会话（防崩溃残留）
-    await prisma.focusSession.updateMany({
-      where: { userId: session.user.id, isActive: true },
-      data: {
-        isActive: false,
-        endedAt: new Date(),
+    // 查找今天已有的活跃会话
+    const existing = await prisma.focusSession.findFirst({
+      where: {
+        userId: session.user.id,
+        isActive: true,
+        startedAt: { gte: dayStartDate },
       },
     });
 
-    // 创建新会话
+    if (existing) {
+      // 已有今日会话，返回累计数据
+      return NextResponse.json({
+        id: existing.id,
+        focusSeconds: existing.focusSeconds,
+        totalSeconds: existing.totalSeconds,
+        blurCount: existing.blurCount,
+      });
+    }
+
+    // 关闭旧的活跃会话（前几天的残留）
+    await prisma.focusSession.updateMany({
+      where: { userId: session.user.id, isActive: true },
+      data: { isActive: false, endedAt: new Date() },
+    });
+
+    // 创建今日新会话
     const focusSession = await prisma.focusSession.create({
       data: {
         userId: session.user.id,
-        pageType,
-        pageId: pageId || null,
+        pageType: "daily",
       },
     });
 
     return NextResponse.json({
       id: focusSession.id,
-      startedAt: focusSession.startedAt,
+      focusSeconds: 0,
+      totalSeconds: 0,
+      blurCount: 0,
     });
   } catch (error) {
     console.error("Create focus session error:", error);
@@ -112,7 +130,6 @@ export async function GET(request: NextRequest) {
         break;
       }
       default: {
-        // today
         startDate = new Date(now);
         startDate.setHours(0, 0, 0, 0);
         break;
