@@ -79,6 +79,7 @@ export function ChatInterface({
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [historyLoading, setHistoryLoading] = useState(false);
   const [voiceErrorDisplay, setVoiceErrorDisplay] = useState<string | null>(null);
   const [voiceLang, setVoiceLang] = useState<"zh-CN" | "en-US">("zh-CN");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -86,6 +87,31 @@ export function ChatInterface({
   const formRef = useRef<HTMLFormElement>(null);
   // 保存开始录音时输入框已有的文字，用于追加模式
   const inputBeforeVoiceRef = useRef("");
+
+  // 挂载时加载历史聊天记录
+  useEffect(() => {
+    if (initialMessages.length > 0) return; // 如果已有初始消息则跳过
+
+    const targetId = context === "problem" ? problemId
+      : (context === "learn" || context === "feynman") ? knowledgePoint
+      : null;
+    if (!targetId) return;
+
+    setHistoryLoading(true);
+    fetch(`/api/chat/history?context=${context}&targetId=${encodeURIComponent(targetId)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.messages && Array.isArray(data.messages) && data.messages.length > 0) {
+          setMessages(data.messages);
+        }
+      })
+      .catch(() => {
+        // 静默失败，不影响正常使用
+      })
+      .finally(() => {
+        setHistoryLoading(false);
+      });
+  }, [context, problemId, knowledgePoint, initialMessages.length]);
 
   // 从 localStorage 读取语言偏好
   useEffect(() => {
@@ -361,7 +387,14 @@ export function ChatInterface({
     <div className="flex flex-col h-full">
       {/* 消息列表 */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.length === 0 && (
+        {historyLoading && messages.length === 0 && (
+          <div className="text-center text-muted-foreground py-8">
+            <Loader2 className="h-8 w-8 mx-auto mb-3 opacity-50 animate-spin" />
+            <p className="text-sm">加载聊天记录...</p>
+          </div>
+        )}
+
+        {!historyLoading && messages.length === 0 && (
           <div className="text-center text-muted-foreground py-8">
             <Bot className="h-12 w-12 mx-auto mb-3 opacity-50" />
             <p>你好！我是 GESP AI，有什么问题都可以问我。</p>
