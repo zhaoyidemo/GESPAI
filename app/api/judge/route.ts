@@ -31,20 +31,18 @@ export async function POST(request: NextRequest) {
     // mode=submit 时使用全部 testCases，创建 Submission 记录
     const isRun = mode === "run";
 
-    // 仅 submit 模式创建提交记录
-    let submission: { id: string } | null = null;
-    if (!isRun) {
-      submission = await prisma.submission.create({
-        data: {
-          userId: session.user.id,
-          problemId,
-          code,
-          language,
-          status: "pending",
-          score: 0,
-        },
-      });
-    }
+    // 创建记录（run 和 submit 都创建，用 mode 区分）
+    const submission = await prisma.submission.create({
+      data: {
+        userId: session.user.id,
+        problemId,
+        code,
+        language,
+        mode: isRun ? "run" : "submit",
+        status: "pending",
+        score: 0,
+      },
+    });
 
     // 解析测试用例：run 用 samples，submit 用 testCases
     const testCases = (isRun ? problem.samples : problem.testCases) as Array<{
@@ -55,18 +53,16 @@ export async function POST(request: NextRequest) {
     if (!testCases || testCases.length === 0) {
       const errorMsg = isRun ? "题目没有样例数据" : "题目没有测试用例";
 
-      if (submission) {
-        await prisma.submission.update({
-          where: { id: submission.id },
-          data: {
-            status: "runtime_error",
-            errorMessage: errorMsg,
-          },
-        });
-      }
+      await prisma.submission.update({
+        where: { id: submission.id },
+        data: {
+          status: "runtime_error",
+          errorMessage: errorMsg,
+        },
+      });
 
       return NextResponse.json({
-        ...(submission ? { id: submission.id } : {}),
+        id: submission.id,
         status: "runtime_error",
         score: 0,
         errorMessage: errorMsg,
@@ -86,9 +82,20 @@ export async function POST(request: NextRequest) {
 
     console.log(`✅ ${isRun ? "运行" : "判题"}完成: 状态=${result.status}, 分数=${result.score}`);
 
-    // run 模式：直接返回结果，不创建记录、不更新 XP
+    // run 模式：更新记录并返回，不更新 XP
     if (isRun) {
+      await prisma.submission.update({
+        where: { id: submission.id },
+        data: {
+          status: result.status,
+          score: result.score,
+          testResults: JSON.parse(JSON.stringify(result.testResults)),
+          compileOutput: result.compileOutput,
+        },
+      });
+
       return NextResponse.json({
+        id: submission.id,
         status: result.status,
         score: result.score,
         testResults: result.testResults,
@@ -98,7 +105,7 @@ export async function POST(request: NextRequest) {
 
     // submit 模式：更新提交记录
     await prisma.submission.update({
-      where: { id: submission!.id },
+      where: { id: submission.id },
       data: {
         status: result.status,
         score: result.score,
@@ -156,7 +163,7 @@ export async function POST(request: NextRequest) {
       }
 
       return NextResponse.json({
-        id: submission!.id,
+        id: submission.id,
         ...result,
         xpEarned: xpReward,
       });
@@ -198,7 +205,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({
-      id: submission!.id,
+      id: submission.id,
       ...result,
     });
   } catch (error) {
@@ -231,14 +238,22 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const problemId = searchParams.get("problemId");
+    const mode = searchParams.get("mode"); // 'run' | 'submit'
     const limit = parseInt(searchParams.get("limit") || "10");
 
-    const where: { userId: string; problemId?: string } = {
+    const where: { userId: string; problemId?: string; mode?: string } = {
       userId: session.user.id,
     };
 
     if (problemId) {
       where.problemId = problemId;
+    }
+
+    if (mode) {
+      where.mode = mode;
+    } else {
+      // 默认只返回 submit 记录（兼容旧调用）
+      where.mode = "submit";
     }
 
     const submissions = await prisma.submission.findMany({

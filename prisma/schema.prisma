@@ -86,6 +86,7 @@ model Submission {
 
   code          String   @db.Text
   language      String   @default("cpp")
+  mode          String   @default("submit")  // 'submit' | 'run'
 
   status        String   // 'pending' | 'running' | 'accepted' | 'wrong_answer' | 'time_limit' | 'memory_limit' | 'runtime_error' | 'compile_error'
   score         Int      @default(0)

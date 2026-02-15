@@ -17,6 +17,7 @@ import {
   FileText,
   ClipboardCheck,
   History,
+  Play,
 } from "lucide-react";
 import Link from "next/link";
 import { PreventionRuleAlert } from "@/components/prevention-rule-alert";
@@ -46,6 +47,7 @@ export default function ProblemPage() {
     runResult,
     activeResultType,
     submissions,
+    runHistory,
     selectedSubmission,
     activeTab,
     recordingError,
@@ -63,6 +65,7 @@ export default function ProblemPage() {
   // Actions
   const {
     fetchSubmissions,
+    fetchRunHistory,
     handleRun,
     handleSubmit,
     handleConfirmSubmit,
@@ -162,6 +165,10 @@ export default function ProblemPage() {
                   结果
                 </TabsTrigger>
               )}
+              <TabsTrigger value="run-history" onClick={() => fetchRunHistory()}>
+                <Play className="h-4 w-4 mr-2" />
+                运行记录
+              </TabsTrigger>
               <TabsTrigger value="history" onClick={() => fetchSubmissions()}>
                 <History className="h-4 w-4 mr-2" />
                 提交历史
@@ -238,6 +245,15 @@ export default function ProblemPage() {
                 />
               </TabsContent>
             )}
+
+            <TabsContent value="run-history" className="flex-1 overflow-auto p-4">
+              <SubmissionHistory
+                submissions={runHistory}
+                selectedSubmission={selectedSubmission}
+                onSelectSubmission={setSelectedSubmission}
+                mode="run"
+              />
+            </TabsContent>
 
             <TabsContent value="history" className="flex-1 overflow-auto p-4">
               <SubmissionHistory

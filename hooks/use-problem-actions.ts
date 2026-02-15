@@ -19,6 +19,7 @@ export function useProblemActions(problemId: string) {
     setSubmitting,
     setJudgeResult,
     setSubmissions,
+    setRunHistory,
     setRecordingError,
   } = useProblemStore();
 
@@ -27,7 +28,7 @@ export function useProblemActions(problemId: string) {
 
   const fetchSubmissions = useCallback(async () => {
     try {
-      const response = await fetch(`/api/judge?problemId=${problemId}&limit=20`);
+      const response = await fetch(`/api/judge?problemId=${problemId}&mode=submit&limit=20`);
       const data = await response.json();
       if (response.ok) {
         setSubmissions(data.submissions);
@@ -36,6 +37,18 @@ export function useProblemActions(problemId: string) {
       console.error("Fetch submissions error:", error);
     }
   }, [problemId, setSubmissions]);
+
+  const fetchRunHistory = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/judge?problemId=${problemId}&mode=run&limit=20`);
+      const data = await response.json();
+      if (response.ok) {
+        setRunHistory(data.submissions);
+      }
+    } catch (error) {
+      console.error("Fetch run history error:", error);
+    }
+  }, [problemId, setRunHistory]);
 
   const handleRun = useCallback(async () => {
     if (!code.trim()) {
@@ -59,6 +72,7 @@ export function useProblemActions(problemId: string) {
         setRunResult(data);
         setActiveResultType("run");
         setActiveTab("result");
+        fetchRunHistory();
 
         if (data.status === "accepted") {
           toast({ title: "样例测试通过！", description: "所有样例均通过，可以尝试提交" });
@@ -73,7 +87,7 @@ export function useProblemActions(problemId: string) {
     } finally {
       setRunning(false);
     }
-  }, [code, problemId, setRunning, setRunResult, setActiveResultType, setActiveTab, toast]);
+  }, [code, problemId, setRunning, setRunResult, setActiveResultType, setActiveTab, fetchRunHistory, toast]);
 
   const executeSubmit = useCallback(async () => {
     setSubmitting(true);
@@ -267,6 +281,7 @@ export function useProblemActions(problemId: string) {
 
   return {
     fetchSubmissions,
+    fetchRunHistory,
     handleRun,
     handleSubmit,
     handleConfirmSubmit,

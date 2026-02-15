@@ -65,6 +65,7 @@ interface ProblemState {
   runResult: JudgeResult | null;
   activeResultType: "run" | "submit";
   submissions: SubmissionRecord[];
+  runHistory: SubmissionRecord[];
   selectedSubmission: SubmissionRecord | null;
   activeTab: string;
   recordingError: boolean;
@@ -78,6 +79,7 @@ interface ProblemState {
   setRunResult: (result: JudgeResult | null) => void;
   setActiveResultType: (type: "run" | "submit") => void;
   setSubmissions: (submissions: SubmissionRecord[]) => void;
+  setRunHistory: (runHistory: SubmissionRecord[]) => void;
   setSelectedSubmission: (submission: SubmissionRecord | null) => void;
   setActiveTab: (tab: string) => void;
   setRecordingError: (recording: boolean) => void;
@@ -94,6 +96,7 @@ export const useProblemStore = create<ProblemState>((set) => ({
   runResult: null,
   activeResultType: "submit",
   submissions: [],
+  runHistory: [],
   selectedSubmission: null,
   activeTab: "description",
   recordingError: false,
@@ -107,6 +110,7 @@ export const useProblemStore = create<ProblemState>((set) => ({
   setRunResult: (result) => set({ runResult: result }),
   setActiveResultType: (type) => set({ activeResultType: type }),
   setSubmissions: (submissions) => set({ submissions }),
+  setRunHistory: (runHistory) => set({ runHistory }),
   setSelectedSubmission: (submission) => set({ selectedSubmission: submission }),
   setActiveTab: (tab) => set({ activeTab: tab }),
   setRecordingError: (recording) => set({ recordingError: recording }),
@@ -121,6 +125,7 @@ export const useProblemStore = create<ProblemState>((set) => ({
       runResult: null,
       activeResultType: "submit",
       submissions: [],
+      runHistory: [],
       selectedSubmission: null,
       activeTab: "description",
       recordingError: false,

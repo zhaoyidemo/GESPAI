@@ -23,8 +23,9 @@ interface SubmissionHistoryProps {
   submissions: SubmissionRecord[];
   selectedSubmission: SubmissionRecord | null;
   onSelectSubmission: (sub: SubmissionRecord | null) => void;
-  onRecordError: (submissionId: string) => void;
-  recordingError: boolean;
+  onRecordError?: (submissionId: string) => void;
+  recordingError?: boolean;
+  mode?: "submit" | "run";
 }
 
 export function SubmissionHistory({
@@ -33,9 +34,12 @@ export function SubmissionHistory({
   onSelectSubmission,
   onRecordError,
   recordingError,
+  mode = "submit",
 }: SubmissionHistoryProps) {
+  const isRunMode = mode === "run";
+
   if (submissions.length === 0) {
-    return <p className="text-center text-muted-foreground py-8">暂无提交记录</p>;
+    return <p className="text-center text-muted-foreground py-8">{isRunMode ? "暂无运行记录" : "暂无提交记录"}</p>;
   }
 
   return (
@@ -64,7 +68,7 @@ export function SubmissionHistory({
                 {getJudgeStatusLabel(sub.status).label}
               </Badge>
               <span className="font-medium text-sm">{sub.score}/100</span>
-              {sub.errorCase && (
+              {!isRunMode && sub.errorCase && (
                 <Badge variant="outline" className="text-xs text-orange-600 border-orange-300">
                   <BookX className="h-3 w-3 mr-1" />
                   已记错题
@@ -79,8 +83,8 @@ export function SubmissionHistory({
           {/* 展开详情 */}
           {selectedSubmission?.id === sub.id && (
             <div className="mt-3 space-y-3">
-              {/* 错题操作按钮 */}
-              {sub.status !== "accepted" && (
+              {/* 错题操作按钮（仅提交模式） */}
+              {!isRunMode && onRecordError && sub.status !== "accepted" && (
                 <div>
                   {sub.errorCase ? (
                     <Button
@@ -113,7 +117,7 @@ export function SubmissionHistory({
                 </div>
               )}
               <div>
-                <p className="text-sm font-medium mb-1">提交代码</p>
+                <p className="text-sm font-medium mb-1">{isRunMode ? "运行代码" : "提交代码"}</p>
                 <div className="max-h-[200px] overflow-auto rounded border">
                   <CodeEditor
                     value={sub.code}
@@ -125,7 +129,7 @@ export function SubmissionHistory({
               </div>
               {sub.testResults && sub.testResults.length > 0 && (
                 <div>
-                  <p className="text-sm font-medium mb-1">测试结果</p>
+                  <p className="text-sm font-medium mb-1">{isRunMode ? "样例结果" : "测试结果"}</p>
                   <div className="space-y-1">
                     {sub.testResults.map((tr, idx) => (
                       <div
