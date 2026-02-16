@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="1770686344:EwbzyP6W8Solv7NtCPOvcmpYoLnWq3yQdFJ5Zp8w9sA=">
+    <meta name="renderer" content="webkit">
+    <script>
+        window.__feInitLocalTime = new Date().getTime() / 1000;
+        window.__feConfigVersion = '6cd602b7bfcdedec'; window.__feConfigRequest = '\/_lfe\/config';
+        window.__luoguTagVersion = 'zh\u002DCN\/2026020908'; window.__luoguTagRequest = '\/_lfe\/tags\/zh\u002DCN';
+            </script>
+    <title>P1303 A*B Problem - 洛谷</title>
+    <link rel="icon" href="https://fecdn.luogu.com.cn/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-eval' 'unsafe-inline' luogu.com *.luogu.com luogu.com.cn *.luogu.com.cn luogu.org *.luogu.org wss: blob: luoguprivate.oss-cn-hangzhou.aliyuncs.com luogu.oss-cn-hangzhou.aliyuncs.com https://challenges.cloudflare.com https://*.dun.163yun.com https://*.dun.163.com https://*.nosdn.126.net https://*.nosdn.127.net https://nos.netease.com https://cstaticdun.126.net https://cstaticdun1.126.net https://cstaticdun-v6.126.net https://acstatic-dun.126.net; img-src * data:; font-src * data:; worker-src data: blob:; frame-src https://player.bilibili.com https://www.bilibili.com https://challenges.cloudflare.com">    <script id="lentille-context" type="application/json">{"instance":"main","template":"problem.show","status":200,"locale":"zh-CN","data":{"problem":{"pid":"P1303","type":"P","title":"A*B Problem","difficulty":2,"tags":[1,2,10],"wantsTranslation":false,"totalSubmit":519260,"totalAccepted":175478,"flag":5,"provider":{"uid":3,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/3.png","name":"\u6d1b\u8c37","slogan":"","badge":null,"isAdmin":true,"isBanned":false,"color":"Purple","ccfLevel":0,"xcpcLevel":0,"background":""},"contenu":{"name":"A*B Problem","background":"\u9ad8\u7cbe\u5ea6\u4e58\u6cd5\u6a21\u677f\u9898\u3002","description":"\u7ed9\u51fa\u4e24\u4e2a\u975e\u8d1f\u6574\u6570\uff0c\u6c42\u5b83\u4eec\u7684\u4e58\u79ef\u3002","formatI":"\u8f93\u5165\u5171\u4e24\u884c\uff0c\u6bcf\u884c\u4e00\u4e2a\u975e\u8d1f\u6574\u6570\u3002\n","formatO":"\u8f93\u51fa\u4e00\u4e2a\u975e\u8d1f\u6574\u6570\u8868\u793a\u4e58\u79ef\u3002","hint":"\u6bcf\u4e2a\u975e\u8d1f\u6574\u6570\u4e0d\u8d85\u8fc7 $10^{2000}$\u3002","locale":"zh-CN"},"content":{"name":"A*B Problem","background":"\u9ad8\u7cbe\u5ea6\u4e58\u6cd5\u6a21\u677f\u9898\u3002","description":"\u7ed9\u51fa\u4e24\u4e2a\u975e\u8d1f\u6574\u6570\uff0c\u6c42\u5b83\u4eec\u7684\u4e58\u79ef\u3002","formatI":"\u8f93\u5165\u5171\u4e24\u884c\uff0c\u6bcf\u884c\u4e00\u4e2a\u975e\u8d1f\u6574\u6570\u3002\n","formatO":"\u8f93\u51fa\u4e00\u4e2a\u975e\u8d1f\u6574\u6570\u8868\u793a\u4e58\u79ef\u3002","hint":"\u6bcf\u4e2a\u975e\u8d1f\u6574\u6570\u4e0d\u8d85\u8fc7 $10^{2000}$\u3002","locale":"zh-CN"},"attachments":[],"showScore":true,"acceptSolution":false,"acceptLanguages":[5,1,2,28,3,4,11,12,27,34,7,25,8,33,15,14,19,30,31,32,21,22,17,9,16,13,23],"samples":[["1 \n2","2"]],"limits":{"time":[1000,1000,1000,1000,1000],"memory":[128000,128000,128000,128000,128000]},"translation":""},"translations":{"en":{"name":"A*B Problem","background":"A template problem for big-integer multiplication.","description":"Given two non-negative integers, compute their product.","formatI":"The input consists of two lines, each containing a non-negative integer.","formatO":"Output a single non-negative integer representing the product.","hint":"Each non-negative integer does not exceed $10^{2000}$.\n\nTranslated by ChatGPT 5","locale":"en"},"zh-CN":{"name":"A*B Problem","background":"\u9ad8\u7cbe\u5ea6\u4e58\u6cd5\u6a21\u677f\u9898\u3002","description":"\u7ed9\u51fa\u4e24\u4e2a\u975e\u8d1f\u6574\u6570\uff0c\u6c42\u5b83\u4eec\u7684\u4e58\u79ef\u3002","formatI":"\u8f93\u5165\u5171\u4e24\u884c\uff0c\u6bcf\u884c\u4e00\u4e2a\u975e\u8d1f\u6574\u6570\u3002\n","formatO":"\u8f93\u51fa\u4e00\u4e2a\u975e\u8d1f\u6574\u6570\u8868\u793a\u4e58\u79ef\u3002","hint":"\u6bcf\u4e2a\u975e\u8d1f\u6574\u6570\u4e0d\u8d85\u8fc7 $10^{2000}$\u3002","locale":"zh-CN"}},"bookmarked":false,"contest":null,"vjudgeUsername":null,"lastLanguage":null,"lastCode":"","lastCodeAt":null,"recommendations":[{"pid":"P1009","type":"P","title":"[NOIP 1998 \u666e\u53ca\u7ec4] \u9636\u4e58\u4e4b\u548c","difficulty":2},{"pid":"P1480","type":"P","title":"A\/B Problem\uff08\u9ad8\u7cbe\u5ea6\u9664\u6cd5\u2160\uff09","difficulty":2},{"pid":"P1601","type":"P","title":"\u9ad8\u7cbe\u5ea6\u52a0\u6cd5","difficulty":2},{"pid":"P2142","type":"P","title":"\u9ad8\u7cbe\u5ea6\u51cf\u6cd5","difficulty":2},{"pid":"P4924","type":"P","title":"[1007] \u9b54\u6cd5\u5c11\u5973\u5c0fScarlet","difficulty":2}],"forum":{"name":"P1303 A*B Problem","type":2,"slug":"P1303","color":"orange-3"},"discussions":[{"id":1245665,"title":"80pts\uff08wa#1\uff09\u8c03\u5fc5\u5173","author":{"uid":2027138,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/2027138.png","name":"__lmmhhh__","slogan":"","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1770558709},{"id":1245237,"title":"20\u6c42\u8c03","author":{"uid":1451496,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1451496.png","name":"\u6b66\u6052\u95102013","slogan":"https:\/\/www.luogu.com.cn\/team\/107563\u8fdb\u56e2\u5fc5\u5173||\u652f\u6301\u4e92\u5173","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/jb1fx5v2.png"},"time":1770530196},{"id":1243833,"title":"\u8fdb\u98df\u540e\u4eba\uff08if AC on #1,2 \u0026\u0026 RE on #3-5\uff09","author":{"uid":700972,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/700972.png","name":"zyc_2024","slogan":"\u8d8b\u52bf\u65f6\u95f4\uff1a2026\u5e742\u67086\u65e518\u65f636\u5206","badge":null,"isAdmin":false,"isBanned":false,"color":"Blue","ccfLevel":0,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/fj94zuhm.png"},"time":1770378546},{"id":1243284,"title":"\u516b\u5341\u5206\u6c42\u8c03\uff08\u5fc5\u5173\uff09","author":{"uid":2012864,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/2012864.png","name":"chenzanyu00","slogan":"\u543e\u662f\u77e5\u66f4\u9e1f\u7684\u72ac\uff01^-^","badge":null,"isAdmin":false,"isBanned":false,"color":"Blue","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1770348231},{"id":1242363,"title":"\u60ca\u4e16\u7334\u4ebaif(20pts\u0026\u0026AC on #1)","author":{"uid":1787508,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1787508.png","name":"JiuJiuDaJiaoRen","slogan":"","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":4,"xcpcLevel":0,"background":""},"time":1770265282},{"id":1241733,"title":"\u6c42\u8c03","author":{"uid":1769338,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1769338.png","name":"eason_zyc","slogan":"","badge":null,"isAdmin":false,"isBanned":false,"color":"Blue","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1770198815}],"locale":"zh-CN","canEdit":false},"user":null,"time":1770599944.253487,"theme":null}</script>            <script src="https://fecdn.luogu.com.cn/columba/loader.20260128-1589.js" charset="utf-8" defer></script>
+    <link rel="stylesheet" href="https://fecdn.luogu.com.cn/columba/loader.20260128-1589.css" />
+    <script src="https://fecdn.luogu.com.cn/columba/vendor.20260128-1589.js" charset="utf-8" defer></script>
+        <script type="application/ld+json">{"@context":"https:\/\/schema.org","name":"P1303 A*B Problem","description":"\u9ad8\u7cbe\u5ea6\u4e58\u6cd5\u6a21\u677f\u9898\u3002"}</script>
+    <link rel="canonical" href="https://www.luogu.com.cn/problem/P1303" />
+            <link rel="alternate" hreflang="en" href="https://www.luogu.com.cn/problem/P1303?lang=en" />
+        <meta property="og:locale:alternate" content="en" />
+            <link rel="alternate" hreflang="zh-CN" href="https://www.luogu.com.cn/problem/P1303?lang=zh-CN" />
+        <meta property="og:locale" content="zh-CN" />
+        <meta property="og:site_name" content="洛谷" />
+    <meta property="og:title" content="P1303 A*B Problem" />
+    <meta property="og:description" content="高精度乘法模板题。" />
+    <meta property="og:url" content="https://www.luogu.com.cn/problem/P1303" />
+    <style>body {  }</style>
+</head>
+<body>
+<div id="app">
+    <noscript>
+        <h3>请<b style="color:#f00;">不要禁用</b>脚本，否则网页无法正常加载</h3>
+    </noscript>
+        <article lang="zh-CN">
+        <h1>P1303 A*B Problem</h1>
+
+        <section>
+            <h2>题目背景</h2>
+            <div>
+                高精度乘法模板题。
+            </div>
+        </section>
+        <section>
+            <h2>题目描述</h2>
+            <div>
+                                    给出两个非负整数，求它们的乘积。
+                            </div>
+        </section>
+
+        <section>
+            <h2>输入格式</h2>
+            <div>
+                                    输入共两行，每行一个非负整数。
+
+                            </div>
+        </section>
+
+        <section>
+            <h2>输出格式</h2>
+            <div>
+                                    输出一个非负整数表示乘积。
+                            </div>
+        </section>
+
+        <section>
+            <h2>说明/提示</h2>
+            <div>
+                每个非负整数不超过 $10^{2000}$。
+            </div>
+        </section>    </article>
+</div>
+</body>
+</html>

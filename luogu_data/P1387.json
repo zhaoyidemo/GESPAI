@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="1770686348:wPn+a8+ng9LAxZQNumI+/C8/lEIYFK0NpKVDYFP7GYI=">
+    <meta name="renderer" content="webkit">
+    <script>
+        window.__feInitLocalTime = new Date().getTime() / 1000;
+        window.__feConfigVersion = '6cd602b7bfcdedec'; window.__feConfigRequest = '\/_lfe\/config';
+        window.__luoguTagVersion = 'zh\u002DCN\/2026020908'; window.__luoguTagRequest = '\/_lfe\/tags\/zh\u002DCN';
+            </script>
+    <title>P1387 最大正方形 - 洛谷</title>
+    <link rel="icon" href="https://fecdn.luogu.com.cn/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-eval' 'unsafe-inline' luogu.com *.luogu.com luogu.com.cn *.luogu.com.cn luogu.org *.luogu.org wss: blob: luoguprivate.oss-cn-hangzhou.aliyuncs.com luogu.oss-cn-hangzhou.aliyuncs.com https://challenges.cloudflare.com https://*.dun.163yun.com https://*.dun.163.com https://*.nosdn.126.net https://*.nosdn.127.net https://nos.netease.com https://cstaticdun.126.net https://cstaticdun1.126.net https://cstaticdun-v6.126.net https://acstatic-dun.126.net; img-src * data:; font-src * data:; worker-src data: blob:; frame-src https://player.bilibili.com https://www.bilibili.com https://challenges.cloudflare.com">    <script id="lentille-context" type="application/json">{"instance":"main","template":"problem.show","status":200,"locale":"zh-CN","data":{"problem":{"pid":"P1387","type":"P","title":"\u6700\u5927\u6b63\u65b9\u5f62","difficulty":2,"tags":[3,70,111,254],"wantsTranslation":false,"totalSubmit":110118,"totalAccepted":55944,"flag":5,"provider":{"uid":29,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/29.png","name":"yeszy","slogan":"","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":""},"contenu":{"name":"\u6700\u5927\u6b63\u65b9\u5f62","background":null,"description":"\u5728\u4e00\u4e2a $n\\times m$ \u7684\u53ea\u5305\u542b $0$ \u548c $1$ \u7684\u77e9\u9635\u91cc\u627e\u51fa\u4e00\u4e2a\u4e0d\u5305\u542b $0$ \u7684\u6700\u5927\u6b63\u65b9\u5f62\uff0c\u8f93\u51fa\u8fb9\u957f\u3002\n\n\u4fdd\u8bc1\u77e9\u9635\u91cc\u6709\u81f3\u5c11\u4e00\u4e2a $1$\u3002","formatI":"\u8f93\u5165\u6587\u4ef6\u7b2c\u4e00\u884c\u4e3a\u4e24\u4e2a\u6574\u6570 $n,m(1\\leq n,m\\leq 100)$\uff0c\u63a5\u4e0b\u6765 $n$ \u884c\uff0c\u6bcf\u884c $m$ \u4e2a\u6570\u5b57\uff0c\u7528\u7a7a\u683c\u9694\u5f00\uff0c$0$ \u6216 $1$\u3002","formatO":"\u4e00\u4e2a\u6574\u6570\uff0c\u6700\u5927\u6b63\u65b9\u5f62\u7684\u8fb9\u957f\u3002","hint":null,"locale":"zh-CN"},"content":{"name":"\u6700\u5927\u6b63\u65b9\u5f62","background":null,"description":"\u5728\u4e00\u4e2a $n\\times m$ \u7684\u53ea\u5305\u542b $0$ \u548c $1$ \u7684\u77e9\u9635\u91cc\u627e\u51fa\u4e00\u4e2a\u4e0d\u5305\u542b $0$ \u7684\u6700\u5927\u6b63\u65b9\u5f62\uff0c\u8f93\u51fa\u8fb9\u957f\u3002\n\n\u4fdd\u8bc1\u77e9\u9635\u91cc\u6709\u81f3\u5c11\u4e00\u4e2a $1$\u3002","formatI":"\u8f93\u5165\u6587\u4ef6\u7b2c\u4e00\u884c\u4e3a\u4e24\u4e2a\u6574\u6570 $n,m(1\\leq n,m\\leq 100)$\uff0c\u63a5\u4e0b\u6765 $n$ \u884c\uff0c\u6bcf\u884c $m$ \u4e2a\u6570\u5b57\uff0c\u7528\u7a7a\u683c\u9694\u5f00\uff0c$0$ \u6216 $1$\u3002","formatO":"\u4e00\u4e2a\u6574\u6570\uff0c\u6700\u5927\u6b63\u65b9\u5f62\u7684\u8fb9\u957f\u3002","hint":null,"locale":"zh-CN"},"attachments":[],"showScore":true,"acceptSolution":false,"acceptLanguages":[5,1,2,28,3,4,11,12,27,34,7,25,8,33,15,14,19,30,31,32,21,22,17,9,16,13,23],"samples":[["4 4\n0 1 1 1\n1 1 1 0\n0 1 1 0\n1 1 0 1\n","2\n"]],"limits":{"time":[1000,1000,1000,1000,1000,1000,1000,1000,1000,1000],"memory":[128000,128000,128000,128000,128000,128000,128000,128000,128000,128000]},"translation":""},"translations":{"en":{"name":"Largest Square","background":"","description":"In an $n\\times m$ matrix that contains only $0$ and $1$, find a largest square that does not contain any $0$, and output its side length. It is guaranteed that there is at least one $1$ in the matrix.","formatI":"The first line of input contains two integers $n,m(1\\leq n,m\\leq 100)$. Then follow $n$ lines, each containing $m$ numbers separated by spaces, $0$ or $1$.","formatO":"A single integer, the side length of the largest square.","hint":"\n\nTranslated by ChatGPT 5","locale":"en"},"zh-CN":{"name":"\u6700\u5927\u6b63\u65b9\u5f62","background":null,"description":"\u5728\u4e00\u4e2a $n\\times m$ \u7684\u53ea\u5305\u542b $0$ \u548c $1$ \u7684\u77e9\u9635\u91cc\u627e\u51fa\u4e00\u4e2a\u4e0d\u5305\u542b $0$ \u7684\u6700\u5927\u6b63\u65b9\u5f62\uff0c\u8f93\u51fa\u8fb9\u957f\u3002\n\n\u4fdd\u8bc1\u77e9\u9635\u91cc\u6709\u81f3\u5c11\u4e00\u4e2a $1$\u3002","formatI":"\u8f93\u5165\u6587\u4ef6\u7b2c\u4e00\u884c\u4e3a\u4e24\u4e2a\u6574\u6570 $n,m(1\\leq n,m\\leq 100)$\uff0c\u63a5\u4e0b\u6765 $n$ \u884c\uff0c\u6bcf\u884c $m$ \u4e2a\u6570\u5b57\uff0c\u7528\u7a7a\u683c\u9694\u5f00\uff0c$0$ \u6216 $1$\u3002","formatO":"\u4e00\u4e2a\u6574\u6570\uff0c\u6700\u5927\u6b63\u65b9\u5f62\u7684\u8fb9\u957f\u3002","hint":null,"locale":"zh-CN"}},"bookmarked":false,"contest":null,"vjudgeUsername":null,"lastLanguage":null,"lastCode":"","lastCodeAt":null,"recommendations":[{"pid":"P1417","type":"P","title":"\u70f9\u8c03\u65b9\u6848","difficulty":4},{"pid":"P1508","type":"P","title":"Likecloud-\u5403\u3001\u5403\u3001\u5403","difficulty":3},{"pid":"P1681","type":"P","title":"\u6700\u5927\u6b63\u65b9\u5f62II","difficulty":3},{"pid":"P1855","type":"P","title":"\u69a8\u53d6kkksc03","difficulty":2},{"pid":"P2280","type":"P","title":"[HNOI2003] \u6fc0\u5149\u70b8\u5f39","difficulty":3}],"forum":{"name":"P1387 \u6700\u5927\u6b63\u65b9\u5f62","type":2,"slug":"P1387","color":"orange-3"},"discussions":[{"id":1221371,"title":"\u8fd9\u4e00\u6b65\u5565\u610f\u601d\u6c42\u5927\u4f6c\u89e3\u91ca","author":{"uid":1862307,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1862307.png","name":"heyaxuan","slogan":"","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1766570178},{"id":1219869,"title":"80\u5206\uff0c\u6c42\u8c03","author":{"uid":1314530,"avatar":"https:\/\/cdn.luogu.com.cn\/images\/banned.png","name":"\u5c01\u7981\u7528\u6237","slogan":null,"badge":null,"isAdmin":false,"isBanned":true,"color":"Cheater","ccfLevel":0,"xcpcLevel":0,"background":null},"time":1766299269},{"id":1213712,"title":"\u6c42\u52a9\u5927\u4f6c\uff0c\u5fc5\u5173","author":{"uid":1005519,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1005519.png","name":"wjcdream","slogan":"CSP-J2026RP++","badge":null,"isAdmin":false,"isBanned":false,"color":"Orange","ccfLevel":0,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/cqaey6nb.png"},"time":1765286456},{"id":1209223,"title":"\u96f6\u5206\u6c42\u8c03","author":{"uid":1601776,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1601776.png","name":"zcj1128","slogan":"\u5929\u7a7a\u4e00\u58f0\u5de8\u54cd\uff0cWA\u95ea\u4eae\u4e0b\u573a\uff01","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/zvxozqdr.png"},"time":1764506025},{"id":1206889,"title":"20pts\u6c42\u8c03","author":{"uid":1477103,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1477103.png","name":"yangyuxi_aaa","slogan":"\u6b7b\u4ea1\u548c\u76f4\u6292\u80f8\u81c6\u5b70\u96be\u5b70\u6613\uff1f || \u5218\u5baa\u534e\u4ed9\u54c1\uff01\uff01\uff01 || ENFP || \u79c1\u4fe1\u4e92\u5173o || \u4e0d\u8981\u7ed9\u6211\u53d1\u63a5\u9f99\uff01 || QQ\uff1a2244342526 || \u7b2c\u4e09\u4eba\u79f0\u4ee3\u8bcd\u4f7f\u7528\u5979","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/bd2nfabk.png"},"time":1764310754},{"id":1183153,"title":"\u7740\u6025\uff0c\u6c42\u5927\u4f6c\u89e3\u7b54","author":{"uid":1840807,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1840807.png","name":"space_huang","slogan":"\u7231\u73a9\u98de\u673a\uff0c\u559c\u6b22\u5316\u5b66\u548c\u6570\u5b66\uff08\u4e5f\u7231\u7f16\u7a0b\uff09","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/9eh88gg6.png"},"time":1761631924}],"locale":"zh-CN","canEdit":false},"user":null,"time":1770599948.62387,"theme":null}</script>            <script src="https://fecdn.luogu.com.cn/columba/loader.20260128-1589.js" charset="utf-8" defer></script>
+    <link rel="stylesheet" href="https://fecdn.luogu.com.cn/columba/loader.20260128-1589.css" />
+    <script src="https://fecdn.luogu.com.cn/columba/vendor.20260128-1589.js" charset="utf-8" defer></script>
+        <script type="application/ld+json">{"@context":"https:\/\/schema.org","name":"P1387 \u6700\u5927\u6b63\u65b9\u5f62","description":"\u5728\u4e00\u4e2a n\\times m \u7684\u53ea\u5305\u542b 0 \u548c 1 \u7684\u77e9\u9635\u91cc\u627e\u51fa\u4e00\u4e2a\u4e0d\u5305\u542b 0 \u7684\u6700\u5927\u6b63\u65b9\u5f62\uff0c\u8f93\u51fa\u8fb9\u957f\u3002\n\u4fdd\u8bc1\u77e9\u9635\u91cc\u6709\u81f3\u5c11\u4e00\u4e2a 1\u3002"}</script>
+    <link rel="canonical" href="https://www.luogu.com.cn/problem/P1387" />
+            <link rel="alternate" hreflang="en" href="https://www.luogu.com.cn/problem/P1387?lang=en" />
+        <meta property="og:locale:alternate" content="en" />
+            <link rel="alternate" hreflang="zh-CN" href="https://www.luogu.com.cn/problem/P1387?lang=zh-CN" />
+        <meta property="og:locale" content="zh-CN" />
+        <meta property="og:site_name" content="洛谷" />
+    <meta property="og:title" content="P1387 最大正方形" />
+    <meta property="og:description" content="在一个 n\times m 的只包含 0 和 1 的矩阵里找出一个不包含 0 的最大正方形，输出边长。
+保证矩阵里有至少一个 1。" />
+    <meta property="og:url" content="https://www.luogu.com.cn/problem/P1387" />
+    <style>body {  }</style>
+</head>
+<body>
+<div id="app">
+    <noscript>
+        <h3>请<b style="color:#f00;">不要禁用</b>脚本，否则网页无法正常加载</h3>
+    </noscript>
+        <article lang="zh-CN">
+        <h1>P1387 最大正方形</h1>
+
+        
+        <section>
+            <h2>题目描述</h2>
+            <div>
+                                    在一个 $n\times m$ 的只包含 $0$ 和 $1$ 的矩阵里找出一个不包含 $0$ 的最大正方形，输出边长。
+
+保证矩阵里有至少一个 $1$。
+                            </div>
+        </section>
+
+        <section>
+            <h2>输入格式</h2>
+            <div>
+                                    输入文件第一行为两个整数 $n,m(1\leq n,m\leq 100)$，接下来 $n$ 行，每行 $m$ 个数字，用空格隔开，$0$ 或 $1$。
+                            </div>
+        </section>
+
+        <section>
+            <h2>输出格式</h2>
+            <div>
+                                    一个整数，最大正方形的边长。
+                            </div>
+        </section>
+
+            </article>
+</div>
+</body>
+</html>

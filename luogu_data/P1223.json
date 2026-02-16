@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="1770686353:MgVK3UyGi11fXY8wonQAdw1CHYSGghG05MywpMqlO8M=">
+    <meta name="renderer" content="webkit">
+    <script>
+        window.__feInitLocalTime = new Date().getTime() / 1000;
+        window.__feConfigVersion = '6cd602b7bfcdedec'; window.__feConfigRequest = '\/_lfe\/config';
+        window.__luoguTagVersion = 'zh\u002DCN\/2026020908'; window.__luoguTagRequest = '\/_lfe\/tags\/zh\u002DCN';
+            </script>
+    <title>P1223 排队接水 - 洛谷</title>
+    <link rel="icon" href="https://fecdn.luogu.com.cn/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-eval' 'unsafe-inline' luogu.com *.luogu.com luogu.com.cn *.luogu.com.cn luogu.org *.luogu.org wss: blob: luoguprivate.oss-cn-hangzhou.aliyuncs.com luogu.oss-cn-hangzhou.aliyuncs.com https://challenges.cloudflare.com https://*.dun.163yun.com https://*.dun.163.com https://*.nosdn.126.net https://*.nosdn.127.net https://nos.netease.com https://cstaticdun.126.net https://cstaticdun1.126.net https://cstaticdun-v6.126.net https://acstatic-dun.126.net; img-src * data:; font-src * data:; worker-src data: blob:; frame-src https://player.bilibili.com https://www.bilibili.com https://challenges.cloudflare.com">    <script id="lentille-context" type="application/json">{"instance":"main","template":"problem.show","status":200,"locale":"zh-CN","data":{"problem":{"pid":"P1223","type":"P","title":"\u6392\u961f\u63a5\u6c34","difficulty":2,"tags":[7,113],"wantsTranslation":false,"totalSubmit":350962,"totalAccepted":150503,"flag":5,"provider":{"uid":5846,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/5846.png","name":"yyy2015c01","slogan":"\u672a\u6765\u9053\u5177\u7814\u7a76\u6240","badge":"\u5624\u5624\u5624","isAdmin":false,"isBanned":false,"color":"Gray","ccfLevel":7,"xcpcLevel":0,"background":""},"contenu":{"name":"\u6392\u961f\u63a5\u6c34","background":null,"description":"\u6709 $n$ \u4e2a\u4eba\u5728\u4e00\u4e2a\u6c34\u9f99\u5934\u524d\u6392\u961f\u63a5\u6c34\uff0c\u5047\u5982\u6bcf\u4e2a\u4eba\u63a5\u6c34\u7684\u65f6\u95f4\u4e3a $T_i$\uff0c\u8bf7\u7f16\u7a0b\u627e\u51fa\u8fd9 $n$ \u4e2a\u4eba\u6392\u961f\u7684\u4e00\u79cd\u987a\u5e8f\uff0c\u4f7f\u5f97 $n$ \u4e2a\u4eba\u7684\u5e73\u5747\u7b49\u5f85\u65f6\u95f4\u6700\u5c0f\u3002\n\n\u4e00\u4e2a\u4eba\u7684\u7b49\u5f85\u65f6\u95f4\u4e0d\u5305\u62ec\u4ed6\u7684\u63a5\u6c34\u65f6\u95f4\u3002\n\n\u5982\u679c\u4e24\u4e2a\u4eba\u63a5\u6c34\u7684\u65f6\u95f4\u76f8\u540c\uff0c\u7f16\u53f7\u66f4\u5c0f\u7684\u4eba\u5e94\u5f53\u6392\u5728\u524d\u9762\u3002","formatI":"\u7b2c\u4e00\u884c\u4e3a\u4e00\u4e2a\u6574\u6570 $n$\u3002\n\n\u7b2c\u4e8c\u884c $n$ \u4e2a\u6574\u6570\uff0c\u7b2c $i$ \u4e2a\u6574\u6570 $T_i$ \u8868\u793a\u7b2c $i$ \u4e2a\u4eba\u7684\u63a5\u6c34\u65f6\u95f4 $T_i$\u3002","formatO":"\u8f93\u51fa\u6587\u4ef6\u6709\u4e24\u884c\uff0c\u7b2c\u4e00\u884c\u4e3a\u4e00\u79cd\u5e73\u5747\u65f6\u95f4\u6700\u77ed\u7684\u6392\u961f\u987a\u5e8f\uff1b\u7b2c\u4e8c\u884c\u4e3a\u8fd9\u79cd\u6392\u5217\u65b9\u6848\u4e0b\u7684\u5e73\u5747\u7b49\u5f85\u65f6\u95f4\uff08\u8f93\u51fa\u7ed3\u679c\u7cbe\u786e\u5230\u5c0f\u6570\u70b9\u540e\u4e24\u4f4d\uff09\u3002","hint":"$1\\le n \\leq 1000$\uff0c$1\\le t_i \\leq 10^6$\uff0c\u4e0d\u4fdd\u8bc1 $t_i$ \u4e0d\u91cd\u590d\u3002","locale":"zh-CN"},"content":{"name":"\u6392\u961f\u63a5\u6c34","background":null,"description":"\u6709 $n$ \u4e2a\u4eba\u5728\u4e00\u4e2a\u6c34\u9f99\u5934\u524d\u6392\u961f\u63a5\u6c34\uff0c\u5047\u5982\u6bcf\u4e2a\u4eba\u63a5\u6c34\u7684\u65f6\u95f4\u4e3a $T_i$\uff0c\u8bf7\u7f16\u7a0b\u627e\u51fa\u8fd9 $n$ \u4e2a\u4eba\u6392\u961f\u7684\u4e00\u79cd\u987a\u5e8f\uff0c\u4f7f\u5f97 $n$ \u4e2a\u4eba\u7684\u5e73\u5747\u7b49\u5f85\u65f6\u95f4\u6700\u5c0f\u3002\n\n\u4e00\u4e2a\u4eba\u7684\u7b49\u5f85\u65f6\u95f4\u4e0d\u5305\u62ec\u4ed6\u7684\u63a5\u6c34\u65f6\u95f4\u3002\n\n\u5982\u679c\u4e24\u4e2a\u4eba\u63a5\u6c34\u7684\u65f6\u95f4\u76f8\u540c\uff0c\u7f16\u53f7\u66f4\u5c0f\u7684\u4eba\u5e94\u5f53\u6392\u5728\u524d\u9762\u3002","formatI":"\u7b2c\u4e00\u884c\u4e3a\u4e00\u4e2a\u6574\u6570 $n$\u3002\n\n\u7b2c\u4e8c\u884c $n$ \u4e2a\u6574\u6570\uff0c\u7b2c $i$ \u4e2a\u6574\u6570 $T_i$ \u8868\u793a\u7b2c $i$ \u4e2a\u4eba\u7684\u63a5\u6c34\u65f6\u95f4 $T_i$\u3002","formatO":"\u8f93\u51fa\u6587\u4ef6\u6709\u4e24\u884c\uff0c\u7b2c\u4e00\u884c\u4e3a\u4e00\u79cd\u5e73\u5747\u65f6\u95f4\u6700\u77ed\u7684\u6392\u961f\u987a\u5e8f\uff1b\u7b2c\u4e8c\u884c\u4e3a\u8fd9\u79cd\u6392\u5217\u65b9\u6848\u4e0b\u7684\u5e73\u5747\u7b49\u5f85\u65f6\u95f4\uff08\u8f93\u51fa\u7ed3\u679c\u7cbe\u786e\u5230\u5c0f\u6570\u70b9\u540e\u4e24\u4f4d\uff09\u3002","hint":"$1\\le n \\leq 1000$\uff0c$1\\le t_i \\leq 10^6$\uff0c\u4e0d\u4fdd\u8bc1 $t_i$ \u4e0d\u91cd\u590d\u3002","locale":"zh-CN"},"attachments":[],"showScore":true,"acceptSolution":false,"acceptLanguages":[5,1,2,28,3,4,11,12,27,34,7,25,8,33,15,14,19,30,31,32,21,22,17,9,16,13,23],"samples":[["10 \n56 12 1 99 1000 234 33 55 99 812","3 2 7 8 1 4 9 6 10 5\n291.90\n"]],"limits":{"time":[1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000],"memory":[128000,128000,128000,128000,128000,128000,128000,128000,128000,128000,128000]},"translation":""},"translations":{"en":{"name":"Queueing for Water","background":"","description":"There are $n$ people lining up at a faucet. Suppose the time each person needs to fill water is $T_i$. Please write a program to find an ordering of these $n$ people that minimizes the average waiting time of all $n$ people.\n\nA person\u0027s waiting time does not include their own filling time.\n\nIf two people have the same filling time, the one with the smaller index should be placed earlier.","formatI":"The first line contains an integer $n$.\n\nThe second line contains $n$ integers. The $i$-th integer $T_i$ denotes the $i$-th person\u0027s filling time $T_i$.","formatO":"Output two lines. The first line is an ordering that yields the minimum average waiting time. The second line is the average waiting time under this ordering (rounded to two decimal places).","hint":"Constraints: $1 \\le n \\leq 1000$, $1 \\le t_i \\leq 10^6$. The $t_i$ are not guaranteed to be distinct.\n\nTranslated by ChatGPT 5","locale":"en"},"zh-CN":{"name":"\u6392\u961f\u63a5\u6c34","background":null,"description":"\u6709 $n$ \u4e2a\u4eba\u5728\u4e00\u4e2a\u6c34\u9f99\u5934\u524d\u6392\u961f\u63a5\u6c34\uff0c\u5047\u5982\u6bcf\u4e2a\u4eba\u63a5\u6c34\u7684\u65f6\u95f4\u4e3a $T_i$\uff0c\u8bf7\u7f16\u7a0b\u627e\u51fa\u8fd9 $n$ \u4e2a\u4eba\u6392\u961f\u7684\u4e00\u79cd\u987a\u5e8f\uff0c\u4f7f\u5f97 $n$ \u4e2a\u4eba\u7684\u5e73\u5747\u7b49\u5f85\u65f6\u95f4\u6700\u5c0f\u3002\n\n\u4e00\u4e2a\u4eba\u7684\u7b49\u5f85\u65f6\u95f4\u4e0d\u5305\u62ec\u4ed6\u7684\u63a5\u6c34\u65f6\u95f4\u3002\n\n\u5982\u679c\u4e24\u4e2a\u4eba\u63a5\u6c34\u7684\u65f6\u95f4\u76f8\u540c\uff0c\u7f16\u53f7\u66f4\u5c0f\u7684\u4eba\u5e94\u5f53\u6392\u5728\u524d\u9762\u3002","formatI":"\u7b2c\u4e00\u884c\u4e3a\u4e00\u4e2a\u6574\u6570 $n$\u3002\n\n\u7b2c\u4e8c\u884c $n$ \u4e2a\u6574\u6570\uff0c\u7b2c $i$ \u4e2a\u6574\u6570 $T_i$ \u8868\u793a\u7b2c $i$ \u4e2a\u4eba\u7684\u63a5\u6c34\u65f6\u95f4 $T_i$\u3002","formatO":"\u8f93\u51fa\u6587\u4ef6\u6709\u4e24\u884c\uff0c\u7b2c\u4e00\u884c\u4e3a\u4e00\u79cd\u5e73\u5747\u65f6\u95f4\u6700\u77ed\u7684\u6392\u961f\u987a\u5e8f\uff1b\u7b2c\u4e8c\u884c\u4e3a\u8fd9\u79cd\u6392\u5217\u65b9\u6848\u4e0b\u7684\u5e73\u5747\u7b49\u5f85\u65f6\u95f4\uff08\u8f93\u51fa\u7ed3\u679c\u7cbe\u786e\u5230\u5c0f\u6570\u70b9\u540e\u4e24\u4f4d\uff09\u3002","hint":"$1\\le n \\leq 1000$\uff0c$1\\le t_i \\leq 10^6$\uff0c\u4e0d\u4fdd\u8bc1 $t_i$ \u4e0d\u91cd\u590d\u3002","locale":"zh-CN"}},"bookmarked":false,"contest":null,"vjudgeUsername":null,"lastLanguage":null,"lastCode":"","lastCodeAt":null,"recommendations":[{"pid":"P1090","type":"P","title":"[NOIP 2004 \u63d0\u9ad8\u7ec4] \u5408\u5e76\u679c\u5b50","difficulty":3},{"pid":"P1094","type":"P","title":"[NOIP 2007 \u666e\u53ca\u7ec4] \u7eaa\u5ff5\u54c1\u5206\u7ec4","difficulty":2},{"pid":"P1106","type":"P","title":"\u5220\u6570\u95ee\u9898","difficulty":3},{"pid":"P1803","type":"P","title":"\u51cc\u4e71\u7684yyy \/ \u7ebf\u6bb5\u8986\u76d6","difficulty":2},{"pid":"P3817","type":"P","title":"\u5c0fA\u7684\u7cd6\u679c","difficulty":2}],"forum":{"name":"P1223 \u6392\u961f\u63a5\u6c34","type":2,"slug":"P1223","color":"orange-3"},"discussions":[{"id":1240183,"title":"82\uff0c\u6c42\u5927\u795e\u8c03\u8bd5\uff0c\u611f\u8c22","author":{"uid":2062153,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/2062153.png","name":"h99687","slogan":"","badge":null,"isAdmin":false,"isBanned":false,"color":"Blue","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1770046110},{"id":1240176,"title":"54\u5206\uff0c\u6c42\u8c03\u00b7\u00b7\u00b7\u00b7\u00b7\u00b7","author":{"uid":1189885,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1189885.png","name":"andrew_2014","slogan":"\u9119\u4eba\u4e0d\u624d\uff0c\u8fd8\u8bf7\u5404\u4f4d\u5bfc\u5e08\u591a\u591a\u6307\u6559\u3002\uff08\u516c\u5e03\u6210\u7ee9\u7684\u90a3\u4e00\u523b\u6700\u5bb9\u6613\u5f97\u5fc3\u810f\u75c5\u3002\uff09","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1770044522},{"id":1240152,"title":"\u6c42\u4f18\u5316","author":{"uid":1055666,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1055666.png","name":"White___Fox","slogan":"\u714c\u714c\u5a01\u7075\uff0c\u5c0a\u543e\u6555\u547d\uff0c\u65a9\u65e0\u8d66 | \u62b1\u6b49\uff0c\u4f60\u6321\u8def\u4e86 \u2014\u2014     \u4e0d\u62ff\u91d1\u94a9\u4e0d\u9000\u5f79","badge":null,"isAdmin":false,"isBanned":false,"color":"Blue","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1770041474},{"id":1235210,"title":"82\u5206\u600e\u4e48\u505aqwq","author":{"uid":1792516,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1792516.png","name":"Zrgtp_deo","slogan":"\u5199\u70b9\u4ec0\u4e48\u597d\u5462\u2026\u2026","badge":null,"isAdmin":false,"isBanned":false,"color":"Blue","ccfLevel":0,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/fd26bqbh.png"},"time":1769307723},{"id":1234512,"title":"\u6837\u4f8b\u6ca1\u8fc7\u6c42\u8c03","author":{"uid":933540,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/933540.png","name":"Xzops_","slogan":"","badge":null,"isAdmin":false,"isBanned":false,"color":"Blue","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1769166385},{"id":1228029,"title":"0\u5206\uff01\uff01\uff01\u600e\u4e48\u505a\uff0c\u6c42\uff01\uff0c\u95ed\u5173\uff01","author":{"uid":1785232,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1785232.png","name":"chenyidanziushuai","slogan":"","badge":null,"isAdmin":false,"isBanned":false,"color":"Orange","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1767788891}],"locale":"zh-CN","canEdit":false},"user":null,"time":1770599953.400494,"theme":null}</script>            <script src="https://fecdn.luogu.com.cn/columba/loader.20260128-1589.js" charset="utf-8" defer></script>
+    <link rel="stylesheet" href="https://fecdn.luogu.com.cn/columba/loader.20260128-1589.css" />
+    <script src="https://fecdn.luogu.com.cn/columba/vendor.20260128-1589.js" charset="utf-8" defer></script>
+        <script type="application/ld+json">{"@context":"https:\/\/schema.org","name":"P1223 \u6392\u961f\u63a5\u6c34","description":"\u6709 n \u4e2a\u4eba\u5728\u4e00\u4e2a\u6c34\u9f99\u5934\u524d\u6392\u961f\u63a5\u6c34\uff0c\u5047\u5982\u6bcf\u4e2a\u4eba\u63a5\u6c34\u7684\u65f6\u95f4\u4e3a T_i\uff0c\u8bf7\u7f16\u7a0b\u627e\u51fa\u8fd9 n \u4e2a\u4eba\u6392\u961f\u7684\u4e00\u79cd\u987a\u5e8f\uff0c\u4f7f\u5f97 n \u4e2a\u4eba\u7684\u5e73\u5747\u7b49\u5f85\u65f6\u95f4\u6700\u5c0f\u3002\n\u4e00\u4e2a\u4eba\u7684\u7b49\u5f85\u65f6\u95f4\u4e0d\u5305\u62ec\u4ed6\u7684\u63a5\u6c34\u65f6\u95f4\u3002\n\u5982\u679c\u4e24\u4e2a\u4eba\u63a5\u6c34\u7684\u65f6\u95f4\u76f8\u540c\uff0c\u7f16\u53f7\u66f4\u5c0f\u7684\u4eba\u5e94\u5f53\u6392\u5728\u524d\u9762\u3002"}</script>
+    <link rel="canonical" href="https://www.luogu.com.cn/problem/P1223" />
+            <link rel="alternate" hreflang="en" href="https://www.luogu.com.cn/problem/P1223?lang=en" />
+        <meta property="og:locale:alternate" content="en" />
+            <link rel="alternate" hreflang="zh-CN" href="https://www.luogu.com.cn/problem/P1223?lang=zh-CN" />
+        <meta property="og:locale" content="zh-CN" />
+        <meta property="og:site_name" content="洛谷" />
+    <meta property="og:title" content="P1223 排队接水" />
+    <meta property="og:description" content="有 n 个人在一个水龙头前排队接水，假如每个人接水的时间为 T_i，请编程找出这 n 个人排队的一种顺序，使得 n 个人的平均等待时间最小。
+一个人的等待时间不包括他的接水时间。
+如果两个人接水的时间相同，编号更小的人应当排在前面。" />
+    <meta property="og:url" content="https://www.luogu.com.cn/problem/P1223" />
+    <style>body {  }</style>
+</head>
+<body>
+<div id="app">
+    <noscript>
+        <h3>请<b style="color:#f00;">不要禁用</b>脚本，否则网页无法正常加载</h3>
+    </noscript>
+        <article lang="zh-CN">
+        <h1>P1223 排队接水</h1>
+
+        
+        <section>
+            <h2>题目描述</h2>
+            <div>
+                                    有 $n$ 个人在一个水龙头前排队接水，假如每个人接水的时间为 $T_i$，请编程找出这 $n$ 个人排队的一种顺序，使得 $n$ 个人的平均等待时间最小。
+
+一个人的等待时间不包括他的接水时间。
+
+如果两个人接水的时间相同，编号更小的人应当排在前面。
+                            </div>
+        </section>
+
+        <section>
+            <h2>输入格式</h2>
+            <div>
+                                    第一行为一个整数 $n$。
+
+第二行 $n$ 个整数，第 $i$ 个整数 $T_i$ 表示第 $i$ 个人的接水时间 $T_i$。
+                            </div>
+        </section>
+
+        <section>
+            <h2>输出格式</h2>
+            <div>
+                                    输出文件有两行，第一行为一种平均时间最短的排队顺序；第二行为这种排列方案下的平均等待时间（输出结果精确到小数点后两位）。
+                            </div>
+        </section>
+
+        <section>
+            <h2>说明/提示</h2>
+            <div>
+                $1\le n \leq 1000$，$1\le t_i \leq 10^6$，不保证 $t_i$ 不重复。
+            </div>
+        </section>    </article>
+</div>
+</body>
+</html>

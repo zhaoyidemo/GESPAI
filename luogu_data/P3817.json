@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="csrf-token" content="1770686355:mqNsXL7OJTyWFILGRVijh5xangjqrgxN6GXLdy8ZOwc=">
+    <meta name="renderer" content="webkit">
+    <script>
+        window.__feInitLocalTime = new Date().getTime() / 1000;
+        window.__feConfigVersion = '6cd602b7bfcdedec'; window.__feConfigRequest = '\/_lfe\/config';
+        window.__luoguTagVersion = 'zh\u002DCN\/2026020908'; window.__luoguTagRequest = '\/_lfe\/tags\/zh\u002DCN';
+            </script>
+    <title>P3817 小A的糖果 - 洛谷</title>
+    <link rel="icon" href="https://fecdn.luogu.com.cn/favicon.ico">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-eval' 'unsafe-inline' luogu.com *.luogu.com luogu.com.cn *.luogu.com.cn luogu.org *.luogu.org wss: blob: luoguprivate.oss-cn-hangzhou.aliyuncs.com luogu.oss-cn-hangzhou.aliyuncs.com https://challenges.cloudflare.com https://*.dun.163yun.com https://*.dun.163.com https://*.nosdn.126.net https://*.nosdn.127.net https://nos.netease.com https://cstaticdun.126.net https://cstaticdun1.126.net https://cstaticdun-v6.126.net https://acstatic-dun.126.net; img-src * data:; font-src * data:; worker-src data: blob:; frame-src https://player.bilibili.com https://www.bilibili.com https://challenges.cloudflare.com">    <script id="lentille-context" type="application/json">{"instance":"main","template":"problem.show","status":200,"locale":"zh-CN","data":{"problem":{"pid":"P3817","type":"P","title":"\u5c0fA\u7684\u7cd6\u679c","difficulty":2,"tags":[1,7,337],"wantsTranslation":false,"totalSubmit":209819,"totalAccepted":68341,"flag":5,"provider":{"uid":256,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/256.png","name":"lin_toto","slogan":"Luscious Lawless","badge":"\u8449\u6708\u3086\u3089","isAdmin":true,"isBanned":false,"color":"Purple","ccfLevel":6,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/qp7lkuss.png","isRoot":true},"contenu":{"name":"\u5c0fA\u7684\u7cd6\u679c","background":"","description":"\u5c0f A \u6709 $n$ \u4e2a\u7cd6\u679c\u76d2\uff0c\u7b2c $i$ \u4e2a\u76d2\u4e2d\u6709 $a_i$ \u9897\u7cd6\u679c\u3002\n\n\u5c0f A \u6bcf\u6b21\u53ef\u4ee5\u4ece\u5176\u4e2d\u4e00\u76d2\u7cd6\u679c\u4e2d\u5403\u6389\u4e00\u9897\uff0c\u4ed6\u60f3\u77e5\u9053\uff0c\u8981\u8ba9\u4efb\u610f\u4e24\u4e2a\u76f8\u90bb\u7684\u76d2\u5b50\u4e2d\u7cd6\u7684\u4e2a\u6570\u4e4b\u548c\u90fd\u4e0d\u5927\u4e8e $x$\uff0c\u81f3\u5c11\u5f97\u5403\u6389\u51e0\u9897\u7cd6\u3002\n","formatI":"\u8f93\u5165\u7684\u7b2c\u4e00\u884c\u662f\u4e24\u4e2a\u7528\u7a7a\u683c\u9694\u5f00\u7684\u6574\u6570\uff0c\u4ee3\u8868\u7cd6\u679c\u76d2\u7684\u4e2a\u6570 $n$ \u548c\u7ed9\u5b9a\u7684\u53c2\u6570 $x$\u3002\n\n\u7b2c\u4e8c\u884c\u6709 $n$ \u4e2a\u7528\u7a7a\u683c\u9694\u5f00\u7684\u6574\u6570\uff0c\u7b2c $i$ \u4e2a\u6574\u6570\u4ee3\u8868\u7b2c $i$ \u76d2\u7cd6\u7684\u7cd6\u679c\u4e2a\u6570 $a_i$\u3002","formatO":"\u8f93\u51fa\u4e00\u884c\u4e00\u4e2a\u6574\u6570\uff0c\u4ee3\u8868\u6700\u5c11\u8981\u5403\u6389\u7684\u7cd6\u679c\u7684\u6570\u91cf\u3002","hint":"#### \u6837\u4f8b\u8f93\u5165\u8f93\u51fa 1 \u89e3\u91ca\n\n\u5403\u6389\u7b2c 2 \u76d2\u4e2d\u7684\u4e00\u4e2a\u7cd6\u679c\u5373\u53ef\u3002\n\n---\n\n#### \u6837\u4f8b\u8f93\u5165\u8f93\u51fa 2 \u89e3\u91ca\n\n\u7b2c 2 \u76d2\u7cd6\u5403\u6389 $6$ \u9897\uff0c\u7b2c 4 \u76d2\u5403\u6389 $2$ \u9897\uff0c\u7b2c 6 \u76d2\u5403\u6389 $3$ \u9897\u3002\n\n---\n\n#### \u6570\u636e\u89c4\u6a21\u4e0e\u7ea6\u5b9a\n\n- \u5bf9\u4e8e $30\\%$ \u7684\u6570\u636e\uff0c\u4fdd\u8bc1 $n \\leq 20$\uff0c$a_i, x \\leq 100$\u3002\n- \u5bf9\u4e8e $70\\%$ \u7684\u6570\u636e\uff0c\u4fdd\u8bc1 $n \\leq 10^3$\uff0c$a_i, x \\leq 10^5$\u3002\n- \u5bf9\u4e8e $100\\%$ \u7684\u6570\u636e\uff0c\u4fdd\u8bc1 $2 \\leq n \\leq 10^5$\uff0c$0 \\leq a_i, x \\leq 10^9$\u3002","locale":"zh-CN"},"content":{"name":"\u5c0fA\u7684\u7cd6\u679c","background":"","description":"\u5c0f A \u6709 $n$ \u4e2a\u7cd6\u679c\u76d2\uff0c\u7b2c $i$ \u4e2a\u76d2\u4e2d\u6709 $a_i$ \u9897\u7cd6\u679c\u3002\n\n\u5c0f A \u6bcf\u6b21\u53ef\u4ee5\u4ece\u5176\u4e2d\u4e00\u76d2\u7cd6\u679c\u4e2d\u5403\u6389\u4e00\u9897\uff0c\u4ed6\u60f3\u77e5\u9053\uff0c\u8981\u8ba9\u4efb\u610f\u4e24\u4e2a\u76f8\u90bb\u7684\u76d2\u5b50\u4e2d\u7cd6\u7684\u4e2a\u6570\u4e4b\u548c\u90fd\u4e0d\u5927\u4e8e $x$\uff0c\u81f3\u5c11\u5f97\u5403\u6389\u51e0\u9897\u7cd6\u3002\n","formatI":"\u8f93\u5165\u7684\u7b2c\u4e00\u884c\u662f\u4e24\u4e2a\u7528\u7a7a\u683c\u9694\u5f00\u7684\u6574\u6570\uff0c\u4ee3\u8868\u7cd6\u679c\u76d2\u7684\u4e2a\u6570 $n$ \u548c\u7ed9\u5b9a\u7684\u53c2\u6570 $x$\u3002\n\n\u7b2c\u4e8c\u884c\u6709 $n$ \u4e2a\u7528\u7a7a\u683c\u9694\u5f00\u7684\u6574\u6570\uff0c\u7b2c $i$ \u4e2a\u6574\u6570\u4ee3\u8868\u7b2c $i$ \u76d2\u7cd6\u7684\u7cd6\u679c\u4e2a\u6570 $a_i$\u3002","formatO":"\u8f93\u51fa\u4e00\u884c\u4e00\u4e2a\u6574\u6570\uff0c\u4ee3\u8868\u6700\u5c11\u8981\u5403\u6389\u7684\u7cd6\u679c\u7684\u6570\u91cf\u3002","hint":"#### \u6837\u4f8b\u8f93\u5165\u8f93\u51fa 1 \u89e3\u91ca\n\n\u5403\u6389\u7b2c 2 \u76d2\u4e2d\u7684\u4e00\u4e2a\u7cd6\u679c\u5373\u53ef\u3002\n\n---\n\n#### \u6837\u4f8b\u8f93\u5165\u8f93\u51fa 2 \u89e3\u91ca\n\n\u7b2c 2 \u76d2\u7cd6\u5403\u6389 $6$ \u9897\uff0c\u7b2c 4 \u76d2\u5403\u6389 $2$ \u9897\uff0c\u7b2c 6 \u76d2\u5403\u6389 $3$ \u9897\u3002\n\n---\n\n#### \u6570\u636e\u89c4\u6a21\u4e0e\u7ea6\u5b9a\n\n- \u5bf9\u4e8e $30\\%$ \u7684\u6570\u636e\uff0c\u4fdd\u8bc1 $n \\leq 20$\uff0c$a_i, x \\leq 100$\u3002\n- \u5bf9\u4e8e $70\\%$ \u7684\u6570\u636e\uff0c\u4fdd\u8bc1 $n \\leq 10^3$\uff0c$a_i, x \\leq 10^5$\u3002\n- \u5bf9\u4e8e $100\\%$ \u7684\u6570\u636e\uff0c\u4fdd\u8bc1 $2 \\leq n \\leq 10^5$\uff0c$0 \\leq a_i, x \\leq 10^9$\u3002","locale":"zh-CN"},"attachments":[],"showScore":true,"acceptSolution":false,"acceptLanguages":[5,1,2,28,3,4,11,12,27,34,7,25,8,33,15,14,19,30,31,32,21,22,17,9,16,13,23],"samples":[["3 3\n2 2 2","1\n"],["6 1\n1 6 1 2 0 4","11"],["5 9\n3 1 4 1 5","0\n"]],"limits":{"time":[1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000],"memory":[512000,512000,512000,512000,512000,512000,512000,512000,512000,512000,512000,512000]},"translation":""},"translations":{"en":{"name":"Xiao A\u0027s Candies","background":"","description":"Xiao A has $n$ candy boxes; the $i$-th box contains $a_i$ candies.\n\nEach time, Xiao A can eat one candy from one box. He wants to know: to make the sum of candies in any two adjacent boxes no greater than $x$, what is the minimum number of candies he must eat.","formatI":"The first line contains two space-separated integers, the number of boxes $n$ and the given parameter $x$.\n\nThe second line contains $n$ space-separated integers; the $i$-th integer is $a_i$, the number of candies in the $i$-th box.","formatO":"Output one line with a single integer, the minimum number of candies to eat.","hint":"#### Explanation for Sample Input\/Output 1\n\nEating one candy from box 2 suffices.\n\n---\n\n#### Explanation for Sample Input\/Output 2\n\nEat $6$ from box 2, $2$ from box 4, and $3$ from box 6.\n\n---\n\n#### Constraints\n\n- For $30\\%$ of the testdata, it is guaranteed that $n \\leq 20$ and $a_i, x \\leq 100$.\n- For $70\\%$ of the testdata, it is guaranteed that $n \\leq 10^3$ and $a_i, x \\leq 10^5$.\n- For $100\\%$ of the testdata, it is guaranteed that $2 \\leq n \\leq 10^5$ and $0 \\leq a_i, x \\leq 10^9$.\n\nTranslated by ChatGPT 5","locale":"en"},"zh-CN":{"name":"\u5c0fA\u7684\u7cd6\u679c","background":"","description":"\u5c0f A \u6709 $n$ \u4e2a\u7cd6\u679c\u76d2\uff0c\u7b2c $i$ \u4e2a\u76d2\u4e2d\u6709 $a_i$ \u9897\u7cd6\u679c\u3002\n\n\u5c0f A \u6bcf\u6b21\u53ef\u4ee5\u4ece\u5176\u4e2d\u4e00\u76d2\u7cd6\u679c\u4e2d\u5403\u6389\u4e00\u9897\uff0c\u4ed6\u60f3\u77e5\u9053\uff0c\u8981\u8ba9\u4efb\u610f\u4e24\u4e2a\u76f8\u90bb\u7684\u76d2\u5b50\u4e2d\u7cd6\u7684\u4e2a\u6570\u4e4b\u548c\u90fd\u4e0d\u5927\u4e8e $x$\uff0c\u81f3\u5c11\u5f97\u5403\u6389\u51e0\u9897\u7cd6\u3002\n","formatI":"\u8f93\u5165\u7684\u7b2c\u4e00\u884c\u662f\u4e24\u4e2a\u7528\u7a7a\u683c\u9694\u5f00\u7684\u6574\u6570\uff0c\u4ee3\u8868\u7cd6\u679c\u76d2\u7684\u4e2a\u6570 $n$ \u548c\u7ed9\u5b9a\u7684\u53c2\u6570 $x$\u3002\n\n\u7b2c\u4e8c\u884c\u6709 $n$ \u4e2a\u7528\u7a7a\u683c\u9694\u5f00\u7684\u6574\u6570\uff0c\u7b2c $i$ \u4e2a\u6574\u6570\u4ee3\u8868\u7b2c $i$ \u76d2\u7cd6\u7684\u7cd6\u679c\u4e2a\u6570 $a_i$\u3002","formatO":"\u8f93\u51fa\u4e00\u884c\u4e00\u4e2a\u6574\u6570\uff0c\u4ee3\u8868\u6700\u5c11\u8981\u5403\u6389\u7684\u7cd6\u679c\u7684\u6570\u91cf\u3002","hint":"#### \u6837\u4f8b\u8f93\u5165\u8f93\u51fa 1 \u89e3\u91ca\n\n\u5403\u6389\u7b2c 2 \u76d2\u4e2d\u7684\u4e00\u4e2a\u7cd6\u679c\u5373\u53ef\u3002\n\n---\n\n#### \u6837\u4f8b\u8f93\u5165\u8f93\u51fa 2 \u89e3\u91ca\n\n\u7b2c 2 \u76d2\u7cd6\u5403\u6389 $6$ \u9897\uff0c\u7b2c 4 \u76d2\u5403\u6389 $2$ \u9897\uff0c\u7b2c 6 \u76d2\u5403\u6389 $3$ \u9897\u3002\n\n---\n\n#### \u6570\u636e\u89c4\u6a21\u4e0e\u7ea6\u5b9a\n\n- \u5bf9\u4e8e $30\\%$ \u7684\u6570\u636e\uff0c\u4fdd\u8bc1 $n \\leq 20$\uff0c$a_i, x \\leq 100$\u3002\n- \u5bf9\u4e8e $70\\%$ \u7684\u6570\u636e\uff0c\u4fdd\u8bc1 $n \\leq 10^3$\uff0c$a_i, x \\leq 10^5$\u3002\n- \u5bf9\u4e8e $100\\%$ \u7684\u6570\u636e\uff0c\u4fdd\u8bc1 $2 \\leq n \\leq 10^5$\uff0c$0 \\leq a_i, x \\leq 10^9$\u3002","locale":"zh-CN"}},"bookmarked":false,"contest":null,"vjudgeUsername":null,"lastLanguage":null,"lastCode":"","lastCodeAt":null,"recommendations":[{"pid":"P1094","type":"P","title":"[NOIP 2007 \u666e\u53ca\u7ec4] \u7eaa\u5ff5\u54c1\u5206\u7ec4","difficulty":2},{"pid":"P1106","type":"P","title":"\u5220\u6570\u95ee\u9898","difficulty":3},{"pid":"P1208","type":"P","title":"[USACO1.3] \u6df7\u5408\u725b\u5976 Mixing Milk","difficulty":2},{"pid":"P1478","type":"P","title":"\u9676\u9676\u6458\u82f9\u679c\uff08\u5347\u7ea7\u7248\uff09","difficulty":2},{"pid":"P5019","type":"P","title":"[NOIP 2018 \u63d0\u9ad8\u7ec4] \u94fa\u8bbe\u9053\u8def","difficulty":3}],"forum":{"name":"P3817 \u5c0fA\u7684\u7cd6\u679c","type":2,"slug":"P3817","color":"orange-3"},"discussions":[{"id":1240529,"title":"\u6c42\u8c03\uff0c\u5982\u679c\u6210\u529f\u4f1a\u5173\u6ce8","author":{"uid":1555635,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1555635.png","name":"\u9a6c\u9c81\u9038\u5c182014","slogan":"\u7a3b\u82b1\u9999\u91cc\u8bf4AC\uff0c\u542c\u53d6WA\u58f0\u4e00\u7247","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/aftxoctk.png"},"time":1770099156},{"id":1240528,"title":"\u9644\u52a02\u4e2a\u6ca1\u8fc7\uff0c\u6c42\u8c03","author":{"uid":1555677,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1555677.png","name":"Fanzuhao2014","slogan":"\u819c\u62dc\u5927\u4f6c","badge":null,"isAdmin":false,"isBanned":false,"color":"Blue","ccfLevel":0,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/1xvc44di.png"},"time":1770099141},{"id":1234054,"title":"\u6c42\u8c03\uff08\u6700\u540e\u4e24\u4e2a\u6d4b\u8bd5\u70b9WA\uff09","author":{"uid":1412894,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1412894.png","name":"ERROR001","slogan":"ARE YOU OK\uff1f","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":"https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/l4mkp11x.png"},"time":1769050407},{"id":1232885,"title":"\u6c42\u8c03","author":{"uid":1889341,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1889341.png","name":"huangjunyou","slogan":"18982455817\uff08\u52ff\u6270\uff09","badge":null,"isAdmin":false,"isBanned":false,"color":"Blue","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1768727684},{"id":1218876,"title":"\u6c42\u8c0310\u5206","author":{"uid":1718067,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1718067.png","name":"Wyx20130509","slogan":"\u6211\u53ef\u6ca1\u6709\u6284\u9898\u89e3\uff0c\u6211\u53ea\u662f\u60f3\u627e\u4e2a\u5730\u65b9\u5199\u9898\u89e3\u800c\u5df2","badge":null,"isAdmin":false,"isBanned":false,"color":"Green","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1766200992},{"id":1218673,"title":"100\u9644\u52a0\u6ca1\u8fc7,\u6c42\u6551","author":{"uid":1611315,"avatar":"https:\/\/cdn.luogu.com.cn\/upload\/usericon\/1611315.png","name":"xhzkal","slogan":"\u4f60\u662f\u8c01\uff1f\u8bf7\u652f\u6301\u7f57\u5c0f\u9ed1\u6218\u8bb0 \u84dd\u6eaa\u9547 \u836f\u5c4b\u5c11\u5973\u7684\u5462\u5583 \u846c\u9001\u7684\u8299\u8389\u83b2","badge":null,"isAdmin":false,"isBanned":false,"color":"Blue","ccfLevel":0,"xcpcLevel":0,"background":""},"time":1766164233}],"locale":"zh-CN","canEdit":false},"user":null,"time":1770599955.611232,"theme":null}</script>            <script src="https://fecdn.luogu.com.cn/columba/loader.20260128-1589.js" charset="utf-8" defer></script>
+    <link rel="stylesheet" href="https://fecdn.luogu.com.cn/columba/loader.20260128-1589.css" />
+    <script src="https://fecdn.luogu.com.cn/columba/vendor.20260128-1589.js" charset="utf-8" defer></script>
+        <script type="application/ld+json">{"@context":"https:\/\/schema.org","name":"P3817 \u5c0fA\u7684\u7cd6\u679c","description":"\u5c0f A \u6709 n \u4e2a\u7cd6\u679c\u76d2\uff0c\u7b2c i \u4e2a\u76d2\u4e2d\u6709 a_i \u9897\u7cd6\u679c\u3002\n\u5c0f A \u6bcf\u6b21\u53ef\u4ee5\u4ece\u5176\u4e2d\u4e00\u76d2\u7cd6\u679c\u4e2d\u5403\u6389\u4e00\u9897\uff0c\u4ed6\u60f3\u77e5\u9053\uff0c\u8981\u8ba9\u4efb\u610f\u4e24\u4e2a\u76f8\u90bb\u7684\u76d2\u5b50\u4e2d\u7cd6\u7684\u4e2a\u6570\u4e4b\u548c\u90fd\u4e0d\u5927\u4e8e x\uff0c\u81f3\u5c11\u5f97\u5403\u6389\u51e0\u9897\u7cd6\u3002"}</script>
+    <link rel="canonical" href="https://www.luogu.com.cn/problem/P3817" />
+            <link rel="alternate" hreflang="en" href="https://www.luogu.com.cn/problem/P3817?lang=en" />
+        <meta property="og:locale:alternate" content="en" />
+            <link rel="alternate" hreflang="zh-CN" href="https://www.luogu.com.cn/problem/P3817?lang=zh-CN" />
+        <meta property="og:locale" content="zh-CN" />
+        <meta property="og:site_name" content="洛谷" />
+    <meta property="og:title" content="P3817 小A的糖果" />
+    <meta property="og:description" content="小 A 有 n 个糖果盒，第 i 个盒中有 a_i 颗糖果。
+小 A 每次可以从其中一盒糖果中吃掉一颗，他想知道，要让任意两个相邻的盒子中糖的个数之和都不大于 x，至少得吃掉几颗糖。" />
+    <meta property="og:url" content="https://www.luogu.com.cn/problem/P3817" />
+    <style>body {  }</style>
+</head>
+<body>
+<div id="app">
+    <noscript>
+        <h3>请<b style="color:#f00;">不要禁用</b>脚本，否则网页无法正常加载</h3>
+    </noscript>
+        <article lang="zh-CN">
+        <h1>P3817 小A的糖果</h1>
+
+        
+        <section>
+            <h2>题目描述</h2>
+            <div>
+                                    小 A 有 $n$ 个糖果盒，第 $i$ 个盒中有 $a_i$ 颗糖果。
+
+小 A 每次可以从其中一盒糖果中吃掉一颗，他想知道，要让任意两个相邻的盒子中糖的个数之和都不大于 $x$，至少得吃掉几颗糖。
+
+                            </div>
+        </section>
+
+        <section>
+            <h2>输入格式</h2>
+            <div>
+                                    输入的第一行是两个用空格隔开的整数，代表糖果盒的个数 $n$ 和给定的参数 $x$。
+
+第二行有 $n$ 个用空格隔开的整数，第 $i$ 个整数代表第 $i$ 盒糖的糖果个数 $a_i$。
+                            </div>
+        </section>
+
+        <section>
+            <h2>输出格式</h2>
+            <div>
+                                    输出一行一个整数，代表最少要吃掉的糖果的数量。
+                            </div>
+        </section>
+
+        <section>
+            <h2>说明/提示</h2>
+            <div>
+                #### 样例输入输出 1 解释
+
+吃掉第 2 盒中的一个糖果即可。
+
+---
+
+#### 样例输入输出 2 解释
+
+第 2 盒糖吃掉 $6$ 颗，第 4 盒吃掉 $2$ 颗，第 6 盒吃掉 $3$ 颗。
+
+---
+
+#### 数据规模与约定
+
+- 对于 $30\%$ 的数据，保证 $n \leq 20$，$a_i, x \leq 100$。
+- 对于 $70\%$ 的数据，保证 $n \leq 10^3$，$a_i, x \leq 10^5$。
+- 对于 $100\%$ 的数据，保证 $2 \leq n \leq 10^5$，$0 \leq a_i, x \leq 10^9$。
+            </div>
+        </section>    </article>
+</div>
+</body>
+</html>

@@ -49,6 +49,7 @@ const CATEGORY_ICONS: Record<string, typeof MessageSquare> = {
   core: MessageSquare,
   "error-diagnosis": Bug,
   tool: Wrench,
+  insight: Database,
 };
 
 export default function AdminPromptsPage() {
@@ -186,7 +187,7 @@ export default function AdminPromptsPage() {
     );
   }
 
-  const categories = ["core", "error-diagnosis", "tool"];
+  const categories = ["core", "error-diagnosis", "tool", "insight"];
 
   return (
     <div className="container-responsive py-8 space-y-6">
