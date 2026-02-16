@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
   try {
     // 1. 数据收集
-    const [submissions, problems] = await Promise.all([
+    const [submissions, problems, errorCases, preventionRules] = await Promise.all([
       // 获取用户在5级的所有提交
       prisma.submission.findMany({
         where: {
@@ -50,6 +50,39 @@ export async function POST(req: Request) {
           knowledgePoints: true,
           difficulty: true,
         }
+      }),
+
+      // 获取错题本数据
+      prisma.errorCase.findMany({
+        where: {
+          userId,
+          problem: { level }
+        },
+        include: {
+          problem: {
+            select: {
+              id: true,
+              title: true,
+              knowledgePoints: true,
+            }
+          },
+          submission: {
+            select: {
+              status: true,
+              code: true,
+            }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      }),
+
+      // 获取防错规则
+      prisma.preventionRule.findMany({
+        where: {
+          userId,
+          isActive: true,
+        },
+        orderBy: { hitCount: 'desc' }
       })
     ])
 
@@ -86,6 +119,8 @@ export async function POST(req: Request) {
       knowledgeStats,
       errorSubmissions: errorSubmissions.slice(0, 10), // 只分析最近10个错误
       submissions: submissions.slice(-20), // 只分析最近20次提交
+      errorCases, // 错题本数据
+      preventionRules, // 防错规则
     })
 
     // 6. 保存报告
@@ -185,6 +220,29 @@ ${sub.code?.slice(0, 200) || '无代码'}...
 \`\`\`
 `).join('\n---\n')
 
+  // 错题本数据
+  const errorCasesText = data.errorCases?.slice(0, 10).map((ec: any) => `
+题目：${ec.problem.title}
+知识点：${ec.problem.knowledgePoints?.join(', ')}
+错误类型：${ec.errorType || '未分类'}
+状态：${ec.status}
+
+【三问反思】
+1. 错了哪？${ec.q1Answer || '未填写'}
+2. 为什么错？${ec.q2Answer || '未填写'}
+3. 怎么避免？${ec.q3Answer || '未填写'}
+
+AI分析：${ec.aiAnalysis ? JSON.stringify(ec.aiAnalysis) : '无'}
+`).join('\n---\n') || '无错题记录'
+
+  // 防错规则
+  const preventionRulesText = data.preventionRules?.map((rule: any) => `
+规则类型：${rule.errorType}
+规则内容：${rule.rule}
+触发次数：${rule.hitCount}次
+相关题目：${rule.examples.length}道
+`).join('\n---\n') || '无防错规则'
+
   // 替换变量
   const prompt = promptTemplate
     .replace('{{totalProblems}}', data.totalProblems.toString())
@@ -192,6 +250,8 @@ ${sub.code?.slice(0, 200) || '无代码'}...
     .replace('{{overallPassRate}}', data.overallPassRate.toString())
     .replace('{{knowledgeStats}}', knowledgeStatsText)
     .replace('{{errorSubmissions}}', errorSubmissionsText)
+    .replace('{{errorCases}}', errorCasesText)
+    .replace('{{preventionRules}}', preventionRulesText)
 
   const response = await anthropic.messages.create({
     model: 'claude-opus-4-20250514',
