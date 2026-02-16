@@ -208,18 +208,26 @@ ${sub.code?.slice(0, 200) || '无代码'}...
 
   // 尝试解析 JSON
   try {
-    // 提取 JSON（可能被包在 ```json ``` 中）
-    const jsonMatch = content.match(/```json\s*\n([\s\S]*?)\n```/) ||
-                      content.match(/\{[\s\S]*\}/)
-    if (jsonMatch) {
-      const jsonStr = jsonMatch[1] || jsonMatch[0]
-      return JSON.parse(jsonStr)
+    // 方法1: 提取 ```json ``` 包裹的 JSON
+    const codeBlockMatch = content.match(/```json\s*\n([\s\S]*?)\n```/)
+    if (codeBlockMatch) {
+      const jsonStr = codeBlockMatch[1]
+      const parsed = JSON.parse(jsonStr)
+      console.log('✅ 成功解析 JSON (代码块格式)')
+      return parsed
     }
+
+    // 方法2: 尝试直接解析整个内容
+    const parsed = JSON.parse(content.trim())
+    console.log('✅ 成功解析 JSON (直接格式)')
+    return parsed
   } catch (e) {
-    console.error('Failed to parse AI response:', e)
+    console.error('❌ JSON 解析失败:', e)
+    console.log('原始内容:', content.substring(0, 500))
   }
 
   // 如果解析失败，返回原始内容
+  console.warn('⚠️ 使用原始内容作为报告')
   return {
     studentVersion: content,
     parentVersion: content,
