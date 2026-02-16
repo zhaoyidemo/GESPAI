@@ -44,6 +44,7 @@ model User {
   mockExamResults MockExamResult[]
   vibePosts       VibePost[]
   focusSessions   FocusSession[]
+  insightReports  InsightReport[]
 
   @@map("users")
 }
@@ -376,4 +377,37 @@ model VibePost {
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("vibe_posts")
+}
+
+// 洞察报告
+model InsightReport {
+  id          String   @id @default(uuid())
+  userId      String
+
+  level       Int      // GESP 级别（5）
+
+  // 数据快照
+  totalProblems      Int
+  solvedProblems     Int
+  knowledgePointsCoverage Json
+
+  // AI 生成的报告（三个版本）
+  studentVersion     String @db.Text
+  parentVersion      String @db.Text
+  teacherVersion     String @db.Text
+
+  // 结构化洞察数据
+  insights           Json
+
+  // 元信息
+  modelUsed          String   @default("claude-opus-4-6")
+  promptVersion      String   @default("v1.0")
+
+  generatedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, generatedAt])
+  @@map("insight_reports")
 }
