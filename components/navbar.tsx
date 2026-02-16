@@ -29,6 +29,7 @@ import {
   MessageSquareCode,
   ClipboardList,
   Megaphone,
+  BarChart3,
 } from "lucide-react";
 
 const navItems = [
@@ -36,6 +37,7 @@ const navItems = [
   { href: "/map", label: "知识点", icon: BookOpen },
   { href: "/problem", label: "题库", icon: Code },
   { href: "/error-book", label: "错题本", icon: BookX },
+  { href: "/insight-report", label: "洞察报告", icon: BarChart3 },
   { href: "/mock-exam", label: "模拟考试", icon: ClipboardList },
   { href: "/vibe", label: "小红书", icon: Megaphone },
 ];

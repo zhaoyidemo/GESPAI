@@ -21,6 +21,11 @@ import {
 
 import { DEFAULT_VIBE_MARKETING_PROMPT } from "@/lib/prompts/vibe-marketing";
 
+import {
+  DEFAULT_INSIGHT_REPORT_PROMPT,
+  DEFAULT_INSIGHT_REPORT_SYSTEM
+} from "@/lib/default-prompts-insight";
+
 // ===== 从 lib/claude.ts 提取的工具类提示词 =====
 
 export const DEFAULT_CODE_ERROR_ANALYSIS_PROMPT = `你是 GESP AI 的代码错误分析工具，用于快速分析学生 C++ 代码中的错误。
@@ -211,6 +216,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
   core: "GESP AI 私教",
   "error-diagnosis": "错题诊断",
   tool: "工具类",
+  insight: "洞察报告",
 };
 
 // ===== 注册表条目类型 =====
@@ -342,6 +348,22 @@ export const PROMPT_REGISTRY: PromptRegistryEntry[] = [
     name: "Vibe 文案生成",
     description: "将开发活动或学习记录转化为小红书风格文案",
     defaultContent: DEFAULT_VIBE_MARKETING_PROMPT,
+  },
+
+  // --- 洞察报告 (2) ---
+  {
+    key: "insight_report_generate",
+    category: "insight",
+    name: "洞察报告生成",
+    description: "生成三版本（小朋友/家长/老师）考前洞察报告的主提示词。支持变量：{{totalProblems}}, {{solvedProblems}}, {{overallPassRate}}, {{knowledgeStats}}, {{errorSubmissions}}",
+    defaultContent: DEFAULT_INSIGHT_REPORT_PROMPT,
+  },
+  {
+    key: "insight_report_system",
+    category: "insight",
+    name: "洞察报告系统提示词",
+    description: "洞察报告生成时的 system 提示词，定义 AI 的角色和能力",
+    defaultContent: DEFAULT_INSIGHT_REPORT_SYSTEM,
   },
 ];
 

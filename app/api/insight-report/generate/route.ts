@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import Anthropic from "@anthropic-ai/sdk"
 import { GESP_LEVEL5_SYLLABUS, mapKnowledgePoint, getKnowledgePointConfig } from "@/lib/gesp-syllabus"
+import { getSystemPrompt } from "@/lib/prompts/get-system-prompt"
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -161,24 +162,20 @@ function analyzeKnowledgePoints(submissions: any[]) {
 
 // AI 生成报告（单次调用，包含三个版本）
 async function generateReportWithAI(data: any) {
-  const prompt = `你是一位资深的 GESP C++ 竞赛教练，需要为学生生成一份 5级考前洞察报告。
+  // 从数据库获取提示词
+  const promptTemplate = await getSystemPrompt('insight_report_generate')
+  const systemPrompt = await getSystemPrompt('insight_report_system')
 
-学生数据：
-- 完成题目：${data.totalProblems} 道
-- 通过题目：${data.solvedProblems} 道
-- 整体通过率：${data.overallPassRate}%
-
-知识点掌握情况：
-${data.knowledgeStats.map((kp: any) => `
+  // 准备变量替换
+  const knowledgeStatsText = data.knowledgeStats.map((kp: any) => `
 ${kp.name}：
 - 做题数：${kp.attemptedCount} 题（考纲建议≥${kp.syllabus?.minProblems || 0}题）
 - 通过率：${kp.passRate}%
 - 考纲权重：${kp.syllabus ? (kp.syllabus.weight * 100).toFixed(0) : 0}%
 - 重要程度：${kp.syllabus?.importance || 'unknown'}
-`).join('\n')}
+`).join('\n')
 
-最近的错误提交（供分析错误模式）：
-${data.errorSubmissions.slice(0, 5).map((sub: any) => `
+  const errorSubmissionsText = data.errorSubmissions.slice(0, 5).map((sub: any) => `
 题目：${sub.problem.title}
 知识点：${sub.problem.knowledgePoints.join(', ')}
 错误类型：${sub.status}
@@ -186,64 +183,21 @@ ${data.errorSubmissions.slice(0, 5).map((sub: any) => `
 \`\`\`cpp
 ${sub.code?.slice(0, 200) || '无代码'}...
 \`\`\`
-`).join('\n---\n')}
+`).join('\n---\n')
 
-GESP 5级考试信息：
-- 考试时间：180分钟
-- 题型：单选15题（30分）+ 判断10题（20分）+ 编程2题（50分）
-- 编程题重点：贪心、二分查找、递归、分治、数论
-
-请生成三个版本的报告（Markdown格式）：
-
-**1. 小朋友版**（800字）
-- 语气：鼓励、轻松、第二人称"你"
-- 结构：
-  - 🎯 你的考试准备度：X分（0-100）
-  - ⭐ 你的三大亮点（具体、鼓励）
-  - 💪 考前冲刺建议（3-5条，可操作）
-  - ✅ 考前清单（勾选框格式，用 - [ ] 表示）
-- 重点：建立信心 + 明确行动
-
-**2. 家长版**（1000字）
-- 语气：客观、数据支撑、第三人称"孩子"
-- 结构：
-  - 📊 学习概况（题数、通过率、知识点覆盖）
-  - ✅ 优势领域（哪些知识点掌握好）
-  - ⚠️ 需要关注（哪些知识点薄弱）
-  - 💡 家长可以做的（2-3条具体建议）
-- 重点：让家长了解真实水平
-
-**3. 老师版**（1200字）
-- 语气：专业、深度分析
-- 结构：
-  - 🎓 能力诊断（算法思维、代码实现、问题解决）
-  - 📝 知识点详细分析（对照考纲，哪些掌握、哪些欠缺）
-  - 🔍 错误模式分析（从错误中发现的问题）
-  - 📋 教学建议（个性化辅导方向）
-  - 🔮 潜力评估（通过概率、建议考后方向）
-- 重点：专业诊断 + 教学指导
-
-请用以下 JSON 格式回复：
-\`\`\`json
-{
-  "studentVersion": "Markdown内容",
-  "parentVersion": "Markdown内容",
-  "teacherVersion": "Markdown内容",
-  "insights": {
-    "coverageScore": 82,
-    "strengths": ["贪心算法", "前缀和"],
-    "weaknesses": ["二分查找", "递归"],
-    "passRatePrediction": 85
-  }
-}
-\`\`\`
-`
+  // 替换变量
+  const prompt = promptTemplate
+    .replace('{{totalProblems}}', data.totalProblems.toString())
+    .replace('{{solvedProblems}}', data.solvedProblems.toString())
+    .replace('{{overallPassRate}}', data.overallPassRate.toString())
+    .replace('{{knowledgeStats}}', knowledgeStatsText)
+    .replace('{{errorSubmissions}}', errorSubmissionsText)
 
   const response = await anthropic.messages.create({
     model: 'claude-opus-4-20250514',
     max_tokens: 8000,
     temperature: 0.7,
-    system: '你是一位资深的 GESP C++ 竞赛教练和教育专家，擅长个性化教学和学生能力诊断。',
+    system: systemPrompt,
     messages: [
       { role: 'user', content: prompt }
     ]
