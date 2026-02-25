@@ -355,7 +355,7 @@ export const PROMPT_REGISTRY: PromptRegistryEntry[] = [
     key: "insight_report_generate",
     category: "insight",
     name: "洞察报告生成",
-    description: "生成三版本（小朋友/家长/老师）考前洞察报告的主提示词。支持变量：{{totalProblems}}, {{solvedProblems}}, {{overallPassRate}}, {{knowledgeStats}}, {{errorSubmissions}}",
+    description: "生成三版本（小朋友/家长/老师）考前洞察报告的主提示词 v2.0。支持变量：{{totalProblems}}, {{solvedProblems}}, {{knowledgeStats}}, {{errorCases}}, {{preventionRules}}, {{aiDependency}}, {{reflectionQuality}}, {{masteryData}}",
     defaultContent: DEFAULT_INSIGHT_REPORT_PROMPT,
   },
   {
