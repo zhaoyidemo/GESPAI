@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,62 +14,32 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
-  Home,
   BookOpen,
   Code,
   User,
   LogOut,
   Settings,
-  Flame,
-  Star,
   Sparkles,
   Database,
   BookX,
   MessageSquareCode,
-  ClipboardList,
-  Megaphone,
-  BarChart3,
 } from "lucide-react";
 
 const navItems = [
-  { href: "/dashboard", label: "今日任务", icon: Home },
   { href: "/map", label: "知识点", icon: BookOpen },
   { href: "/problem", label: "题库", icon: Code },
   { href: "/error-book", label: "错题本", icon: BookX },
-  { href: "/insight-report", label: "洞察报告", icon: BarChart3 },
-  { href: "/mock-exam", label: "模拟考试", icon: ClipboardList },
-  { href: "/vibe", label: "小红书", icon: Megaphone },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const [streakDays, setStreakDays] = useState(0);
-  const [totalXp, setTotalXp] = useState(0);
-
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        const res = await fetch("/api/user/stats");
-        if (res.ok) {
-          const data = await res.json();
-          setStreakDays(data.streakDays ?? 0);
-          setTotalXp(data.totalXp ?? 0);
-        }
-      } catch {
-        // 静默失败，保持默认值
-      }
-    }
-    if (session?.user) {
-      fetchStats();
-    }
-  }, [session?.user]);
 
   return (
     <header className="sticky top-0 z-50 w-full glass-navbar">
       <div className="container-responsive flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/dashboard" className="flex items-center space-x-3 group">
+        <Link href="/map" className="flex items-center space-x-3 group">
           <div className="relative">
             <div className="w-10 h-10 bg-gradient-to-br from-primary via-accent to-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/25 group-hover:shadow-primary/40 transition-shadow">
               <Sparkles className="w-5 h-5 text-white" />
@@ -115,22 +84,6 @@ export function Navbar() {
 
         {/* Right Section */}
         <div className="flex items-center space-x-3">
-          {/* Stats */}
-          <div className="hidden sm:flex items-center space-x-4">
-            <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-orange-500/10">
-              <Flame className="h-4 w-4 text-orange-500" />
-              <span className="text-sm font-semibold text-orange-600 stat-number">
-                {streakDays}
-              </span>
-            </div>
-            <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-amber-500/10">
-              <Star className="h-4 w-4 text-amber-500" />
-              <span className="text-sm font-semibold text-amber-600 stat-number">
-                {totalXp}
-              </span>
-            </div>
-          </div>
-
           {/* User Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -172,12 +125,6 @@ export function Navbar() {
                 <Link href="/setup" className="cursor-pointer">
                   <Settings className="mr-2 h-4 w-4" />
                   学习设置
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/mock-exam" className="cursor-pointer">
-                  <ClipboardList className="mr-2 h-4 w-4" />
-                  模拟考试
                 </Link>
               </DropdownMenuItem>
               {session?.user?.role === "admin" && (

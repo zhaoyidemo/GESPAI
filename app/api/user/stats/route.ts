@@ -7,17 +7,12 @@ export async function GET() {
     const session = await requireAuth();
     if (session instanceof NextResponse) return session;
 
-    // 并行获取用户信息、解题数和提交次数
     const [user, solvedProblems, totalSubmissions] = await Promise.all([
       prisma.user.findUnique({
         where: { id: session.user.id },
         select: {
-          streakDays: true,
-          totalXp: true,
           targetLevel: true,
           examDate: true,
-          badges: true,
-          lastActiveDate: true,
         },
       }),
       prisma.submission.groupBy({
@@ -38,34 +33,9 @@ export async function GET() {
       return NextResponse.json({ error: "用户不存在" }, { status: 404 });
     }
 
-    // 检查并更新连胜天数
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    let streakDays = user.streakDays;
-
-    if (user.lastActiveDate) {
-      const lastActive = new Date(user.lastActiveDate);
-      lastActive.setHours(0, 0, 0, 0);
-
-      const diffDays = Math.floor((today.getTime() - lastActive.getTime()) / (1000 * 60 * 60 * 24));
-
-      // 如果超过1天没活动，重置连胜
-      if (diffDays > 1) {
-        streakDays = 0;
-        await prisma.user.update({
-          where: { id: session.user.id },
-          data: { streakDays: 0 },
-        });
-      }
-    }
-
     return NextResponse.json({
-      streakDays,
-      totalXp: user.totalXp,
       targetLevel: user.targetLevel,
       examDate: user.examDate?.toISOString() || null,
-      badges: user.badges,
       problemsSolved: solvedProblems.length,
       totalSubmissions,
     });
